@@ -18,7 +18,7 @@ public class ItemPeeledEgg extends ItemFood {
 		GameRegistry.registerItem(this, name);
 		setUnlocalizedName(ModInformation.MODID + "_" + name);
 		setCreativeTab(CreativeTabs.tabFood);
-		setMaxStackSize(16);
+		setMaxStackSize(1);
 	}
 	
 	public void renderItem(){
