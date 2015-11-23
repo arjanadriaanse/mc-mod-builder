@@ -18,7 +18,7 @@ public class ItemCookedEgg extends ItemFood {
 		GameRegistry.registerItem(this, name);
 		setUnlocalizedName(ModInformation.MODID + "_" + name);
 		setCreativeTab(CreativeTabs.tabFood);
-		setMaxStackSize(64);
+		setMaxStackSize(16);
 	}
 	
 	public void renderItem(){

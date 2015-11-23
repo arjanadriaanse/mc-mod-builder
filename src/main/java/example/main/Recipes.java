@@ -22,5 +22,9 @@ public class Recipes {
 		
 		GameRegistry.addSmelting(new ItemStack(Item.getByNameOrId("minecraft:egg")),
 				new ItemStack(MyItems.cookedEgg), 0.35F);
+		
+		GameRegistry.addShapelessRecipe(new ItemStack(MyItems.peeledEgg),
+				new ItemStack(MyItems.cookedEgg));
+				
 	}
 }
