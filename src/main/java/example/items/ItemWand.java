@@ -1,10 +1,12 @@
 package example.items;
 
 import example.main.ModInformation;
+
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.entity.RenderItem;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
@@ -32,7 +34,7 @@ public class ItemWand extends Item {
 		}
 		return false;
 	}
-	
+
 	public void renderItem(){
 		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 		renderItem.getItemModelMesher().register(this, 0, 

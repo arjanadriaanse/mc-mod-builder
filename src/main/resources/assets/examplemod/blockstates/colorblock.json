@@ -1,0 +1,6 @@
+{
+    "variants": {
+        "color=white": { "model": "examplemod:colorblock_w" },
+        "color=black":  { "model": "examplemod:colorblock_b" }
+    }
+}
