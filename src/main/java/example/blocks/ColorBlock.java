@@ -90,7 +90,7 @@ public class ColorBlock extends Block {
 	public boolean isOpaqueCube() {
 		return false;
 	}
-	
+			
 	@Override
 	public boolean onBlockActivated(World worldIn, BlockPos pos, IBlockState state, EntityPlayer playerIn,
 			EnumFacing side, float hitX, float hitY, float hitZ) {
