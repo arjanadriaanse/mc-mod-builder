@@ -23,6 +23,7 @@ public class ItemWand extends Item {
 		setUnlocalizedName(ModInformation.MODID + "_" + name);
 		setCreativeTab(CreativeTabs.tabCombat);
 		setMaxStackSize(1);
+		setMaxDamage(16);
 	}
 	
 	@Override
@@ -32,9 +33,10 @@ public class ItemWand extends Item {
 		if (!target.worldObj.isRemote){
 			target.motionY = 2; //Shoot target in the air
 		}
+		stack.damageItem(1,player);
 		return false;
 	}
-
+	
 	public void renderItem(){
 		RenderItem renderItem = Minecraft.getMinecraft().getRenderItem();
 		renderItem.getItemModelMesher().register(this, 0, 
