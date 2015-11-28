@@ -1,40 +1,21 @@
 package twintro.minecraft.modbuilder;
 
-import java.io.BufferedReader;
-import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.StringReader;
-import java.util.Dictionary;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.google.gson.stream.JsonReader;
 
-import example.main.ModInformation;
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemModelMesher;
-import net.minecraft.client.renderer.entity.RenderItem;
-import net.minecraft.client.resources.FileResourcePack;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
-import net.minecraft.client.resources.IResourceManagerReloadListener;
-import net.minecraft.client.resources.IResourcePack;
 import net.minecraft.client.resources.ResourcePackRepository;
-import net.minecraft.client.resources.SimpleReloadableResourceManager;
-import net.minecraft.client.resources.SimpleResource;
-import net.minecraft.client.resources.data.IMetadataSerializer;
 import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
@@ -46,8 +27,6 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import net.minecraftforge.fml.relauncher.Side;
-import net.minecraftforge.fml.relauncher.SideOnly;
 import twintro.minecraft.modbuilder.data.BlockResource;
 import twintro.minecraft.modbuilder.data.BuilderBlock;
 import twintro.minecraft.modbuilder.data.BuilderItem;
@@ -59,97 +38,102 @@ import twintro.minecraft.modbuilder.data.ResourceHelper;
 import twintro.minecraft.modbuilder.data.ResourceSerializer;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
-public class BuilderMod
-{
-    public static final String MODID = "modbuilder";
-    public static final String VERSION = "0.1";
-    
-    private static Configuration config;
-    private ResourceSerializer serializer;
-    private Set<BlockResource> blocks = new HashSet<BlockResource>();
-    private Set<ItemResource> items = new HashSet<ItemResource>();
-    
-    @EventHandler
-    public void preInit(FMLPreInitializationEvent event) {
-    	ResourceHelper.init();
-    	serializer = new ResourceSerializer();
-    	
-    	importResources(Minecraft.getMinecraft().getResourceManager());
-    	
-    	config = new Configuration(event.getSuggestedConfigurationFile());
-    	syncConfig();
-    }
-    
-    @EventHandler
-    public void init(FMLInitializationEvent event)
-    {
-    	FMLCommonHandler.instance().bus().register(this);
-    	ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-    	for (BlockResource resource : blocks) {
-    		mesher.register(Item.getItemFromBlock(resource.toBlock()), 0, new ModelResourceLocation(resource.model, "inventory"));
-    	}
-    	for (ItemResource resource : items) {
-    		mesher.register(resource.toItem(), 0, new ModelResourceLocation(resource.model, "inventory"));
-    	}
-    }
-    
-    @SubscribeEvent
-    public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
-		if(event.modID.equals(this.MODID))
-			syncConfig();
-    }
+public class BuilderMod {
+	public static final String MODID = "modbuilder";
+	public static final String VERSION = "0.1";
 
-	private void syncConfig() {		
-		if(config.hasChanged())
-			config.save();
-	}
-	
+	private static Configuration config;
+
 	public static Configuration getConfig() {
 		return config;
 	}
 
-	public void importResources(IResourceManager resourceManager) {
+	private Set<BlockResource> blocks = new HashSet<BlockResource>();
+	private Set<ItemResource> items = new HashSet<ItemResource>();
+
+	private ResourceSerializer serializer;
+
+	@EventHandler
+	public void preInit(FMLPreInitializationEvent event) {
+		ResourceHelper.init();
+		serializer = new ResourceSerializer();
+
+		importResources(Minecraft.getMinecraft().getResourceManager());
+
+		config = new Configuration(event.getSuggestedConfigurationFile());
+		syncConfig();
+	}
+	
+	@EventHandler
+	public void init(FMLInitializationEvent event) {
+		FMLCommonHandler.instance().bus().register(this);
+		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
+		for (BlockResource resource : blocks) {
+			mesher.register(Item.getItemFromBlock(resource.toBlock()), 0,
+					new ModelResourceLocation(resource.model, "inventory"));
+		}
+		for (ItemResource resource : items) {
+			mesher.register(resource.toItem(), 0, new ModelResourceLocation(resource.model, "inventory"));
+		}
+	}
+
+	@SubscribeEvent
+	public void onConfigChanged(ConfigChangedEvent.OnConfigChangedEvent event) {
+		if (event.modID.equals(BuilderMod.MODID))
+			syncConfig();
+	}
+
+	private void importResources(IResourceManager resourceManager) {
 		List entries = Minecraft.getMinecraft().getResourcePackRepository().getRepositoryEntries();
 		Iterator iterator = entries.iterator();
 		while (iterator.hasNext()) {
-			ResourcePackRepository.Entry entry = (ResourcePackRepository.Entry)iterator.next();
+			ResourcePackRepository.Entry entry = (ResourcePackRepository.Entry) iterator.next();
 			try {
-				MetadataSection data = (MetadataSection) entry.getResourcePack().getPackMetadata(new MetadataSerializer(), "modbuilder");
+				MetadataSection data = (MetadataSection) entry.getResourcePack()
+						.getPackMetadata(new MetadataSerializer(), "modbuilder");
 				if (data != null)
 					importResources(resourceManager, data);
 			} catch (IOException e) {
-				//ignore
+				// ignore
 			}
 		}
 	}
 	
 	private void importResources(IResourceManager resourceManager, MetadataSection data) {
-		Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Resource.class, serializer).setPrettyPrinting().create();
+		Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Resource.class, serializer).setPrettyPrinting()
+				.create();
 		for (String path : data.blocks) {
 			try {
 				ResourceLocation location = new ResourceLocation("blocks/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
-				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()), BlockResource.class);
+				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BlockResource.class);
 				BuilderBlock block = blockResource.toBlock();
 				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
 				GameRegistry.registerBlock(block, path);
 				blocks.add(blockResource);
 			} catch (IOException e) {
-				//ignore
+				// ignore
 			}
 		}
 		for (String path : data.items) {
 			try {
 				ResourceLocation location = new ResourceLocation("items/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
-				ItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()), ItemResource.class);
+				ItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						ItemResource.class);
 				BuilderItem item = itemResource.toItem();
 				item.setUnlocalizedName(location.getResourceDomain() + "_" + path);
 				GameRegistry.registerItem(item, path);
 				items.add(itemResource);
 			} catch (IOException e) {
-				//ignore
+				// ignore
 			}
 		}
+	}
+
+	private void syncConfig() {
+		if (config.hasChanged())
+			config.save();
 	}
 }

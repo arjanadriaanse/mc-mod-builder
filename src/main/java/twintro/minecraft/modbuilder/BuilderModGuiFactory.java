@@ -9,6 +9,11 @@ import net.minecraftforge.fml.client.IModGuiFactory;
 public class BuilderModGuiFactory implements IModGuiFactory {
 
 	@Override
+	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
+		return null;
+	}
+
+	@Override
 	public void initialize(Minecraft minecraftInstance) {
 
 	}
@@ -20,11 +25,6 @@ public class BuilderModGuiFactory implements IModGuiFactory {
 
 	@Override
 	public Set<RuntimeOptionCategoryElement> runtimeGuiCategories() {
-		return null;
-	}
-
-	@Override
-	public RuntimeOptionGuiHandler getHandlerFor(RuntimeOptionCategoryElement element) {
 		return null;
 	}
 

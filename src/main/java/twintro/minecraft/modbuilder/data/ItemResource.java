@@ -2,17 +2,14 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 
 public class ItemResource extends Resource {
 	public BuilderItem item;
-	
+
 	public String model;
 	public Set<String> tabs;
-	
+
 	public ItemResource(String model, Set<String> tabs) {
 		this.model = model;
 		this.tabs = tabs;

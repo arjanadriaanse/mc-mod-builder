@@ -6,13 +6,12 @@ import javax.swing.JFrame;
 
 public class Editor {
 
-	private JFrame frame;
-
 	/**
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
+			@Override
 			public void run() {
 				try {
 					Editor window = new Editor();
@@ -23,6 +22,8 @@ public class Editor {
 			}
 		});
 	}
+
+	private JFrame frame;
 
 	/**
 	 * Create the application.
