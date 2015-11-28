@@ -66,7 +66,6 @@ public class BuilderMod
     
     private static Configuration config;
     private ResourceSerializer serializer;
-    private SimpleReloadableResourceManager resourceManager;
     private Set<BlockResource> blocks = new HashSet<BlockResource>();
     private Set<ItemResource> items = new HashSet<ItemResource>();
     
@@ -75,8 +74,8 @@ public class BuilderMod
     	ResourceHelper.init();
     	serializer = new ResourceSerializer();
     	
-    	resourceManager = (SimpleReloadableResourceManager)Minecraft.getMinecraft().getResourceManager();
-    	importResources(resourceManager);
+    	importResources(Minecraft.getMinecraft().getResourceManager());
+    	
     	config = new Configuration(event.getSuggestedConfigurationFile());
     	syncConfig();
     }
@@ -87,10 +86,10 @@ public class BuilderMod
     	FMLCommonHandler.instance().bus().register(this);
     	ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
     	for (BlockResource resource : blocks) {
-    		mesher.register(Item.getItemFromBlock(resource.toBlock()), 0, new ModelResourceLocation(resource.model));
+    		mesher.register(Item.getItemFromBlock(resource.toBlock()), 0, new ModelResourceLocation(resource.model, "inventory"));
     	}
     	for (ItemResource resource : items) {
-    		mesher.register(resource.toItem(), 0, new ModelResourceLocation(resource.model));
+    		mesher.register(resource.toItem(), 0, new ModelResourceLocation(resource.model, "inventory"));
     	}
     }
     
@@ -132,8 +131,7 @@ public class BuilderMod
 				IResource resource = resourceManager.getResource(location);
 				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()), BlockResource.class);
 				BuilderBlock block = blockResource.toBlock();
-				block.setCreativeTab(CreativeTabs.tabBlock);
-				block.setUnlocalizedName(location.getResourceDomain() + "_" + location.getResourcePath());
+				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
 				GameRegistry.registerBlock(block, path);
 				blocks.add(blockResource);
 			} catch (IOException e) {
@@ -146,8 +144,7 @@ public class BuilderMod
 				IResource resource = resourceManager.getResource(location);
 				ItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()), ItemResource.class);
 				BuilderItem item = itemResource.toItem();
-				item.setCreativeTab(CreativeTabs.tabMisc);
-				item.setUnlocalizedName(location.getResourceDomain() + "_" + location.getResourcePath());
+				item.setUnlocalizedName(location.getResourceDomain() + "_" + path);
 				GameRegistry.registerItem(item, path);
 				items.add(itemResource);
 			} catch (IOException e) {

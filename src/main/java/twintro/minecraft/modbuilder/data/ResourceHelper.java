@@ -10,6 +10,7 @@ import java.util.Set;
 
 import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 
 public class ResourceHelper<T> {
@@ -19,17 +20,19 @@ public class ResourceHelper<T> {
 	public static final ResourceHelper<Material> materials = new ResourceHelper<Material>();
 	public static final ResourceHelper<Block> blocks = new ResourceHelper<Block>();
 	public static final ResourceHelper<Item> items = new ResourceHelper<Item>();
+	public static final ResourceHelper<CreativeTabs> tabs = new ResourceHelper<CreativeTabs>();
 	
 	public static void init() {
 		init(materials, Material.class);
 		init(blocks, Block.class);
 		init(items, Item.class);
+		init(tabs, CreativeTabs.class);
 	}
 	
 	private static void init(ResourceHelper helper, Class c) {
 		Field[] fields = c.getDeclaredFields();
 		for (Field field : fields) {
-		    if (Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers())) {
+		    if (field.getType() == c && Modifier.isPublic(field.getModifiers()) && Modifier.isStatic(field.getModifiers())) {
 		    	try {
 					helper.addObject(field.getName(), field.get(null));
 				} catch (IllegalArgumentException e) {

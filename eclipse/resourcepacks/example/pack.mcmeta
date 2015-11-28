@@ -1,0 +1,10 @@
+{
+   "pack":{
+      "pack_format":1,
+      "description":"Mod Builder example resource pack"
+   },
+   "modbuilder":{
+      "blocks":["block"],
+      "items":["item"]
+   }
+}
