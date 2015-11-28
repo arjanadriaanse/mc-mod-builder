@@ -1,0 +1,11 @@
+/config/
+/logs/
+/mc-modbuilder/
+/.metadata/
+/crash-reports/
+/mods/
+/saves/
+/options.txt
+/resources.zip
+/usernamecache.json
+/.recommenders/
