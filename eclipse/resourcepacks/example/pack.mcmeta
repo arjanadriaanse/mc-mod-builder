@@ -5,6 +5,7 @@
    },
    "modbuilder":{
       "blocks":["block"],
-      "items":["item"]
+      "items":["item"],
+      "recipes":["shapeless","shaped","smelting"]
    }
 }

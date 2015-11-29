@@ -1,0 +1,9 @@
+{
+   "type":"shaped",
+   "output":{"item":"examplemod:peeledEgg","amount":10},
+   "shape":[" e ",
+            "ese",
+            " s "],
+   "input":{"e":{"item":"minecraft:egg"},
+            "s":{"item":"minecraft:stick"}}
+}

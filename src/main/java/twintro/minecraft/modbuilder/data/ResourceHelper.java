@@ -5,22 +5,15 @@ import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
-import net.minecraft.item.Item;
 
 public class ResourceHelper<T> {
-	public static final ResourceHelper<Block> blocks = new ResourceHelper<Block>();
-	public static final ResourceHelper<Item> items = new ResourceHelper<Item>();
-
 	public static final ResourceHelper<Material> materials = new ResourceHelper<Material>();
 	public static final ResourceHelper<CreativeTabs> tabs = new ResourceHelper<CreativeTabs>();
 
 	public static void init() {
 		init(materials, Material.class);
-		init(blocks, Block.class);
-		init(items, Item.class);
 		init(tabs, CreativeTabs.class);
 	}
 

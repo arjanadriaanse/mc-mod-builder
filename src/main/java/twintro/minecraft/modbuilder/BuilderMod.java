@@ -2,8 +2,8 @@ package twintro.minecraft.modbuilder;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -15,8 +15,6 @@ import net.minecraft.client.renderer.ItemModelMesher;
 import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.ResourcePackRepository;
-import net.minecraft.client.resources.model.ModelResourceLocation;
-import net.minecraft.item.Item;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -26,16 +24,16 @@ import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
-import net.minecraftforge.fml.common.registry.GameRegistry;
-import twintro.minecraft.modbuilder.data.BlockResource;
 import twintro.minecraft.modbuilder.data.BuilderBlock;
 import twintro.minecraft.modbuilder.data.BuilderItem;
-import twintro.minecraft.modbuilder.data.ItemResource;
+import twintro.minecraft.modbuilder.data.MesherRegisterable;
 import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
-import twintro.minecraft.modbuilder.data.Resource;
+import twintro.minecraft.modbuilder.data.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.ResourceHelper;
-import twintro.minecraft.modbuilder.data.ResourceSerializer;
+import twintro.minecraft.modbuilder.data.resources.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.ItemResource;
+import twintro.minecraft.modbuilder.data.resources.Recipe;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
 public class BuilderMod {
@@ -48,15 +46,11 @@ public class BuilderMod {
 		return config;
 	}
 
-	private Set<BlockResource> blocks = new HashSet<BlockResource>();
-	private Set<ItemResource> items = new HashSet<ItemResource>();
-
-	private ResourceSerializer serializer;
+	private Set<MesherRegisterable> models = new LinkedHashSet<MesherRegisterable>();
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		ResourceHelper.init();
-		serializer = new ResourceSerializer();
 
 		importResources(Minecraft.getMinecraft().getResourceManager());
 
@@ -67,14 +61,10 @@ public class BuilderMod {
 	@EventHandler
 	public void init(FMLInitializationEvent event) {
 		FMLCommonHandler.instance().bus().register(this);
+
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
-		for (BlockResource resource : blocks) {
-			mesher.register(Item.getItemFromBlock(resource.toBlock()), 0,
-					new ModelResourceLocation(resource.model, "inventory"));
-		}
-		for (ItemResource resource : items) {
-			mesher.register(resource.toItem(), 0, new ModelResourceLocation(resource.model, "inventory"));
-		}
+		for (MesherRegisterable model : models)
+			model.register(mesher);
 	}
 
 	@SubscribeEvent
@@ -98,24 +88,13 @@ public class BuilderMod {
 			}
 		}
 	}
-	
+
 	private void importResources(IResourceManager resourceManager, MetadataSection data) {
-		Gson gson = new GsonBuilder().registerTypeHierarchyAdapter(Resource.class, serializer).setPrettyPrinting()
-				.create();
-		for (String path : data.blocks) {
-			try {
-				ResourceLocation location = new ResourceLocation("blocks/" + path + ".json");
-				IResource resource = resourceManager.getResource(location);
-				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
-						BlockResource.class);
-				BuilderBlock block = blockResource.toBlock();
-				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
-				GameRegistry.registerBlock(block, path);
-				blocks.add(blockResource);
-			} catch (IOException e) {
-				// ignore
-			}
-		}
+		ResourceDeserializer recipeDeserializer = new ResourceDeserializer();
+		GsonBuilder builder = new GsonBuilder();
+		builder.registerTypeAdapter(Recipe.class, recipeDeserializer);
+		Gson gson = builder.create();
+
 		for (String path : data.items) {
 			try {
 				ResourceLocation location = new ResourceLocation("items/" + path + ".json");
@@ -124,8 +103,32 @@ public class BuilderMod {
 						ItemResource.class);
 				BuilderItem item = itemResource.toItem();
 				item.setUnlocalizedName(location.getResourceDomain() + "_" + path);
-				GameRegistry.registerItem(item, path);
-				items.add(itemResource);
+				item.register(path);
+				models.add(item);
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+		for (String path : data.blocks) {
+			try {
+				ResourceLocation location = new ResourceLocation("blocks/" + path + ".json");
+				IResource resource = resourceManager.getResource(location);
+				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BlockResource.class);
+				BuilderBlock block = blockResource.toBlock();
+				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
+				block.register(path);
+				models.add(block);
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+		for (String path : data.recipes) {
+			try {
+				ResourceLocation location = new ResourceLocation("recipes/" + path + ".json");
+				IResource resource = resourceManager.getResource(location);
+				Recipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), Recipe.class);
+				recipe.register(path);
 			} catch (IOException e) {
 				// ignore
 			}

@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
 import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import net.minecraft.client.resources.data.IMetadataSection;
@@ -15,24 +16,23 @@ public class MetadataSerializer extends IMetadataSerializer {
 		json = json.getAsJsonObject(property);
 		MetadataSection res = new MetadataSection();
 
-		JsonArray recipes = json.getAsJsonArray("recipes");
-		if (recipes != null) {
-			for (int i = 0; i < recipes.size(); i++)
-				res.recipes.add(recipes.get(i).getAsString());
+		JsonArray items = json.getAsJsonArray("items");
+		if (items != null) {
+			for (JsonElement item : items)
+				res.items.add(item.getAsString());
 		}
 
 		JsonArray blocks = json.getAsJsonArray("blocks");
 		if (blocks != null) {
-			for (int i = 0; i < blocks.size(); i++)
-				res.blocks.add(blocks.get(i).getAsString());
+			for (JsonElement block : blocks)
+				res.blocks.add(block.getAsString());
 		}
 
-		JsonArray items = json.getAsJsonArray("items");
-		if (items != null) {
-			for (int i = 0; i < items.size(); i++)
-				res.items.add(items.get(i).getAsString());
+		JsonArray recipes = json.getAsJsonArray("recipes");
+		if (recipes != null) {
+			for (JsonElement recipe : recipes)
+				res.recipes.add(recipe.getAsString());
 		}
-
 		return res;
 	}
 }
