@@ -1,0 +1,6 @@
+{
+   "type":"tool",
+   "model":"dirt",
+   "damage":10,
+   "material":"emerald"
+}

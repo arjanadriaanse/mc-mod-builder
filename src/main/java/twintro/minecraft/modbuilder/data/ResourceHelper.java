@@ -10,11 +10,11 @@ import net.minecraft.creativetab.CreativeTabs;
 
 public class ResourceHelper<T> {
 	public static final ResourceHelper<Material> materials = new ResourceHelper<Material>();
-	public static final ResourceHelper<CreativeTabs> tabs = new ResourceHelper<CreativeTabs>();
+	public static final ResourceHelper<CreativeTabs> creativeTabs = new ResourceHelper<CreativeTabs>();
 
 	public static void init() {
 		init(materials, Material.class);
-		init(tabs, CreativeTabs.class);
+		init(creativeTabs, CreativeTabs.class);
 	}
 
 	private static void init(ResourceHelper helper, Class c) {
