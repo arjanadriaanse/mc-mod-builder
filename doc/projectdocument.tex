@@ -1,0 +1,102 @@
+
+\documentclass{article}
+
+\usepackage[a4paper]{geometry} 
+\usepackage[dutch]{babel}
+\usepackage{parskip}
+\usepackage{enumerate}
+\usepackage{hyperref}
+
+\begin{document}
+
+\title{Projectdocument Minecraft Mod Builder}
+\author{Projectgroep "Twintro"}
+\date{\today}
+
+\maketitle
+
+\tableofcontents
+
+\newpage
+
+\section{Probleemstelling}
+	Minecraft\footnote{\url{https://nl.wikipedia.org/wiki/Minecraft}} is computerspel dat erg populair is, mede dankzij zogenaamde \emph{mods}, dit zijn aanpassingen in het spel die door derden worden ontwikkeld. Het is mogelijk deze mods te ontwikkelen met behulp van MCP\footnote{Mod Coder Pack, \url{http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1260561-toolkit-mod-coder-pack-mcp}}. Dat is een toolkit die wordt onderhouden door een van de ontwikkelaars van Minecraft, maar die niet offici\"eel wordt ondersteund. Mods werken alleen voor een specifieke versie van het spel en het tegelijk gebruiken van meerdere mods geeft vaak problemen. Om mods beter te laten samenwerken en het ontwikkelen eenvoudiger te maken is er Minecraft Forge\footnote{\url{http://www.minecraftforge.net/wiki/Minecraft_Forge}}.
+	
+	Wanneer gebruikers een mod in een nieuwe versie wil gebruiken, moeten ze dus eerst wachten tot MCP en eventueel Forge is aangepast en daarna tot de maker van de specifieke mod een update hiervoor uitbrengt. Ook vereist het maken van mods een uitgebreide ontwikkelomgeving en een redelijke kennis van de programmeertaal Java.
+
+\section{Productbeschrijving}
+	Minecraft Mod Builder is een systeem waarmee gebruikers zonder programmeerervaring mods voor Minecraft kunnen ontwikkelen. Door middel van een editor met grafische interface kan de gebruiker mods samenstellen. Deze mods kunnen vervolgens ge\"exporteerd worden naar bestanden en door andere gebruikers ingeladen worden in het spel. De editor kan de bestanden ook weer inlezen om aanpassingen te maken. Om de mods in het spel in te laden wordt gebruik gemaakt van een generieke mod. Die heeft veel mogelijkheden en aan de hand van de bestanden wordt het gedrag bepaald.
+	
+	Het systeem bestaat dus uit twee onderdelen; namelijk de grafische editor en een generieke mod. Het eerste onderdeel is vooral zichtbaar voor gebruikers en is alleen nodig om de mods te ontwikkelen. Het tweede onderdeel is nodig om de mods daadwerkelijk te gebruiken. De ge\"exporteerde mods kunnen zonder aanpassing in nieuwere versies van het systeem worden ingeladen, zodat de makers zelf geen updates hoeven uit te brengen.
+
+\newpage
+
+\section{Requirements analyse}
+	\subsection{Functional requirements}
+	\begin{enumerate}
+		\item Must have: de gebruiker kan nieuwe \emph{blokken} (bouwstenen van de wereld) met gewenst uiterlijk en gewenste eigenschappen toevoegen.
+		\item Must have: de gebruiker kan nieuwe \emph{items} (voorwerpen die gebruikt kunnen worden) met gewenst uiterlijk en gewenste eigenschappen toevoegen.
+		\item Must have: de gebruiker kan nieuwe \emph{crafting recipes} (recepten om items uit andere items te maken) defini\"eren en toevoegen.
+		
+		\item Should have: de gebruiker kan structuren toevoegen aan de manier waarop de wereld wordt gegenereerd.
+		\item Should have: de gebruiker kan defini\"eren wat er gebeurt bij bepaalde gebruikersacties of gebeurtenissen in het spel.
+		\item Should have: de gebruiker kan gebruikerscommando's defini\"eren.
+		\item Should have: de gegenereerde bestanden kunnen zonder moeite in toekomstige versies van het spel gebruikt worden.
+		
+		\item Could have: de gebruiker kan programmeercode toevoegen voor geavanceerde logica.
+		\item Could have: de gebruiker kan \emph{particles} (visuele effecten) met gewenst uiterlijk toevoegen.
+		\item Could have: de gebruiker kan geluidseffecten toevoegen.
+		\item Could have: de gebruiker kan de afbeeldingen die het uiterlijk van onderdelen bepalen binnen het programma aanpassen.
+		
+		\item Won't have: de gebruiker kan aangepaste blokmodellen defini\"eren.
+		\item Won't have: de gebruiker kan gebruikersinterfaces binnen het spel toevoegen.
+	\end{enumerate}
+	\subsection{System requirements}
+	\begin{enumerate}
+		\item Must have: de generieke mod wordt geladen via de \emph{Minecraft Forge Mod Loader} (eenvoudige en meest gebruikte manier om mods de installeren).
+		
+		\item Should have: het product maakt alleen gebruik van vrije software.
+		\item Should have: de editor werkt cross-platform.
+		\item Should have: het lezen en schrijven van bestanden gebeurt in het JSON-formaat.
+		
+		\item Could have: de geavanceerde logica wordt ge\"implementeerd met behulp van de scriptingtaal Lua.
+	\end{enumerate}
+
+\newpage
+
+\section{Projectaanpak}
+	We zullen de methodologie van SCRUM gebruiken bij het uitvoeren van dit project. Dit breekt het totale project op in kleinere sprints waarin werkende delen van het product worden ontwikkeld en opgeleverd. Dit stelt ons in staat de software flexibel uit te breiden. De sprints duren zeven dagen, zodat we in een wekelijkse vergadering de voortgang kunnen bespreken en zo nodig de planning aanpassen.
+	
+\section{Taakverdeling}
+	\subsection{Organisatie}
+	\begin{itemize}
+		\item Projectleider: Arjan
+		\item Notulist: wisselt per vergadering
+	\end{itemize}
+	\subsection{Technisch}
+	\begin{itemize}
+		\item Gebruikersinterface van editor
+		\begin{itemize}
+			\item Stijn
+			\item Jorke
+			\item Lode
+		\end{itemize}
+		\item Koppeling tussen editor en mod
+		\begin{itemize}
+			\item Arjan
+			\item Mike
+		\end{itemize}
+		\item Implementatie van generieke mod
+		\begin{itemize}
+			\item Jorke
+			\item Mike
+			\item Arjan
+		\end{itemize}
+		\item Website
+		\begin{itemize}
+			\item Lode
+			\item Stijn
+		\end{itemize}
+	\end{itemize}
+
+\end{document}
