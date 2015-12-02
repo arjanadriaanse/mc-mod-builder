@@ -1,10 +1,16 @@
 package example.main;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+
 import example.blocks.MyBlocks;
 import example.config.ConfigHandler;
 import example.items.MyItems;
 import example.proxies.ServerProxy;
-import example.worldgen.OreGeneration;
 import example.worldgen.WorldGeneration;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
@@ -43,6 +49,6 @@ public class ExampleMod {
     @EventHandler
     //Use to handle things afterwards such as doing things with other mods
     public void postInit(FMLPostInitializationEvent event){
-		
+    	
     }
 }
