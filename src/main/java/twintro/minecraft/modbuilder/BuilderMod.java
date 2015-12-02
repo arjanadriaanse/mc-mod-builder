@@ -36,7 +36,7 @@ import twintro.minecraft.modbuilder.data.ResourceConverter;
 import twintro.minecraft.modbuilder.data.ResourceHelper;
 import twintro.minecraft.modbuilder.data.resources.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.BaseRecipe;
-import twintro.minecraft.modbuilder.data.resources.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
@@ -101,6 +101,7 @@ public class BuilderMod {
 		ResourceDeserializer recipeDeserializer = new ResourceDeserializer();
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(BaseItemResource.class, recipeDeserializer);
+		builder.registerTypeAdapter(BaseBlockResource.class, recipeDeserializer);
 		builder.registerTypeAdapter(BaseRecipe.class, recipeDeserializer);
 		Gson gson = builder.create();
 
@@ -122,8 +123,8 @@ public class BuilderMod {
 			try {
 				ResourceLocation location = new ResourceLocation("blocks/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
-				BlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
-						BlockResource.class);
+				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BaseBlockResource.class);
 				Block block = ResourceConverter.toBlock(blockResource);
 				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
 				GameRegistry.registerBlock(block, path);

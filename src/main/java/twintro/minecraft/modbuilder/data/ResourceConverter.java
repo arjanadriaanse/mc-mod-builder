@@ -33,6 +33,13 @@ public class ResourceConverter {
 
 		return null;
 	}
+	
+	public static Block toBlock(BaseBlockResource resource) {
+		if (resource instanceof BlockResource)
+			return toBlock((BlockResource) resource);
+
+		return null;
+	}
 
 	public static Item toItem(BaseItemResource resource) {
 		if (resource instanceof ItemResource)

@@ -1,5 +1,5 @@
 {
    "material":"rock",
-   "model":"dirt",
+   "model":"examplemod:climber",
    "tab":"tabBlock"
 }
