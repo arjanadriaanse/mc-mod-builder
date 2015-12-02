@@ -12,5 +12,19 @@
   "logoFile": "",
   "screenshots": [],
   "dependencies": []
+},
+{
+  "modid": "examplemod",
+  "name": "Example Mod",
+  "description": "Some example modding things.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authorList": ["Twintro"],
+  "credits": "Twintro",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
 }
 ]
