@@ -1,7 +1,7 @@
 package twintro.minecraft.modbuilder.data.resources;
 
-public class BlockResource {
-	public String material;
-	public String model;
-	public String tab;
+public class BlockResource extends BaseBlockResource {
+	BlockResource(){
+		this.type = BlockType.regular;
+	}
 }

@@ -14,7 +14,11 @@ public class ResourceDeserializer implements JsonDeserializer {
 	public Object deserialize(JsonElement json, Type typeOfT, JsonDeserializationContext context)
 			throws JsonParseException {
 		JsonObject obj = json.getAsJsonObject();
-		if (typeOfT == BaseItemResource.class) {
+		if (typeOfT == BaseBlockResource.class) {
+			BlockType type = (BlockType) (obj.has("type") ? context.deserialize(obj.get("type"), BlockType.class)
+					: BlockType.regular);
+			return context.deserialize(json, type.getValue());
+		} else if (typeOfT == BaseItemResource.class) {
 			ItemType type = (ItemType) (obj.has("type") ? context.deserialize(obj.get("type"), ItemType.class)
 					: ItemType.regular);
 			return context.deserialize(json, type.getValue());
