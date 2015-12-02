@@ -3,13 +3,13 @@ package twintro.minecraft.modbuilder.data.resources;
 public enum RecipeType {
 	shaped(ShapedRecipe.class), shapeless(ShapelessRecipe.class), smelting(SmeltingRecipe.class);
 
-	private Class value;
+	private Class<? extends BaseRecipe> value;
 
-	private RecipeType(Class value) {
+	private RecipeType(Class<? extends BaseRecipe> value) {
 		this.value = value;
 	}
 
-	public Class getValue() {
+	public Class<? extends BaseRecipe> getValue() {
 		return (value);
 	}
 }

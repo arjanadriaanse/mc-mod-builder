@@ -3,13 +3,13 @@ package twintro.minecraft.modbuilder.data.resources;
 public enum ItemType {
 	regular(ItemResource.class), food(FoodItemResource.class), tool(ToolItemResource.class);
 
-	private Class value;
+	private Class<? extends BaseItemResource> value;
 
-	private ItemType(Class value) {
+	private ItemType(Class<? extends BaseItemResource> value) {
 		this.value = value;
 	}
 
-	public Class getValue() {
+	public Class<? extends BaseItemResource> getValue() {
 		return (value);
 	}
 }
