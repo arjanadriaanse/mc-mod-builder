@@ -20,25 +20,18 @@ import twintro.minecraft.modbuilder.data.resources.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.ToolItemResource;
 
 public class ResourceConverter {
+	public static Block toBlock(BaseBlockResource resource) {
+		if (resource instanceof BlockResource)
+			return toBlock((BlockResource) resource);
+
+		return null;
+	}
+	
 	public static BuilderBlock toBlock(BlockResource resource) {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.creativeTabs.get(resource.tab));
 		return block;
-	}
-	
-	public static Block toBlock(BaseBlockResource resource) {
-		if (resource instanceof BlockResource)
-			return toBlock((BlockResource) resource);
-
-		return null;
-	}
-	
-	public static Block toBlock(BaseBlockResource resource) {
-		if (resource instanceof BlockResource)
-			return toBlock((BlockResource) resource);
-
-		return null;
 	}
 
 	public static Item toItem(BaseItemResource resource) {
