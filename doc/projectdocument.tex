@@ -22,7 +22,7 @@
 \section{Probleemstelling}
 	Minecraft\footnote{\url{https://nl.wikipedia.org/wiki/Minecraft}} is computerspel dat erg populair is, mede dankzij zogenaamde \emph{mods}, dit zijn aanpassingen in het spel die door derden worden ontwikkeld. Het is mogelijk deze mods te ontwikkelen met behulp van MCP\footnote{Mod Coder Pack, \url{http://www.minecraftforum.net/forums/mapping-and-modding/minecraft-tools/1260561-toolkit-mod-coder-pack-mcp}}. Dat is een toolkit die wordt onderhouden door een van de ontwikkelaars van Minecraft, maar die niet offici\"eel wordt ondersteund. Mods werken alleen voor een specifieke versie van het spel en het tegelijk gebruiken van meerdere mods geeft vaak problemen. Om mods beter te laten samenwerken en het ontwikkelen eenvoudiger te maken is er Minecraft Forge\footnote{\url{http://www.minecraftforge.net/wiki/Minecraft_Forge}}.
 	
-	Wanneer gebruikers een mod in een nieuwe versie wil gebruiken, moeten ze dus eerst wachten tot MCP en eventueel Forge is aangepast en daarna tot de maker van de specifieke mod een update hiervoor uitbrengt. Ook vereist het maken van mods een uitgebreide ontwikkelomgeving en een redelijke kennis van de programmeertaal Java.
+	Wanneer gebruikers een mod in een nieuwe versie willen gebruiken, moeten ze dus eerst wachten tot MCP en eventueel Forge is aangepast en daarna tot de maker van de specifieke mod een update hiervoor uitbrengt. Ook vereist het maken van mods een uitgebreide ontwikkelomgeving en een redelijke kennis van de programmeertaal Java.
 
 \section{Productbeschrijving}
 	Minecraft Mod Builder is een systeem waarmee gebruikers zonder programmeerervaring mods voor Minecraft kunnen ontwikkelen. Door middel van een editor met grafische interface kan de gebruiker mods samenstellen. Deze mods kunnen vervolgens ge\"exporteerd worden naar bestanden en door andere gebruikers ingeladen worden in het spel. De editor kan de bestanden ook weer inlezen om aanpassingen te maken. Om de mods in het spel in te laden wordt gebruik gemaakt van een generieke mod. Die heeft veel mogelijkheden en aan de hand van de bestanden wordt het gedrag bepaald.
@@ -65,8 +65,14 @@
 \newpage
 
 \section{Projectaanpak}
-	We zullen de methodologie van SCRUM gebruiken bij het uitvoeren van dit project. Dit breekt het totale project op in kleinere sprints waarin werkende delen van het product worden ontwikkeld en opgeleverd. Dit stelt ons in staat de software flexibel uit te breiden. De sprints duren zeven dagen, zodat we in een wekelijkse vergadering de voortgang kunnen bespreken en zo nodig de planning aanpassen.
+	We zullen de methodologie van SCRUM gebruiken bij het uitvoeren van dit project. Dit breekt het totale project op in kleinere sprints waarin werkende delen van het product worden ontwikkeld.. Dit stelt ons in staat de software flexibel uit te breiden. De sprints duren zeven dagen, zodat we in een wekelijkse vergadering de voortgang kunnen bespreken en zo nodig de planning aanpassen.
 	
+	Het platform waarop het product zal werken is Java, omdat dit ook is waarop Minecraft werkt, hierdoor zijn er voor gebruikers geen extra systeemvereisten. De ontwikkelomgeving die we gebruiken is Eclipse, omdat de toolkit van Forge daarmee goed samenwerkt\footnote{\url{Minecraft Forge source installation, http://www.minecraftforge.net/wiki/Installation/Source}}. Om samen aan de code te werken, gebruiken we het versiebeheersysteem Git. Na het toevoegen van een werkend deel en na belangrijke wijzigingen doen we een \emph{push}. Voordat we ergens aan beginnen te werken doen we een \emph{pull}. Hierdoor werkt iedereen aan de meest recente werkende versie en kunnen we, als dat nodig is, wijzigingen gemakkelijk terugdraaien.
+	
+	Om bekend te worden met de MCP/Forge API en de mogelijkheden te onderzoeken, beginnen we met het ontwikkelen van een aantal voorbeelden van mods. Aan de hand hiervan kunnen we daarna de generieke mod implementeren en tegelijk de gebruikersinterface van de editor die daarbij nodig is ontwerpen. Uiteindelijk zullen we de generieke mod en editor koppelen en de functionaliteit verder uitbreiden.
+
+\newpage
+
 \section{Taakverdeling}
 	\subsection{Organisatie}
 	\begin{itemize}
@@ -79,6 +85,7 @@
 		\begin{itemize}
 			\item Stijn
 			\item Lode
+			\item Jorke
 		\end{itemize}
 		\item Koppeling tussen editor en mod
 		\begin{itemize}
@@ -97,5 +104,35 @@
 			\item Stijn
 		\end{itemize}
 	\end{itemize}
+
+\newpage
+
+\section{Planning}
+	\begin{table}[h]
+	\begin{tabular}{|r|l|l|}
+		\hline
+		Week & Activiteiten & Deadlines \\ \hline
+		\hline
+		49 & projectdocument afmaken & projectdocument (vrijdag) \\
+		& begin aan website maken & \\
+		& editor ontwerpen & \\
+		& mod implementeren & \\ \hline
+		50 & tussenproduct tonen & tussenproduct (vrijdag) \\
+		& website afmaken & \\
+		& tussenpresentatie voorbereiden & \\ \hline
+		51 & mod en editor koppelen & website \& tussenpresentatie (woensdag) \\ \hline
+		52 & functionaliteit uitbreiden & \\ \hline
+		1 & testen & \\
+		& handleiding maken & \\ \hline
+		2 & eindverslag maken & \\
+		& website bijwerken & \\
+		& flyer/tutorial maken & \\ \hline
+		3 & product afronden & eindverslag, werkend systeem, website, flyer (vrijdag) \\
+		& presentatie voorbereiden & \\
+		& demonstratie voorbereiden & \\ \hline
+		4 & symposium & presentatie \& demonstratie \\ \hline
+	\end{tabular}
+	\caption{De weken lopen tot woensdag, omdat op die dag de wekelijkse vergadering plaatsvindt.}
+	\end{table}
 
 \end{document}
