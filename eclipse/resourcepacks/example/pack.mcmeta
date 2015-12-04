@@ -6,6 +6,6 @@
    "modbuilder":{
       "blocks":["block"],
       "items":["regular","food","tool"],
-      "recipes":["shapeless","shaped","smelting"]
+      "recipes":["shapeless","shapeless2","shapeless3","shaped","shaped2","shaped3","smelting"]
    }
 }
