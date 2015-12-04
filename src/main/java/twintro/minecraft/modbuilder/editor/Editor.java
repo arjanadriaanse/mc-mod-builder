@@ -8,11 +8,13 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
+import twintro.minecraft.modbuilder.data.resources.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.MaterialResource;
+import twintro.minecraft.modbuilder.data.resources.TabResource;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+
 public class Editor {
 	public static final String modName = "exampleName";
-	public static final String resourcePackFolderDir = 
-			"C:/Users/M.P/AppData/Roaming/.minecraft/resourcepacks/" + modName + "/";
-	public static final String outputDir = "C:/Users/M.P/Desktop/" + modName + ".zip";
 	
 	/**
 	 * Launch the application.
@@ -30,11 +32,19 @@ public class Editor {
 			}
 		});
 		
+		//Testing stuff
+		BlockResource block = new BlockResource();
+		block.model = "stone";
+		block.material = MaterialResource.rock;
+		block.tab = TabResource.tabBlock;
+		
 		try {
-			export();
+			ResourcePackGenerator.createFile(block, "assets/modbuilder/blocks/wiel.json");
+			ResourcePackGenerator.generate();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		//End testing stuff
 	}
 
 	private JFrame frame;
@@ -53,25 +63,5 @@ public class Editor {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 450, 300);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-	}
-	
-	private static void export() throws IOException{
-		ResourcePackGenerator rpg = new ResourcePackGenerator();
-		
-		File file = null;
-		BufferedWriter output = null;
-        try{
-            file = new File(resourcePackFolderDir + "exampleFile.txt");
-            output = new BufferedWriter(new FileWriter(file));
-            output.write("exampleText");
-        }
-        catch (IOException e){
-            e.printStackTrace();
-        }
-        finally{
-            if (output != null) output.close();
-        }
-		
-		rpg.generate();
 	}
 }
