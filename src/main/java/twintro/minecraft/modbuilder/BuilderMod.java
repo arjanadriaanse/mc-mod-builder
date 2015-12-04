@@ -107,7 +107,7 @@ public class BuilderMod {
 
 		for (String path : data.items) {
 			try {
-				ResourceLocation location = new ResourceLocation("items/" + path + ".json");
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
@@ -121,7 +121,7 @@ public class BuilderMod {
 		}
 		for (String path : data.blocks) {
 			try {
-				ResourceLocation location = new ResourceLocation("blocks/" + path + ".json");
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":blocks/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
@@ -135,7 +135,7 @@ public class BuilderMod {
 		}
 		for (String path : data.recipes) {
 			try {
-				ResourceLocation location = new ResourceLocation("recipes/" + path + ".json");
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":recipes/" + path + ".json");
 				IResource resource = resourceManager.getResource(location);
 				BaseRecipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), BaseRecipe.class);
 				RecipeRegistry.register(recipe);
