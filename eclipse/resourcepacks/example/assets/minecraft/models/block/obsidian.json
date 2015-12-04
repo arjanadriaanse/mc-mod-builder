@@ -1,0 +1,6 @@
+{
+    "parent": "examplemod:block/colorblock",
+    "textures": {
+        "color": "blocks/obsidian"
+    }
+}
