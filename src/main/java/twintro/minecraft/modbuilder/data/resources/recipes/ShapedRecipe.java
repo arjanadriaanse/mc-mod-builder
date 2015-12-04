@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.data.resources;
+package twintro.minecraft.modbuilder.data.resources.recipes;
 
 import java.util.LinkedHashMap;
 import java.util.LinkedList;

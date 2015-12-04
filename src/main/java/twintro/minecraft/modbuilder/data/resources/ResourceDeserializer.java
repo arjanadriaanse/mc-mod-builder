@@ -8,6 +8,13 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 
+import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
+import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
+import twintro.minecraft.modbuilder.data.resources.items.ItemType;
+import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
+
 public class ResourceDeserializer implements JsonDeserializer {
 
 	@Override

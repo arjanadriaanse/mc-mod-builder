@@ -33,10 +33,11 @@ import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
 import twintro.minecraft.modbuilder.data.RecipeRegistry;
 import twintro.minecraft.modbuilder.data.ResourceConverter;
-import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.BaseItemResource;
-import twintro.minecraft.modbuilder.data.resources.BaseRecipe;
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
+import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
+import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
+import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
 public class BuilderMod {
@@ -86,15 +87,15 @@ public class BuilderMod {
 			try {
 				MetadataSection data = (MetadataSection) entry.getResourcePack()
 						.getPackMetadata(new MetadataSerializer(), "modbuilder");
-				if (data != null)
-					importResources(resourceManager, data);
+				if (data.resource != null)
+					importResources(resourceManager, data.resource);
 			} catch (IOException e) {
 				// ignore
 			}
 		}
 	}
 
-	private void importResources(IResourceManager resourceManager, MetadataSection data) {
+	private void importResources(IResourceManager resourceManager, ModbuilderResource data) {
 		ResourceDeserializer recipeDeserializer = new ResourceDeserializer();
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(BaseItemResource.class, recipeDeserializer);

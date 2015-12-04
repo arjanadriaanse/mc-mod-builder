@@ -10,14 +10,14 @@ import net.minecraft.item.Item.ToolMaterial;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
-import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.BaseItemResource;
-import twintro.minecraft.modbuilder.data.resources.BlockResource;
-import twintro.minecraft.modbuilder.data.resources.FoodItemResource;
-import twintro.minecraft.modbuilder.data.resources.ItemResource;
-import twintro.minecraft.modbuilder.data.resources.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
-import twintro.minecraft.modbuilder.data.resources.ToolItemResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
+import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
+import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
+import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 
 public class ResourceConverter {
 	public static Block toBlock(BaseBlockResource resource) {

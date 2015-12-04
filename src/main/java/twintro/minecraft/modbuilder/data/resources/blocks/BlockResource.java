@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.data.resources;
+package twintro.minecraft.modbuilder.data.resources.blocks;
 
 public class BlockResource extends BaseBlockResource {
 	public BlockResource() {

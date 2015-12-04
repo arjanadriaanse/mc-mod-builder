@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.data.resources;
+package twintro.minecraft.modbuilder.data.resources.recipes;
 
 public class SmeltingRecipe extends BaseRecipe {
 	public ItemStackResource input;

@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map.Entry;
 
 import net.minecraftforge.fml.common.registry.GameRegistry;
-import twintro.minecraft.modbuilder.data.resources.BaseRecipe;
-import twintro.minecraft.modbuilder.data.resources.ItemStackResource;
-import twintro.minecraft.modbuilder.data.resources.ShapedRecipe;
-import twintro.minecraft.modbuilder.data.resources.ShapelessRecipe;
-import twintro.minecraft.modbuilder.data.resources.SmeltingRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 
 public class RecipeRegistry {
 	public static void register(BaseRecipe recipe) {

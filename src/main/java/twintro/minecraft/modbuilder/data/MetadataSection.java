@@ -4,9 +4,12 @@ import java.util.HashSet;
 import java.util.Set;
 
 import net.minecraft.client.resources.data.IMetadataSection;
+import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 
 public class MetadataSection implements IMetadataSection {
-	public Set<String> blocks = new HashSet<String>();
-	public Set<String> items = new HashSet<String>();
-	public Set<String> recipes = new HashSet<String>();
+	public ModbuilderResource resource;
+	
+	public MetadataSection(ModbuilderResource resource) {
+		this.resource = resource;
+	}
 }

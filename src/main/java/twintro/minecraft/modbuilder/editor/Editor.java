@@ -8,9 +8,9 @@ import java.io.IOException;
 
 import javax.swing.JFrame;
 
-import twintro.minecraft.modbuilder.data.resources.BlockResource;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class Editor {
