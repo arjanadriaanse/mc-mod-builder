@@ -23,7 +23,6 @@ public class ResourceConverter {
 	public static Block toBlock(BaseBlockResource resource) {
 		if (resource instanceof BlockResource)
 			return toBlock((BlockResource) resource);
-
 		return null;
 	}
 	
