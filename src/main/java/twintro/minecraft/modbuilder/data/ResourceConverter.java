@@ -17,6 +17,7 @@ import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.FoodItemResource;
 import twintro.minecraft.modbuilder.data.resources.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.ToolItemResource;
 
 public class ResourceConverter {
@@ -27,9 +28,9 @@ public class ResourceConverter {
 	}
 	
 	public static BuilderBlock toBlock(BlockResource resource) {
-		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
+		BuilderBlock block = new BuilderBlock(resource.material.getValue());
 		if (resource.tab != null)
-			block.setCreativeTab(ResourceHelper.creativeTabs.get(resource.tab));
+			block.setCreativeTab(resource.tab.getValue());
 		return block;
 	}
 
@@ -82,11 +83,11 @@ public class ResourceConverter {
 		return stack;
 	}
 
-	private static CreativeTabs[] getTabs(Set<String> keys) {
+	private static CreativeTabs[] getTabs(Set<TabResource> keys) {
 		CreativeTabs[] tabs = new CreativeTabs[keys.size()];
 		int i = 0;
-		for (String key : keys)
-			tabs[i++] = ResourceHelper.creativeTabs.get(key);
+		for (TabResource key : keys)
+			tabs[i++] = key.getValue();
 		return tabs;
 	}
 }

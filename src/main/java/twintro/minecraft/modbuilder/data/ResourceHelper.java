@@ -1,5 +1,9 @@
 package twintro.minecraft.modbuilder.data;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
@@ -18,6 +22,7 @@ public class ResourceHelper<T> {
 	}
 
 	private static void init(ResourceHelper helper, Class c) {
+		/*
 		Field[] fields = c.getDeclaredFields();
 		for (Field field : fields) {
 			if (field.getType() == c && Modifier.isPublic(field.getModifiers())
@@ -31,6 +36,7 @@ public class ResourceHelper<T> {
 				}
 			}
 		}
+		*/
 	}
 
 	private Map<T, String> keys = new HashMap<T, String>();
