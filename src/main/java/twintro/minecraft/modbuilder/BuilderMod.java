@@ -33,10 +33,9 @@ import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
 import twintro.minecraft.modbuilder.data.RecipeRegistry;
 import twintro.minecraft.modbuilder.data.ResourceConverter;
-import twintro.minecraft.modbuilder.data.ResourceHelper;
+import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.BaseRecipe;
-import twintro.minecraft.modbuilder.data.resources.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
@@ -55,8 +54,6 @@ public class BuilderMod {
 
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
-		ResourceHelper.init();
-
 		importResources(Minecraft.getMinecraft().getResourceManager());
 
 		config = new Configuration(event.getSuggestedConfigurationFile());

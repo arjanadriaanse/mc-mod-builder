@@ -36,7 +36,7 @@ public class Editor {
 		BlockResource block = new BlockResource();
 		block.model = "stone";
 		block.material = MaterialResource.rock;
-		block.tab = TabResource.tabBlock;
+		block.tab = TabResource.block;
 		
 		try {
 			ResourcePackGenerator.createFile(block, "assets/modbuilder/blocks/wiel.json");
