@@ -4,16 +4,28 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 
+/**
+ * Contains maps for converting enum resources to objects and methods to
+ * generate the enums and maps.
+ *
+ */
 public class ResourceHelper {
+	/**
+	 * Contains a <code>Material</code> instance for each
+	 * <code>MaterialResource</code>.
+	 */
 	public static final Map<MaterialResource, Material> materials = new HashMap<MaterialResource, Material>();
+
+	/**
+	 * Contains a <code>CreativeTabs</code> instance for each
+	 * <code>TabResource</code>.
+	 */
 	public static final Map<TabResource, CreativeTabs> tabs = new HashMap<TabResource, CreativeTabs>();
 
 	static {
@@ -67,8 +79,10 @@ public class ResourceHelper {
 		tabs.put(TabResource.inventory, CreativeTabs.tabInventory);
 	}
 
-	private static final Pattern camelPattern = Pattern.compile("(.)([A-Z])");
-
+	/**
+	 * Generates code for populating the <code>MaterialResource</code> and
+	 * <code>TabResource</code> enums and their maps.
+	 */
 	public static void main(String[] args) {
 		generateEnum(Material.class, null);
 		generateEnum(CreativeTabs.class, "tab");
@@ -76,20 +90,42 @@ public class ResourceHelper {
 		generateMap("tabs", TabResource.class, CreativeTabs.class, "tab");
 	}
 
-	private static void generateEnum(Class c, String prefix) {
+	/**
+	 * Generates code for populating an enum with names of the public static
+	 * final fields of a specific type.
+	 * 
+	 * @param c
+	 *            - the class to get the fields from
+	 * @param prefix
+	 *            - an optional prefix to filter from field names
+	 */
+	public static void generateEnum(Class c, String prefix) {
 		for (Field f : c.getFields()) {
 			if (f.getType() == c && Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers())) {
-				String name = generateName(f.getName(), prefix);
+				String name = convertName(f.getName(), prefix);
 				System.out.println(name + ",");
 			}
 		}
 		System.out.println();
 	}
 
-	private static void generateMap(String v, Class<? extends Enum> e, Class c, String prefix) {
+	/**
+	 * Generates code for populating a map with enums and the corresponding
+	 * objects.
+	 * 
+	 * @param v
+	 *            - the variable name of the map
+	 * @param e
+	 *            - the enum to use as key
+	 * @param c
+	 *            - the class to get the fields from
+	 * @param prefix
+	 *            - an optional prefix to filter from field names
+	 */
+	public static void generateMap(String v, Class<? extends Enum> e, Class c, String prefix) {
 		for (Field f : c.getFields()) {
 			if (f.getType() == c && Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers())) {
-				String name = generateName(f.getName(), prefix);
+				String name = convertName(f.getName(), prefix);
 				System.out.println(v + ".put(" + e.getSimpleName() + "." + name + ", " + c.getSimpleName() + "."
 						+ f.getName() + ");");
 			}
@@ -97,12 +133,19 @@ public class ResourceHelper {
 		System.out.println();
 	}
 
-	private static String generateName(String name, String prefix) {
-		if (prefix != null && name.startsWith(prefix))
+	/**
+	 * Converts a camel case name to a lower case name with underscores between
+	 * words.
+	 * 
+	 * @param name
+	 *            - the name to convert
+	 * @param prefix
+	 *            - an optional prefix to filter from the name
+	 */
+	public static String convertName(String name, String prefix) {
+		if (prefix != null && name.matches(prefix + "[A-Z].*"))
 			name = name.substring(prefix.length());
 
-		Matcher matcher = camelPattern.matcher(name);
-		name = matcher.replaceAll("$1_$2");
-		return name.toLowerCase();
+		return name.replaceAll("(.)([A-Z])", "$1_$2").toLowerCase();
 	}
 }

@@ -15,6 +15,9 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 
+/**
+ * Handles the deserialization of subtypes of abstract resources.
+ */
 public class ResourceDeserializer implements JsonDeserializer {
 
 	@Override

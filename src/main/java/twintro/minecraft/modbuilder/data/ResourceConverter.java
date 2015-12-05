@@ -19,6 +19,9 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 
+/**
+ * Contains methods for converting resource objects to Minecraft objects.
+ */
 public class ResourceConverter {
 	public static Block toBlock(BaseBlockResource resource) {
 		if (resource instanceof BlockResource)

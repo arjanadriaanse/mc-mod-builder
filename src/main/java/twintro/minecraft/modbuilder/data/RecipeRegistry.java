@@ -11,6 +11,9 @@ import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 
+/**
+ * Contains methods for registering recipes.
+ */
 public class RecipeRegistry {
 	public static void register(BaseRecipe recipe) {
 		if (recipe instanceof ShapelessRecipe)

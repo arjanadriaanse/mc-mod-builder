@@ -10,6 +10,9 @@ import net.minecraft.client.resources.data.IMetadataSection;
 import net.minecraft.client.resources.data.IMetadataSerializer;
 import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 
+/**
+ * Handles the deserialization of the additional property in resource pack metadata.
+ */
 public class MetadataSerializer extends IMetadataSerializer {
 	@Override
 	public IMetadataSection parseMetadataSection(String property, JsonObject json) {

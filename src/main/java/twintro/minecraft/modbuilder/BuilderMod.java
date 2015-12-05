@@ -50,7 +50,14 @@ public class BuilderMod {
 		return config;
 	}
 
+	/**
+	 * Contains a model location for each registered <code>Item</code>.
+	 */
 	private Map<Item, String> itemModels = new LinkedHashMap<Item, String>();
+	
+	/**
+	 * Contains a model location for each registered <code>Block</code>.
+	 */
 	private Map<Block, String> blockModels = new LinkedHashMap<Block, String>();
 
 	@EventHandler
@@ -79,7 +86,11 @@ public class BuilderMod {
 			syncConfig();
 	}
 
-	private void importResources(IResourceManager resourceManager) {
+	/**
+	 * Imports resources from resource packs that contain the "modbuilder" metadata.
+	 * @param manager - the resource manager to use
+	 */
+	private void importResources(IResourceManager manager) {
 		List entries = Minecraft.getMinecraft().getResourcePackRepository().getRepositoryEntries();
 		Iterator iterator = entries.iterator();
 		while (iterator.hasNext()) {
@@ -88,25 +99,30 @@ public class BuilderMod {
 				MetadataSection data = (MetadataSection) entry.getResourcePack()
 						.getPackMetadata(new MetadataSerializer(), "modbuilder");
 				if (data.resource != null)
-					importResources(resourceManager, data.resource);
+					importResources(manager, data.resource);
 			} catch (IOException e) {
 				// ignore
 			}
 		}
 	}
 
-	private void importResources(IResourceManager resourceManager, ModbuilderResource data) {
-		ResourceDeserializer recipeDeserializer = new ResourceDeserializer();
+	/**
+	 * Imports resources using the metadata from a resource pack.
+	 * @param manager - the resource manager to use
+	 * @param data - the metadata that contains the resource names
+	 */
+	private void importResources(IResourceManager manager, ModbuilderResource data) {
+		ResourceDeserializer deserializer = new ResourceDeserializer();
 		GsonBuilder builder = new GsonBuilder();
-		builder.registerTypeAdapter(BaseItemResource.class, recipeDeserializer);
-		builder.registerTypeAdapter(BaseBlockResource.class, recipeDeserializer);
-		builder.registerTypeAdapter(BaseRecipe.class, recipeDeserializer);
+		builder.registerTypeAdapter(BaseItemResource.class, deserializer);
+		builder.registerTypeAdapter(BaseBlockResource.class, deserializer);
+		builder.registerTypeAdapter(BaseRecipe.class, deserializer);
 		Gson gson = builder.create();
 
 		for (String path : data.items) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
-				IResource resource = resourceManager.getResource(location);
+				IResource resource = manager.getResource(location);
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
 				Item item = ResourceConverter.toItem(itemResource);
@@ -120,7 +136,7 @@ public class BuilderMod {
 		for (String path : data.blocks) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":blocks/" + path + ".json");
-				IResource resource = resourceManager.getResource(location);
+				IResource resource = manager.getResource(location);
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
 				Block block = ResourceConverter.toBlock(blockResource);
@@ -134,7 +150,7 @@ public class BuilderMod {
 		for (String path : data.recipes) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":recipes/" + path + ".json");
-				IResource resource = resourceManager.getResource(location);
+				IResource resource = manager.getResource(location);
 				BaseRecipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), BaseRecipe.class);
 				RecipeRegistry.register(recipe);
 			} catch (IOException e) {
