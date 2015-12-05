@@ -1,6 +1,5 @@
 package twintro.minecraft.modbuilder.data.resources.meta;
 
-import java.util.HashSet;
 import java.util.Set;
 
 public class ModbuilderResource {

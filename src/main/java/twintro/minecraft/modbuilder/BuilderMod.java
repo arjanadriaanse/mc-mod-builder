@@ -54,7 +54,7 @@ public class BuilderMod {
 	 * Contains a model location for each registered <code>Item</code>.
 	 */
 	private Map<Item, String> itemModels = new LinkedHashMap<Item, String>();
-	
+
 	/**
 	 * Contains a model location for each registered <code>Block</code>.
 	 */
@@ -87,8 +87,11 @@ public class BuilderMod {
 	}
 
 	/**
-	 * Imports resources from resource packs that contain the "modbuilder" metadata.
-	 * @param manager - the resource manager to use
+	 * Imports resources from resource packs that contain the "modbuilder"
+	 * metadata.
+	 * 
+	 * @param manager
+	 *            - the resource manager to use
 	 */
 	private void importResources(IResourceManager manager) {
 		List entries = Minecraft.getMinecraft().getResourcePackRepository().getRepositoryEntries();
@@ -98,8 +101,8 @@ public class BuilderMod {
 			try {
 				MetadataSection data = (MetadataSection) entry.getResourcePack()
 						.getPackMetadata(new MetadataSerializer(), "modbuilder");
-				if (data.resource != null)
-					importResources(manager, data.resource);
+				if (data.modbuilder != null)
+					importResources(manager, data.modbuilder);
 			} catch (IOException e) {
 				// ignore
 			}
@@ -108,8 +111,11 @@ public class BuilderMod {
 
 	/**
 	 * Imports resources using the metadata from a resource pack.
-	 * @param manager - the resource manager to use
-	 * @param data - the metadata that contains the resource names
+	 * 
+	 * @param manager
+	 *            - the resource manager to use
+	 * @param data
+	 *            - the metadata that contains the resource names
 	 */
 	private void importResources(IResourceManager manager, ModbuilderResource data) {
 		ResourceDeserializer deserializer = new ResourceDeserializer();
