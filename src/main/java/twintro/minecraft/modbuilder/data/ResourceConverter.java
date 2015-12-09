@@ -31,7 +31,7 @@ public class ResourceConverter {
 
 	public static BuilderBlock toBlock(BlockResource resource) {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
-		if (resource.tab != null
+		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)
 			block.setLightLevel(((float)resource.light)/15);
