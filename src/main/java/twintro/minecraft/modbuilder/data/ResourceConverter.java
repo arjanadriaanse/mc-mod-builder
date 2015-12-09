@@ -31,7 +31,7 @@ public class ResourceConverter {
 
 	public static BuilderBlock toBlock(BlockResource resource) {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
-		if (resource.tab != null)
+		if (resource.tab != null) //Set the creative tab
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		return block;
 	}
