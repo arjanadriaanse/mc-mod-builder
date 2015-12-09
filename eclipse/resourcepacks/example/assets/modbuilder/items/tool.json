@@ -1,6 +1,8 @@
 {
-   "type":"tool",
-   "model":"dirt",
-   "damage":10,
-   "material":"emerald"
+   "type": "tool",
+   "model": "dirt",
+   "damage": 19,
+   "durability": 256,
+   "repairblock": "minecraft:dirt",
+   "blocks": ["minecraft:grass","minecraft:sand","minecraft:dirt","modbuilder:block"]
 }

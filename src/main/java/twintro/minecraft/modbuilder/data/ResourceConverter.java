@@ -5,9 +5,12 @@ import java.util.Set;
 
 import example.main.ModInformation;
 import net.minecraft.block.Block;
+import net.minecraft.block.material.MapColor;
+import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
+import net.minecraftforge.common.util.EnumHelper;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
@@ -43,10 +46,10 @@ public class ResourceConverter {
 			block.slipperiness = resource.slipperiness;
 		if (resource.hardness != null)
 			block.setHardness(resource.hardness);
-		if (resource.resistance != null)
-			block.setResistance(resource.resistance);
 		else
 			block.setHardness(1);
+		if (resource.resistance != null)
+			block.setResistance(resource.resistance);
 		if (resource.unbreakable != null)
 			if (resource.unbreakable)
 				block.setBlockUnbreakable();
@@ -67,24 +70,49 @@ public class ResourceConverter {
 	}
 
 	public static Item toItem(ItemResource resource) {
-		return new BuilderItem(resource.tabs != null ? getTabs(resource.tabs) : null);
+		BuilderItem item = new BuilderItem(resource.tabs != null ? getTabs(resource.tabs) : null);
+		if (resource.stacksize != null)
+			item.setMaxStackSize(resource.stacksize);
+		return item;
 	}
 
 	public static ItemFood toItem(FoodItemResource resource) {
+		BuilderItemFood item;
 		if (resource.saturation == null)
-			return new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false);
+			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false);
 		else
-			return new BuilderItemFood(resource.amount, resource.saturation,
+			item = new BuilderItemFood(resource.amount, resource.saturation,
 					resource.wolf != null ? resource.wolf : false);
+		if (resource.stacksize != null)
+			item.setMaxStackSize(resource.stacksize);
+		return item;
 	}
 
 	public static ItemTool toItem(ToolItemResource resource) {
+		ToolMaterial material = EnumHelper.addToolMaterial(
+				resource.name           != null ? resource.name           : "",
+				resource.harvestlevel   != null ? resource.harvestlevel   : 2,
+				resource.durability     != null ? resource.durability     : 250,
+				resource.efficiency     != null ? resource.efficiency     : 6.0F,
+				resource.damage         != null ? resource.damage         : 2.0F,
+				resource.enchantability != null ? resource.enchantability : 10);
+		if (resource.repairitem != null) {
+				ItemStack repair = new ItemStack(Item.getByNameOrId(resource.repairitem));
+				material.setRepairItem(repair);
+		}
+		else if (resource.repairblock != null) {
+				ItemStack repair = new ItemStack(Block.getBlockFromName(resource.repairblock));
+				material.setRepairItem(repair);
+		}
 		Set blocks = new LinkedHashSet();
 		if (resource.blocks != null) {
 			for (String key : resource.blocks)
 				blocks.add(Block.getBlockFromName(key));
 		}
-		return new BuilderItemTool(resource.damage, ToolMaterial.valueOf(resource.material.toUpperCase()), blocks);
+		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks);
+		if (resource.stacksize != null)
+			item.setMaxStackSize(resource.stacksize);
+		return item;
 	}
 
 	public static ItemStack toItemStack(ItemStackResource resource) {
