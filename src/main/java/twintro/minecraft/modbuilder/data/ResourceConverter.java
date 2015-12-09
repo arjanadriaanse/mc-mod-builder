@@ -3,6 +3,7 @@ package twintro.minecraft.modbuilder.data;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import example.main.ModInformation;
 import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.Item;
@@ -31,6 +32,7 @@ public class ResourceConverter {
 
 	public static BuilderBlock toBlock(BlockResource resource) {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
+		//setUnlocalizedName(ModInformation.MODID + "_" + name);
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)
@@ -41,9 +43,15 @@ public class ResourceConverter {
 			block.slipperiness = resource.slipperiness;
 		if (resource.hardness != null)
 			block.setHardness(resource.hardness);
+		if (resource.resistance != null)
+			block.setResistance(resource.resistance);
+		else
+			block.setHardness(1);
 		if (resource.unbreakable != null)
 			if (resource.unbreakable)
 				block.setBlockUnbreakable();
+		if (resource.harvesttype != null && resource.harvestlevel != null)
+			block.setHarvestLevel(resource.harvesttype, resource.harvestlevel);
 		return block;
 	}
 
