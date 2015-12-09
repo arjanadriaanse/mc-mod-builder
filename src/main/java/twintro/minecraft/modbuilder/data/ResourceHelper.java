@@ -17,14 +17,14 @@ import twintro.minecraft.modbuilder.data.resources.TabResource;
  */
 public class ResourceHelper {
 	/**
-	 * Contains a <code>Material</code> instance for each
-	 * <code>MaterialResource</code>.
+	 * Contains a {@link Material} instance for each
+	 * {@link MaterialResource}.
 	 */
 	public static final Map<MaterialResource, Material> materials = new HashMap<MaterialResource, Material>();
 
 	/**
-	 * Contains a <code>CreativeTabs</code> instance for each
-	 * <code>TabResource</code>.
+	 * Contains a {@link CreativeTabs} instance for each
+	 * {@link TabResource}.
 	 */
 	public static final Map<TabResource, CreativeTabs> tabs = new HashMap<TabResource, CreativeTabs>();
 
@@ -80,8 +80,8 @@ public class ResourceHelper {
 	}
 
 	/**
-	 * Generates code for populating the <code>MaterialResource</code> and
-	 * <code>TabResource</code> enums and their maps.
+	 * Generates code for populating the {@link MaterialResource} and
+	 * {@link TabResource} enums and their maps.
 	 */
 	public static void main(String[] args) {
 		generateEnum(Material.class, null);

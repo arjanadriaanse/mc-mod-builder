@@ -2,11 +2,13 @@ package twintro.minecraft.modbuilder;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -51,15 +53,25 @@ public class BuilderMod {
 	}
 
 	/**
-	 * Contains a model location for each registered <code>Item</code>.
+	 * Contains a model location for each registered {@link Item}.
 	 */
-	private Map<Item, String> itemModels = new LinkedHashMap<Item, String>();
+	private Map<Item, String> itemModels = new HashMap<Item, String>();
 
 	/**
-	 * Contains a model location for each registered <code>Block</code>.
+	 * Contains a model location for each registered {@link Block}.
 	 */
-	private Map<Block, String> blockModels = new LinkedHashMap<Block, String>();
+	private Map<Block, String> blockModels = new HashMap<Block, String>();
 
+	/**
+	 * Contains the name of each registered {@link Item}.
+	 */
+	private Set<String> registeredItems = new HashSet<String>();
+	
+	/**
+	 * Contains the name of each registered {@link Block}.
+	 */
+	private Set<String> registeredBlocks = new HashSet<String>();
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		importResources(Minecraft.getMinecraft().getResourceManager());
@@ -132,9 +144,12 @@ public class BuilderMod {
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
 				Item item = ResourceConverter.toItem(itemResource);
-				item.setUnlocalizedName(location.getResourceDomain() + "_" + path);
-				GameRegistry.registerItem(item, path);
-				itemModels.put(item, itemResource.model);
+				item.setUnlocalizedName(path);
+				if (!registeredItems.contains(path)) {
+					GameRegistry.registerItem(item, path);
+					registeredItems.add(path);
+					itemModels.put(item, itemResource.model);
+				}
 			} catch (IOException e) {
 				// ignore
 			}
@@ -146,9 +161,12 @@ public class BuilderMod {
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
 				Block block = ResourceConverter.toBlock(blockResource);
-				block.setUnlocalizedName(location.getResourceDomain() + "_" + path);
-				GameRegistry.registerBlock(block, path);
-				blockModels.put(block, blockResource.model);
+				block.setUnlocalizedName(path);
+				if (!registeredBlocks.contains(path)) {
+					GameRegistry.registerBlock(block, path);
+					registeredBlocks.add(path);
+					blockModels.put(block, blockResource.model);
+				}
 			} catch (IOException e) {
 				// ignore
 			}
