@@ -33,6 +33,17 @@ public class ResourceConverter {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
+		if (resource.light != null)
+			block.setLightLevel(((float)resource.light)/15);
+		if (resource.opacity != null)
+			block.setLightOpacity(resource.opacity);
+		if (resource.slipperiness != null)
+			block.slipperiness = resource.slipperiness;
+		if (resource.hardness != null)
+			block.setHardness(resource.hardness);
+		if (resource.unbreakable != null)
+			if (resource.unbreakable)
+				block.setBlockUnbreakable();
 		return block;
 	}
 
