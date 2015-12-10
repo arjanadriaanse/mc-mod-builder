@@ -21,6 +21,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twintro.minecraft.modbuilder.data.FuelHandler;
 import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
 import twintro.minecraft.modbuilder.data.RecipeRegistry;
@@ -71,6 +73,11 @@ public class BuilderMod {
 	 * Contains the name of each registered {@link Block}.
 	 */
 	private Set<String> registeredBlocks = new HashSet<String>();
+	
+	/**
+	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
+	 */
+	private HashMap<ItemStack, Integer> fuellist = new HashMap<ItemStack, Integer>();
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -150,6 +157,8 @@ public class BuilderMod {
 					GameRegistry.registerItem(item, path);
 					registeredItems.add(path);
 					itemModels.put(item, itemResource.model);
+					if (itemResource.burntime != null)
+						fuellist.put(new ItemStack(item), itemResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -167,6 +176,8 @@ public class BuilderMod {
 					GameRegistry.registerBlock(block, path);
 					registeredBlocks.add(path);
 					blockModels.put(block, blockResource.model);
+					if (blockResource.burntime != null)
+						fuellist.put(new ItemStack(block), blockResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -182,6 +193,8 @@ public class BuilderMod {
 				// ignore
 			}
 		}
+		FuelHandler handler = new FuelHandler(fuellist);
+		GameRegistry.registerFuelHandler(handler);
 	}
 
 	private void syncConfig() {

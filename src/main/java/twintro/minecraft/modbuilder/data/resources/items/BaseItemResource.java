@@ -5,4 +5,5 @@ public abstract class BaseItemResource {
 	public String model;
 	public Integer stacksize; //hoeveel items er maximaal in een stack kunnen
 	public String container; //naam van het item waar het in verandert als je ermee craft
+	public Integer burntime;
 }
