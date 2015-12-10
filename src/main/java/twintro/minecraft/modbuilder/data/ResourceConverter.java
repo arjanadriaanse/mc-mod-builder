@@ -73,6 +73,8 @@ public class ResourceConverter {
 		BuilderItem item = new BuilderItem(resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
+		if (resource.container != null)
+			item.setContainerItem(Item.getByNameOrId(resource.container));
 		return item;
 	}
 
@@ -85,6 +87,8 @@ public class ResourceConverter {
 					resource.wolf != null ? resource.wolf : false);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
+		if (resource.container != null)
+			item.setContainerItem(Item.getByNameOrId(resource.container));
 		return item;
 	}
 
@@ -112,6 +116,8 @@ public class ResourceConverter {
 		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
+		if (resource.container != null)
+			item.setContainerItem(Item.getByNameOrId(resource.container));
 		return item;
 	}
 

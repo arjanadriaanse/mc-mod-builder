@@ -1,4 +1,4 @@
 tile.block.name=Amazingness
-item.modbuilder_food.name=Dog Food
-item.modbuilder_regular.name=The Most Useless Item In The Game
-item.modbuilder_tool.name=I Lied, This Is Even More Useless
+item.food.name=Dog Food
+item.regular.name=The Most Useless Item In The Game
+item.tool.name=I Lied, This Is Even More Useless
