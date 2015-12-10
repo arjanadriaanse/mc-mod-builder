@@ -1,9 +1,9 @@
 {
    "type":"shaped",
-   "output":{"item":"examplemod:jumpWand"},
+   "output":{"item":"examplemod:jumpWand", "enchantments": {"knockback": 10}},
    "shape":[" r ",
             "rsr",
             " s "],
-   "input":{"r":{"item":"minecraft:redstone", "container": "minecraft:glowstone_dust"},
+   "input":{"r":{"item":"minecraft:redstone", "container": "minecraft:gunpowder"},
             "s":{"item":"minecraft:stick"}}
 }

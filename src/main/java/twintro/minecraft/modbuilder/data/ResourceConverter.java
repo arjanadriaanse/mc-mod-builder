@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
 import java.util.LinkedHashSet;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import example.main.ModInformation;
@@ -8,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.enchantment.Enchantment;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
@@ -137,7 +139,8 @@ public class ResourceConverter {
 				new ItemStack(block, resource.amount != null ? resource.amount: 1);
 		if (resource.meta != null)
 			stack.setItemDamage(resource.meta);
-
+		for (Entry<String, Integer> enchant : resource.enchantments.entrySet())
+			stack.addEnchantment(Enchantment.getEnchantmentByLocation(enchant.getKey()), enchant.getValue());
 		return stack;
 	}
 

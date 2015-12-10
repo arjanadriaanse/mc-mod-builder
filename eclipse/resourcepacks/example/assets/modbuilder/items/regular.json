@@ -1,7 +1,7 @@
 {
    "model": "dirt",
    "tabs": [ "combat", "block", "food" ],
-   "maxstack": 16,
+   "stacksize": 16,
    "container": "minecraft:poisonous_potato",
    "burntime": 400
 }
