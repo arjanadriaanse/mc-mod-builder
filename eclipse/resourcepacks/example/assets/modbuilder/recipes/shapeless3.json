@@ -1,4 +1,4 @@
 {
-   "output":{"item":"examplemod:peeledEgg"},
-   "input":[{"item":"examplemod:cookedEgg"}]
+   "output":{"item":"modbuilder:peeledEgg"},
+   "input":[{"item":"modbuilder:cookedEgg"}]
 }

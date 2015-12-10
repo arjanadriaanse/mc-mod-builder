@@ -1,0 +1,6 @@
+{
+   "type":"food",
+   "model":"modbuilder:peeledEgg",
+   "amount": 6,
+   "stacksize": 1
+}

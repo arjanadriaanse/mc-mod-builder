@@ -86,7 +86,8 @@ public class BuilderMod {
 
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (Entry<Item, String> entry : itemModels.entrySet())
-			mesher.register(entry.getKey(), 0, new ModelResourceLocation(entry.getValue(), "inventory"));
+			mesher.register(entry.getKey(), 0,
+					new ModelResourceLocation(entry.getValue(), "inventory"));
 		for (Entry<Block, String> entry : blockModels.entrySet())
 			mesher.register(Item.getItemFromBlock(entry.getKey()), 0,
 					new ModelResourceLocation(entry.getValue(), "inventory"));
@@ -144,7 +145,7 @@ public class BuilderMod {
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
 				Item item = ResourceConverter.toItem(itemResource);
-				item.setUnlocalizedName(path);
+				item.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredItems.contains(path)) {
 					GameRegistry.registerItem(item, path);
 					registeredItems.add(path);
@@ -161,7 +162,7 @@ public class BuilderMod {
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
 				Block block = ResourceConverter.toBlock(blockResource);
-				block.setUnlocalizedName(path);
+				block.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredBlocks.contains(path)) {
 					GameRegistry.registerBlock(block, path);
 					registeredBlocks.add(path);

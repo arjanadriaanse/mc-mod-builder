@@ -1,0 +1,6 @@
+{
+   "type":"food",
+   "model":"modbuilder:cookedEgg",
+   "amount": 4,
+   "stacksize": 16
+}
