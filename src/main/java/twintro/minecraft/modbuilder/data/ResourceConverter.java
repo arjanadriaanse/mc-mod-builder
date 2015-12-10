@@ -117,15 +117,18 @@ public class ResourceConverter {
 
 	public static ItemStack toItemStack(ItemStackResource resource) {
 		Item item = null;
-		if (resource.item != null)
+		if (resource.item != null) {
 			item = Item.getByNameOrId(resource.item);
+			if (resource.container != null)
+				item.setContainerItem(resource.container == "" ? null : Item.getByNameOrId(resource.container));
+		}
 		Block block = null;
 		if (resource.block != null)
 			block = Block.getBlockFromName(resource.block);
 
-		ItemStack stack = item != null ? new ItemStack(item) : new ItemStack(block);
-		if (resource.amount != null)
-			stack.stackSize = resource.amount;
+		ItemStack stack = item != null ?
+				new ItemStack(item, resource.amount != null ? resource.amount: 1) :
+				new ItemStack(block, resource.amount != null ? resource.amount: 1);
 		if (resource.meta != null)
 			stack.setItemDamage(resource.meta);
 

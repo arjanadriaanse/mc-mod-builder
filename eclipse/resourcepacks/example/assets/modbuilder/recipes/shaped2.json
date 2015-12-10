@@ -4,6 +4,6 @@
    "shape":[" r ",
             "rsr",
             " s "],
-   "input":{"r":{"item":"minecraft:redstone"},
+   "input":{"r":{"item":"minecraft:redstone", "container": "minecraft:glowstone_dust"},
             "s":{"item":"minecraft:stick"}}
 }
