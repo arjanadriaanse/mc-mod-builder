@@ -3,7 +3,7 @@
    "model": "examplemod:climber",
    "tab": "block",
    "light": 8,
-   "slipperiness": 3,
+   "slipperiness": 4,
    "harvesttype": "shovel",
    "harvestlevel": 2
 }
