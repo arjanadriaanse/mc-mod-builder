@@ -11,10 +11,12 @@ import javax.swing.JMenuItem;
 public class TexturesEditor extends JFrame{
 	Image image;
 	
-	public TexturesEditor(Image image) {
-		this.setSize(512, 512);
+	public TexturesEditor(String name, Image image) {
 		this.image = image;
-		
+		setName(name);
+		setSize(512, 512);
+		setVisible(true);
+		setIconImage(image);
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.inactiveCaption);
 		this.setJMenuBar(menuBar);
