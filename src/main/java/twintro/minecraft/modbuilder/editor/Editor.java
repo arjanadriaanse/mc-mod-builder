@@ -3,24 +3,25 @@ package twintro.minecraft.modbuilder.editor;
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.EventQueue;
+import java.awt.FileDialog;
 import java.awt.GridLayout;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.io.IOException;
 
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import twintro.minecraft.modbuilder.data.resources.MaterialResource;
-import twintro.minecraft.modbuilder.data.resources.TabResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
@@ -28,7 +29,15 @@ import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
 
 public class Editor {
-	public static final String modName = "exampleName";
+	private boolean interfaceOpened = false;
+	
+	private JPanel activityPanel;
+	private ActivityPanel TexturePanel;
+	private ActivityPanel RecipePanel;
+	private ActivityPanel BlockPanel;
+	private ActivityPanel ItemPanel;
+	
+	private JMenuItem mntmExport;
 	
 	/**
 	 * Launch the application.
@@ -51,20 +60,6 @@ public class Editor {
 				}
 			}
 		});
-		//TODO remove this
-		//Testing stuff
-	/*	BlockResource block = new BlockResource();
-		block.model = "stone";
-		block.material = MaterialResource.rock;
-		block.tab = TabResource.block;
-		
-		try {
-			ResourcePackGenerator.createFile(block, "assets/modbuilder/blocks/wiel.json");
-			ResourcePackGenerator.generate();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}*/
-		//End testing stuff
 	}
 
 	private JFrame frame;
@@ -95,13 +90,87 @@ public class Editor {
 		
 		JMenuItem mntmNew = new JMenuItem("New");
 		mnFile.add(mntmNew);
+		mntmNew.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				newMod();
+			}
+		});
+		
+		JMenuItem mntmOpen = new JMenuItem("Open");
+		mnFile.add(mntmOpen);
+		mntmOpen.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				openMod();
+			}
+		});
+		
+		mntmExport = new JMenuItem("Export");
+		mnFile.add(mntmExport);
+		mntmExport.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				exportMod();
+			}
+		});
+		mntmExport.setEnabled(false);
 		
 		JMenu mnHelp = new JMenu("Help");
 		menuBar.add(mnHelp);
 		
 		JMenuItem mntmAbout = new JMenuItem("About");
 		mnHelp.add(mntmAbout);
-		
+		mntmAbout.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				about();
+			}
+		});
+	}
+	
+	private void newMod(){
+		chooseFolder(true);
+	}
+	
+	private void openMod(){
+		chooseFolder(false);
+	}
+	
+	private void chooseFolder(boolean newMod){
+		JFileChooser menu = new JFileChooser();
+		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
+				"/AppData/Roaming/.minecraft/resourcepacks"));
+		int result;
+		if (newMod) result = menu.showSaveDialog(frame);
+		else result = menu.showOpenDialog(frame);
+		if (result == JFileChooser.APPROVE_OPTION){
+			File file = menu.getSelectedFile();
+			if (!file.exists())
+				file.mkdirs();
+			String dir = file.getAbsolutePath().replace("\\", "/") + "/";
+			ResourcePackGenerator.resourcePackFolderDir = dir;
+			if (!interfaceOpened) createInterface();
+			updateInterface();
+		}
+	}
+	
+	private void exportMod(){
+		JFileChooser menu = new JFileChooser();
+		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+		if (menu.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION){
+			String dir = menu.getSelectedFile().getAbsolutePath();
+			if (!dir.endsWith(".zip")) dir += ".zip";
+			try {
+				ResourcePackGenerator.export(dir);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private void createInterface(){
 		//Main panel
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setBackground(SystemColor.control);
@@ -137,26 +206,41 @@ public class Editor {
 		//Activity panel
 		JPanel ActivityPanel = new JPanel();
 		splitPane.setRightComponent(ActivityPanel);
+		
 		ActivityPanel.setLayout(new CardLayout(0, 0));
 		activityPanel = ActivityPanel;
 		
-		JPanel TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
+		TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		JPanel RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe");
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe");
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
-		JPanel BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
+		BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		JPanel ItemPanel = new ItemsActivityPanel("Items", "New Item");
+		ItemPanel = new ItemsActivityPanel("Items", "New Item");
 		ActivityPanel.add(ItemPanel, "Items");
+		
+		SwingUtilities.updateComponentTreeUI(frame);
+
+		interfaceOpened = true;
+		mntmExport.setEnabled(true);
 	}
-	
-	JPanel activityPanel;
 	
 	private void changePanel(String panel){
 		CardLayout cl = (CardLayout)(activityPanel.getLayout());
 		cl.show(activityPanel, panel);
+	}
+	
+	private void updateInterface(){
+		TexturePanel.updateList();
+		RecipePanel.updateList();
+		BlockPanel.updateList();
+		ItemPanel.updateList();
+	}
+	
+	private void about(){
+		
 	}
 }

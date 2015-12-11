@@ -19,9 +19,7 @@ import com.google.gson.GsonBuilder;
 import twintro.minecraft.modbuilder.editor.Editor;
 
 public class ResourcePackGenerator {
-	public static final String resourcePackFolderDir = 
-			"C:/Users/M.P/AppData/Roaming/.minecraft/resourcepacks/" + Editor.modName + "/";
-	public static final String outputDir = "C:/Users/M.P/Desktop/" + Editor.modName + ".zip";
+	public static String resourcePackFolderDir;
 	
 	public static void createResourcePack(){
 		//Create assets/modid/lang/en_US.lang
@@ -60,8 +58,8 @@ public class ResourcePackGenerator {
 		writer.close();
 	}
 	
-	public static void generate() throws IOException{
-		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(outputDir));
+	public static void export(String dir) throws IOException{
+		ZipOutputStream zos = new ZipOutputStream(new FileOutputStream(dir));
 		
 		addFile(zos, new File(resourcePackFolderDir));
 		

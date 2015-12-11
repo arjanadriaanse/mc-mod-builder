@@ -32,4 +32,9 @@ public class TexturesActivityPanel extends ActivityPanel {
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
 	}
+	
+	@Override
+	public void updateList() {
+		
+	}
 }

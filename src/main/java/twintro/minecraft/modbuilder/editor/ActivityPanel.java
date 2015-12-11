@@ -135,4 +135,5 @@ public abstract class ActivityPanel extends JPanel {
 	protected abstract void add();
 	protected abstract void edit();
 	protected abstract void delete();
+	public abstract void updateList();
 }
