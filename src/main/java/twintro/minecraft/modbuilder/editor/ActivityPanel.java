@@ -38,8 +38,7 @@ public abstract class ActivityPanel extends JPanel {
 		addElements(header, button);
 	}
 	
-	protected void putImage(ImageIcon img, String name, String loc){
-		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), loc + name + ".png");
+	protected void addElement(String name){
 		elements.put(name, getImage(name));
 		list.updateUI();
 	}
