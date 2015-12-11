@@ -53,7 +53,7 @@ public class Editor {
 		});
 		
 		//Testing stuff
-		BlockResource block = new BlockResource();
+	/*	BlockResource block = new BlockResource();
 		block.model = "stone";
 		block.material = MaterialResource.rock;
 		block.tab = TabResource.block;
@@ -63,7 +63,7 @@ public class Editor {
 			ResourcePackGenerator.generate();
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
+		}*/
 		//End testing stuff
 	}
 

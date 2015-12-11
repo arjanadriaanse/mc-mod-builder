@@ -1,17 +1,17 @@
 package twintro.minecraft.modbuilder.editor.generator;
 
+import java.awt.Image;
+import java.awt.image.RenderedImage;
 import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
+
+import javax.imageio.ImageIO;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -26,6 +26,23 @@ public class ResourcePackGenerator {
 	public static void createResourcePack(){
 		//Create assets/modid/lang/en_US.lang
 		//Create pack.mcmeta
+	}
+	
+	public static void addTexture(Image img, String dir){
+		try {
+		    RenderedImage bi = (RenderedImage) img;
+		    File outputfile = new File(resourcePackFolderDir + dir);
+		    if (!outputfile.getParentFile().exists()){
+				outputfile.getParentFile().mkdirs();
+			}
+		    ImageIO.write(bi, "png", outputfile);
+		} catch (IOException e) {
+		    e.printStackTrace();
+		}
+	}
+	
+	public static String getTextureURL(String dir){
+		return resourcePackFolderDir + dir;
 	}
 	
 	public static void createFile(Object obj, String dir) throws IOException{
