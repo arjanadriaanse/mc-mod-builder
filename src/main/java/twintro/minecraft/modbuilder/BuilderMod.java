@@ -21,6 +21,7 @@ import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.client.resources.model.ModelResourceLocation;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
@@ -31,6 +32,7 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twintro.minecraft.modbuilder.data.FuelHandler;
 import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
 import twintro.minecraft.modbuilder.data.RecipeRegistry;
@@ -72,6 +74,11 @@ public class BuilderMod {
 	 */
 	private Set<String> registeredBlocks = new HashSet<String>();
 	
+	/**
+	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
+	 */
+	private HashMap<ItemStack, Integer> fuellist = new HashMap<ItemStack, Integer>();
+	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
 		importResources(Minecraft.getMinecraft().getResourceManager());
@@ -86,7 +93,8 @@ public class BuilderMod {
 
 		ItemModelMesher mesher = Minecraft.getMinecraft().getRenderItem().getItemModelMesher();
 		for (Entry<Item, String> entry : itemModels.entrySet())
-			mesher.register(entry.getKey(), 0, new ModelResourceLocation(entry.getValue(), "inventory"));
+			mesher.register(entry.getKey(), 0,
+					new ModelResourceLocation(entry.getValue(), "inventory"));
 		for (Entry<Block, String> entry : blockModels.entrySet())
 			mesher.register(Item.getItemFromBlock(entry.getKey()), 0,
 					new ModelResourceLocation(entry.getValue(), "inventory"));
@@ -144,11 +152,13 @@ public class BuilderMod {
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
 				Item item = ResourceConverter.toItem(itemResource);
-				item.setUnlocalizedName(path);
+				item.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredItems.contains(path)) {
 					GameRegistry.registerItem(item, path);
 					registeredItems.add(path);
 					itemModels.put(item, itemResource.model);
+					if (itemResource.burntime != null)
+						fuellist.put(new ItemStack(item), itemResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -161,11 +171,13 @@ public class BuilderMod {
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
 				Block block = ResourceConverter.toBlock(blockResource);
-				block.setUnlocalizedName(path);
+				block.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredBlocks.contains(path)) {
 					GameRegistry.registerBlock(block, path);
 					registeredBlocks.add(path);
 					blockModels.put(block, blockResource.model);
+					if (blockResource.burntime != null)
+						fuellist.put(new ItemStack(block), blockResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -181,6 +193,8 @@ public class BuilderMod {
 				// ignore
 			}
 		}
+		FuelHandler handler = new FuelHandler(fuellist);
+		GameRegistry.registerFuelHandler(handler);
 	}
 
 	private void syncConfig() {

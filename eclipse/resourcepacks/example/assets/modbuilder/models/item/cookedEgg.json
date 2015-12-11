@@ -1,7 +1,7 @@
 {
   "parent": "builtin/generated",
   "textures": {
-    "layer0": "examplemod:items/peeledEgg"
+    "layer0": "modbuilder:items/cookedEgg"
   },
   "display": {
     "thirdperson": {

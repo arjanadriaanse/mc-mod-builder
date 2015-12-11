@@ -1,5 +1,6 @@
 {
    "type":"food",
    "model":"dirt",
-   "amount":10
+   "amount": 10,
+   "maxstack": 32
 }

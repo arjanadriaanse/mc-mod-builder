@@ -1,6 +1,6 @@
 {
    "type":"smelting",
-   "output":{"item":"examplemod:cookedEgg"},
+   "output":{"item":"modbuilder:cookedEgg"},
    "input":{"item":"minecraft:egg"},
    "xp":10
 }

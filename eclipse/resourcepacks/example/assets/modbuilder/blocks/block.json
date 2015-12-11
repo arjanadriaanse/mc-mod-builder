@@ -2,6 +2,8 @@
    "material": "rock",
    "model": "examplemod:climber",
    "tab": "block",
+   "light": 8,
+   "slipperiness": 3,
    "harvesttype": "shovel",
    "harvestlevel": 2
 }

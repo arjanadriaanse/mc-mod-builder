@@ -1,4 +1,4 @@
 {
-   "output":{"item":"examplemod:cookedEgg"},
-   "input":[{"item":"minecraft:egg"}]
+   "output":{"item":"minecraft:dirt"},
+   "input":[{"item":"modbuilder:regular"}]
 }

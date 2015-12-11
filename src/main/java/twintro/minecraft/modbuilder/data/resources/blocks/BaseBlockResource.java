@@ -17,4 +17,5 @@ public abstract class BaseBlockResource {
 	public Boolean unbreakable; //of het block in survival kapot te maken is
 	public String harvesttype; //met welke tool het block sneller kapot gaat
 	public Integer harvestlevel; //welk level deze tool moet zijn (wood=0,stone=1,etc)
+	public Integer burntime;
 }
