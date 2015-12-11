@@ -2,8 +2,11 @@ package twintro.minecraft.modbuilder.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Font;
+import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,29 +21,27 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-public class ActivityPanel extends JPanel {
-	private Map<String, ImageIcon> elements;
+public abstract class ActivityPanel extends JPanel {
+	public Map<String, ImageIcon> elements;
+	protected JList list;
 	
 	public ActivityPanel(String header, String button) {
 		this.setLayout(new BorderLayout(0, 0));
-		elements = createElements();
+		elements = new HashMap<String, ImageIcon>();
+		elements.put("climber", getImage("climber"));
 		addElements(header, button);
 	}
 	
-	private Map<String, ImageIcon> createElements(){
-		List<String> nameList = new ArrayList<String>();
-        nameList.add("climber");
-        nameList.add("colorblock_b");
-        return createElements(nameList);
+	protected ImageIcon getImage(String name){
+		return resizeImage(new ImageIcon(getClass().getResource("/editor/" + name + ".png")), 64, 64);
 	}
 	
-	private Map<String, ImageIcon> createElements(List<String> list){
-		Map<String, ImageIcon> map = new HashMap<String, ImageIcon>();
-        for (String s : list) {
-            map.put(s, new ImageIcon(
-                    getClass().getResource("/editor/" + s + ".png")));
-        }
-        return map;
+	private ImageIcon resizeImage(ImageIcon icon, int width, int height){
+		Image img = icon.getImage();
+		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		Graphics g = bi.createGraphics();
+		g.drawImage(img, 0, 0, width, height, null);
+		return new ImageIcon(bi);
 	}
 	
 	private void addElements(String header, String button){
@@ -64,12 +65,12 @@ public class ActivityPanel extends JPanel {
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 		this.add(scrollPane, BorderLayout.CENTER);
 		
-		JList list = new JList();
+		list = new JList();
 		scrollPane.setViewportView(list);
 		list.setFont(new Font("Tahoma", Font.PLAIN, 47));
 		list.setVisibleRowCount(0);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		list.setCellRenderer(new CustomListCellRenderer(elements));
+		list.setCellRenderer(new CustomListCellRenderer(this));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
 				return elements.size();
@@ -80,7 +81,5 @@ public class ActivityPanel extends JPanel {
 		});
 	}
 	
-	private void add(){
-		
-	}
+	protected abstract void add();
 }
