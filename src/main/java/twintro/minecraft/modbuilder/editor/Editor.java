@@ -22,6 +22,10 @@ import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
 
 public class Editor {
 	public static final String modName = "exampleName";
@@ -136,16 +140,16 @@ public class Editor {
 		ActivityPanel.setLayout(new CardLayout(0, 0));
 		activityPanel = ActivityPanel;
 		
-		JPanel TexturePanel = new ActivityPanel("Textures", "New Texture");
+		JPanel TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		JPanel RecipePanel = new ActivityPanel("Recipes", "New Recipe");
+		JPanel RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe");
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
-		JPanel BlockPanel = new ActivityPanel("Blocks", "New Block");
+		JPanel BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		JPanel ItemPanel = new ActivityPanel("Items", "New Item");
+		JPanel ItemPanel = new ItemsActivityPanel("Items", "New Item");
 		ActivityPanel.add(ItemPanel, "Items");
 	}
 	

@@ -9,13 +9,15 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 import javax.swing.JList;
 
+import scala.collection.immutable.List;
+
 public class CustomListCellRenderer extends DefaultListCellRenderer {
-	Font font = new Font("Tahoma", Font.PLAIN, 17);
-	Map<String, ImageIcon> imageMap;
+	private Font font = new Font("Tahoma", Font.PLAIN, 23);
+	private ActivityPanel panel;
 	
-	public CustomListCellRenderer(Map<String, ImageIcon> imageMap){
+	public CustomListCellRenderer(ActivityPanel panel){
 		super();
-		this.imageMap = imageMap;
+		this.panel = panel;
 	}
 	
 	@Override
@@ -24,8 +26,10 @@ public class CustomListCellRenderer extends DefaultListCellRenderer {
             boolean isSelected, boolean cellHasFocus){
 		JLabel label = (JLabel) super.getListCellRendererComponent(
                 list, value, index, isSelected, cellHasFocus);
-        label.setIcon(imageMap.get((String) value));
-        label.setHorizontalTextPosition(JLabel.RIGHT);
+        label.setIcon(panel.elements.get((String) value));
+        label.setHorizontalAlignment(JLabel.CENTER);
+        label.setHorizontalTextPosition(JLabel.CENTER);
+        label.setVerticalTextPosition(JLabel.BOTTOM);
         label.setFont(font);
         return label;
 	}
