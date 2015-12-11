@@ -51,7 +51,7 @@ public class Editor {
 				}
 			}
 		});
-		
+		//TODO remove this
 		//Testing stuff
 	/*	BlockResource block = new BlockResource();
 		block.model = "stone";

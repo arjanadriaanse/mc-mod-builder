@@ -11,4 +11,14 @@ public class RecipesActivityPanel extends ActivityPanel {
 	protected void add() {
 		
 	}
+	
+	@Override
+	protected void edit() {
+		String value = (String) list.getSelectedValue();
+	}
+	
+	@Override
+	protected void delete() {
+		String value = (String) list.getSelectedValue();
+	}
 }

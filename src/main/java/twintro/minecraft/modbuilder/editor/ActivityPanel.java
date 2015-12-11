@@ -1,11 +1,14 @@
 package twintro.minecraft.modbuilder.editor;
 
 import java.awt.BorderLayout;
+import java.awt.Component;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,7 +20,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
@@ -31,6 +36,12 @@ public abstract class ActivityPanel extends JPanel {
 		this.setLayout(new BorderLayout(0, 0));
 		elements = new HashMap<String, ImageIcon>();
 		addElements(header, button);
+	}
+	
+	protected void putImage(ImageIcon img, String name, String loc){
+		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), loc + name + ".png");
+		elements.put(name, getImage(name));
+		list.updateUI();
 	}
 	
 	protected static ImageIcon getImage(String name){
@@ -89,7 +100,39 @@ public abstract class ActivityPanel extends JPanel {
 				return elements.keySet().toArray()[index];
 			}
 		});
+		list.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e){
+				if (e.getClickCount() == 2){
+					edit();
+				}
+				if (e.getButton() == e.BUTTON3 && list.getSelectedIndex() != -1){
+					JPopupMenu menu = new JPopupMenu();
+					
+					JMenuItem deleteItem = new JMenuItem("Delete");
+					deleteItem.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							delete();
+						}
+					});
+					menu.add(deleteItem);
+					
+					JMenuItem editItem = new JMenuItem("Edit");
+					editItem.addActionListener(new ActionListener(){
+						@Override
+						public void actionPerformed(ActionEvent arg0) {
+							edit();
+						}
+					});
+					menu.add(editItem);
+					
+					menu.show(ActivityPanel.this, e.getX(), e.getY());
+				}
+			}
+		});
 	}
 	
 	protected abstract void add();
+	protected abstract void edit();
+	protected abstract void delete();
 }
