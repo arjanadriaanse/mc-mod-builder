@@ -22,6 +22,7 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResources;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
