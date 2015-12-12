@@ -9,7 +9,7 @@ public class BlockstatesResources {
 	public static Object regular(String model){
 		Map<String, Map<String, String>> variants = new HashMap<String, Map<String, String>>();
 		Map<String, String> normal = new HashMap<String, String>();
-		normal.put("model", "modbuilder:" + model);
+		normal.put("model", model);
 		variants.put("normal", normal);
 		return regular(variants);
 	}

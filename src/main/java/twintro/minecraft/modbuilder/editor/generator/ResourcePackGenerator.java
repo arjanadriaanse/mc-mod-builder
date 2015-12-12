@@ -21,11 +21,6 @@ import twintro.minecraft.modbuilder.editor.Editor;
 public class ResourcePackGenerator {
 	public static String resourcePackFolderDir;
 	
-	public static void createResourcePack(){
-		//Create assets/modid/lang/en_US.lang
-		//Create pack.mcmeta
-	}
-	
 	public static void addTexture(Image img, String dir){
 		try {
 		    RenderedImage bi = (RenderedImage) img;
@@ -45,9 +40,13 @@ public class ResourcePackGenerator {
 	
 	public static void createFile(Object obj, String dir) throws IOException{
 		File file = new File(resourcePackFolderDir + dir);
-		if (!file.getParentFile().exists()){
+		createFile(obj, file);
+	}
+	
+	public static void createFile(Object obj, File file) throws IOException{
+		if (!file.getParentFile().exists())
 			file.getParentFile().mkdirs();
-		}
+		
 		FileWriter writer = new FileWriter(file);
 		
 		GsonBuilder builder = new GsonBuilder();

@@ -23,6 +23,8 @@ import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResources;
+import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
+import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
@@ -37,6 +39,9 @@ public class Editor {
 	private ActivityPanel RecipePanel;
 	private ActivityPanel BlockPanel;
 	private ActivityPanel ItemPanel;
+	
+	public MetaFile metaFile;
+	public LanguageFile langFile;
 	
 	private JMenuItem mntmExport;
 	
@@ -132,10 +137,16 @@ public class Editor {
 	
 	private void newMod(){
 		chooseFolder(true);
+		metaFile = MetaFile.create(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
+		langFile = LanguageFile.create(ResourcePackGenerator.resourcePackFolderDir + 
+				"assets/modbuilder/lang/en_US.lang");
 	}
 	
 	private void openMod(){
 		chooseFolder(false);
+		metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
+		langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
+				"assets/modbuilder/lang/en_US.lang");
 	}
 	
 	private void chooseFolder(boolean newMod){
@@ -242,6 +253,6 @@ public class Editor {
 	}
 	
 	private void about(){
-		
+		//TODO
 	}
 }

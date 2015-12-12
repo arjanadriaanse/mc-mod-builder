@@ -20,6 +20,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 				"/assets/examplemod/textures/items/jumpWand.png"));
 		String name = "jumpWand";
 		String loc = "assets/modbuilder/textures/items/";
+		//afhankelijk van of het een texture voor een item of een block is eindigt loc met /items/ of /blocks/
 		addImage(img, name, loc);
 	}
 	

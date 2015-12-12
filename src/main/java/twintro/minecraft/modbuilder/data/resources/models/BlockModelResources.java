@@ -6,9 +6,9 @@ import java.util.Map;
 public class BlockModelResources {
 	public static final String dir = "assets/modbuilder/models/block/";
 	
-	public static Object regular(String textureName){
+	public static Object regular(String texture){
 		Map<String, String> textures = new HashMap<String, String>();
-		textures.put("all", "examplemod:blocks/" + textureName);
+		textures.put("all", texture);
 		return regular("block/cube_all", textures);
 	}
 	
