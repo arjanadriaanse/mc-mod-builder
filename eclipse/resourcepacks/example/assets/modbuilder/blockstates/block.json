@@ -1,5 +1,5 @@
 {
   "variants": {
-    "normal": { "model": "minecraft:sand" }
+    "normal": { "model": "modbuilder:climber" }
   }
 }
