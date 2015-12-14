@@ -6,6 +6,9 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 
@@ -26,10 +29,12 @@ public class TexturesEditor{
 	TexturesActivityPanel parent;
 	JFrame frame;
 	JPanel panel;
+	MouseAdapter mouse;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
-	Color color2;
-	Color color3;
+	Color color2 = new Color(0,0,0);
+	Color color3 = new Color(0,0,0);
+	Color color4 = new Color(0,0,0);
 	Color backgroundcolor = new Color(255,255,255);
 	int size = 16;
 	
@@ -45,6 +50,13 @@ public class TexturesEditor{
 				paintSelf(g);
 			}
 		};
+		mouse = new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent me) {
+				click(me);
+			}
+		};
+		panel.addMouseListener(mouse);
 		frame.add(panel);
 		
 	}
@@ -86,19 +98,27 @@ public class TexturesEditor{
 		mntmSetP.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				setColor();
+				chooseColor();
 			}
 		});
 		JMenuItem mntmSetB = new JMenuItem("Change background color");
 		mntmSetB.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
-				setBackgroundColor();
+				chooseBackgroundColor();
+			}
+		});
+		JMenuItem mntmClear = new JMenuItem("Clear color memory");
+		mntmSetB.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				clearColors();
 			}
 		});
 		
 		mnEdit.add(mntmSetP);
 		mnEdit.add(mntmSetB);
+		mnEdit.add(mntmClear);
 		
 		
 		return f;
@@ -111,6 +131,12 @@ public class TexturesEditor{
 		g.fillRect(16, 16, size*16, size*16);
 		g.setColor(color);
 		g.fillRect(frame.getWidth()-96, 16, 64, 64);
+		g.setColor(color2);
+		g.fillRect(frame.getWidth()-96, 96, 48, 48);
+		g.setColor(color3);
+		g.fillRect(frame.getWidth()-96, 160, 48, 48);
+		g.setColor(color4);
+		g.fillRect(frame.getWidth()-96, 224, 48, 48);
 		g.drawImage(resizeImage(image, size*16, size*16), 16, 16, null);
 		g.setColor(new Color(0,0,0));
 		g.drawRect(16, 16, size*16, size*16);
@@ -132,17 +158,62 @@ public class TexturesEditor{
 		parent.list.updateUI();
 	}
 	
-	public void setColor() {
+	public void chooseColor() {
 		Color new_color = colorchooser.showDialog(panel, "Choose pencil color", color);
-		if (new_color!=null)
+		if (new_color!=null) {
+			if (new_color == color2)
+				color2 = color;
+			else if (color == color3)
+				color3 = color;
+			else if (color == color4)
+				color4 = color;
+			else {
+				color4 = color3;
+				color3 = color2;
+				color2 = color;
+			}
 			color = new_color;
+		}
 		panel.repaint();
 	}
 	
-	public void setBackgroundColor() {
+	public void chooseBackgroundColor() {
 		Color new_color = colorchooser.showDialog(panel, "Choose background color", backgroundcolor);
 		if (new_color!=null)
 			backgroundcolor = new_color;
 		panel.repaint();
+	}
+	
+	public void clearColors() {
+		color2 = new Color(0,0,0);
+		color3 = new Color(0,0,0);
+		color4 = new Color(0,0,0);
+	}
+	
+	public void click(MouseEvent me) {
+		int x = me.getX();
+		int y = me.getY();
+		if (me.getButton()== MouseEvent.BUTTON1) {
+			Color temp_color = color;
+			if (inRec(x,y,frame.getWidth()-96, 16, 64, 64))
+				chooseColor();
+			if (inRec(x,y,frame.getWidth()-96, 96, 48, 48)) {
+				color = color2;
+				color2 = temp_color;
+			}
+			if (inRec(x,y,frame.getWidth()-96, 160, 48, 48)) {
+				color = color3;
+				color3 = temp_color;
+			}
+			if (inRec(x,y,frame.getWidth()-96, 224, 48, 48)) {
+				color = color4;
+				color4 = temp_color;
+			}
+			panel.repaint();
+		}
+	}
+	
+	public boolean inRec(int pointx, int pointy, int recx, int recy, int recwidth, int recheight) {
+		return pointx>=recx && pointy>=recy && pointx-recx<=recwidth && pointy-recy<=recheight;
 	}
 }
