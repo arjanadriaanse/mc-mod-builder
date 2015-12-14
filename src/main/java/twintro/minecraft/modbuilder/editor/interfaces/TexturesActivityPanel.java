@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.awt.Image;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
 
@@ -31,9 +32,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
-		Image img = getImage(value).getImage();
-		TexturesEditor editor = new TexturesEditor(value, img);
-		
+		BufferedImage img = (BufferedImage)getImage(value).getImage();
+		TexturesEditor editor = new TexturesEditor(value, img, this);
 	}
 	
 	@Override

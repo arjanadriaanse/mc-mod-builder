@@ -30,7 +30,7 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public abstract class ActivityPanel extends JPanel {
 	public Map<String, ImageIcon> elements;
-	protected JList list;
+	public JList list;
 	
 	public ActivityPanel(String header, String button) {
 		this.setLayout(new BorderLayout(0, 0));
