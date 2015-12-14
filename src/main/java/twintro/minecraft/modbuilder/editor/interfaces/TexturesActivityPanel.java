@@ -31,6 +31,9 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
+		Image img = getImage(value).getImage();
+		TexturesEditor editor = new TexturesEditor(value, img);
+		
 	}
 	
 	@Override

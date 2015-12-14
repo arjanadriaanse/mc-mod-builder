@@ -45,7 +45,7 @@ public abstract class ActivityPanel extends JPanel {
 	
 	protected static ImageIcon getImage(String name){
 		return resizeImage(new ImageIcon(ResourcePackGenerator.getTextureURL(
-				"assets/modbuilder/textures/items/" + name + ".png")), 64, 64);
+				"assets/modbuilder/textures/" + name + ".png")), 64, 64);
 	}
 	
 	private static ImageIcon resizeImage(ImageIcon icon, int width, int height){
