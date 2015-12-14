@@ -58,7 +58,7 @@ public abstract class ActivityPanel extends JPanel {
 		return toBufferedImage(img, img.getWidth(null), img.getHeight(null));
 	}
 	
-	private static BufferedImage toBufferedImage(Image img, int width, int height){
+	public static BufferedImage toBufferedImage(Image img, int width, int height){
 		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
 		Graphics g = bi.createGraphics();
 		g.drawImage(img, 0, 0, width, height, null);

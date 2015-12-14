@@ -21,12 +21,14 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
+import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesEditor{
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
+	int ois;
 	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
@@ -38,10 +40,11 @@ public class TexturesEditor{
 	Color backgroundcolor = new Color(255,255,255);
 	int size = 16;
 	
-	public TexturesEditor(String name, BufferedImage image, TexturesActivityPanel parent) {
+	public TexturesEditor(String name, BufferedImage image, TexturesActivityPanel parent, int originalImageSize) {
 		this.name = name;
 		this.image = image;
 		this.parent = parent;
+		this.ois = originalImageSize;
 		frame = buildFrame();
 		panel = new JPanel() {
 			@Override
@@ -54,6 +57,11 @@ public class TexturesEditor{
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				click(me);
+			}
+			
+			@Override
+			public void mousePressed(MouseEvent me) {
+				pressed(me);
 			}
 		};
 		panel.addMouseListener(mouse);
@@ -153,9 +161,11 @@ public class TexturesEditor{
 	}
 	
 	public void saveImage() {
-		parent.elements.put(name, new ImageIcon(image));
-		ResourcePackGenerator.addTexture(image, "assets/modbuilder/textures/" + name + ".png");
+		BufferedImage img = ActivityPanel.toBufferedImage(image, ois, ois);
+		parent.elements.put(name, new ImageIcon(img));
+		ResourcePackGenerator.addTexture(img, "assets/modbuilder/textures/" + name + ".png");
 		parent.list.updateUI();
+		frame.setVisible(false);
 	}
 	
 	public void chooseColor() {
@@ -193,7 +203,7 @@ public class TexturesEditor{
 	public void click(MouseEvent me) {
 		int x = me.getX();
 		int y = me.getY();
-		if (me.getButton()== MouseEvent.BUTTON1) {
+		if (me.getButton() == MouseEvent.BUTTON1) {
 			Color temp_color = color;
 			if (inRec(x,y,frame.getWidth()-96, 16, 64, 64))
 				chooseColor();
@@ -211,6 +221,21 @@ public class TexturesEditor{
 			}
 			panel.repaint();
 		}
+	}
+	
+	public void pressed(MouseEvent me) {
+		if (inRec(me.getX(),me.getY(),16,16,size*16,size*16))
+			clickOnImage(me);
+	}
+	
+	public void clickOnImage(MouseEvent me) {
+		int x = (me.getX()-16)/size;
+		int y = (me.getY()-16)/size;
+		if (me.getButton() == MouseEvent.BUTTON1)
+			image.setRGB(x, y, color.getRGB());
+		if (me.getButton() == MouseEvent.BUTTON3)
+			image.setRGB(x, y, new Color(0,0,0,0).getRGB());
+		panel.repaint();
 	}
 	
 	public boolean inRec(int pointx, int pointy, int recx, int recy, int recwidth, int recheight) {
