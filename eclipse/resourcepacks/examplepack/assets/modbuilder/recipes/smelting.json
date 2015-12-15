@@ -1,0 +1,6 @@
+{
+   "type":"smelting",
+   "output":{"item":"modbuilder:applepie"},
+   "input":{"item":"modbuilder:applepiedough"},
+   "xp":10
+}

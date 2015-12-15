@@ -1,0 +1,12 @@
+{
+   "type":"shaped",
+   "output":{"item":"modbuilder:seedstew"},
+   "shape":[" m ",
+            "hwh",
+            " b "],
+   "input":{"m":{"item":"minecraft:milk_bucket"},
+            "h":{"item":"modbuilder:seedhump"},
+            "w": {"item":"minecraft:wheat"},
+            "b": {"item":"minecraft:bowl"}
+   }
+}

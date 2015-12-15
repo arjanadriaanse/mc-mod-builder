@@ -1,0 +1,7 @@
+{
+   "type": "tool",
+   "model": "modbuilder:megasword",
+   "damage": 10,
+   "durability": 256,
+   "repairblock": "minecraft:iron"
+}

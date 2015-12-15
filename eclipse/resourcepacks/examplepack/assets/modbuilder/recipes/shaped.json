@@ -1,0 +1,11 @@
+{
+   "type":"shaped",
+   "output":{"item":"modbuilder:megasword", "enchantments": {"fire_aspect": 10}},
+   "shape":[" d ",
+            "ede",
+            "ese"],
+   "input":{"e":{"item":"minecraft:emerald"},
+            "s":{"item":"minecraft:diamond_sword"},
+            "d":{"item":"minecraft:diamond"}
+   }
+}

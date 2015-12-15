@@ -1,0 +1,7 @@
+{
+   "type":"food",
+   "model":"modbuilder:applepie",
+   "amount": 20,
+   "stacksize": 8,
+   "container": "minecraft:bowl"
+}

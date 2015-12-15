@@ -1,0 +1,9 @@
+{
+   "type":"shaped",
+   "output":{"block":"modbuilder:compressedcobble"},
+   "shape":["ccc",
+            "c c",
+            "ccc"],
+   "input":{"c":{"block":"minecraft:cobblestone"}
+   }
+}

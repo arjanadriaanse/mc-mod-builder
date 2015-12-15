@@ -1,0 +1,7 @@
+{
+   "material": "rock",
+   "model": "minecraft:cobblestone",
+   "tab": "block",
+   "harvesttype": "pickaxe",
+   "harvestlevel": 2
+}

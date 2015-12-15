@@ -1,0 +1,6 @@
+{
+   "type":"food",
+   "model":"modbuilder:applepiedough",
+   "amount": 6,
+   "stacksize": 8
+}

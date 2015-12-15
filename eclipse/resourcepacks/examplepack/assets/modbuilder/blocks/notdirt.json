@@ -1,0 +1,7 @@
+{
+   "material": "ground",
+   "model": "minecraft:dirt",
+   "tab": "block",
+   "harvesttype": "shovel",
+   "harvestlevel": 0
+}

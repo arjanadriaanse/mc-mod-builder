@@ -1,0 +1,4 @@
+{
+   "output":{"item":"minecraft:dirt"},
+   "input":[{"item":"minecraft:grass", "container": "minecraft:wheat_seeds"}]
+}

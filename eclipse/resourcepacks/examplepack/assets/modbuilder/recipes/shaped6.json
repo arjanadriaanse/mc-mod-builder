@@ -1,0 +1,10 @@
+{
+   "type":"shaped",
+   "output":{"item":"modbuilder:sandshovel"},
+   "shape":[" t ",
+            " s ",
+            " s "],
+   "input":{"s":{"item":"minecraft:stick"},
+            "t":{"block":"minecraft:sandstone"}
+   }
+}

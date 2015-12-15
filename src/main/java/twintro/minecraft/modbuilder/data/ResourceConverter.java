@@ -100,7 +100,7 @@ public class ResourceConverter {
 				resource.harvestlevel   != null ? resource.harvestlevel   : 2,
 				resource.durability     != null ? resource.durability     : 250,
 				resource.efficiency     != null ? resource.efficiency     : 6.0F,
-				resource.damage         != null ? resource.damage         : 2.0F,
+				resource.damage         != null ? resource.damage         : 0.5F,
 				resource.enchantability != null ? resource.enchantability : 10);
 		if (resource.repairitem != null) {
 				ItemStack repair = new ItemStack(Item.getByNameOrId(resource.repairitem));

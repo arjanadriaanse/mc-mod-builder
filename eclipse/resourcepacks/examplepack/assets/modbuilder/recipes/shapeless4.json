@@ -1,0 +1,6 @@
+{
+  "output": { "block": "minecraft:cobblestone", "amount": 8},
+  "input": [
+    { "block": "modbuilder:compressedcobble" }
+  ]
+}

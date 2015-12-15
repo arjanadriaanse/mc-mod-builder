@@ -1,0 +1,7 @@
+{
+   "type":"food",
+   "model":"modbuilder:seedstew",
+   "amount": 8,
+   "stacksize": 1,
+   "container": "minecraft:bowl"
+}

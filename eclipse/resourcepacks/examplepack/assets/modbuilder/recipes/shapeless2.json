@@ -1,0 +1,14 @@
+{
+  "output": { "item": "modbuilder:seedhump" },
+  "input": [
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" },
+    { "item": "minecraft:wheat_seeds" }
+  ]
+}

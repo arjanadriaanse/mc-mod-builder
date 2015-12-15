@@ -1,0 +1,12 @@
+{
+   "type":"shaped",
+   "output":{"item":"modbuilder:applepiedough","amount": 4},
+   "shape":["sss",
+            "aea",
+            "www"],
+   "input":{"s":{"item":"minecraft:sugar"},
+            "a":{"item":"minecraft:apple"},
+            "e": {"item":"minecraft:egg"},
+            "w": {"item":"minecraft:wheat"}
+   }
+}

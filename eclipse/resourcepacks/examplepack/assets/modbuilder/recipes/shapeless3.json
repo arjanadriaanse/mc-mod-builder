@@ -1,0 +1,6 @@
+{
+  "output": { "item": "minecraft:wheat_seeds", "amount": 9},
+  "input": [
+    { "item": "modbuilder:seedhump" }
+  ]
+}

@@ -1,0 +1,6 @@
+{
+   "model": "modbuilder:seedhump",
+   "tabs": [ "materials" ],
+   "stacksize": 16,
+   "burntime": 400
+}

@@ -1,0 +1,10 @@
+{
+   "type":"shaped",
+   "output":{"block":"modbuilder:notdirt","amount": 9},
+   "shape":["dsd",
+            "sds",
+            "dsd"],
+   "input":{"s":{"block":"minecraft:sandstone"},
+            "d":{"block":"minecraft:dirt"}
+   }
+}

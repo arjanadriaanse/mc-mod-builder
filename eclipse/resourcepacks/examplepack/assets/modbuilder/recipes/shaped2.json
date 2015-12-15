@@ -1,0 +1,11 @@
+{
+   "type":"shaped",
+   "output":{"block":"minecraft:grass"},
+   "shape":[" w ",
+            "sss",
+            " d "],
+   "input":{"w":{"item":"minecraft:water_bucket"},
+            "s":{"item":"minecraft:wheat_seeds"},
+            "d":{"block":"minecraft:dirt"}
+   }
+}
