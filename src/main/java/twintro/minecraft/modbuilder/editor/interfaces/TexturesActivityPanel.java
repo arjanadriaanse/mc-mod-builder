@@ -1,13 +1,19 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
+import java.awt.BorderLayout;
 import java.awt.Image;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
@@ -17,6 +23,22 @@ public class TexturesActivityPanel extends ActivityPanel {
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
 		editor = new TextureEditor(this);
+	}
+	
+	@Override
+	protected void createButtonPanel(JPanel buttonPanel, String button) {
+		JButton importButton = new ActivityButton("Import image");
+		importButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				importImage();
+			}
+		});
+		buttonPanel.add(importButton);
+		super.createButtonPanel(buttonPanel, button);
+	}
+	
+	private void importImage(){
+		editor.loadImage();
 	}
 
 	@Override
