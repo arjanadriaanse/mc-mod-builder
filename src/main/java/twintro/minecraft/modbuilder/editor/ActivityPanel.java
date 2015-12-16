@@ -2,9 +2,11 @@ package twintro.minecraft.modbuilder.editor;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
+import java.awt.FlowLayout;
 import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -75,13 +77,11 @@ public abstract class ActivityPanel extends JPanel {
 		this.add(mainPanel, BorderLayout.NORTH);
 		mainPanel.setLayout(new BorderLayout(0, 0));
 		
-		JButton addButton = new ActivityButton(button);
-		addButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				add();
-			}
-		});
-		mainPanel.add(addButton, BorderLayout.EAST);
+		JPanel buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout());
+		createButtonPanel(buttonPanel, button);
+		
+		mainPanel.add(buttonPanel, BorderLayout.EAST);
 		
 		JLabel headerLabel = new JLabel(header);
 		headerLabel.setFont(new Font("Tahoma", Font.PLAIN, 25));
@@ -134,6 +134,16 @@ public abstract class ActivityPanel extends JPanel {
 				}
 			}
 		});
+	}
+	
+	protected void createButtonPanel(JPanel buttonPanel, String button){
+		JButton addButton = new ActivityButton(button);
+		addButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				add();
+			}
+		});
+		buttonPanel.add(addButton);
 	}
 	
 	protected abstract void add();
