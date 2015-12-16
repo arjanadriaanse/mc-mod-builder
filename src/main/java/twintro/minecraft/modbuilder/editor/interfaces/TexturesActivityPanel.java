@@ -3,6 +3,7 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 import java.awt.Image;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -38,11 +39,19 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
-		
 	}
 	
 	@Override
 	public void updateList() {
-		
+		File folder = new File(ResourcePackGenerator.getTextureURL("assets/modbuilder/textures/"));
+		if (folder.exists()){
+			for (File file : folder.listFiles()){
+				if (file.getAbsolutePath().endsWith(".png")){
+					ImageIcon img = new ImageIcon(file.getAbsolutePath());
+					String name = file.getName().substring(0, file.getName().length() - 4);
+					addElement(name, img);
+				}
+			}
+		}
 	}
 }
