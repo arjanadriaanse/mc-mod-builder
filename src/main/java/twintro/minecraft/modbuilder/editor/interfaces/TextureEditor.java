@@ -3,10 +3,13 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.Rectangle;
 import java.awt.SystemColor;
+import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
@@ -58,6 +61,24 @@ public class TextureEditor{
 	Color color2 = new Color(0,0,0);
 	Color color3 = new Color(0,0,0);
 	Color color4 = new Color(0,0,0);
+	TexturePaint background = new TexturePaint(backgroundImage(),new Rectangle(0,0,16,16));
+	int imgsize = 256;
+	int c1size = 64;
+	int csize = 48;
+	int[] imgloc = {16,48};
+	int[] c1loc = {288,48};
+	int[] c2loc = {288,128};
+	int[] c3loc = {288,192};
+	int[] c4loc = {288,256};
+	
+	public BufferedImage backgroundImage() {
+		BufferedImage bi = new BufferedImage(2,2,BufferedImage.TYPE_INT_ARGB);
+		bi.setRGB(0, 0, new Color(255,255,255).getRGB());
+		bi.setRGB(0, 1, new Color(192,192,192).getRGB());
+		bi.setRGB(1, 0, new Color(192,192,192).getRGB());
+		bi.setRGB(1, 1, new Color(255,255,255).getRGB());
+		return bi;
+	}
 	
 	public TextureEditor(TexturesActivityPanel parent){
 		this.parent = parent;
@@ -81,7 +102,7 @@ public class TextureEditor{
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponents(g);
-				paintSelf(g);
+				paintSelf((Graphics2D) g);
 			}
 		};
 		mouse = new MouseAdapter() {
@@ -170,10 +191,11 @@ public class TextureEditor{
 		return f;
 	}
 	
-	public void paintSelf(Graphics g) {
+	public void paintSelf(Graphics2D g) {
 		g.setColor(new Color(255,255,255));
 		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-		//TODO background
+		g.setPaint(background);
+		g.fillRect(16, 48, 256, 256);
 		g.setColor(color);
 		g.fillRect(frame.getWidth()-96, 48, 64, 64);
 		g.setColor(color2);
@@ -185,6 +207,10 @@ public class TextureEditor{
 		g.drawImage(resizeImage(image, 256, 256), 16, 48, null);
 		g.setColor(new Color(0,0,0));
 		g.drawRect(16, 48, 256, 256);
+		g.drawRect(frame.getWidth()-96, 48, 64, 64);
+		g.drawRect(frame.getWidth()-96, 128, 48, 48);
+		g.drawRect(frame.getWidth()-96, 192, 48, 48);
+		g.drawRect(frame.getWidth()-96, 256, 48, 48);
 	}
 	
 	private static Image resizeImage(BufferedImage img, int width, int height){
@@ -209,7 +235,7 @@ public class TextureEditor{
 			File file = menu.getSelectedFile();
 			if (file.exists()){
 				if (file.getAbsolutePath().endsWith(".png")){
-					ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+					ImageIcon icon = ActivityPanel.resizeImage(new ImageIcon(file.getAbsolutePath()), 16, 16);
 					BufferedImage img = ActivityPanel.toBufferedImage(icon.getImage());
 					String name = file.getName().substring(0, file.getName().length() - 4);
 					open(name, img);
@@ -251,7 +277,7 @@ public class TextureEditor{
 		int y = me.getY();
 		if (me.getButton() == MouseEvent.BUTTON1) {
 			Color temp_color = color;
-			if (inRec(x,y,frame.getWidth()-96, 48, 64, 64))
+			if (inRec(x,y,c1loc[0], c1loc[1], csize, csize))
 				chooseColor();
 			if (inRec(x,y,frame.getWidth()-96, 128, 48, 48)) {
 				color = color2;
