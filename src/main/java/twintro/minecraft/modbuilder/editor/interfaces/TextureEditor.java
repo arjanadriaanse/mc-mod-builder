@@ -71,6 +71,10 @@ public class TextureEditor{
 	int[] c3loc = {288,192};
 	int[] c4loc = {288,256};
 	
+	public void updateGUI() {
+		
+	}
+		
 	public BufferedImage backgroundImage() {
 		BufferedImage bi = new BufferedImage(2,2,BufferedImage.TYPE_INT_ARGB);
 		bi.setRGB(0, 0, new Color(255,255,255).getRGB());
@@ -192,25 +196,26 @@ public class TextureEditor{
 	}
 	
 	public void paintSelf(Graphics2D g) {
+		updateGUI();
 		g.setColor(new Color(255,255,255));
 		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 		g.setPaint(background);
-		g.fillRect(16, 48, 256, 256);
+		g.fillRect(imgloc[0], imgloc[1], imgsize, imgsize);
 		g.setColor(color);
-		g.fillRect(frame.getWidth()-96, 48, 64, 64);
+		g.fillRect(c1loc[0], c1loc[1], c1size, c1size);
 		g.setColor(color2);
-		g.fillRect(frame.getWidth()-96, 128, 48, 48);
+		g.fillRect(c2loc[0], c2loc[1], csize, csize);
 		g.setColor(color3);
-		g.fillRect(frame.getWidth()-96, 192, 48, 48);
+		g.fillRect(c3loc[0], c3loc[1], csize, csize);
 		g.setColor(color4);
-		g.fillRect(frame.getWidth()-96, 256, 48, 48);
-		g.drawImage(resizeImage(image, 256, 256), 16, 48, null);
+		g.fillRect(c4loc[0], c4loc[1], csize, csize);
+		g.drawImage(resizeImage(image, imgsize, imgsize), imgloc[0], imgloc[1], null);
 		g.setColor(new Color(0,0,0));
-		g.drawRect(16, 48, 256, 256);
-		g.drawRect(frame.getWidth()-96, 48, 64, 64);
-		g.drawRect(frame.getWidth()-96, 128, 48, 48);
-		g.drawRect(frame.getWidth()-96, 192, 48, 48);
-		g.drawRect(frame.getWidth()-96, 256, 48, 48);
+		g.drawRect(imgloc[0], imgloc[1], imgsize, imgsize);
+		g.drawRect(c1loc[0], c1loc[1], c1size, c1size);
+		g.drawRect(c2loc[0], c2loc[1], csize, csize);
+		g.drawRect(c3loc[0], c3loc[1], csize, csize);
+		g.drawRect(c4loc[0], c4loc[1], csize, csize);
 	}
 	
 	private static Image resizeImage(BufferedImage img, int width, int height){
@@ -277,17 +282,17 @@ public class TextureEditor{
 		int y = me.getY();
 		if (me.getButton() == MouseEvent.BUTTON1) {
 			Color temp_color = color;
-			if (inRec(x,y,c1loc[0], c1loc[1], csize, csize))
+			if (inRec(x,y,c1loc[0], c1loc[1], c1size, c1size))
 				chooseColor();
-			if (inRec(x,y,frame.getWidth()-96, 128, 48, 48)) {
+			if (inRec(x,y,c2loc[0], c2loc[1], csize, csize)) {
 				color = color2;
 				color2 = temp_color;
 			}
-			if (inRec(x,y,frame.getWidth()-96, 192, 48, 48)) {
+			if (inRec(x,y,c3loc[0], c3loc[1], csize, csize)) {
 				color = color3;
 				color3 = temp_color;
 			}
-			if (inRec(x,y,frame.getWidth()-96, 256, 48, 48)) {
+			if (inRec(x,y,c4loc[0], c4loc[1], csize, csize)) {
 				color = color4;
 				color4 = temp_color;
 			}
