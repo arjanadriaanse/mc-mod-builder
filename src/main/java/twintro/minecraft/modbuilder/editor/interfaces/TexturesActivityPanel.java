@@ -5,6 +5,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
@@ -19,11 +20,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 
 	@Override
 	protected void add() {
-		//example of how to add an image to the files and list
-		ImageIcon img = new ImageIcon(getClass().getResource(
-				"/assets/examplemod/textures/items/jumpWand.png"));
-		String name = "jumpWand";
-		addImage(img, name);
+		String name = JOptionPane.showInputDialog("Texture name:");
+		editor.open(name, toBufferedImage(new ImageIcon().getImage(), 16, 16));
 	}
 	
 	public void addImage(ImageIcon img, String name){
@@ -40,6 +38,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
+		
 	}
 	
 	@Override

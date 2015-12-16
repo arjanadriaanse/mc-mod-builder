@@ -38,6 +38,11 @@ public class ResourcePackGenerator {
 		return resourcePackFolderDir + dir;
 	}
 	
+	public static void deleteFile(String dir){
+		File file = new File(dir);
+		if (file.exists()) file.delete();
+	}
+	
 	public static void createFile(Object obj, String dir) throws IOException{
 		File file = new File(resourcePackFolderDir + dir);
 		createFile(obj, file);
