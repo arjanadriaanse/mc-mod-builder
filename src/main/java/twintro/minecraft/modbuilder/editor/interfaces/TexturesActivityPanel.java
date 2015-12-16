@@ -22,7 +22,9 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void add() {
 		String name = JOptionPane.showInputDialog("Texture name:");
-		editor.open(name, toBufferedImage(new ImageIcon().getImage(), 16, 16));
+		if (name != null)
+			if (name.replaceAll(" ", "").length() > 0)
+				editor.open(name, toBufferedImage(new ImageIcon().getImage(), 16, 16));
 	}
 	
 	public void addImage(ImageIcon img, String name){
@@ -39,6 +41,12 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + ".png", 
+				"Warning", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION){
+			ResourcePackGenerator.deleteFile("assets/modbuilder/textures/" + value + ".png");
+			removeElement(value);
+		}
 	}
 	
 	@Override

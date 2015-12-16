@@ -20,10 +20,12 @@ import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.beans.Visibility;
+import java.io.File;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
+import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
@@ -37,8 +39,7 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TextureEditor{
 	//TODO undo
-	//TODO load texture from file
-	//TODO remove menu bar
+	
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
@@ -51,13 +52,12 @@ public class TextureEditor{
 	WindowAdapter window;
 	KeyAdapter key;
 	boolean mousepressed;
-	boolean saved=true;
+	boolean saved = true;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
 	Color color2 = new Color(0,0,0);
 	Color color3 = new Color(0,0,0);
 	Color color4 = new Color(0,0,0);
-	Color backgroundcolor = new Color(255,255,255);
 	
 	public TextureEditor(TexturesActivityPanel parent){
 		this.parent = parent;
@@ -67,6 +67,7 @@ public class TextureEditor{
 	public void open(String name, BufferedImage img){
 		this.name = name;
 		this.image = img;
+		this.saved = true;
 		frame.setIconImage(image);
 		frame.setName("Edit texture: " + name);
 		frame.setVisible(true);
@@ -172,8 +173,7 @@ public class TextureEditor{
 	public void paintSelf(Graphics g) {
 		g.setColor(new Color(255,255,255));
 		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
-		g.setColor(backgroundcolor);
-		g.fillRect(16, 16, 256, 256);
+		//TODO background
 		g.setColor(color);
 		g.fillRect(frame.getWidth()-96, 48, 64, 64);
 		g.setColor(color2);
@@ -203,7 +203,21 @@ public class TextureEditor{
 	}
 	
 	public void loadImage() {
-		
+		JFileChooser menu = new JFileChooser();
+		int result = menu.showOpenDialog(frame);
+		if (result == JFileChooser.APPROVE_OPTION){
+			File file = menu.getSelectedFile();
+			if (file.exists()){
+				if (file.getAbsolutePath().endsWith(".png")){
+					ImageIcon icon = new ImageIcon(file.getAbsolutePath());
+					BufferedImage img = ActivityPanel.toBufferedImage(icon.getImage());
+					String name = file.getName().substring(0, file.getName().length() - 4);
+					open(name, img);
+					panel.repaint();
+					saveImage();
+				}
+			}
+		}
 	}
 	
 	public void chooseColor() {
@@ -222,13 +236,6 @@ public class TextureEditor{
 			}
 			color = new_color;
 		}
-		panel.repaint();
-	}
-	
-	public void chooseBackgroundColor() {
-		Color new_color = colorchooser.showDialog(panel, "Choose background color", backgroundcolor);
-		if (new_color!=null)
-			backgroundcolor = new_color;
 		panel.repaint();
 	}
 	
