@@ -51,6 +51,7 @@ public class TextureEditor{
 	WindowAdapter window;
 	KeyAdapter key;
 	boolean mousepressed;
+	boolean saved=true;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
 	Color color2 = new Color(0,0,0);
@@ -126,11 +127,6 @@ public class TextureEditor{
 				onKeyPress(ke);
 			}
 		};
-		
-		JButton button1 = new JButton("Save");
-		JButton button2 = new JButton("Load");
-		JButton button3 = new JButton("Clear");
-		
 		ActionListener action1 = new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent ae) {
@@ -150,6 +146,12 @@ public class TextureEditor{
 			}
 		};
 		
+		JButton button1 = new JButton("Save");
+		JButton button2 = new JButton("Load");
+		JButton button3 = new JButton("Clear");
+		button1.setFocusable(false);
+		button2.setFocusable(false);
+		button3.setFocusable(false);
 		button1.addActionListener(action1);
 		button2.addActionListener(action2);
 		button3.addActionListener(action3);	
@@ -195,6 +197,8 @@ public class TextureEditor{
 	}
 	
 	public void saveImage() {
+		saved=true;
+		frame.setIconImage(image);
 		parent.addImage(new ImageIcon(image), name);
 	}
 	
@@ -267,22 +271,25 @@ public class TextureEditor{
 					image.setRGB(x, y, color.getRGB());
 				if (mousebutton == MouseEvent.BUTTON3)
 					image.setRGB(x, y, new Color(0,0,0,0).getRGB());
+				saved=false;
 				panel.repaint();
 			}
 		}
 	}
 	
 	public boolean inRec(int pointx, int pointy, int recx, int recy, int recwidth, int recheight) {
-		return pointx>=recx && pointy>=recy && pointx-recx<=recwidth && pointy-recy<=recheight;
+		return pointx>=recx && pointy>=recy && pointx-recx<recwidth && pointy-recy<recheight;
 	}
 	
 	public void onClose(WindowEvent we) {
-        if (JOptionPane.showConfirmDialog(frame, 
+		if (!saved) {
+			if (JOptionPane.showConfirmDialog(frame, 
                 "Do you want to save the texture?", "Save texture?", 
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
                 saveImage();
             }
+		}
 	}
 	
 	public void onKeyPress(KeyEvent ke) {
