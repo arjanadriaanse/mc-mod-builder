@@ -43,6 +43,11 @@ public abstract class ActivityPanel extends JPanel {
 		list.updateUI();
 	}
 	
+	protected void removeElement(String name){
+		elements.remove(name);
+		list.updateUI();
+	}
+	
 	protected static ImageIcon getImage(String name){
 		return resizeImage(new ImageIcon(ResourcePackGenerator.getTextureURL(
 				"assets/modbuilder/textures/" + name + ".png")), 64, 64);

@@ -39,7 +39,7 @@ public class ResourcePackGenerator {
 	}
 	
 	public static void deleteFile(String dir){
-		File file = new File(dir);
+		File file = new File(resourcePackFolderDir + dir);
 		if (file.exists()) file.delete();
 	}
 	
