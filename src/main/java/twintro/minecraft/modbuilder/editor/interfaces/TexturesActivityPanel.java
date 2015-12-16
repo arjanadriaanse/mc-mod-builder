@@ -10,8 +10,11 @@ import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesActivityPanel extends ActivityPanel {
+	TexturesEditor editor;
+	
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
+		editor = new TexturesEditor(this);
 	}
 
 	@Override
@@ -24,18 +27,15 @@ public class TexturesActivityPanel extends ActivityPanel {
 		addImage(img, name, loc);
 	}
 	
-	private void addImage(ImageIcon img, String name, String loc){
+	public void addImage(ImageIcon img, String name, String loc){
 		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), loc + name + ".png");
-		addElement(name);
+		addElement(name, img);
 	}
 	
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
-		Image img = getImage(value).getImage();
-		int s = img.getWidth(null);
-		BufferedImage bi = toBufferedImage(img, 16, 16);
-		TexturesEditor editor = new TexturesEditor(value, bi, this, s);
+		editor.open(value, toBufferedImage(resizeImage(elements.get(value), 16, 16).getImage()));
 	}
 	
 	@Override
