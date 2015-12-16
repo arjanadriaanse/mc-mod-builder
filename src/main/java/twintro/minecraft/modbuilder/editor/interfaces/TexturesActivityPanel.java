@@ -23,12 +23,11 @@ public class TexturesActivityPanel extends ActivityPanel {
 		ImageIcon img = new ImageIcon(getClass().getResource(
 				"/assets/examplemod/textures/items/jumpWand.png"));
 		String name = "jumpWand";
-		String loc = "assets/modbuilder/textures/";
-		addImage(img, name, loc);
+		addImage(img, name);
 	}
 	
-	public void addImage(ImageIcon img, String name, String loc){
-		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), loc + name + ".png");
+	public void addImage(ImageIcon img, String name){
+		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), "assets/modbuilder/textures/" + name + ".png");
 		addElement(name, img);
 	}
 	

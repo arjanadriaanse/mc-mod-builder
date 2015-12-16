@@ -6,9 +6,13 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
 import java.beans.Visibility;
@@ -20,18 +24,24 @@ import javax.swing.JInternalFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesEditor{
+	//TODO undo
+	//TODO keyboard shortcuts
+	//TODO draw met muis ingedrukt
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
 	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
+	WindowAdapter window;
+	KeyAdapter key;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
 	Color color2 = new Color(0,0,0);
@@ -53,15 +63,29 @@ public class TexturesEditor{
 		mouse = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
-				click(me);
+				onClick(me);
 			}
 			
 			@Override
 			public void mousePressed(MouseEvent me) {
-				pressed(me);
+				onPressed(me);
+			}
+		};
+		window = new WindowAdapter() {
+			@Override
+			public void windowClosing(WindowEvent we) {
+				onClose(we);
+			}
+		};
+		key = new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent ke) {
+				onKeyPress(ke);
 			}
 		};
 		panel.addMouseListener(mouse);
+		frame.addWindowListener(window);
+		frame.addKeyListener(key);
 		frame.add(panel);
 	}
 	
@@ -163,7 +187,7 @@ public class TexturesEditor{
 	}
 	
 	public void saveImage() {
-		parent.addImage(new ImageIcon(image), name, "assets/modbuilder/textures/");
+		parent.addImage(new ImageIcon(image), name);
 	}
 	
 	public void chooseColor() {
@@ -199,7 +223,7 @@ public class TexturesEditor{
 		panel.repaint();
 	}
 	
-	public void click(MouseEvent me) {
+	public void onClick(MouseEvent me) {
 		int x = me.getX();
 		int y = me.getY();
 		if (me.getButton() == MouseEvent.BUTTON1) {
@@ -220,11 +244,11 @@ public class TexturesEditor{
 			}
 			panel.repaint();
 		}
-	}
-	
-	public void pressed(MouseEvent me) {
 		if (inRec(me.getX(),me.getY(),16,16,size*16,size*16))
 			clickOnImage(me);
+	}
+	
+	public void onPressed(MouseEvent me) {
 	}
 	
 	public void clickOnImage(MouseEvent me) {
@@ -239,5 +263,31 @@ public class TexturesEditor{
 	
 	public boolean inRec(int pointx, int pointy, int recx, int recy, int recwidth, int recheight) {
 		return pointx>=recx && pointy>=recy && pointx-recx<=recwidth && pointy-recy<=recheight;
+	}
+	
+	public void onClose(WindowEvent we) {
+        if (JOptionPane.showConfirmDialog(frame, 
+                "Do you want to save the texture?", "Save texture?", 
+                JOptionPane.YES_NO_OPTION,
+                JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
+                saveImage();
+            }
+	}
+	
+	public void onKeyPress(KeyEvent ke) {
+		int key = ke.getKeyCode();
+		if (ke.isControlDown()) {
+			if (key==KeyEvent.VK_N)
+				newImage();
+			if (key==KeyEvent.VK_S)
+				saveImage();
+			if (key==KeyEvent.VK_Z)
+				; //TODO undo
+			
+		}
+		if (key==KeyEvent.VK_ENTER) {
+			saveImage();
+			frame.setVisible(false);
+		}
 	}
 }
