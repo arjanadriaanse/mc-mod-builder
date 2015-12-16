@@ -24,7 +24,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 		addImage(img, name, loc);
 	}
 	
-	private void addImage(ImageIcon img, String name, String loc){
+	public void addImage(ImageIcon img, String name, String loc){
 		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), loc + name + ".png");
 		addElement(name);
 	}

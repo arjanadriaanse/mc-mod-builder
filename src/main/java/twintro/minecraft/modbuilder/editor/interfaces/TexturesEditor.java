@@ -163,7 +163,7 @@ public class TexturesEditor{
 	public void saveImage() {
 		BufferedImage img = ActivityPanel.toBufferedImage(image, ois, ois);
 		parent.elements.put(name, new ImageIcon(img));
-		ResourcePackGenerator.addTexture(image, "assets/modbuilder/textures/" + name + ".png");
+		parent.addImage(new ImageIcon(image), name, "assets/modbuilder/textures/");
 		parent.list.updateUI();
 		frame.setVisible(false);
 	}
@@ -198,6 +198,7 @@ public class TexturesEditor{
 		color2 = new Color(0,0,0);
 		color3 = new Color(0,0,0);
 		color4 = new Color(0,0,0);
+		panel.repaint();
 	}
 	
 	public void click(MouseEvent me) {
