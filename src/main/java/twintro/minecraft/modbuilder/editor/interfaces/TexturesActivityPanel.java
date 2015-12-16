@@ -11,11 +11,11 @@ import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesActivityPanel extends ActivityPanel {
-	TexturesEditor editor;
+	TextureEditor editor;
 	
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
-		editor = new TexturesEditor(this);
+		editor = new TextureEditor(this);
 	}
 
 	@Override

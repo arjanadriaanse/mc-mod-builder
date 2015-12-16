@@ -1,8 +1,11 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.awt.Color;
+import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.LayoutManager;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -19,6 +22,7 @@ import java.awt.image.ImageObserver;
 import java.beans.Visibility;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFrame;
 import javax.swing.JInternalFrame;
@@ -31,10 +35,10 @@ import javax.swing.JPanel;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
-public class TexturesEditor{
+public class TextureEditor{
 	//TODO undo
-	//TODO draw met muis ingedrukt
 	//TODO load texture from file
+	//TODO remove menu bar
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
@@ -46,7 +50,6 @@ public class TexturesEditor{
 	MouseMotionAdapter mousemotion;
 	WindowAdapter window;
 	KeyAdapter key;
-	Thread thread;
 	boolean mousepressed;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
@@ -54,9 +57,8 @@ public class TexturesEditor{
 	Color color3 = new Color(0,0,0);
 	Color color4 = new Color(0,0,0);
 	Color backgroundcolor = new Color(255,255,255);
-	int size = 16;
 	
-	public TexturesEditor(TexturesActivityPanel parent){
+	public TextureEditor(TexturesActivityPanel parent){
 		this.parent = parent;
 		frame = buildFrame();
 	}
@@ -80,14 +82,6 @@ public class TexturesEditor{
 				paintSelf(g);
 			}
 		};
-		thread = new Thread() {
-			@Override
-			public void run() {
-				while (mousepressed) {
-					editPixels();
-				}
-			}
-		};
 		mouse = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
@@ -98,6 +92,14 @@ public class TexturesEditor{
 				mouseevent = me;
 				mousebutton = me.getButton();
 				mousepressed = true;
+				Thread thread = new Thread() {
+					@Override
+					public void run() {
+						while (mousepressed) {
+							editPixels();
+						}
+					}
+				};
 				thread.start();
 			}
 			@Override
@@ -124,66 +126,44 @@ public class TexturesEditor{
 				onKeyPress(ke);
 			}
 		};
+		
+		JButton button1 = new JButton("Save");
+		JButton button2 = new JButton("Load");
+		JButton button3 = new JButton("Clear");
+		
+		ActionListener action1 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				saveImage();
+			}
+		};
+		ActionListener action2 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				loadImage();
+			}
+		};
+		ActionListener action3 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				newImage();
+			}
+		};
+		
+		button1.addActionListener(action1);
+		button2.addActionListener(action2);
+		button3.addActionListener(action3);	
+		LayoutManager layout = new FlowLayout(FlowLayout.LEFT);
+		panel.setLayout(layout);
+		
+		panel.add(button1);
+		panel.add(button2);
+		panel.add(button3);
 		panel.addMouseListener(mouse);
 		panel.addMouseMotionListener(mousemotion);
 		f.addWindowListener(window);
 		f.addKeyListener(key);
 		f.add(panel);
-		JMenuBar menuBar = new JMenuBar();
-		menuBar.setBackground(SystemColor.inactiveCaption);
-		f.setJMenuBar(menuBar);
-		f.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		
-		JMenu mnFile = new JMenu("File");
-		menuBar.add(mnFile);
-		
-		JMenuItem mntmNew = new JMenuItem("New");
-		mntmNew.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				newImage();
-			}
-		});
-		JMenuItem mntmSave = new JMenuItem("Save");
-		mntmSave.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				saveImage();
-			}
-		});
-		
-		mnFile.add(mntmNew);
-		mnFile.add(mntmSave);
-		
-		JMenu mnEdit = new JMenu("Edit");
-		menuBar.add(mnEdit);
-		
-		JMenuItem mntmSetP = new JMenuItem("Change pencil color");
-		mntmSetP.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				chooseColor();
-			}
-		});
-		JMenuItem mntmSetB = new JMenuItem("Change background color");
-		mntmSetB.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				chooseBackgroundColor();
-			}
-		});
-		JMenuItem mntmClear = new JMenuItem("Clear color memory");
-		mntmSetB.addActionListener(new ActionListener(){
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				clearColors();
-			}
-		});
-		
-		mnEdit.add(mntmSetP);
-		mnEdit.add(mntmSetB);
-		mnEdit.add(mntmClear);
-		
 		return f;
 	}
 	
@@ -191,18 +171,18 @@ public class TexturesEditor{
 		g.setColor(new Color(255,255,255));
 		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
 		g.setColor(backgroundcolor);
-		g.fillRect(16, 16, size*16, size*16);
+		g.fillRect(16, 16, 256, 256);
 		g.setColor(color);
-		g.fillRect(frame.getWidth()-96, 16, 64, 64);
+		g.fillRect(frame.getWidth()-96, 48, 64, 64);
 		g.setColor(color2);
-		g.fillRect(frame.getWidth()-96, 96, 48, 48);
+		g.fillRect(frame.getWidth()-96, 128, 48, 48);
 		g.setColor(color3);
-		g.fillRect(frame.getWidth()-96, 160, 48, 48);
+		g.fillRect(frame.getWidth()-96, 192, 48, 48);
 		g.setColor(color4);
-		g.fillRect(frame.getWidth()-96, 224, 48, 48);
-		g.drawImage(resizeImage(image, size*16, size*16), 16, 16, null);
+		g.fillRect(frame.getWidth()-96, 256, 48, 48);
+		g.drawImage(resizeImage(image, 256, 256), 16, 48, null);
 		g.setColor(new Color(0,0,0));
-		g.drawRect(16, 16, size*16, size*16);
+		g.drawRect(16, 48, 256, 256);
 	}
 	
 	private static Image resizeImage(BufferedImage img, int width, int height){
@@ -216,6 +196,10 @@ public class TexturesEditor{
 	
 	public void saveImage() {
 		parent.addImage(new ImageIcon(image), name);
+	}
+	
+	public void loadImage() {
+		
 	}
 	
 	public void chooseColor() {
@@ -256,17 +240,17 @@ public class TexturesEditor{
 		int y = me.getY();
 		if (me.getButton() == MouseEvent.BUTTON1) {
 			Color temp_color = color;
-			if (inRec(x,y,frame.getWidth()-96, 16, 64, 64))
+			if (inRec(x,y,frame.getWidth()-96, 48, 64, 64))
 				chooseColor();
-			if (inRec(x,y,frame.getWidth()-96, 96, 48, 48)) {
+			if (inRec(x,y,frame.getWidth()-96, 128, 48, 48)) {
 				color = color2;
 				color2 = temp_color;
 			}
-			if (inRec(x,y,frame.getWidth()-96, 160, 48, 48)) {
+			if (inRec(x,y,frame.getWidth()-96, 192, 48, 48)) {
 				color = color3;
 				color3 = temp_color;
 			}
-			if (inRec(x,y,frame.getWidth()-96, 224, 48, 48)) {
+			if (inRec(x,y,frame.getWidth()-96, 256, 48, 48)) {
 				color = color4;
 				color4 = temp_color;
 			}
@@ -276,9 +260,9 @@ public class TexturesEditor{
 
 	public void editPixels() {
 		if (mouseevent!=null) {
-			if (inRec(mouseevent.getX(),mouseevent.getY(),16,16,size*16,size*16)) {
-				int x = (mouseevent.getX()-16)/size;
-				int y = (mouseevent.getY()-16)/size;
+			if (inRec(mouseevent.getX(),mouseevent.getY(),16,48,256,256)) {
+				int x = (mouseevent.getX()-16)/16;
+				int y = (mouseevent.getY()-48)/16;
 				if (mousebutton == MouseEvent.BUTTON1)
 					image.setRGB(x, y, color.getRGB());
 				if (mousebutton == MouseEvent.BUTTON3)
