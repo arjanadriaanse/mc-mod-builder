@@ -9,17 +9,17 @@ import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
 public class FuelHandler implements IFuelHandler{
-	private Map<ItemStack, Integer> fuellist;
+	private Map<ItemStack, Integer> fuels;
 	
-	public FuelHandler(HashMap<ItemStack, Integer> fuellist) {
-		this.fuellist = fuellist;
+	public FuelHandler(Map<ItemStack, Integer> fuels) {
+		this.fuels = fuels;
 	}
 	
 	@Override
 	public int getBurnTime(ItemStack fuel) {
-		for (Entry<ItemStack, Integer> entry : fuellist.entrySet())
-			if (fuel.getItem() == entry.getKey().getItem() )
-				return entry.getValue();
-		return 0;
+		if (this.fuels.containsKey(fuel))
+			return this.fuels.get(fuel);
+		else
+			return 0;
 	}
 }

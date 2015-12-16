@@ -77,7 +77,7 @@ public class BuilderMod {
 	/**
 	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
 	 */
-	private HashMap<ItemStack, Integer> fuellist = new HashMap<ItemStack, Integer>();
+	private Map<ItemStack, Integer> fuels = new HashMap<ItemStack, Integer>();
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -115,11 +115,9 @@ public class BuilderMod {
 	 */
 	private void importResources(IResourceManager manager) {
 		List entries = Minecraft.getMinecraft().getResourcePackRepository().getRepositoryEntries();
-		Iterator iterator = entries.iterator();
-		while (iterator.hasNext()) {
-			ResourcePackRepository.Entry entry = (ResourcePackRepository.Entry) iterator.next();
+		for (Object entry : entries) {
 			try {
-				MetadataSection data = (MetadataSection) entry.getResourcePack()
+				MetadataSection data = (MetadataSection) ((ResourcePackRepository.Entry)entry).getResourcePack()
 						.getPackMetadata(new MetadataSerializer(), "modbuilder");
 				if (data.modbuilder != null)
 					importResources(manager, data.modbuilder);
@@ -158,7 +156,7 @@ public class BuilderMod {
 					registeredItems.add(path);
 					itemModels.put(item, itemResource.model);
 					if (itemResource.burntime != null)
-						fuellist.put(new ItemStack(item), itemResource.burntime);
+						fuels.put(new ItemStack(item), itemResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -177,7 +175,7 @@ public class BuilderMod {
 					registeredBlocks.add(path);
 					blockModels.put(block, blockResource.model);
 					if (blockResource.burntime != null)
-						fuellist.put(new ItemStack(block), blockResource.burntime);
+						fuels.put(new ItemStack(block), blockResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore
@@ -193,8 +191,7 @@ public class BuilderMod {
 				// ignore
 			}
 		}
-		FuelHandler handler = new FuelHandler(fuellist);
-		GameRegistry.registerFuelHandler(handler);
+		GameRegistry.registerFuelHandler(new FuelHandler(fuels));
 	}
 
 	private void syncConfig() {
