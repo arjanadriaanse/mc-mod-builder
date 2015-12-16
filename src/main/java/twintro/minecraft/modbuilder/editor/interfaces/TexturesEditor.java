@@ -11,6 +11,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.image.BufferedImage;
 import java.awt.image.ImageObserver;
+import java.beans.Visibility;
 
 import javax.swing.ImageIcon;
 import javax.swing.JColorChooser;
@@ -28,7 +29,6 @@ public class TexturesEditor{
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
-	int ois;
 	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
@@ -40,11 +40,8 @@ public class TexturesEditor{
 	Color backgroundcolor = new Color(255,255,255);
 	int size = 16;
 	
-	public TexturesEditor(String name, BufferedImage image, TexturesActivityPanel parent, int originalImageSize) {
-		this.name = name;
-		this.image = image;
+	public TexturesEditor(TexturesActivityPanel parent){
 		this.parent = parent;
-		this.ois = originalImageSize;
 		frame = buildFrame();
 		panel = new JPanel() {
 			@Override
@@ -66,17 +63,24 @@ public class TexturesEditor{
 		};
 		panel.addMouseListener(mouse);
 		frame.add(panel);
-		
+	}
+	
+	public void open(String name, BufferedImage img){
+		this.name = name;
+		this.image = img;
+		frame.setIconImage(image);
+		frame.setName("Edit texture: " + name);
+		frame.setVisible(true);
 	}
 	
 	public JFrame buildFrame(){
-		JFrame f = new JFrame("Edit texture: " + name);
+		JFrame f = new JFrame();
 		f.setSize(384, 368);
-		f.setVisible(true);
-		f.setIconImage(image);
+		f.setVisible(false);
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.inactiveCaption);
 		f.setJMenuBar(menuBar);
+		f.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
 		
 		JMenu mnFile = new JMenu("File");
 		menuBar.add(mnFile);
@@ -128,7 +132,6 @@ public class TexturesEditor{
 		mnEdit.add(mntmSetB);
 		mnEdit.add(mntmClear);
 		
-		
 		return f;
 	}
 	
@@ -148,7 +151,6 @@ public class TexturesEditor{
 		g.drawImage(resizeImage(image, size*16, size*16), 16, 16, null);
 		g.setColor(new Color(0,0,0));
 		g.drawRect(16, 16, size*16, size*16);
-		
 	}
 	
 	private static Image resizeImage(BufferedImage img, int width, int height){
@@ -161,11 +163,7 @@ public class TexturesEditor{
 	}
 	
 	public void saveImage() {
-		BufferedImage img = ActivityPanel.toBufferedImage(image, ois, ois);
-		parent.elements.put(name, new ImageIcon(img));
 		parent.addImage(new ImageIcon(image), name, "assets/modbuilder/textures/");
-		parent.list.updateUI();
-		frame.setVisible(false);
 	}
 	
 	public void chooseColor() {

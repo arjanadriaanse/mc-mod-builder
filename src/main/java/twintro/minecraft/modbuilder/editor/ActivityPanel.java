@@ -38,8 +38,8 @@ public abstract class ActivityPanel extends JPanel {
 		addElements(header, button);
 	}
 	
-	protected void addElement(String name){
-		elements.put(name, getImage(name));
+	protected void addElement(String name, ImageIcon img){
+		elements.put(name, resizeImage(img, 64, 64));
 		list.updateUI();
 	}
 	
@@ -48,13 +48,13 @@ public abstract class ActivityPanel extends JPanel {
 				"assets/modbuilder/textures/" + name + ".png")), 64, 64);
 	}
 	
-	private static ImageIcon resizeImage(ImageIcon icon, int width, int height){
+	public static ImageIcon resizeImage(ImageIcon icon, int width, int height){
 		Image img = icon.getImage();
 		BufferedImage bi = toBufferedImage(img, width, height);
 		return new ImageIcon(bi);
 	}
 	
-	protected static BufferedImage toBufferedImage(Image img){
+	public static BufferedImage toBufferedImage(Image img){
 		return toBufferedImage(img, img.getWidth(null), img.getHeight(null));
 	}
 	
