@@ -15,6 +15,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
+	//	ItemEditor editor = new ItemEditor(value);
 	}
 	
 	@Override

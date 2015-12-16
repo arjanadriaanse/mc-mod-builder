@@ -33,7 +33,6 @@ public class BlockEditor{
 			}
 		};
 		frame.add(panel);
-		
 	}
 	
 	public JFrame buildFrame(){
