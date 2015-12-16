@@ -11,6 +11,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
@@ -32,16 +33,21 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesEditor{
 	//TODO undo
-	//TODO keyboard shortcuts
 	//TODO draw met muis ingedrukt
+	//TODO load texture from file
 	String name;
 	BufferedImage image;
 	TexturesActivityPanel parent;
 	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
+	Integer mousebutton = MouseEvent.NOBUTTON;
+	MouseEvent mouseevent;
+	MouseMotionAdapter mousemotion;
 	WindowAdapter window;
 	KeyAdapter key;
+	Thread thread;
+	boolean mousepressed;
 	JColorChooser colorchooser = new JColorChooser();
 	Color color = new Color(0,0,0);
 	Color color2 = new Color(0,0,0);
@@ -53,6 +59,20 @@ public class TexturesEditor{
 	public TexturesEditor(TexturesActivityPanel parent){
 		this.parent = parent;
 		frame = buildFrame();
+	}
+	
+	public void open(String name, BufferedImage img){
+		this.name = name;
+		this.image = img;
+		frame.setIconImage(image);
+		frame.setName("Edit texture: " + name);
+		frame.setVisible(true);
+	}
+	
+	public JFrame buildFrame(){
+		JFrame f = new JFrame();
+		f.setSize(384, 368);
+		f.setVisible(false);
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
@@ -60,15 +80,36 @@ public class TexturesEditor{
 				paintSelf(g);
 			}
 		};
+		thread = new Thread() {
+			@Override
+			public void run() {
+				while (mousepressed) {
+					editPixels();
+				}
+			}
+		};
 		mouse = new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent me) {
 				onClick(me);
 			}
-			
 			@Override
 			public void mousePressed(MouseEvent me) {
-				onPressed(me);
+				mouseevent = me;
+				mousebutton = me.getButton();
+				mousepressed = true;
+				thread.start();
+			}
+			@Override
+			public void mouseReleased(MouseEvent me) {
+				mousebutton = 0;
+				mousepressed = false;
+			}
+		};
+		mousemotion = new MouseMotionAdapter() {
+			@Override
+			public void mouseDragged(MouseEvent me) {
+				mouseevent = me;
 			}
 		};
 		window = new WindowAdapter() {
@@ -84,23 +125,10 @@ public class TexturesEditor{
 			}
 		};
 		panel.addMouseListener(mouse);
-		frame.addWindowListener(window);
-		frame.addKeyListener(key);
-		frame.add(panel);
-	}
-	
-	public void open(String name, BufferedImage img){
-		this.name = name;
-		this.image = img;
-		frame.setIconImage(image);
-		frame.setName("Edit texture: " + name);
-		frame.setVisible(true);
-	}
-	
-	public JFrame buildFrame(){
-		JFrame f = new JFrame();
-		f.setSize(384, 368);
-		f.setVisible(false);
+		panel.addMouseMotionListener(mousemotion);
+		f.addWindowListener(window);
+		f.addKeyListener(key);
+		f.add(panel);
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.inactiveCaption);
 		f.setJMenuBar(menuBar);
@@ -244,21 +272,20 @@ public class TexturesEditor{
 			}
 			panel.repaint();
 		}
-		if (inRec(me.getX(),me.getY(),16,16,size*16,size*16))
-			clickOnImage(me);
 	}
-	
-	public void onPressed(MouseEvent me) {
-	}
-	
-	public void clickOnImage(MouseEvent me) {
-		int x = (me.getX()-16)/size;
-		int y = (me.getY()-16)/size;
-		if (me.getButton() == MouseEvent.BUTTON1)
-			image.setRGB(x, y, color.getRGB());
-		if (me.getButton() == MouseEvent.BUTTON3)
-			image.setRGB(x, y, new Color(0,0,0,0).getRGB());
-		panel.repaint();
+
+	public void editPixels() {
+		if (mouseevent!=null) {
+			if (inRec(mouseevent.getX(),mouseevent.getY(),16,16,size*16,size*16)) {
+				int x = (mouseevent.getX()-16)/size;
+				int y = (mouseevent.getY()-16)/size;
+				if (mousebutton == MouseEvent.BUTTON1)
+					image.setRGB(x, y, color.getRGB());
+				if (mousebutton == MouseEvent.BUTTON3)
+					image.setRGB(x, y, new Color(0,0,0,0).getRGB());
+				panel.repaint();
+			}
+		}
 	}
 	
 	public boolean inRec(int pointx, int pointy, int recx, int recy, int recwidth, int recheight) {
@@ -281,6 +308,8 @@ public class TexturesEditor{
 				newImage();
 			if (key==KeyEvent.VK_S)
 				saveImage();
+			if (key==KeyEvent.VK_Y)
+				; //TODO redo
 			if (key==KeyEvent.VK_Z)
 				; //TODO undo
 			
