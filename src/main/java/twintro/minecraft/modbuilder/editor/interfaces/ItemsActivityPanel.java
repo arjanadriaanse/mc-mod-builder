@@ -15,18 +15,13 @@ public class ItemsActivityPanel extends ActivityPanel {
 	
 	public ItemsActivityPanel(String header, String button) {
 		super(header, button);
-		this.models = new ArrayList<String>();
-
-		
+		this.models = new ArrayList<String>();	
 	}
+	
 	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
 		super(header, button);
-		this.models = models;
-
-		
+		this.models = models;	
 	}
-	
-	
 	
 	@Override
 	protected void add() {
@@ -47,6 +42,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
+		// TO DO AFTER MIKE DOES HIS SHIT
 	}
 	
 	@Override
