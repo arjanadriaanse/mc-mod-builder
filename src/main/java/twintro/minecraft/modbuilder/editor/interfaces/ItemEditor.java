@@ -53,8 +53,8 @@ public class ItemEditor extends JFrame {
 		panel.add(modelLabel);
 		
 		comboBox = new JComboBox();
+		comboBox.setEditable(true);
 		comboBox.setModel(new DefaultComboBoxModel(models.toArray()));
-		
 		panel.add(comboBox);
 		
 		JLabel stackSizeLabel = new JLabel("Stacksize");
@@ -108,16 +108,16 @@ public class ItemEditor extends JFrame {
 	private void saveItem(){
 		if (item==null){item = new ItemResource();}
 		
-		//if(!modelTextfield.getText().isEmpty()){
+		if(!comboBox.getSelectedItem().toString().isEmpty()){
 		item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
 		item.burntime = Integer.getInteger(burnTimeTextfield.getText());
 		item.stacksize = Integer.getInteger(stackSizeTextfield.getText());
-		//item.model = modelTextfield.getText();
+		item.model = (String)comboBox.getSelectedItem();
 		
 		this.dispose();
-		/*} else {
+		} else {
 			JOptionPane.showMessageDialog(this, "Please provide a model.", "Error", JOptionPane.ERROR_MESSAGE);
-		} */
+		}
 		
 	}
 	

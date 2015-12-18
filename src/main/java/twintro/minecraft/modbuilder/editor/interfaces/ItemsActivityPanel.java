@@ -1,5 +1,6 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.swing.JOptionPane;
@@ -8,12 +9,25 @@ import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
+
+	private List<String> models;
+	
 	public ItemsActivityPanel(String header, String button) {
 		super(header, button);
+		this.models = new ArrayList<String>();
+
+		
 	}
 	
-	private List<String> models;
+	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
+		super(header, button);
+		this.models = models;
 
+		
+	}
+	
+	
+	
 	@Override
 	protected void add() {
 		String name = JOptionPane.showInputDialog("Item name:");
