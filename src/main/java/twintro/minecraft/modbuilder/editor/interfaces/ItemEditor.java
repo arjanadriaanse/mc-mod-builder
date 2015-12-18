@@ -83,6 +83,10 @@ public class ItemEditor extends JFrame {
 		panel_1.add(cancelButton);
 	}
 	
+	public ItemResource getItem(){
+		return item;
+	}
+	
 	public ItemEditor(ItemResource item){
 		this();
 		this.item = item;
