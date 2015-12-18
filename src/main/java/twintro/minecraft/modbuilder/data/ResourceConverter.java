@@ -15,11 +15,13 @@ import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraft.potion.PotionEffect;
 import net.minecraft.world.World;
+import net.minecraft.world.gen.feature.WorldGenerator;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
@@ -28,6 +30,8 @@ import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.worldgen.BaseWorldgenResource;
+import twintro.minecraft.modbuilder.data.resources.worldgen.OregenResource;
 
 /**
  * Contains methods for converting resource objects to Minecraft objects.
@@ -128,6 +132,23 @@ public class ResourceConverter {
 		if (resource.container != null)
 			item.setContainerItem(Item.getByNameOrId(resource.container));
 		return item;
+	}
+	
+	public static IWorldGenerator toWorldgen(BaseWorldgenResource resource) {
+		if (resource instanceof OregenResource)
+			return toWorldgen((OregenResource) resource);
+		return null;
+	}
+	
+	public static IWorldGenerator toWorldgen(OregenResource resource) {
+		BuilderOregen worldgen = new BuilderOregen(
+				Block.getBlockFromName(resource.block),
+				resource.dimension      !=null ? resource.dimension      : 0,
+				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
+				resource.chancestospawn !=null ? resource.chancestospawn : 16,
+				resource.miny           !=null ? resource.miny           : 1,
+				resource.maxy           !=null ? resource.maxy           : 64);
+		return worldgen;
 	}
 
 	public static ItemStack toItemStack(ItemStackResource resource) {

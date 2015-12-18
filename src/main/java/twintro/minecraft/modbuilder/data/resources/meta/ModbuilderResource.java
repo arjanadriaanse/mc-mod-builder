@@ -7,4 +7,5 @@ public class ModbuilderResource {
 	public Set<String> blocks;
 	public Set<String> items;
 	public Set<String> recipes;
+	public Set<String> worldgens;
 }
