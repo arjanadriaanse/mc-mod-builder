@@ -6,6 +6,7 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ListDataListener;
 
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import javax.swing.JLabel;
@@ -13,14 +14,19 @@ import javax.swing.JOptionPane;
 
 import java.awt.GridLayout;
 import javax.swing.JTextField;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.util.List;
 import java.awt.event.ActionEvent;
+import javax.swing.JComboBox;
 
 public class ItemEditor extends JFrame {
 
-	ItemResource item;
+	private List<String> models;
+	private ItemResource item;
 	private JPanel contentPane;
 	private JTextField stackSizeTextfield;
 	private JTextField burnTimeTextfield;
@@ -29,9 +35,9 @@ public class ItemEditor extends JFrame {
 	private final JButton saveButton = new JButton("Save Item");
 	private final JButton cancelButton = new JButton("Cancel");
 	private JLabel modelLabel;
-	private JTextField modelTextfield;
+	private JComboBox comboBox;
 
-	public ItemEditor() {
+	public ItemEditor(List<String> models) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
@@ -46,9 +52,10 @@ public class ItemEditor extends JFrame {
 		modelLabel = new JLabel("Model");
 		panel.add(modelLabel);
 		
-		modelTextfield = new JTextField();
-		panel.add(modelTextfield);
-		modelTextfield.setColumns(10);
+		comboBox = new JComboBox();
+		comboBox.setModel(new DefaultComboBoxModel(models.toArray()));
+		
+		panel.add(comboBox);
 		
 		JLabel stackSizeLabel = new JLabel("Stacksize");
 		panel.add(stackSizeLabel);
@@ -89,10 +96,10 @@ public class ItemEditor extends JFrame {
 		return item;
 	}
 	
-	public ItemEditor(ItemResource item){
-		this();
+	public ItemEditor(List<String> models,ItemResource item){
+		this(models);
 		this.item = item;
-		modelTextfield.setText(item.model);
+		//modelTextfield.setText(item.model);
 		containerTextfield.setText(item.container);
 		burnTimeTextfield.setText(item.burntime + "");
 		stackSizeTextfield.setText(item.stacksize +"");
@@ -101,16 +108,16 @@ public class ItemEditor extends JFrame {
 	private void saveItem(){
 		if (item==null){item = new ItemResource();}
 		
-		if(!modelTextfield.getText().isEmpty()){
+		//if(!modelTextfield.getText().isEmpty()){
 		item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
 		item.burntime = Integer.getInteger(burnTimeTextfield.getText());
 		item.stacksize = Integer.getInteger(stackSizeTextfield.getText());
-		item.model = modelTextfield.getText();
+		//item.model = modelTextfield.getText();
 		
 		this.dispose();
-		} else {
+		/*} else {
 			JOptionPane.showMessageDialog(this, "Please provide a model.", "Error", JOptionPane.ERROR_MESSAGE);
-		}
+		} */
 		
 	}
 	
