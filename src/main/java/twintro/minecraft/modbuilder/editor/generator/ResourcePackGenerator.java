@@ -34,7 +34,7 @@ public class ResourcePackGenerator {
 		}
 	}
 	
-	public static String getTextureURL(String dir){
+	public static String getURL(String dir){
 		return resourcePackFolderDir + dir;
 	}
 	

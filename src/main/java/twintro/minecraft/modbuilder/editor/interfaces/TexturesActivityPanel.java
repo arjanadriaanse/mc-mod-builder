@@ -73,7 +73,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	@Override
 	public void updateList() {
-		File folder = new File(ResourcePackGenerator.getTextureURL("assets/modbuilder/textures/"));
+		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/textures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
 				if (file.getAbsolutePath().endsWith(".png")){
