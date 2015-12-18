@@ -5,6 +5,7 @@ import java.util.List;
 import javax.swing.JOptionPane;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
 	public ItemsActivityPanel(String header, String button) {
@@ -19,6 +20,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 		if (name != null)
 			if (name.replaceAll(" ", "").length() > 0)
 				new ItemEditor(models);
+	}
+	
+	public void addItem(ItemElement item){
+		for (String model : elements.keySet()){
+			
+		}
 	}
 	
 	@Override
