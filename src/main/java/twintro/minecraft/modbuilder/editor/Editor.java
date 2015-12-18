@@ -22,7 +22,6 @@ import javax.swing.JSplitPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
-import twintro.minecraft.modbuilder.data.resources.models.ItemModelResources;
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;

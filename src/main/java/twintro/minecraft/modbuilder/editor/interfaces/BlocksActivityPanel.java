@@ -19,11 +19,11 @@ public class BlocksActivityPanel extends ActivityPanel {
 	}
 	
 	public void addBlock(BlockElement block){
-		if (block.itemModelParent != null)
-			createFile(block.getItemModel(), "assets/modbuilder/models/item/" + block.name + ".json");
-		if (block.blockModelTexture != null)
-			createFile(block.getBlockModel(), "assets/modbuilder/models/block/" + block.name + ".json");
-		createFile(block.getBlockstate(), "assets/modbuilder/blockstates/" + block.name + ".json");
+		if (block.itemModel != null)
+			createFile(block.itemModel, "assets/modbuilder/models/item/" + block.name + ".json");
+		if (block.blockModel != null)
+			createFile(block.blockModel, "assets/modbuilder/models/block/" + block.name + ".json");
+		createFile(block.blockstate, "assets/modbuilder/blockstates/" + block.name + ".json");
 		createFile(block.block, "assets/modbuilder/blocks/" + block.name + ".json");
 		addElement(block.name, block.image);
 	}
