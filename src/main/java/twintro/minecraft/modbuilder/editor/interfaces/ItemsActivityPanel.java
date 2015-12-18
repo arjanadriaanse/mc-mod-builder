@@ -19,6 +19,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
@@ -41,6 +42,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 		if (name != null)
 			if (name.replaceAll(" ", "").length() > 0)
 				new ItemEditor(models);
+	}
+	
+	public void addItem(ItemElement item){
+		createFile(item.itemModel, "assets/modbuilder/models/item/" + item.name + ".json");
+		createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
+		addElement(item.name, item.image);
 	}
 	
 	public void createFile(Object model, String dir){
@@ -93,8 +100,8 @@ public class ItemsActivityPanel extends ActivityPanel {
 					ItemModelResource itemModel = 
 							gson.fromJson(new FileReader(model), ItemModelResource.class);
 					String texture = null;
-					if (itemModel.textures.containsKey("all"))
-						texture = itemModel.textures.get("all");
+					if (itemModel.textures.containsKey("layer0"))
+						texture = itemModel.textures.get("layer0");
 					else{
 						Object[] textures = itemModel.textures.values().toArray();
 						if (textures.length > 0) texture = (String) textures[0];
