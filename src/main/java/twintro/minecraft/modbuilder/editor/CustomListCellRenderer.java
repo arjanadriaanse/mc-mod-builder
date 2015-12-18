@@ -12,7 +12,7 @@ import javax.swing.JList;
 import scala.collection.immutable.List;
 
 public class CustomListCellRenderer extends DefaultListCellRenderer {
-	private Font font = new Font("Tahoma", Font.PLAIN, 23);
+	private Font font = new Font("Tahoma", Font.PLAIN, 15);
 	private ActivityPanel panel;
 	
 	public CustomListCellRenderer(ActivityPanel panel){

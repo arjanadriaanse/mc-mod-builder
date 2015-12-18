@@ -94,8 +94,8 @@ public class BlocksActivityPanel extends ActivityPanel {
 					if (blockModel.textures.containsKey("all"))
 						texture = blockModel.textures.get("all");
 					else{
-						String[] textures = (String[]) blockModel.textures.values().toArray();
-						if (textures.length > 0) texture = textures[0];
+						Object[] textures = blockModel.textures.values().toArray();
+						if (textures.length > 0) texture = (String) textures[0];
 					}
 					if (texture != null){
 						if (texture.startsWith("modbuilder:")){
