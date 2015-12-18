@@ -1,11 +1,12 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
-
 import java.util.ArrayList;
+import java.io.IOException;
 import java.util.List;
 
 import javax.swing.JOptionPane;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
@@ -18,7 +19,6 @@ public class ItemsActivityPanel extends ActivityPanel {
 
 		
 	}
-	
 	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
 		super(header, button);
 		this.models = models;
@@ -36,16 +36,17 @@ public class ItemsActivityPanel extends ActivityPanel {
 				new ItemEditor(models);
 	}
 	
-	public void addItem(ItemElement item){
-		for (String model : elements.keySet()){
-			
+	public void createFile(Object model, String dir){
+		try {
+			ResourcePackGenerator.createFile(model, dir);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
-	//	ItemEditor editor = new ItemEditor(value);
 	}
 	
 	@Override

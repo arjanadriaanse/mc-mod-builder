@@ -1,7 +1,9 @@
 {
-   "type":"food",
-   "model":"modbuilder:applepie",
-   "amount": 20,
-   "stacksize": 8,
-   "container": "minecraft:bowl"
+  "type": "food",
+  "model": "modbuilder:applepie",
+  "amount": 20,
+  "stacksize": 8,
+  "container": "minecraft:bowl",
+  "alwaysedible": true,
+  "effects": [ [ 21, 1600, 0 ], [ 6, 6, 0] ]
 }
