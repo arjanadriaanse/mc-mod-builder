@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,6 +27,7 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
+import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
@@ -51,7 +53,7 @@ public abstract class ActivityPanel extends JPanel {
 	}
 	
 	protected static ImageIcon getImage(String name){
-		return resizeImage(new ImageIcon(ResourcePackGenerator.getTextureURL(
+		return resizeImage(new ImageIcon(ResourcePackGenerator.getURL(
 				"assets/modbuilder/textures/" + name + ".png")), 64, 64);
 	}
 	
@@ -95,6 +97,7 @@ public abstract class ActivityPanel extends JPanel {
 		scrollPane.setViewportView(list);
 		list.setVisibleRowCount(0);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
+		list.setFixedCellWidth(128);
 		list.setCellRenderer(new CustomListCellRenderer(this));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
