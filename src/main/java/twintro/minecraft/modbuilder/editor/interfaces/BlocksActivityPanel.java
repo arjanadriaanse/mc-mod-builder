@@ -77,6 +77,15 @@ public class BlocksActivityPanel extends ActivityPanel {
 		}
 	}
 	
+	public BlockElement getBlock(String name){
+		File blockFile = new File(ResourcePackGenerator.getURL(
+				"assets/modbuilder/items/" + name + ".json"));
+		if (blockFile.exists()){
+			
+		}
+		return null;
+	}
+	
 	public void addBlock(File file, Gson gson) throws Exception{
 		if (file.getAbsolutePath().endsWith(".json")){
 			ImageIcon img = new ImageIcon();
