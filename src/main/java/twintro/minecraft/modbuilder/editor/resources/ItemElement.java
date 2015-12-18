@@ -7,7 +7,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstatesResources;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResources;
 
 public class ItemElement extends Element {
-	public BaseItemResource block;
+	public BaseItemResource item;
 	public String itemModelParent;
 	
 	public Object getItemModel(){

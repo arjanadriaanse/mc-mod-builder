@@ -81,6 +81,8 @@ public class ItemEditor extends JFrame {
 		});
 		panel_1.add(saveButton);
 		panel_1.add(cancelButton);
+		
+		setVisible(true);
 	}
 	
 	public ItemResource getItem(){
