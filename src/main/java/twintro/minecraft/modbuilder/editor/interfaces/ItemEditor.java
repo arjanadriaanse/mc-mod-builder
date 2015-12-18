@@ -99,7 +99,7 @@ public class ItemEditor extends JFrame {
 	public ItemEditor(List<String> models,ItemResource item){
 		this(models);
 		this.item = item;
-		//modelTextfield.setText(item.model);
+		comboBox.setSelectedItem(item.model);
 		containerTextfield.setText(item.container);
 		burnTimeTextfield.setText(item.burntime + "");
 		stackSizeTextfield.setText(item.stacksize +"");
