@@ -147,6 +147,7 @@ public class BuilderMod {
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(BaseItemResource.class, deserializer);
 		builder.registerTypeAdapter(BaseBlockResource.class, deserializer);
+		builder.registerTypeAdapter(BaseWorldgenResource.class, deserializer);
 		builder.registerTypeAdapter(BaseRecipe.class, deserializer);
 		Gson gson = builder.create();
 
@@ -211,7 +212,7 @@ public class BuilderMod {
 				}
 			} catch (IOException e) {
 				// ignore
-			}			
+			}
 		}
 		GameRegistry.registerFuelHandler(new FuelHandler(fuels));
 	}
