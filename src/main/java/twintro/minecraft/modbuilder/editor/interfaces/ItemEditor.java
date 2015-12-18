@@ -9,6 +9,10 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ListDataListener;
 
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
@@ -19,12 +23,15 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import java.util.List;
 import java.awt.event.ActionEvent;
 import javax.swing.JComboBox;
 
 public class ItemEditor extends JFrame {
 
+	private ItemsActivityPanel parent;
+	private String name;
 	private List<String> models;
 	private ItemResource item;
 	private JPanel contentPane;
@@ -37,7 +44,7 @@ public class ItemEditor extends JFrame {
 	private JLabel modelLabel;
 	private JComboBox comboBox;
 
-	public ItemEditor(List<String> models) {
+	public ItemEditor(ItemsActivityPanel parent ,List<String> models, String name) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
@@ -90,14 +97,17 @@ public class ItemEditor extends JFrame {
 		panel_1.add(cancelButton);
 		
 		setVisible(true);
+		
+		this.parent = parent;
+		this.name = name; 
 	}
 	
 	public ItemResource getItem(){
 		return item;
 	}
 	
-	public ItemEditor(List<String> models,ItemResource item){
-		this(models);
+	public ItemEditor(ItemsActivityPanel parent,List<String> models,ItemResource item, String name){
+		this(parent, models, name);
 		this.item = item;
 		comboBox.setSelectedItem(item.model);
 		containerTextfield.setText(item.container);
@@ -113,6 +123,18 @@ public class ItemEditor extends JFrame {
 		item.burntime = Integer.getInteger(burnTimeTextfield.getText());
 		item.stacksize = Integer.getInteger(stackSizeTextfield.getText());
 		item.model = (String)comboBox.getSelectedItem();
+		
+		ItemElement savable = new ItemElement();
+		ItemModelResource iModel = new ItemModelResource();
+		iModel.parent = "builtin/generated";
+		iModel.textures = new HashMap<String, String>();
+		iModel.textures.put("layer0", "modbuilder:"+item.model.split(":")[1]);
+		iModel.display = Display.REGULAR;
+		
+		savable.item = item;
+		savable.itemModel = iModel;
+		savable.name = name;
+		parent.addItem(savable);
 		
 		this.dispose();
 		} else {

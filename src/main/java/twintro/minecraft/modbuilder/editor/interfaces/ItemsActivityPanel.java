@@ -41,7 +41,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null)
 			if (name.replaceAll(" ", "").length() > 0)
-				new ItemEditor(models);
+				new ItemEditor(this ,models, name);
 	}
 	
 	public void addItem(ItemElement item){
