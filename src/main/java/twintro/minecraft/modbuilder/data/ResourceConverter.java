@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -10,12 +11,15 @@ import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.potion.PotionEffect;
+import net.minecraft.world.World;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
@@ -80,17 +84,20 @@ public class ResourceConverter {
 		return item;
 	}
 
-	public static ItemFood toItem(FoodItemResource resource) {
+	public static ItemFood toItem(final FoodItemResource resource) {
 		BuilderItemFood item;
 		if (resource.saturation == null)
-			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false);
+			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false, resource.effects);
 		else
 			item = new BuilderItemFood(resource.amount, resource.saturation,
-					resource.wolf != null ? resource.wolf : false);
+					resource.wolf != null ? resource.wolf : false, resource.effects);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
 			item.setContainerItem(Item.getByNameOrId(resource.container));
+		if (resource.alwaysedible != null)
+			if (resource.alwaysedible)
+				item.setAlwaysEdible();
 		return item;
 	}
 
