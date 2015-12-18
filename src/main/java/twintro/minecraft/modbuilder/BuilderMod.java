@@ -26,6 +26,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IWorldGenerator;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -42,6 +43,7 @@ import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
+import twintro.minecraft.modbuilder.data.resources.worldgen.BaseWorldgenResource;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
 public class BuilderMod {
@@ -73,6 +75,11 @@ public class BuilderMod {
 	 * Contains the name of each registered {@link Block}.
 	 */
 	private Set<String> registeredBlocks = new HashSet<String>();
+	
+	/**
+	 * Contains the name of each registered {@link Worldgens}.
+	 */
+	private Set<String> registeredWorldgens = new HashSet<String>();
 	
 	/**
 	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
@@ -190,6 +197,21 @@ public class BuilderMod {
 			} catch (IOException e) {
 				// ignore
 			}
+		}
+		for (String path : data.worldgens) {
+			try {
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":worldgens/" + path + ".json");
+				IResource resource = manager.getResource(location);
+				BaseWorldgenResource worldgenResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BaseWorldgenResource.class);
+				IWorldGenerator worldgen = ResourceConverter.toWorldgen(worldgenResource);
+				if (!registeredWorldgens.contains(path)) {
+					registeredWorldgens.add(path);
+					GameRegistry.registerWorldGenerator(worldgen, 0);
+				}
+			} catch (IOException e) {
+				// ignore
+			}			
 		}
 		GameRegistry.registerFuelHandler(new FuelHandler(fuels));
 	}
