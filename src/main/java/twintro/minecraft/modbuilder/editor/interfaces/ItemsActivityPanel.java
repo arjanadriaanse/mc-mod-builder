@@ -47,7 +47,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 	public void addItem(ItemElement item){
 		createFile(item.itemModel, "assets/modbuilder/models/item/" + item.name + ".json");
 		createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
-		addElement(item.name, item.image);
+		addElement(item.name, item.getImage());
 	}
 	
 	public void createFile(Object model, String dir){

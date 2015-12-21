@@ -38,7 +38,7 @@ public class BlocksActivityPanel extends ActivityPanel {
 			createFile(block.blockModel, "assets/modbuilder/models/block/" + block.name + ".json");
 		createFile(block.blockstate, "assets/modbuilder/blockstates/" + block.name + ".json");
 		createFile(block.block, "assets/modbuilder/blocks/" + block.name + ".json");
-		addElement(block.name, block.image);
+		addElement(block.name, block.getImage());
 	}
 	
 	public void createFile(Object model, String dir){
@@ -75,15 +75,6 @@ public class BlocksActivityPanel extends ActivityPanel {
 				}
 			}
 		}
-	}
-	
-	public BlockElement getBlock(String name){
-		File blockFile = new File(ResourcePackGenerator.getURL(
-				"assets/modbuilder/items/" + name + ".json"));
-		if (blockFile.exists()){
-			
-		}
-		return null;
 	}
 	
 	public void addBlock(File file, Gson gson) throws Exception{
