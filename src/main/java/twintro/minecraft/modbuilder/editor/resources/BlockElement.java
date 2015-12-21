@@ -15,6 +15,7 @@ import com.google.gson.JsonSyntaxException;
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
@@ -31,7 +32,6 @@ public class BlockElement extends InventoryElement {
 		
 		File blockFile = new File(ResourcePackGenerator.getURL(
 				"assets/modbuilder/blocks/" + name + ".json"));
-		
 		if (blockFile.exists()){
 			ResourceDeserializer deserializer = new ResourceDeserializer();
 			GsonBuilder builder = new GsonBuilder();
@@ -86,5 +86,10 @@ public class BlockElement extends InventoryElement {
 			}
 		}
 		return output;
+	}
+	
+	@Override
+	public ImageIcon getImage() {
+		return getImage(blockModel.textures, "layer0");
 	}
 }

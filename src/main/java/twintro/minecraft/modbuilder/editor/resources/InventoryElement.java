@@ -1,21 +1,22 @@
 package twintro.minecraft.modbuilder.editor.resources;
 
+import java.util.Map;
+
 import javax.swing.ImageIcon;
 
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
-public class InventoryElement extends Element {
+public abstract class InventoryElement extends Element {
 	public ItemModelResource itemModel;
-
-	@Override
-	public ImageIcon getImage() {
+	
+	protected ImageIcon getImage(Map<String, String> textures, String defaultTexture){
 		String texture = null;
-		if (itemModel.textures.containsKey("all"))
-			texture = itemModel.textures.get("all");
+		if (textures.containsKey(defaultTexture))
+			texture = textures.get(defaultTexture);
 		else{
-			Object[] textures = itemModel.textures.values().toArray();
-			if (textures.length > 0) texture = (String) textures[0];
+			Object[] textureNames = textures.values().toArray();
+			if (textureNames.length > 0) texture = (String) textureNames[0];
 		}
 		if (texture != null){
 			if (texture.startsWith("modbuilder:")){

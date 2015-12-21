@@ -54,4 +54,9 @@ public class ItemElement extends InventoryElement {
 		}
 		return output;
 	}
+	
+	@Override
+	public ImageIcon getImage() {
+		return getImage(itemModel.textures, "all");
+	}
 }

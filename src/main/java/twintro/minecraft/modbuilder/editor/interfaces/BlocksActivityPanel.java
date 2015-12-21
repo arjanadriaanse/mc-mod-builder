@@ -20,6 +20,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class BlocksActivityPanel extends ActivityPanel {
 	public BlocksActivityPanel(String header, String button) {
@@ -63,49 +64,16 @@ public class BlocksActivityPanel extends ActivityPanel {
 	public void updateList() {
 		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/blocks/"));
 		if (folder.exists()){
-			ResourceDeserializer deserializer = new ResourceDeserializer();
-			GsonBuilder builder = new GsonBuilder();
-			builder.registerTypeAdapter(BaseBlockResource.class, deserializer);
-			Gson gson = builder.create();
 			for (File file : folder.listFiles()){
-				try {
-					addBlock(file, gson);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	public void addBlock(File file, Gson gson) throws Exception{
-		if (file.getAbsolutePath().endsWith(".json")){
-			ImageIcon img = new ImageIcon();
-			String name = file.getName().substring(0, file.getName().length() - 5);
-			BlockResource block = (BlockResource) 
-					gson.fromJson(new FileReader(file), BaseBlockResource.class);
-			if (block.model.startsWith("modbuilder:")){
-				String modelName = block.model.substring(11);
-				File model = new File(ResourcePackGenerator.getURL(
-						"assets/modbuilder/models/block/" + modelName + ".json"));
-				if (model.exists()){
-					BlockModelResource blockModel = 
-							gson.fromJson(new FileReader(model), BlockModelResource.class);
-					String texture = null;
-					if (blockModel.textures.containsKey("all"))
-						texture = blockModel.textures.get("all");
-					else{
-						Object[] textures = blockModel.textures.values().toArray();
-						if (textures.length > 0) texture = (String) textures[0];
-					}
-					if (texture != null){
-						if (texture.startsWith("modbuilder:")){
-							img = new ImageIcon(ResourcePackGenerator.getURL(
-									"assets/modbuilder/textures/" + texture.substring(11) + ".png"));
-						}
+				if (file.getAbsolutePath().endsWith(".json")){
+					try {
+						String name = file.getName().substring(0, file.getName().length() - 5);
+						addElement(name, BlockElement.getFromName(name).getImage());
+					} catch (Exception e) {
+						System.out.println("Could not find all block element objects for " + file.getName());
 					}
 				}
 			}
-			addElement(name, img);
 		}
 	}
 }

@@ -8,9 +8,9 @@ public class ItemModelResource {
 	public Display display;
 	
 	public enum Display {
-		REGULAR(0),
-		TOOL(1),
-		BLOCK(2);
+		regular(0),
+		tool(1),
+		block(2);
 		
 		public Perspective thirdperson;
 		public Perspective firstperson;
@@ -18,30 +18,30 @@ public class ItemModelResource {
 		private Display(int type){
 			switch(type){
 			case 0:
-				firstperson = Perspective.FIRST_PERSON;
-				thirdperson = Perspective.REGULAR_THIRD_PERSON;
+				firstperson = Perspective.first_person;
+				thirdperson = Perspective.regular_third_person;
 				break;
 			case 1:
-				firstperson = Perspective.FIRST_PERSON;
-				thirdperson = Perspective.TOOL_THIRD_PERSON;
+				firstperson = Perspective.first_person;
+				thirdperson = Perspective.tool_third_person;
 				break;
 			case 2:
-				thirdperson = Perspective.BLOCK_THIRD_PERSON;
+				thirdperson = Perspective.block_third_person;
 			}
 		}
 	}
 	
 	public enum Perspective {
-		FIRST_PERSON(new double[]{0, -135, 25},
+		first_person(new double[]{0, -135, 25},
 				new double[]{0, 4, 2},
 				new double[]{1.7, 1.7, 1.7}),
-		REGULAR_THIRD_PERSON(new double[]{-90, 0, 0},
+		regular_third_person(new double[]{-90, 0, 0},
 				new double[]{0, 1, -3},
 				new double[]{0.55, 0.55, 0.55}),
-		TOOL_THIRD_PERSON(new double[]{0, 90, -35},
+		tool_third_person(new double[]{0, 90, -35},
 				new double[]{0, 1.25, -3.5},
 				new double[]{0.85, 0.85, 0.85}),
-		BLOCK_THIRD_PERSON(new double[]{10, -45, 170},
+		block_third_person(new double[]{10, -45, 170},
 				new double[]{0, 1.5, -2.75},
 				new double[]{0.375, 0.375, 0.375});
 		

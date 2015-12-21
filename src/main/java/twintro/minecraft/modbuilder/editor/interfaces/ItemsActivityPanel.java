@@ -73,48 +73,16 @@ public class ItemsActivityPanel extends ActivityPanel {
 	public void updateList() {
 		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/items/"));
 		if (folder.exists()){
-			ResourceDeserializer deserializer = new ResourceDeserializer();
-			GsonBuilder builder = new GsonBuilder();
-			builder.registerTypeAdapter(BaseItemResource.class, deserializer);
-			Gson gson = builder.create();
 			for (File file : folder.listFiles()){
-				try {
-					addItem(file, gson);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-	
-	public void addItem(File file, Gson gson) throws Exception{
-		if (file.getAbsolutePath().endsWith(".json")){
-			ImageIcon img = new ImageIcon();
-			String name = file.getName().substring(0, file.getName().length() - 5);
-			BaseItemResource item = gson.fromJson(new FileReader(file), BaseItemResource.class);
-			if (item.model.startsWith("modbuilder:")){
-				String modelName = item.model.substring(11);
-				File model = new File(ResourcePackGenerator.getURL(
-						"assets/modbuilder/models/item/" + modelName + ".json"));
-				if (model.exists()){
-					ItemModelResource itemModel = 
-							gson.fromJson(new FileReader(model), ItemModelResource.class);
-					String texture = null;
-					if (itemModel.textures.containsKey("layer0"))
-						texture = itemModel.textures.get("layer0");
-					else{
-						Object[] textures = itemModel.textures.values().toArray();
-						if (textures.length > 0) texture = (String) textures[0];
-					}
-					if (texture != null){
-						if (texture.startsWith("modbuilder:")){
-							img = new ImageIcon(ResourcePackGenerator.getURL(
-									"assets/modbuilder/textures/" + texture.substring(11) + ".png"));
-						}
+				if (file.getAbsolutePath().endsWith(".json")){
+					try {
+						String name = file.getName().substring(0, file.getName().length() - 5);
+						addElement(name, ItemElement.getFromName(name).getImage());
+					} catch (Exception e) {
+						System.out.println("Could not find all item element objects for " + file.getName());
 					}
 				}
 			}
-			addElement(name, img);
 		}
 	}
 }

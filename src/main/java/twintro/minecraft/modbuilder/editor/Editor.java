@@ -135,20 +135,22 @@ public class Editor {
 	}
 	
 	private void newMod(){
-		chooseFolder(true);
-		metaFile = MetaFile.create(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
-		langFile = LanguageFile.create(ResourcePackGenerator.resourcePackFolderDir + 
-				"assets/modbuilder/lang/en_US.lang");
+		if (chooseFolder(true)){
+			metaFile = MetaFile.create(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
+			langFile = LanguageFile.create(ResourcePackGenerator.resourcePackFolderDir + 
+					"assets/modbuilder/lang/en_US.lang");
+		}
 	}
 	
 	private void openMod(){
-		chooseFolder(false);
-		metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
-		langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
-				"assets/modbuilder/lang/en_US.lang");
+		if (chooseFolder(false)){
+			metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
+			langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
+					"assets/modbuilder/lang/en_US.lang");
+		}
 	}
 	
-	private void chooseFolder(boolean newMod){
+	private boolean chooseFolder(boolean newMod){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
@@ -164,7 +166,9 @@ public class Editor {
 			ResourcePackGenerator.resourcePackFolderDir = dir;
 			if (!interfaceOpened) createInterface();
 			updateInterface();
+			return true;
 		}
+		return false;
 	}
 	
 	private void exportMod(){
