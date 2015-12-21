@@ -1,8 +1,0 @@
-{
-   "type": "ore",
-   "block": "minecraft:cobblestone",
-   "maxveinsize": 32,
-   "chancestospawn": 32,
-   "minY": 1,
-   "maxY": 256
-}

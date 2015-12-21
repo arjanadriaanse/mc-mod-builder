@@ -14,6 +14,8 @@ import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
+import twintro.minecraft.modbuilder.data.resources.structures.BaseStructureResource;
+import twintro.minecraft.modbuilder.data.resources.structures.StructureType;
 
 /**
  * Handles the deserialization of subtypes of abstract resources.
@@ -31,6 +33,10 @@ public class ResourceDeserializer implements JsonDeserializer {
 		} else if (typeOfT == BaseItemResource.class) {
 			ItemType type = (ItemType) (obj.has("type") ? context.deserialize(obj.get("type"), ItemType.class)
 					: ItemType.regular);
+			return context.deserialize(json, type.getValue());
+		} else if (typeOfT == BaseStructureResource.class) {
+			StructureType type = (StructureType) (obj.has("type") ? context.deserialize(obj.get("type"), StructureType.class)
+					: StructureType.ore);
 			return context.deserialize(json, type.getValue());
 		} else if (typeOfT == BaseRecipe.class) {
 			RecipeType type = (RecipeType) (obj.has("type") ? context.deserialize(obj.get("type"), RecipeType.class)

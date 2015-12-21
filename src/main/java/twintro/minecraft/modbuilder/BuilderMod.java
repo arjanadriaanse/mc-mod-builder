@@ -43,7 +43,7 @@ import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
-import twintro.minecraft.modbuilder.data.resources.worldgen.BaseWorldgenResource;
+import twintro.minecraft.modbuilder.data.resources.structures.BaseStructureResource;
 
 @Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
 public class BuilderMod {
@@ -77,9 +77,9 @@ public class BuilderMod {
 	private Set<String> registeredBlocks = new HashSet<String>();
 	
 	/**
-	 * Contains the name of each registered {@link Worldgens}.
+	 * Contains the name of each registered {@link Structure}.
 	 */
-	private Set<String> registeredWorldgens = new HashSet<String>();
+	private Set<String> registeredStructures = new HashSet<String>();
 	
 	/**
 	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
@@ -129,7 +129,7 @@ public class BuilderMod {
 				if (data.modbuilder != null)
 					importResources(manager, data.modbuilder);
 			} catch (IOException e) {
-				// ignore
+				// ignore 
 			}
 		}
 	}
@@ -147,7 +147,7 @@ public class BuilderMod {
 		GsonBuilder builder = new GsonBuilder();
 		builder.registerTypeAdapter(BaseItemResource.class, deserializer);
 		builder.registerTypeAdapter(BaseBlockResource.class, deserializer);
-		builder.registerTypeAdapter(BaseWorldgenResource.class, deserializer);
+		builder.registerTypeAdapter(BaseStructureResource.class, deserializer);
 		builder.registerTypeAdapter(BaseRecipe.class, deserializer);
 		Gson gson = builder.create();
 
@@ -189,27 +189,27 @@ public class BuilderMod {
 				// ignore
 			}
 		}
+		for (String path : data.structures) {
+			try {
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":structures/" + path + ".json");
+				IResource resource = manager.getResource(location);
+				BaseStructureResource structureResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BaseStructureResource.class);
+				IWorldGenerator structure = ResourceConverter.toStructure(structureResource);
+				if (!registeredStructures.contains(path)) {
+					registeredStructures.add(path);
+					GameRegistry.registerWorldGenerator(structure, 0);
+				}
+			} catch (IOException e) {
+				// ignore
+			}
+		}
 		for (String path : data.recipes) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":recipes/" + path + ".json");
 				IResource resource = manager.getResource(location);
 				BaseRecipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), BaseRecipe.class);
 				RecipeRegistry.register(recipe);
-			} catch (IOException e) {
-				// ignore
-			}
-		}
-		for (String path : data.worldgens) {
-			try {
-				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":worldgens/" + path + ".json");
-				IResource resource = manager.getResource(location);
-				BaseWorldgenResource worldgenResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
-						BaseWorldgenResource.class);
-				IWorldGenerator worldgen = ResourceConverter.toWorldgen(worldgenResource);
-				if (!registeredWorldgens.contains(path)) {
-					registeredWorldgens.add(path);
-					GameRegistry.registerWorldGenerator(worldgen, 0);
-				}
 			} catch (IOException e) {
 				// ignore
 			}

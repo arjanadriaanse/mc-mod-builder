@@ -29,19 +29,18 @@ public class BuilderOregen implements IWorldGenerator {
 	@Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {   
 		if (dimension == world.getWorldType().getWorldTypeID()) {
-			generateOre(block, world, random, chunkX, chunkZ, maxVeinSize, chancesToSpawn, minY, maxY);
+			generateOre(world, random, chunkX, chunkZ);
 		}
 	}
 	
-	public void generateOre(Block block, World world, Random random, int chunkX, int chunkZ,
-			int maxVeinSize, int chancesToSpawn, int minY, int maxY){
+	public void generateOre(World world, Random random, int chunkX, int chunkZ){
 		int heightRange = maxY - minY;
 		WorldGenMinable wgm = new WorldGenMinable(block.getDefaultState(), maxVeinSize);
 		for (int i = 0; i < chancesToSpawn; i++){
 			int randX = random.nextInt(16);
 			int randY = random.nextInt(heightRange) + minY;
 			int randZ = random.nextInt(16);
-			wgm.generate(world, random, new BlockPos(chunkX + randX, randY, chunkZ + randZ));
+			wgm.generate(world, random, new BlockPos(16*chunkX + randX, randY, 16*chunkZ + randZ));
 		}
 	}
 

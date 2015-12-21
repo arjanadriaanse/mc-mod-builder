@@ -30,8 +30,8 @@ import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.data.resources.worldgen.BaseWorldgenResource;
-import twintro.minecraft.modbuilder.data.resources.worldgen.OregenResource;
+import twintro.minecraft.modbuilder.data.resources.structures.BaseStructureResource;
+import twintro.minecraft.modbuilder.data.resources.structures.OregenResource;
 
 /**
  * Contains methods for converting resource objects to Minecraft objects.
@@ -134,21 +134,21 @@ public class ResourceConverter {
 		return item;
 	}
 	
-	public static IWorldGenerator toWorldgen(BaseWorldgenResource resource) {
+	public static IWorldGenerator toStructure(BaseStructureResource resource) {
 		if (resource instanceof OregenResource)
-			return toWorldgen((OregenResource) resource);
+			return toStructure((OregenResource) resource);
 		return null;
 	}
 	
-	public static IWorldGenerator toWorldgen(OregenResource resource) {
-		BuilderOregen worldgen = new BuilderOregen(
+	public static IWorldGenerator toStructure(OregenResource resource) {
+		BuilderOregen structure = new BuilderOregen(
 				Block.getBlockFromName(resource.block),
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
 				resource.chancestospawn !=null ? resource.chancestospawn : 16,
-				resource.miny           !=null ? resource.miny           : 1,
-				resource.maxy           !=null ? resource.maxy           : 64);
-		return worldgen;
+				resource.minY           !=null ? resource.minY           : 1,
+				resource.maxY           !=null ? resource.maxY           : 64);
+		return structure;
 	}
 
 	public static ItemStack toItemStack(ItemStackResource resource) {

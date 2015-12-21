@@ -1,0 +1,8 @@
+{
+   "type": "ore",
+   "block": "minecraft:diamond_block",
+   "maxveinsize": 3,
+   "chancestospawn": 32,
+   "minY": 2,
+   "maxY": 4
+}
