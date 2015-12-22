@@ -1,0 +1,6 @@
+{
+   "type": "ground",
+   "block": "minecraft:grass",
+   "onlyonblocks": ["minecraft:sand"],
+   "amountperchunk": 32
+}
