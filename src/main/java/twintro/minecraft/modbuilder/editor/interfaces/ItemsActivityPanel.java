@@ -1,48 +1,49 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
-import java.util.ArrayList;
 import java.io.File;
-import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
-import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
-import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
-import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
-import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
-
 	private List<String> models;
+	private Set<String> openEditors;
 	
 	public ItemsActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
-		this.models = new ArrayList<String>();	
+		this.models = new ArrayList<String>();
+		this.openEditors = new HashSet<String>();
 	}
 	
 	public ItemsActivityPanel(String header, String button, Editor main, ArrayList<String> models) {
 		super(header, button, main);
-		this.models = models;	
+		this.models = models;
+		this.openEditors = new HashSet<String>();
 	}
 	
 	@Override
 	protected void add() {
 		String name = JOptionPane.showInputDialog("Item name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.contains(name)){
+				new NewItemEditor(name, this);
+				openEditors.add(name);
+			}
+		}
+		/*
+		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null)
 			if (name.replaceAll(" ", "").length() > 0)
 				new ItemEditor(this ,models, name);
+		*/
 	}
 	
 	public void addItem(ItemElement item){
@@ -68,7 +69,14 @@ public class ItemsActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
-		// TODO AFTER MIKE DOES HIS SHIT
+		try {
+			if (!openEditors.contains(value)){
+				new NewItemEditor(this, ItemElement.getFromName(value));
+				openEditors.add(value);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -97,10 +105,16 @@ public class ItemsActivityPanel extends ActivityPanel {
 						String name = file.getName().substring(0, file.getName().length() - 5);
 						addElement(name, ItemElement.getFromName(name).getImage());
 					} catch (Exception e) {
+						e.printStackTrace();
 						System.out.println("Could not find all item element objects for " + file.getName());
 					}
 				}
 			}
 		}
+	}
+	
+	public void closeEditor(String name){
+		if (openEditors.contains(name))
+			openEditors.remove(name);
 	}
 }

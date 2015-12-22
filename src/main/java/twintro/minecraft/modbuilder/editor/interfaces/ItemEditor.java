@@ -46,7 +46,7 @@ public class ItemEditor extends JFrame {
 
 	public ItemEditor(ItemsActivityPanel parent ,List<String> models, String name) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 503, 246);
+		setBounds(100, 100, 500, 250);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
@@ -88,9 +88,15 @@ public class ItemEditor extends JFrame {
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
 		panel_1.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				saveItem();
+			}
+		});
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cancel();
 			}
 		});
 		panel_1.add(saveButton);

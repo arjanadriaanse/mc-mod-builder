@@ -40,7 +40,7 @@ public class ItemElement extends InventoryElement {
 			output = new ItemElement();
 			output.name = name;
 			output.item = item;
-			
+
 			if (item.model.startsWith("modbuilder:")){
 				String itemModelName = item.model.substring(11);
 				File itemModelFile = new File(ResourcePackGenerator.getURL(

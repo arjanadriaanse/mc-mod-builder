@@ -32,8 +32,7 @@ import javax.swing.ScrollPaneConstants;
 
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
-public abstract class ActivityPanel extends JPanel {
-	public Map<String, ImageIcon> elements;
+public abstract class ActivityPanel extends ListPanel {
 	public JList list;
 	public Editor main;
 	

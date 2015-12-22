@@ -34,7 +34,7 @@ public class Editor {
 	private boolean interfaceOpened = false;
 	
 	private JPanel activityPanel;
-	private ActivityPanel TexturePanel;
+	public ActivityPanel TexturePanel;
 	private ActivityPanel RecipePanel;
 	private ActivityPanel BlockPanel;
 	private ActivityPanel ItemPanel;

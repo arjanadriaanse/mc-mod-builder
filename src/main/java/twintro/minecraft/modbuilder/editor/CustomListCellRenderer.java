@@ -13,9 +13,9 @@ import scala.collection.immutable.List;
 
 public class CustomListCellRenderer extends DefaultListCellRenderer {
 	private Font font = new Font("Tahoma", Font.PLAIN, 15);
-	private ActivityPanel panel;
+	private ListPanel panel;
 	
-	public CustomListCellRenderer(ActivityPanel panel){
+	public CustomListCellRenderer(ListPanel panel){
 		super();
 		this.panel = panel;
 	}
