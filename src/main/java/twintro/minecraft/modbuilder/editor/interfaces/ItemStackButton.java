@@ -31,49 +31,53 @@ public class ItemStackButton extends JButton{
 		item = null;
 		this.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-						if (editor == null){
-							editor = new ItemStackEditor(thisButton, items);
-							WindowListener wlist = new WindowListener() {
-								@Override
-								public void windowClosing(WindowEvent arg0) {
-									if (!item.block.isEmpty()){
-											if (item.amount >= 0){
-												thisButton.setText(item.amount + " " + item.block);
-											} else thisButton.setText(1 + " " + item.block);
-										}
-									else if (!item.item.isEmpty()){
-										if (item.amount >= 0){
-											thisButton.setText(item.amount + " " + item.item);
-										} else thisButton.setText(1 + " " + item.item);
-									}
-								editor = null;
+				if (editor == null){
+					editor = new ItemStackEditor(thisButton, items);
+					
+					
+					
+					WindowListener wlist = new WindowListener() {
+					@Override
+					public void windowClosing(WindowEvent arg0) {
+						System.out.println("Yes");
+						if (!item.block.isEmpty()){
+								if (item.amount >= 0){
+									thisButton.setText(item.amount + " " + item.block);
+								} else thisButton.setText(1 + " " + item.block);
 							}
-
-								@Override
-								public void windowActivated(WindowEvent arg0) {
-									// TODO Auto-generated method stub
-									
-								}
-								@Override
-								public void windowClosed(WindowEvent arg0) {
-									// TODO Auto-generated method stub
-									
-								}
-								@Override
-								public void windowDeactivated(WindowEvent arg0) {
-									// TODO Auto-generated method stub
-									
-								}
-								@Override
-								public void windowDeiconified(WindowEvent arg0) {
-									// TODO Auto-generated method stub
-									
-								}
-								public void windowIconified(WindowEvent arg0) {	
-								}
-								public void windowOpened(WindowEvent arg0) {
-								} ;};
+						else if (!item.item.isEmpty()){
+							if (item.amount >= 0){
+								thisButton.setText(item.amount + " " + item.item);
+							} else thisButton.setText(1 + " " + item.item);
 						}
+					editor = null;
+				}
+
+					@Override
+					public void windowActivated(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					@Override
+					public void windowClosed(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					@Override
+					public void windowDeactivated(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					@Override
+					public void windowDeiconified(WindowEvent arg0) {
+						// TODO Auto-generated method stub
+						
+					}
+					public void windowIconified(WindowEvent arg0) {	
+					}
+					public void windowOpened(WindowEvent arg0) {
+					} ;};
+				}
 			}
 		});
 	}
