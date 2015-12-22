@@ -109,7 +109,11 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	public void actionPerformed(ActionEvent arg0) {
 		if (editor == null){
 			
-			editor = new ItemStackEditor(item, items, blocks, isProduct);
+			if (isProduct)
+			editor = new ItemStackEditor(item, items, blocks, isProduct, this.getParent().getParent().getParent().getParent().getParent()); //rofl
+			else 
+			editor = new ItemStackEditor(item, items, blocks, isProduct, this.getParent().getParent().getParent().getParent().getParent().getParent().getParent()); //rofl
+			
 			editor.addWindowListener(this);
 		}
 	}

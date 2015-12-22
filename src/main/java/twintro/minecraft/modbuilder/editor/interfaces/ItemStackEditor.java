@@ -1,8 +1,10 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.awt.BorderLayout;
+import java.awt.Container;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +15,7 @@ import java.util.List;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -29,7 +32,8 @@ import twintro.minecraft.modbuilder.editor.resources.Element;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import javax.swing.JRadioButton;
 
-public class ItemStackEditor extends JFrame {
+public class ItemStackEditor extends JDialog {
+
 
 	public boolean changed;
 	private ItemStackResource item;
@@ -48,7 +52,8 @@ public class ItemStackEditor extends JFrame {
 	private JComboBox comboBox;
 
 
-	public ItemStackEditor(ItemStackResource item ,List<ItemElement> items, List<BlockElement> blocks, boolean isProduct) {
+	public ItemStackEditor(ItemStackResource item ,List<ItemElement> items, List<BlockElement> blocks, boolean isProduct, Container parent) {
+		super((Frame) parent);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
