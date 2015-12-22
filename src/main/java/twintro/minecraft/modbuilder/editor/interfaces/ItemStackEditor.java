@@ -27,7 +27,8 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemStackEditor extends JFrame {
 
-	private ItemStackButton parent;
+	public boolean changed;
+	private ItemStackResource item;
 	private List<String> items;
 	private JPanel contentPane;
 	private JTextField stackSizeTextfield;
@@ -38,7 +39,7 @@ public class ItemStackEditor extends JFrame {
 	private JLabel modelLabel;
 	private JComboBox comboBox;
 
-	public ItemStackEditor(ItemStackButton parent ,List<String> items) {
+	public ItemStackEditor(ItemStackResource item ,List<String> items) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
@@ -83,16 +84,21 @@ public class ItemStackEditor extends JFrame {
 			}
 		});
 		panel_1.add(saveButton);
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cancel();
+			}
+		});
 		panel_1.add(cancelButton);
 		
 		setVisible(true);
 		
-		this.parent = parent;
+		
 
-		if (parent.item != null){
-			comboBox.setSelectedItem(parent.item);
-			containerTextfield.setText(parent.item.container);
-			stackSizeTextfield.setText(parent.item.amount +"");
+		if (item != null){
+			comboBox.setSelectedItem(item.item);
+			containerTextfield.setText(item.container);
+			stackSizeTextfield.setText(item.amount +"");
 		}
 	}
 	
@@ -100,12 +106,13 @@ public class ItemStackEditor extends JFrame {
 	
 	
 	private void saveItem(){
-		if (parent.item==null){parent.item = new ItemStackResource();}
+		if (item==null){item = new ItemStackResource();}
 		
 		if(!comboBox.getSelectedItem().toString().isEmpty()){
-		parent.item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
-		parent.item.amount = Integer.getInteger(stackSizeTextfield.getText());
-		parent.item.item = (String) comboBox.getSelectedItem();
+		item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
+		item.amount = Integer.getInteger(stackSizeTextfield.getText());
+		item.item = (String) comboBox.getSelectedItem();
+		changed = true;
 		
 		this.dispose();
 		} else {
@@ -115,7 +122,8 @@ public class ItemStackEditor extends JFrame {
 	}
 	
 	private void cancel(){
-		parent.item = null;
+		item = null;
+		changed = false;
 		this.dispose();
 	}
 		

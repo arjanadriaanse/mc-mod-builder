@@ -14,10 +14,10 @@ import javax.swing.JOptionPane;
 import sun.awt.WindowClosingListener;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 
-public class ItemStackButton extends JButton{
+public class ItemStackButton extends JButton implements WindowListener, ActionListener{
 	
 	List<String> items;
-	ItemStackResource item;
+	public ItemStackResource item;
 	ItemStackEditor editor = null;
 	ItemStackButton thisButton = this;
 	
@@ -29,57 +29,71 @@ public class ItemStackButton extends JButton{
 		items.add("SuperMegaDeathRocket");
 		//end to do
 		item = null;
-		this.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				if (editor == null){
-					editor = new ItemStackEditor(thisButton, items);
-					
-					
-					
-					WindowListener wlist = new WindowListener() {
-					@Override
-					public void windowClosing(WindowEvent arg0) {
-						System.out.println("Yes");
-						if (!item.block.isEmpty()){
-								if (item.amount >= 0){
-									thisButton.setText(item.amount + " " + item.block);
-								} else thisButton.setText(1 + " " + item.block);
-							}
-						else if (!item.item.isEmpty()){
-							if (item.amount >= 0){
-								thisButton.setText(item.amount + " " + item.item);
-							} else thisButton.setText(1 + " " + item.item);
-						}
-					editor = null;
-				}
-
-					@Override
-					public void windowActivated(WindowEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					@Override
-					public void windowClosed(WindowEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					@Override
-					public void windowDeactivated(WindowEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					@Override
-					public void windowDeiconified(WindowEvent arg0) {
-						// TODO Auto-generated method stub
-						
-					}
-					public void windowIconified(WindowEvent arg0) {	
-					}
-					public void windowOpened(WindowEvent arg0) {
-					} ;};
-				}
-			}
-		});
+		this.addActionListener(this);
 	}
-	
+
+	@Override
+	public void windowActivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowClosed(WindowEvent e) {
+
+		if (editor.changed){
+			if (item.block!=null &&
+					!item.block.isEmpty()){
+					if (item.amount >= 0){
+						thisButton.setText(item.amount + " " + item.block);
+					} else thisButton.setText(1 + " " + item.block);
+				}
+			else if (item.item !=null &&
+					!item.item.isEmpty()){
+				if (item.amount != null && item.amount > 0){
+					thisButton.setText(item.amount + " " + item.item);
+				} else thisButton.setText(1 + " " + item.item);
+			}
+		}
+		editor = null;
+	}
+
+	@Override
+	public void windowClosing(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeactivated(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowDeiconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowIconified(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void windowOpened(WindowEvent e) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void actionPerformed(ActionEvent arg0) {
+		if (editor == null){
+			editor = new ItemStackEditor(item, items);
+			editor.addWindowListener(this);
+		}
+	}
+
 }
