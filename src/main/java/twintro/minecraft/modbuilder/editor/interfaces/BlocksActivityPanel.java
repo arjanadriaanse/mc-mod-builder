@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.Iterator;
 
 import javax.swing.ImageIcon;
+import javax.swing.JOptionPane;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -18,13 +19,14 @@ import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class BlocksActivityPanel extends ActivityPanel {
-	public BlocksActivityPanel(String header, String button) {
-		super(header, button);
+	public BlocksActivityPanel(String header, String button, Editor main) {
+		super(header, button, main);
 	}
 
 	@Override
@@ -40,6 +42,12 @@ public class BlocksActivityPanel extends ActivityPanel {
 		createFile(block.blockstate, "assets/modbuilder/blockstates/" + block.name + ".json");
 		createFile(block.block, "assets/modbuilder/blocks/" + block.name + ".json");
 		addElement(block.name, block.getImage());
+		
+		main.metaFile.resource.modbuilder.blocks.add(block.name);
+		main.metaFile.save();
+		
+		main.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
+		main.langFile.save();
 	}
 	
 	public void createFile(Object model, String dir){
@@ -58,6 +66,19 @@ public class BlocksActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value, 
+				"Warning", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION){
+			ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
+			ResourcePackGenerator.deleteFile("assets/modbuilder/blockstates/" + value + ".json");
+			ResourcePackGenerator.deleteFile("assets/modbuilder/models/block/" + value + ".json");
+			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
+			removeElement(value);
+			main.metaFile.resource.modbuilder.blocks.remove(value);
+			main.metaFile.save();
+			main.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
+			main.langFile.save();
+		}
 	}
 	
 	@Override

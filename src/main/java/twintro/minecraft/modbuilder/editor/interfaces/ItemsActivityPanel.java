@@ -18,6 +18,7 @@ import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
@@ -26,13 +27,13 @@ public class ItemsActivityPanel extends ActivityPanel {
 
 	private List<String> models;
 	
-	public ItemsActivityPanel(String header, String button) {
-		super(header, button);
+	public ItemsActivityPanel(String header, String button, Editor main) {
+		super(header, button, main);
 		this.models = new ArrayList<String>();	
 	}
 	
-	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
-		super(header, button);
+	public ItemsActivityPanel(String header, String button, Editor main, ArrayList<String> models) {
+		super(header, button, main);
 		this.models = models;	
 	}
 	
@@ -48,6 +49,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 		createFile(item.itemModel, "assets/modbuilder/models/item/" + item.name + ".json");
 		createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
 		addElement(item.name, item.getImage());
+		
+		main.metaFile.resource.modbuilder.items.add(item.name);
+		main.metaFile.save();
+		
+		main.langFile.list.add("item.modbuilder_" + item.name + ".name=" + item.name);
+		main.langFile.save();
 	}
 	
 	public void createFile(Object model, String dir){
@@ -67,6 +74,17 @@ public class ItemsActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value, 
+				"Warning", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION){
+			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
+			ResourcePackGenerator.deleteFile("assets/modbuilder/items/" + value + ".json");
+			removeElement(value);
+			main.metaFile.resource.modbuilder.items.remove(value);
+			main.metaFile.save();
+			main.langFile.list.remove("item.modbuilder_" + value + ".name=" + value);
+			main.langFile.save();
+		}
 	}
 	
 	@Override

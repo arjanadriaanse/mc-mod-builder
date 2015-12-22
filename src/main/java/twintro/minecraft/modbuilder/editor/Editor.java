@@ -225,16 +225,16 @@ public class Editor {
 		ActivityPanel.setLayout(new CardLayout(0, 0));
 		activityPanel = ActivityPanel;
 		
-		TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
+		TexturePanel = new TexturesActivityPanel("Textures", "New Texture", this);
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe");
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe", this);
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
-		BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
+		BlockPanel = new BlocksActivityPanel("Blocks", "New Block", this);
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		ItemPanel = new ItemsActivityPanel("Items", "New Item");
+		ItemPanel = new ItemsActivityPanel("Items", "New Item", this);
 		ActivityPanel.add(ItemPanel, "Items");
 		
 		SwingUtilities.updateComponentTreeUI(frame);
