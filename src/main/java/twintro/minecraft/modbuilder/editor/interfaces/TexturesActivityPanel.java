@@ -15,13 +15,14 @@ import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class TexturesActivityPanel extends ActivityPanel {
 	TextureEditor editor;
 	
-	public TexturesActivityPanel(String header, String button) {
-		super(header, button);
+	public TexturesActivityPanel(String header, String button, Editor main) {
+		super(header, button, main);
 		editor = new TextureEditor(this);
 	}
 	

@@ -19,10 +19,7 @@ public abstract class InventoryElement extends Element {
 			if (textureNames.length > 0) texture = (String) textureNames[0];
 		}
 		if (texture != null){
-			if (texture.startsWith("modbuilder:")){
-				return new ImageIcon(ResourcePackGenerator.getURL(
-						"assets/modbuilder/textures/" + texture.substring(11) + ".png"));
-			}
+			return TextureResources.getImage(texture);
 		}
 		return null;
 	}

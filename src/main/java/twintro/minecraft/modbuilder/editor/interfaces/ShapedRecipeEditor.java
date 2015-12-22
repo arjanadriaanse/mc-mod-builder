@@ -12,6 +12,7 @@ import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 import java.awt.Component;
+
 public class ShapedRecipeEditor extends JFrame {
 
 	private JPanel contentPane;
