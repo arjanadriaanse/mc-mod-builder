@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -23,12 +24,19 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.Element;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import javax.swing.JRadioButton;
 
 public class ItemStackEditor extends JFrame {
 
 	public boolean changed;
 	private ItemStackResource item;
+	public ItemStackResource getItem(){
+		return item;
+	}
+	private boolean isProduct;
 	private List<String> items;
 	private JPanel contentPane;
 	private JTextField stackSizeTextfield;
@@ -39,7 +47,8 @@ public class ItemStackEditor extends JFrame {
 	private JLabel modelLabel;
 	private JComboBox comboBox;
 
-	public ItemStackEditor(ItemStackResource item ,List<String> items) {
+
+	public ItemStackEditor(ItemStackResource item ,List<ItemElement> items, List<BlockElement> blocks, boolean isProduct) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
@@ -51,20 +60,28 @@ public class ItemStackEditor extends JFrame {
 		contentPane.add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 2, 10, 10));
 		
-		modelLabel = new JLabel("Model"); //TODO fix after i get proper intel about what i should put here
+		modelLabel = new JLabel("Select the item");
 		panel.add(modelLabel);
 		
+		List<Element> elements = new ArrayList<Element>();
+		elements.addAll(blocks); elements.addAll(items);
 		comboBox = new JComboBox();
 		comboBox.setEditable(true);
-		comboBox.setModel(new DefaultComboBoxModel(items.toArray()));
+		comboBox.setModel(new DefaultComboBoxModel(elements.toArray()));
+		
 		panel.add(comboBox);
 		
-		JLabel stackSizeLabel = new JLabel("Amount to have in crafting");
-		panel.add(stackSizeLabel);
+		this.isProduct = isProduct;
 		
-		stackSizeTextfield = new JTextField();
-		panel.add(stackSizeTextfield);
-		stackSizeTextfield.setColumns(10);
+		if (isProduct){
+			JLabel stackSizeLabel = new JLabel("Amount to craft");
+			panel.add(stackSizeLabel);
+		
+			stackSizeTextfield = new JTextField();
+			panel.add(stackSizeTextfield);
+			stackSizeTextfield.setColumns(10);
+
+		}
 		
 		JLabel containerLabel = new JLabel("The container item");
 		panel.add(containerLabel);
@@ -72,7 +89,6 @@ public class ItemStackEditor extends JFrame {
 		containerTextfield = new JTextField();
 		panel.add(containerTextfield);
 		containerTextfield.setColumns(10);
-		
 		
 		
 		panel_1 = new JPanel();
@@ -98,22 +114,33 @@ public class ItemStackEditor extends JFrame {
 		if (item != null){
 			comboBox.setSelectedItem(item.item);
 			containerTextfield.setText(item.container);
-			stackSizeTextfield.setText(item.amount +"");
+			if (isProduct){
+				stackSizeTextfield.setText(item.amount +"");
+			}
 		}
 	}
-	
+		
 	
 	
 	
 	private void saveItem(){
 		if (item==null){item = new ItemStackResource();}
 		
+		
 		if(!comboBox.getSelectedItem().toString().isEmpty()){
 		item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
-		item.amount = Integer.getInteger(stackSizeTextfield.getText());
-		item.item = (String) comboBox.getSelectedItem();
-		changed = true;
 		
+		
+		if (comboBox.getSelectedItem() instanceof BlockElement) item.block = comboBox.getSelectedItem().toString();
+		else item.item = comboBox.getSelectedItem().toString();
+		
+		if (isProduct && !stackSizeTextfield.getText().isEmpty())
+			try{		
+				item.amount = Integer.valueOf(stackSizeTextfield.getText());
+			} catch (NumberFormatException e){
+			}
+
+		changed = true;
 		this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(this, "Please provide an item.", "Error", JOptionPane.ERROR_MESSAGE);

@@ -13,10 +13,14 @@ import javax.swing.JOptionPane;
 
 import sun.awt.WindowClosingListener;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemStackButton extends JButton implements WindowListener, ActionListener{
 	
-	List<String> items;
+	private boolean isProduct;
+	List<ItemElement> items;
+	List<BlockElement> blocks;
 	public ItemStackResource item;
 	ItemStackEditor editor = null;
 	ItemStackButton thisButton = this;
@@ -24,12 +28,25 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	ItemStackButton(String s){
 		super(s);
 		//TODO remove dummy itemlist
-		items = new ArrayList<String>();
-		items.add("dirt??");
-		items.add("SuperMegaDeathRocket");
+		items = new ArrayList<ItemElement>();
+		blocks = new ArrayList<BlockElement>();
+		BlockElement dirt = new BlockElement();
+		dirt.name = "dirt";
+		blocks.add(dirt);
+		ItemElement sMDR = new ItemElement();
+		sMDR.name = "SuperMegaDeahRocket";
+		items.add(sMDR);
 		//end to do
 		item = null;
+		isProduct = false;
 		this.addActionListener(this);
+	}
+	
+	public boolean getIsProduct(){
+		return isProduct;
+	}
+	public void setIsProduct(boolean value){
+		isProduct = value;
 	}
 
 	@Override
@@ -42,20 +59,20 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	public void windowClosed(WindowEvent e) {
 
 		if (editor.changed){
-			if (item.block!=null &&
-					!item.block.isEmpty()){
-					if (item.amount >= 0){
+			item = editor.getItem();
+			if (item.block!=null && !item.block.isEmpty()){
+					if (item.amount != null && item.amount != 0){
 						thisButton.setText(item.amount + " " + item.block);
-					} else thisButton.setText(1 + " " + item.block);
+					} else thisButton.setText(item.block);
 				}
-			else if (item.item !=null &&
-					!item.item.isEmpty()){
-				if (item.amount != null && item.amount > 0){
+			else if (item.item !=null && !item.item.isEmpty()){
+				if (item.amount != null && item.amount != 0){
 					thisButton.setText(item.amount + " " + item.item);
-				} else thisButton.setText(1 + " " + item.item);
+				} else thisButton.setText(item.item);
 			}
 		}
 		editor = null;
+		
 	}
 
 	@Override
@@ -91,7 +108,8 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		if (editor == null){
-			editor = new ItemStackEditor(item, items);
+			
+			editor = new ItemStackEditor(item, items, blocks, isProduct);
 			editor.addWindowListener(this);
 		}
 	}

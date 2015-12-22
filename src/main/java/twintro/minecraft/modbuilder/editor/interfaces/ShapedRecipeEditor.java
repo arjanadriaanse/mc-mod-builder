@@ -12,6 +12,8 @@ import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 import java.awt.Component;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class ShapedRecipeEditor extends JFrame {
 
@@ -82,6 +84,7 @@ public class ShapedRecipeEditor extends JFrame {
 		panel.add(buttons[8]);
 		
 		buttons[9] = new ItemStackButton("");
+		buttons[9].setIsProduct(true);
 		buttons[9].setBounds(365, 115, 80, 80);
 		
 		panel_3.add(buttons[9]);
@@ -96,8 +99,12 @@ public class ShapedRecipeEditor extends JFrame {
 		panel_2.add(saveButton);
 		
 		JButton cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				dispose();
+			}
+		});
 		cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(cancelButton);
 	}
-
 }
