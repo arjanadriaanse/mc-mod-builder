@@ -9,6 +9,9 @@ public class RecipeElement extends Element {
 	
 	@Override
 	public ImageIcon getImage() {
+		String outputName = recipe.output.item;
+		if (outputName == null) outputName = recipe.output.block;
+		
 		return null;
 	}
 }

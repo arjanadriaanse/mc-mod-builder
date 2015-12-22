@@ -128,8 +128,8 @@ public class ItemEditor extends JFrame {
 		ItemModelResource iModel = new ItemModelResource();
 		iModel.parent = "builtin/generated";
 		iModel.textures = new HashMap<String, String>();
-		iModel.textures.put("layer0", "modbuilder:"+item.model.split(":")[1]);
-		iModel.display = Display.REGULAR;
+		iModel.textures.put("layer0", item.model);
+		iModel.display = Display.regular();
 		
 		savable.item = item;
 		savable.itemModel = iModel;
