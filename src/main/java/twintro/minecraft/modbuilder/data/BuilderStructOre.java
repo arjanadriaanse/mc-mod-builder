@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-public class BuilderOregen implements IWorldGenerator {
+public class BuilderStructOre implements IWorldGenerator {
 	Block block;
 	int dimension;
 	int maxVeinSize;
@@ -17,7 +17,7 @@ public class BuilderOregen implements IWorldGenerator {
 	int minY;
 	int maxY;
 
-	public BuilderOregen(Block block, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
+	public BuilderStructOre(Block block, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
 		this.block = block;
 		this.dimension = dimension;
 		this.maxVeinSize = maxVeinSize;

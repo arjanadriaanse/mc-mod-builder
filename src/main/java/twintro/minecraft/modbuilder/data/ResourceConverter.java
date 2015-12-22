@@ -31,7 +31,8 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.structures.BaseStructureResource;
-import twintro.minecraft.modbuilder.data.resources.structures.OregenResource;
+import twintro.minecraft.modbuilder.data.resources.structures.GroundStructureResource;
+import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
 
 /**
  * Contains methods for converting resource objects to Minecraft objects.
@@ -135,19 +136,34 @@ public class ResourceConverter {
 	}
 	
 	public static IWorldGenerator toStructure(BaseStructureResource resource) {
-		if (resource instanceof OregenResource)
-			return toStructure((OregenResource) resource);
+		if (resource instanceof OreStructureResource)
+			return toStructure((OreStructureResource) resource);
+		else if (resource instanceof GroundStructureResource)
+			return toStructure((GroundStructureResource) resource);
 		return null;
 	}
 	
-	public static IWorldGenerator toStructure(OregenResource resource) {
-		BuilderOregen structure = new BuilderOregen(
+	public static IWorldGenerator toStructure(OreStructureResource resource) {
+		BuilderStructOre structure = new BuilderStructOre(
 				Block.getBlockFromName(resource.block),
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
 				resource.chancestospawn !=null ? resource.chancestospawn : 16,
 				resource.minY           !=null ? resource.minY           : 1,
 				resource.maxY           !=null ? resource.maxY           : 64);
+		return structure;
+	}
+	
+	public static IWorldGenerator toStructure(GroundStructureResource resource) {
+		Set onlyonblocks = new LinkedHashSet();
+		if (resource.onlyonblocks != null) {
+			for (String key : resource.onlyonblocks)
+				onlyonblocks.add(Block.getBlockFromName(key));
+		}
+		BuilderStructGround structure = new BuilderStructGround(
+				Block.getBlockFromName(resource.block), onlyonblocks,
+				resource.dimension      !=null ? resource.dimension      : 0,
+				resource.amountperchunk !=null ? resource.amountperchunk : 32);
 		return structure;
 	}
 

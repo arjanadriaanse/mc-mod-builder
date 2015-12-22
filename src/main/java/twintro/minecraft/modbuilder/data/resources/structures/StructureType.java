@@ -1,7 +1,8 @@
 package twintro.minecraft.modbuilder.data.resources.structures;
 
 public enum StructureType {
-	ore(OregenResource.class);
+	ore(OreStructureResource.class),
+	ground(GroundStructureResource.class);
 
 	private Class<? extends BaseStructureResource> value;
 
