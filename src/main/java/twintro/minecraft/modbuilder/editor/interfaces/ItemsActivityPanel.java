@@ -2,8 +2,10 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JOptionPane;
@@ -15,27 +17,27 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
 	private List<String> models;
-	private Set<String> openEditors;
+	private Map<String,NewItemEditor> openEditors;
 	
 	public ItemsActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
 		this.models = new ArrayList<String>();
-		this.openEditors = new HashSet<String>();
+		this.openEditors = new HashMap<String,NewItemEditor>();
 	}
 	
 	public ItemsActivityPanel(String header, String button, Editor main, ArrayList<String> models) {
 		super(header, button, main);
 		this.models = models;
-		this.openEditors = new HashSet<String>();
+		this.openEditors = new HashMap<String,NewItemEditor>();
 	}
 	
 	@Override
 	protected void add() {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.contains(name)){
-				new NewItemEditor(name, this);
-				openEditors.add(name);
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				NewItemEditor editor = new NewItemEditor(name, this);
+				openEditors.put(name, editor);
 			}
 		}
 		/*
@@ -70,9 +72,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
 		try {
-			if (!openEditors.contains(value)){
-				new NewItemEditor(this, ItemElement.getFromName(value));
-				openEditors.add(value);
+			if (!openEditors.containsKey(value)){
+				NewItemEditor editor = new NewItemEditor(this, ItemElement.getFromName(value));
+				openEditors.put(value,editor);
+			}
+			else {
+				openEditors.get(value).setVisible(true);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -114,7 +119,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 	}
 	
 	public void closeEditor(String name){
-		if (openEditors.contains(name))
+		if (openEditors.containsKey(name))
 			openEditors.remove(name);
 	}
 }

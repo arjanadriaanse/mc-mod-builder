@@ -56,9 +56,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JButton btnAddItem = new JButton("Save Item");
-		panel.add(btnAddItem);
-		btnAddItem.addActionListener(new ActionListener() {
+		JButton btnSaveItem = new JButton("Save Item");
+		panel.add(btnSaveItem);
+		btnSaveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				saveItem();
 			}
@@ -197,8 +197,10 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	public NewItemEditor(ItemsActivityPanel main, ItemElement item){
 		this(item.name, main);
 		
-		if (item.itemModel.textures.containsKey("layer0"))
+		if (item.itemModel.textures.containsKey("layer0")) {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
+			setIconImage(main.main.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
+		}
 		if (item.item.stacksize != null)
 			stackSizeSpinner.setValue(item.item.stacksize);
 		if (item.item.container != null){
@@ -274,6 +276,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	@Override
 	public void choose(String texture) {
 		textureLabel.setText(texture);
+		setIconImage(main.main.TexturePanel.elements.get(texture.split(":")[1]).getImage());
 		textureChooserIsOpen = false;
 	}
 }
