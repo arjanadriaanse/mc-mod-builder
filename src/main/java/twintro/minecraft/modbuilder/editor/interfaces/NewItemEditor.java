@@ -47,8 +47,14 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private ItemsActivityPanel main;
 	private boolean textureChooserIsOpen = false;
 	JRadioButton radioItemButton, radioFoodButton, radioToolButton;
-	JRadioButton radioRepairBlock, radioRepairItem;
 	private JTextField damageTextField;
+	private JButton repairThingButton;
+	private JCheckBox useRepairThingsBox;
+	private JSpinner enchantabillitySpinner;
+	private JButton blockAddButton;
+	private JSpinner harvestLevelSpinner;
+	private JSpinner efficiencySpinner;
+	private JSpinner durabillitySpinner;
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -56,7 +62,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		this.name = name;
 		this.main = main;
 		
-		setBounds(100, 100, 479, 556);
+		setBounds(100, 100, 479, 663);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Edit Item: " + name);
 		
@@ -238,15 +244,17 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_3.add(panel_14);
 		panel_14.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner durabillitySpinner = new JSpinner();
-		panel_14.add(durabillitySpinner, BorderLayout.NORTH);
+		durabillitySpinner = new JSpinner();
+		
+		panel_14.add(durabillitySpinner);
+		
 		
 		JPanel panel_15 = new JPanel();
 		panel_3.add(panel_15);
 		panel_15.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner efficiencySpinner = new JSpinner();
-		panel_15.add(efficiencySpinner, BorderLayout.NORTH);
+		efficiencySpinner = new JSpinner();
+		panel_15.add(efficiencySpinner);
 		
 		JPanel panel_16 = new JPanel();
 		panel_3.add(panel_16);
@@ -260,7 +268,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_3.add(panel_17);
 		panel_17.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner harvestLevelSpinner = new JSpinner();
+		harvestLevelSpinner = new JSpinner();
 		panel_17.add(harvestLevelSpinner);
 		
 		JPanel panel_18 = new JPanel();
@@ -270,7 +278,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		JLabel blocksLabel = new JLabel("");
 		panel_18.add(blocksLabel);
 		
-		JButton blockAddButton = new JButton("Add blocks");
+		blockAddButton = new JButton("Add blocks");
 		blockAddButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			}
@@ -281,36 +289,31 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_3.add(panel_19);
 		panel_19.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner enchantabillitySpinner = new JSpinner();
+		enchantabillitySpinner = new JSpinner();
 		panel_19.add(enchantabillitySpinner);
 		
 		JPanel panel_20 = new JPanel();
 		panel_3.add(panel_20);
+		panel_20.setLayout(new BorderLayout(0, 0));
 		
+		JPanel panel_21 = new JPanel();
+		panel_20.add(panel_21, BorderLayout.CENTER);
+		panel_21.setLayout(new BorderLayout(0, 0));
 		
-		radioRepairBlock = new JRadioButton("Block");
-		radioRepairBlock.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				radioRepairItem.setSelected(false);
-				radioRepairBlock.setSelected(true);
-			}
-		});
-		panel_20.add(radioRepairBlock);
+		JLabel repairThingLabel = new JLabel("");
+		panel_21.add(repairThingLabel);
 		
-		radioRepairItem = new JRadioButton("Item");
-		radioRepairItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				radioRepairItem.setSelected(true);
-				radioRepairBlock.setSelected(false);
-			}
-		});
-		panel_20.add(radioRepairItem);
+		repairThingButton = new JButton("Choose");
+		panel_21.add(repairThingButton, BorderLayout.EAST);
+		
+		useRepairThingsBox = new JCheckBox("Use");
+		panel_20.add(useRepairThingsBox, BorderLayout.EAST);
 		
 		JPanel panel_10 = new JPanel();
 		panel_1.add(panel_10, BorderLayout.NORTH);
 		panel_10.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 		
-		JLabel lblNewLabel_3 = new JLabel("Itemtype");
+		JLabel lblNewLabel_3 = new JLabel("Itemtype:");
 		panel_10.add(lblNewLabel_3);
 		
 		JPanel panel_11 = new JPanel();
@@ -325,6 +328,15 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				radioFoodButton.setSelected(false);
 				radioItemButton.setSelected(true);
 				radioToolButton.setSelected(false);
+				durabillitySpinner.setEnabled(radioToolButton.isSelected());
+				efficiencySpinner.setEnabled(radioToolButton.isSelected());
+				harvestLevelSpinner.setEnabled(radioToolButton.isSelected());
+				damageTextField.setEnabled(radioToolButton.isSelected());
+				enchantabillitySpinner.setEnabled(radioToolButton.isSelected());
+				blockAddButton.setEnabled(radioToolButton.isSelected());
+				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
+				repairThingButton.setEnabled(radioToolButton.isSelected());
+				
 			}
 		});
 		panel_11.add(radioItemButton);
@@ -341,6 +353,15 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				radioFoodButton.setSelected(false);
 				radioToolButton.setSelected(true);
 				radioItemButton.setSelected(false);
+				durabillitySpinner.setEnabled(radioToolButton.isSelected());
+				efficiencySpinner.setEnabled(radioToolButton.isSelected());
+				harvestLevelSpinner.setEnabled(radioToolButton.isSelected());
+				damageTextField.setEnabled(radioToolButton.isSelected());
+				enchantabillitySpinner.setEnabled(radioToolButton.isSelected());
+				blockAddButton.setEnabled(radioToolButton.isSelected());
+				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
+				repairThingButton.setEnabled(radioToolButton.isSelected());
+				
 			}
 		});
 		panel_13.add(radioToolButton);
@@ -357,12 +378,30 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				radioFoodButton.setSelected(true);
 				radioItemButton.setSelected(false);
 				radioToolButton.setSelected(false);
+				durabillitySpinner.setEnabled(radioToolButton.isSelected());
+				efficiencySpinner.setEnabled(radioToolButton.isSelected());
+				harvestLevelSpinner.setEnabled(radioToolButton.isSelected());
+				damageTextField.setEnabled(radioToolButton.isSelected());
+				enchantabillitySpinner.setEnabled(radioToolButton.isSelected());
+				blockAddButton.setEnabled(radioToolButton.isSelected());
+				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
+				repairThingButton.setEnabled(radioToolButton.isSelected());
+				
 			}
 		});
 		panel_12.add(radioFoodButton);
 		if (iTypeIndex ==1) radioToolButton.setSelected(true);
 		if (iTypeIndex ==2) radioFoodButton.setSelected(true);
 		if (iTypeIndex ==0) radioItemButton.setSelected(true);
+		
+		durabillitySpinner.setEnabled(radioToolButton.isSelected());
+		efficiencySpinner.setEnabled(radioToolButton.isSelected());
+		harvestLevelSpinner.setEnabled(radioToolButton.isSelected());
+		damageTextField.setEnabled(radioToolButton.isSelected());
+		enchantabillitySpinner.setEnabled(radioToolButton.isSelected());
+		blockAddButton.setEnabled(radioToolButton.isSelected());
+		useRepairThingsBox.setEnabled(radioToolButton.isSelected());
+		repairThingButton.setEnabled(radioToolButton.isSelected());
 		
 		setVisible(true);
 	}
