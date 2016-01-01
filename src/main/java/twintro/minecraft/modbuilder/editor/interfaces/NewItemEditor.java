@@ -28,9 +28,11 @@ import javax.swing.SpinnerNumberModel;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
+import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import javax.swing.JRadioButton;
 
 public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel textureLabel;
@@ -44,15 +46,17 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private String name;
 	private ItemsActivityPanel main;
 	private boolean textureChooserIsOpen = false;
-	
+	JRadioButton radioItemButton, radioFoodButton, radioToolButton;
+	JRadioButton radioRepairBlock, radioRepairItem;
+	private JTextField damageTextField;
 	/**
 	 * @wbp.parser.constructor
 	 */
-	public NewItemEditor(String name, ItemsActivityPanel main) {
+	public NewItemEditor(String name, ItemsActivityPanel main, int iTypeIndex) {
 		this.name = name;
 		this.main = main;
 		
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 479, 556);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Edit Item: " + name);
 		
@@ -100,6 +104,29 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		JLabel lblLabel_3 = new JLabel("Creative tabs");
 		panel_2.add(lblLabel_3);
+		
+		JLabel lblNewLabel_4 = new JLabel("Durabillity");
+		panel_2.add(lblNewLabel_4);
+		
+		JLabel lblNewLabel_5 = new JLabel("Efficiency");
+		lblNewLabel_5.setToolTipText("How fast it will destroy blocks");
+		panel_2.add(lblNewLabel_5);
+		
+		JLabel lblNewLabel_6 = new JLabel("Damage");
+		panel_2.add(lblNewLabel_6);
+		
+		JLabel lblNewLabel_7 = new JLabel("Harvestlevel");
+		lblNewLabel_7.setToolTipText("The level of hardest, 0=wood, 2=iron, etc.");
+		panel_2.add(lblNewLabel_7);
+		
+		JLabel lblNewLabel_8 = new JLabel("Affected blocks");
+		panel_2.add(lblNewLabel_8);
+		
+		JLabel lblNewLabel_9 = new JLabel("Enchantabillity");
+		panel_2.add(lblNewLabel_9);
+		
+		JLabel lblNewLabel_10 = new JLabel("Repair item/block");
+		panel_2.add(lblNewLabel_10);
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.CENTER);
@@ -207,12 +234,142 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		tabsLabel = new JLabel("");
 		panel_9.add(tabsLabel, BorderLayout.CENTER);
 		
+		JPanel panel_14 = new JPanel();
+		panel_3.add(panel_14);
+		panel_14.setLayout(new BorderLayout(0, 0));
+		
+		JSpinner durabillitySpinner = new JSpinner();
+		panel_14.add(durabillitySpinner, BorderLayout.NORTH);
+		
+		JPanel panel_15 = new JPanel();
+		panel_3.add(panel_15);
+		panel_15.setLayout(new BorderLayout(0, 0));
+		
+		JSpinner efficiencySpinner = new JSpinner();
+		panel_15.add(efficiencySpinner, BorderLayout.NORTH);
+		
+		JPanel panel_16 = new JPanel();
+		panel_3.add(panel_16);
+		panel_16.setLayout(new BorderLayout(0, 0));
+		
+		damageTextField = new JTextField();
+		panel_16.add(damageTextField);
+		damageTextField.setColumns(10);
+		
+		JPanel panel_17 = new JPanel();
+		panel_3.add(panel_17);
+		panel_17.setLayout(new BorderLayout(0, 0));
+		
+		JSpinner harvestLevelSpinner = new JSpinner();
+		panel_17.add(harvestLevelSpinner);
+		
+		JPanel panel_18 = new JPanel();
+		panel_3.add(panel_18);
+		panel_18.setLayout(new BorderLayout(0, 0));
+		
+		JLabel blocksLabel = new JLabel("");
+		panel_18.add(blocksLabel);
+		
+		JButton blockAddButton = new JButton("Add blocks");
+		blockAddButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			}
+		});
+		panel_18.add(blockAddButton, BorderLayout.EAST);
+		
+		JPanel panel_19 = new JPanel();
+		panel_3.add(panel_19);
+		panel_19.setLayout(new BorderLayout(0, 0));
+		
+		JSpinner enchantabillitySpinner = new JSpinner();
+		panel_19.add(enchantabillitySpinner);
+		
+		JPanel panel_20 = new JPanel();
+		panel_3.add(panel_20);
+		
+		
+		radioRepairBlock = new JRadioButton("Block");
+		radioRepairBlock.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radioRepairItem.setSelected(false);
+				radioRepairBlock.setSelected(true);
+			}
+		});
+		panel_20.add(radioRepairBlock);
+		
+		radioRepairItem = new JRadioButton("Item");
+		radioRepairItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radioRepairItem.setSelected(true);
+				radioRepairBlock.setSelected(false);
+			}
+		});
+		panel_20.add(radioRepairItem);
+		
+		JPanel panel_10 = new JPanel();
+		panel_1.add(panel_10, BorderLayout.NORTH);
+		panel_10.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
+		
+		JLabel lblNewLabel_3 = new JLabel("Itemtype");
+		panel_10.add(lblNewLabel_3);
+		
+		JPanel panel_11 = new JPanel();
+		panel_10.add(panel_11);
+		
+		JLabel lblNewLabel = new JLabel("regular item");
+		panel_11.add(lblNewLabel);
+		
+		radioItemButton = new JRadioButton("");
+		radioItemButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				radioFoodButton.setSelected(false);
+				radioItemButton.setSelected(true);
+				radioToolButton.setSelected(false);
+			}
+		});
+		panel_11.add(radioItemButton);
+		
+		JPanel panel_13 = new JPanel();
+		panel_10.add(panel_13);
+		
+		JLabel lblNewLabel_1 = new JLabel("tool item");
+		panel_13.add(lblNewLabel_1);
+		
+		radioToolButton = new JRadioButton("");
+		radioToolButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				radioFoodButton.setSelected(false);
+				radioToolButton.setSelected(true);
+				radioItemButton.setSelected(false);
+			}
+		});
+		panel_13.add(radioToolButton);
+		
+		JPanel panel_12 = new JPanel();
+		panel_10.add(panel_12);
+		
+		JLabel lblNewLabel_2 = new JLabel("food item");
+		panel_12.add(lblNewLabel_2);
+		
+		radioFoodButton = new JRadioButton("");
+		radioFoodButton.addActionListener(new ActionListener(){
+			public void actionPerformed(ActionEvent e){
+				radioFoodButton.setSelected(true);
+				radioItemButton.setSelected(false);
+				radioToolButton.setSelected(false);
+			}
+		});
+		panel_12.add(radioFoodButton);
+		if (iTypeIndex ==1) radioToolButton.setSelected(true);
+		if (iTypeIndex ==2) radioFoodButton.setSelected(true);
+		if (iTypeIndex ==0) radioItemButton.setSelected(true);
+		
 		setVisible(true);
 	}
 	
-	public NewItemEditor(ItemsActivityPanel main, ItemElement item){
-		this(item.name, main);
-		
+	public NewItemEditor(ItemsActivityPanel main, ItemElement item, int iTypeIndex, boolean constructorhelper){
+		this(item.name, main, iTypeIndex);
+		 
 		if (item.itemModel.textures.containsKey("layer0")) {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
 			setIconImage(main.main.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
@@ -232,7 +389,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		for (TabResource s : ((ItemResource)item.item).tabs)
 			selectTab(s.name());
 	}
-	
+
 	private void resetTab(){
 		tabsLabel.setText("");
 	}

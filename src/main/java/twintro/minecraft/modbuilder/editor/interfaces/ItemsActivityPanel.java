@@ -14,6 +14,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
@@ -41,7 +42,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this);
+				NewItemEditor editor = new NewItemEditor(name, this, 0);
 				openEditors.put(name, editor);
 			}
 		}
@@ -57,7 +58,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this);
+				NewItemEditor editor = new NewItemEditor(name, this, 1);
 				openEditors.put(name, editor);
 			}
 		}
@@ -67,7 +68,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this);
+				NewItemEditor editor = new NewItemEditor(name, this, 2);
 				openEditors.put(name, editor);
 			}
 		}
@@ -98,7 +99,11 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String value = (String) list.getSelectedValue();
 		try {
 			if (!openEditors.containsKey(value)){
-				NewItemEditor editor = new NewItemEditor(this, ItemElement.getFromName(value));
+				int iTypeIndex;
+				if (ItemElement.getFromName(value).item.type == ItemType.food) iTypeIndex = 2;
+				else if (ItemElement.getFromName(value).item.type == ItemType.tool) iTypeIndex = 1;
+				else iTypeIndex = 0;
+				NewItemEditor editor = new NewItemEditor(this, ItemElement.getFromName(value), iTypeIndex, true);
 				openEditors.put(value,editor);
 			}
 			else {
