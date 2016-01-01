@@ -33,6 +33,8 @@ import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import javax.swing.JRadioButton;
+import java.awt.GridBagLayout;
+import java.awt.GridBagConstraints;
 
 public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel textureLabel;
@@ -55,6 +57,13 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JSpinner harvestLevelSpinner;
 	private JSpinner efficiencySpinner;
 	private JSpinner durabillitySpinner;
+	private JTextField saturationTextField;
+	private JCheckBox wolfCheckBox;
+	private JCheckBox edibleCheckBox;
+	private JSpinner effectIndexSpinner;
+	private JSpinner potionIDSpinner;
+	private JSpinner durationSpinner;
+	private JSpinner amplifierSpinner;
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -62,7 +71,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		this.name = name;
 		this.main = main;
 		
-		setBounds(100, 100, 479, 663);
+		setBounds(100, 100, 479, 701);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Edit Item: " + name);
 		
@@ -94,6 +103,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_1.add(panel_2, BorderLayout.WEST);
 		panel_2.setLayout(new GridLayout(0, 1, 0, 5));
 		
+		JLabel lblNewLabel_16 = new JLabel("");
+		panel_2.add(lblNewLabel_16);
+		
 		JLabel lblModel = new JLabel("Texture");
 		panel_2.add(lblModel);
 		
@@ -110,6 +122,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		JLabel lblLabel_3 = new JLabel("Creative tabs");
 		panel_2.add(lblLabel_3);
+		
+		JLabel lblNewLabel_11 = new JLabel("");
+		panel_2.add(lblNewLabel_11);
 		
 		JLabel lblNewLabel_4 = new JLabel("Durabillity");
 		panel_2.add(lblNewLabel_4);
@@ -134,9 +149,27 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		JLabel lblNewLabel_10 = new JLabel("Repair item/block");
 		panel_2.add(lblNewLabel_10);
 		
+		JLabel lblNewLabel_12 = new JLabel("");
+		panel_2.add(lblNewLabel_12);
+		
+		JLabel label_1 = new JLabel("Saturation");
+		panel_2.add(label_1);
+		
+		JLabel label_2 = new JLabel("");
+		panel_2.add(label_2);
+		
+		JLabel label_3 = new JLabel("Potion effects");
+		panel_2.add(label_3);
+		
+		JLabel lblNewLabel_13 = new JLabel("");
+		panel_2.add(lblNewLabel_13);
+		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.CENTER);
 		panel_3.setLayout(new GridLayout(0, 1, 0, 5));
+		
+		JLabel lblNewLabel_15 = new JLabel("Generic item options:");
+		panel_3.add(lblNewLabel_15);
 		
 		JPanel panel_7 = new JPanel();
 		panel_3.add(panel_7);
@@ -240,6 +273,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		tabsLabel = new JLabel("");
 		panel_9.add(tabsLabel, BorderLayout.CENTER);
 		
+		JLabel label = new JLabel("Tool options:");
+		panel_3.add(label);
+		
 		JPanel panel_14 = new JPanel();
 		panel_3.add(panel_14);
 		panel_14.setLayout(new BorderLayout(0, 0));
@@ -308,6 +344,11 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		useRepairThingsBox = new JCheckBox("Use");
 		panel_20.add(useRepairThingsBox, BorderLayout.EAST);
+		useRepairThingsBox.setEnabled(radioToolButton.isSelected());
+		repairThingButton.setEnabled(radioToolButton.isSelected());
+		
+		JLabel lblNewLabel_14 = new JLabel("Food options:");
+		panel_3.add(lblNewLabel_14);
 		
 		JPanel panel_10 = new JPanel();
 		panel_1.add(panel_10, BorderLayout.NORTH);
@@ -337,6 +378,13 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
 				repairThingButton.setEnabled(radioToolButton.isSelected());
 				
+				saturationTextField.setEnabled(radioFoodButton.isSelected());
+				wolfCheckBox.setEnabled(radioFoodButton.isSelected());
+				edibleCheckBox.setEnabled(radioFoodButton.isSelected());
+				potionIDSpinner.setEnabled(radioFoodButton.isSelected());
+				effectIndexSpinner.setEnabled(radioFoodButton.isSelected());
+				durationSpinner.setEnabled(radioFoodButton.isSelected());
+				amplifierSpinner.setEnabled(radioFoodButton.isSelected());
 			}
 		});
 		panel_11.add(radioItemButton);
@@ -361,7 +409,14 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				blockAddButton.setEnabled(radioToolButton.isSelected());
 				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
 				repairThingButton.setEnabled(radioToolButton.isSelected());
-				
+								
+				saturationTextField.setEnabled(radioFoodButton.isSelected());
+				wolfCheckBox.setEnabled(radioFoodButton.isSelected());
+				edibleCheckBox.setEnabled(radioFoodButton.isSelected());
+				potionIDSpinner.setEnabled(radioFoodButton.isSelected());
+				effectIndexSpinner.setEnabled(radioFoodButton.isSelected());
+				durationSpinner.setEnabled(radioFoodButton.isSelected());
+				amplifierSpinner.setEnabled(radioFoodButton.isSelected());
 			}
 		});
 		panel_13.add(radioToolButton);
@@ -371,6 +426,81 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		JLabel lblNewLabel_2 = new JLabel("food item");
 		panel_12.add(lblNewLabel_2);
+		
+		JPanel panel_25 = new JPanel();
+		panel_3.add(panel_25);
+		panel_25.setLayout(new BorderLayout(0, 0));
+		
+		saturationTextField = new JTextField();
+		panel_25.add(saturationTextField);
+		saturationTextField.setColumns(10);
+		
+		JPanel panel_24 = new JPanel();
+		panel_3.add(panel_24);
+		panel_24.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_26 = new JPanel();
+		panel_24.add(panel_26);
+		panel_26.setLayout(new BorderLayout(0, 0));
+		
+		wolfCheckBox = new JCheckBox("Wolf");
+		panel_26.add(wolfCheckBox);
+		
+		JPanel panel_27 = new JPanel();
+		panel_24.add(panel_27);
+		panel_27.setLayout(new BorderLayout(0, 0));
+		
+		edibleCheckBox = new JCheckBox("Always edible");
+		panel_27.add(edibleCheckBox, BorderLayout.NORTH);
+		
+		JPanel panel_23 = new JPanel();
+		panel_3.add(panel_23);
+		panel_23.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_28 = new JPanel();
+		panel_23.add(panel_28);
+		panel_28.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblNewLabel_17 = new JLabel("Editor index");
+		panel_28.add(lblNewLabel_17);
+		
+		effectIndexSpinner = new JSpinner();
+		panel_28.add(effectIndexSpinner);
+		
+		JPanel panel_29 = new JPanel();
+		panel_23.add(panel_29);
+		panel_29.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblPotionid = new JLabel("PotionID");
+		panel_29.add(lblPotionid);
+		
+		potionIDSpinner = new JSpinner();
+		panel_29.add(potionIDSpinner);
+		
+		JPanel panel_22 = new JPanel();
+		panel_3.add(panel_22);
+		panel_22.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JPanel panel_30 = new JPanel();
+		panel_22.add(panel_30);
+		panel_30.setLayout(new GridLayout(0, 2, 0, 0));
+		
+		JLabel lblDuration = new JLabel("Duration");
+		panel_30.add(lblDuration);
+		
+		durationSpinner = new JSpinner();
+		panel_30.add(durationSpinner);
+		
+		JPanel panel_31 = new JPanel();
+		panel_22.add(panel_31);
+		panel_31.setLayout(new GridLayout(1, 0, 0, 0));
+		
+		JLabel lblNewLabel_18 = new JLabel("Amplifier");
+		panel_31.add(lblNewLabel_18);
+		
+		amplifierSpinner = new JSpinner();
+		panel_31.add(amplifierSpinner);
+		
 		
 		radioFoodButton = new JRadioButton("");
 		radioFoodButton.addActionListener(new ActionListener(){
@@ -386,6 +516,14 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				blockAddButton.setEnabled(radioToolButton.isSelected());
 				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
 				repairThingButton.setEnabled(radioToolButton.isSelected());
+
+				saturationTextField.setEnabled(radioFoodButton.isSelected());
+				wolfCheckBox.setEnabled(radioFoodButton.isSelected());
+				edibleCheckBox.setEnabled(radioFoodButton.isSelected());
+				potionIDSpinner.setEnabled(radioFoodButton.isSelected());
+				effectIndexSpinner.setEnabled(radioFoodButton.isSelected());
+				durationSpinner.setEnabled(radioFoodButton.isSelected());
+				amplifierSpinner.setEnabled(radioFoodButton.isSelected());
 				
 			}
 		});
@@ -400,8 +538,15 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		damageTextField.setEnabled(radioToolButton.isSelected());
 		enchantabillitySpinner.setEnabled(radioToolButton.isSelected());
 		blockAddButton.setEnabled(radioToolButton.isSelected());
-		useRepairThingsBox.setEnabled(radioToolButton.isSelected());
-		repairThingButton.setEnabled(radioToolButton.isSelected());
+
+
+saturationTextField.setEnabled(radioFoodButton.isSelected());
+wolfCheckBox.setEnabled(radioFoodButton.isSelected());
+edibleCheckBox.setEnabled(radioFoodButton.isSelected());
+potionIDSpinner.setEnabled(radioFoodButton.isSelected());
+effectIndexSpinner.setEnabled(radioFoodButton.isSelected());
+durationSpinner.setEnabled(radioFoodButton.isSelected());
+amplifierSpinner.setEnabled(radioFoodButton.isSelected());
 		
 		setVisible(true);
 	}
