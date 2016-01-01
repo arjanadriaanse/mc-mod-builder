@@ -1,4 +1,6 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -8,8 +10,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
+import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
@@ -46,6 +51,26 @@ public class ItemsActivityPanel extends ActivityPanel {
 			if (name.replaceAll(" ", "").length() > 0)
 				new ItemEditor(this ,models, name);
 		*/
+	}
+	
+	protected void addTool(){
+		String name = JOptionPane.showInputDialog("Item name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				NewItemEditor editor = new NewItemEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
+	}
+	
+	protected void addFood(){
+		String name = JOptionPane.showInputDialog("Item name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				NewItemEditor editor = new NewItemEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
 	}
 	
 	public void addItem(ItemElement item){
@@ -121,5 +146,26 @@ public class ItemsActivityPanel extends ActivityPanel {
 	public void closeEditor(String name){
 		if (openEditors.containsKey(name))
 			openEditors.remove(name);
+	}
+	
+	@Override
+	protected void createButtonPanel(JPanel buttonPanel, String button) {
+		JButton toolButton = new ActivityButton("New tool");
+		toolButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addTool();
+			}
+		});
+		buttonPanel.add(toolButton);
+		
+		JButton foodButton = new ActivityButton("New food");
+		foodButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addFood();
+			}
+		});
+		buttonPanel.add(foodButton);
+		
+		super.createButtonPanel(buttonPanel, button);
 	}
 }

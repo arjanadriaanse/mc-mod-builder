@@ -7,6 +7,6 @@
       "blocks":["compressedcobble","notdirt"],
       "items":["applepie","applepiedough","megasword","sandshovel","seedhump","seedstew"],
       "recipes":["shaped","shaped2","shaped3","shaped4","shaped5","shaped6","shaped7","shapeless","shapeless2","shapeless3","shapeless4","smelting"],
-      "structures":["diamond","grass","sand"]
+      "structures":["diamond","1grass","2grass","3grass","4grass","5grass","6grass","1sand","2sand","3sand","4sand","5sand","6sand"]
    }
 }

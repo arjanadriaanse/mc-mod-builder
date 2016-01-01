@@ -40,10 +40,14 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JCheckBox burntimeCheckbox;
 	private JSpinner burntimeSpinner;
 	private JLabel tabsLabel;
+	private JButton chooseContainerButton;
 	private String name;
 	private ItemsActivityPanel main;
 	private boolean textureChooserIsOpen = false;
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public NewItemEditor(String name, ItemsActivityPanel main) {
 		this.name = name;
 		this.main = main;
@@ -126,15 +130,21 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_6.setLayout(new BorderLayout(0, 0));
 		
 		containerCheckbox = new JCheckBox("Use");
+		containerCheckbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chooseContainerButton.setEnabled(containerCheckbox.isSelected());
+			}
+		});
 		panel_6.add(containerCheckbox, BorderLayout.EAST);
 		
 		JPanel panel_8 = new JPanel();
 		panel_6.add(panel_8, BorderLayout.CENTER);
 		panel_8.setLayout(new BorderLayout(0, 0));
 		
-		JButton btnChoose_1 = new JButton("Choose");
-		panel_8.add(btnChoose_1, BorderLayout.EAST);
-		btnChoose_1.addActionListener(new ActionListener() {
+		chooseContainerButton = new JButton("Choose");
+		panel_8.add(chooseContainerButton, BorderLayout.EAST);
+		chooseContainerButton.setEnabled(false);
+		chooseContainerButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				chooseContainer();
 			}
@@ -149,10 +159,16 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_5.setLayout(new BorderLayout(0, 0));
 		
 		burntimeCheckbox = new JCheckBox("Use");
+		burntimeCheckbox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				burntimeSpinner.setEnabled(burntimeCheckbox.isSelected());
+			}
+		});
 		panel_5.add(burntimeCheckbox, BorderLayout.EAST);
 		
 		burntimeSpinner = new JSpinner();
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		burntimeSpinner.setEnabled(false);
 		panel_5.add(burntimeSpinner, BorderLayout.CENTER);
 		
 		JPanel panel_4 = new JPanel();
@@ -206,10 +222,12 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		if (item.item.container != null){
 			containerLabel.setText(item.item.container);
 			containerCheckbox.setSelected(true);
+			chooseContainerButton.setEnabled(true);
 		}
 		if (item.item.burntime != null){
 			burntimeSpinner.setValue(item.item.burntime);
 			burntimeCheckbox.setSelected(true);
+			burntimeSpinner.setEnabled(true);
 		}
 		for (TabResource s : ((ItemResource)item.item).tabs)
 			selectTab(s.name());

@@ -14,6 +14,7 @@ import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JLabel;
 
 public class ShapedRecipeEditor extends JFrame {
 
@@ -106,5 +107,8 @@ public class ShapedRecipeEditor extends JFrame {
 		});
 		cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(cancelButton);
+		
+		JLabel lblCreateTheShaped = new JLabel("Create the shaped recipe in shape");
+		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
 	}
 }
