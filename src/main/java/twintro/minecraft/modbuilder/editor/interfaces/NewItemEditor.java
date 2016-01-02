@@ -14,6 +14,7 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JTextField;
@@ -37,6 +38,8 @@ import javax.swing.JRadioButton;
 import java.awt.GridBagLayout;
 import java.awt.GridBagConstraints;
 import javax.swing.SwingConstants;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
 public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel textureLabel;
@@ -71,6 +74,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel lblDuration;
 	private JLabel lblNewLabel_18;
 	private JSpinner amountSpinner;
+	private Map<Integer, Integer[]> potionEffectMap = new HashMap<Integer, Integer[]>();;
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -78,7 +82,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		this.name = nameNew;
 		this.main = main;
 		
-		setBounds(100, 100, 481, 738);
+		setBounds(100, 100, 483, 758);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Edit Item: " + name);
 		
@@ -185,6 +189,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		JLabel lblNewLabel_13 = new JLabel("");
 		panel_2.add(lblNewLabel_13);
+		
+		JLabel label_4 = new JLabel("");
+		panel_2.add(label_4);
 		
 		JPanel panel_3 = new JPanel();
 		panel_1.add(panel_3, BorderLayout.CENTER);
@@ -509,6 +516,15 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_28.add(lblNewLabel_17);
 		
 		effectIndexSpinner = new JSpinner();
+		effectIndexSpinner.addChangeListener(new ChangeListener(){
+			public void stateChanged(ChangeEvent arg0) {
+				if (potionEffectMap.containsKey((Integer) effectIndexSpinner.getValue())){
+					potionIDSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[0]);
+					durationSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[1]);
+					amplifierSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[2]);
+				}
+			}
+		});
 		panel_28.add(effectIndexSpinner);
 		
 		JPanel panel_29 = new JPanel();
@@ -602,7 +618,29 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		lblDuration.setEnabled(radioFoodButton.isSelected());
 		lblNewLabel_18.setEnabled(radioFoodButton.isSelected());
 		amountSpinner.setEnabled(radioFoodButton.isSelected());
+		
+		JPanel panel_33 = new JPanel();
+		panel_3.add(panel_33);
+		panel_33.setLayout(new BorderLayout(0, 0));
+		
+		JButton potionSaveButton = new JButton("Save potion effect");
+		potionSaveButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				savePotion((Integer) effectIndexSpinner.getValue(), (Integer)potionIDSpinner.getValue(),(Integer)durationSpinner.getValue(),(Integer) amplifierSpinner.getValue());
+			}
+		});
+		panel_33.add(potionSaveButton, BorderLayout.EAST);
 		setVisible(true);
+	}
+	
+	private void savePotion(int a, int b, int c, int d){
+		if (b < 24 && b > 0 && c >= 0 && d >= 0){
+			Integer[] output = {b,c,d};
+			potionEffectMap.put(a, output);
+		}
+		else {
+			JOptionPane.showMessageDialog(this, "Invalid potion input.", "Error", JOptionPane.ERROR_MESSAGE);
+		}
 	}
 	
 	public NewItemEditor(ItemsActivityPanel main, ItemElement item, int iTypeIndex, boolean constructorhelper){
