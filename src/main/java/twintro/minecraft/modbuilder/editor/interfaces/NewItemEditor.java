@@ -41,6 +41,8 @@ import javax.swing.SwingConstants;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import javafx.scene.paint.Color;
+
 public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel textureLabel;
 	private JSpinner stackSizeSpinner;
@@ -74,7 +76,9 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	private JLabel lblDuration;
 	private JLabel lblNewLabel_18;
 	private JSpinner amountSpinner;
-	private Map<Integer, Integer[]> potionEffectMap = new HashMap<Integer, Integer[]>();;
+	private Map<Integer, Integer[]> potionEffectMap = new HashMap<Integer, Integer[]>();
+	private JPanel panel_28;
+	private JButton potionSaveButton;;
 	/**
 	 * @wbp.parser.constructor
 	 */
@@ -390,6 +394,8 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		
 		JLabel lblNewLabel = new JLabel("regular item");
 		panel_11.add(lblNewLabel);
+	
+		potionSaveButton = new JButton("Save potion effect");
 		
 		radioItemButton = new JRadioButton("");
 		radioItemButton.addActionListener(new ActionListener() {
@@ -406,9 +412,6 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				useRepairThingsBox.setEnabled(radioToolButton.isSelected());
 				repairThingButton.setEnabled(radioToolButton.isSelected());
 		
-
-				
-				
 				saturationTextField.setEnabled(radioFoodButton.isSelected());
 				wolfCheckBox.setEnabled(radioFoodButton.isSelected());
 				edibleCheckBox.setEnabled(radioFoodButton.isSelected());
@@ -421,6 +424,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				lblDuration.setEnabled(radioFoodButton.isSelected());
 				lblNewLabel_18.setEnabled(radioFoodButton.isSelected());
 				amountSpinner.setEnabled(radioFoodButton.isSelected());
+				potionSaveButton.setEnabled(radioFoodButton.isSelected());
 			}
 		});
 		panel_11.add(radioItemButton);
@@ -458,6 +462,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				lblDuration.setEnabled(radioFoodButton.isSelected());
 				lblNewLabel_18.setEnabled(radioFoodButton.isSelected());
 				amountSpinner.setEnabled(radioFoodButton.isSelected());
+				potionSaveButton.setEnabled(radioFoodButton.isSelected());
 			}
 		});
 		panel_13.add(radioToolButton);
@@ -508,7 +513,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_3.add(panel_23);
 		panel_23.setLayout(new GridLayout(0, 2, 5, 0));
 		
-		JPanel panel_28 = new JPanel();
+		panel_28 = new JPanel();
 		panel_23.add(panel_28);
 		panel_28.setLayout(new GridLayout(0, 2, 0, 0));
 		
@@ -522,10 +527,16 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 					potionIDSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[0]);
 					durationSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[1]);
 					amplifierSpinner.setValue(potionEffectMap.get((Integer)effectIndexSpinner.getValue())[2]);
+					java.awt.Color background = java.awt.Color.green;
+					panel_28.setBackground(background);
+				}
+				else {
+					panel_28.setBackground(java.awt.Color.lightGray);
 				}
 			}
 		});
 		panel_28.add(effectIndexSpinner);
+		panel_28.setBackground(java.awt.Color.lightGray);
 		
 		JPanel panel_29 = new JPanel();
 		panel_23.add(panel_29);
@@ -592,6 +603,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 				lblDuration.setEnabled(radioFoodButton.isSelected());
 				lblNewLabel_18.setEnabled(radioFoodButton.isSelected());
 				amountSpinner.setEnabled(radioFoodButton.isSelected());
+				potionSaveButton.setEnabled(radioFoodButton.isSelected());
 			}
 		});
 		panel_12.add(radioFoodButton);
@@ -618,12 +630,12 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		lblDuration.setEnabled(radioFoodButton.isSelected());
 		lblNewLabel_18.setEnabled(radioFoodButton.isSelected());
 		amountSpinner.setEnabled(radioFoodButton.isSelected());
+		potionSaveButton.setEnabled(radioFoodButton.isSelected());
 		
 		JPanel panel_33 = new JPanel();
 		panel_3.add(panel_33);
 		panel_33.setLayout(new BorderLayout(0, 0));
 		
-		JButton potionSaveButton = new JButton("Save potion effect");
 		potionSaveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				savePotion((Integer) effectIndexSpinner.getValue(), (Integer)potionIDSpinner.getValue(),(Integer)durationSpinner.getValue(),(Integer) amplifierSpinner.getValue());
@@ -637,6 +649,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		if (b < 24 && b > 0 && c >= 0 && d >= 0){
 			Integer[] output = {b,c,d};
 			potionEffectMap.put(a, output);
+			panel_28.setBackground(java.awt.Color.green);
 		}
 		else {
 			JOptionPane.showMessageDialog(this, "Invalid potion input.", "Error", JOptionPane.ERROR_MESSAGE);
