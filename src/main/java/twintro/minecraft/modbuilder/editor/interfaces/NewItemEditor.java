@@ -724,6 +724,8 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 			item.item = base;
 			
 			main.addItem(item);
+			
+			//TODO Saving food and tools >>MIKEPLS<<
 		}
 	}
 	

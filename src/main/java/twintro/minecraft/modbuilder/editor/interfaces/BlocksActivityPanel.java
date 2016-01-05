@@ -4,7 +4,9 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -25,12 +27,22 @@ import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class BlocksActivityPanel extends ActivityPanel {
+	private Map<String,newBlockEditor> openEditors;
+	
 	public BlocksActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
+		this.openEditors = new HashMap<String, newBlockEditor>();
 	}
 
 	@Override
 	protected void add() {
+		String name = JOptionPane.showInputDialog("Block name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				newBlockEditor editor = new newBlockEditor(name, this, 0);
+				openEditors.put(name, editor);
+			}
+		}
 		
 	}
 	

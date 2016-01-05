@@ -57,7 +57,7 @@ public class newBlockEditor extends JFrame {
 		JButton btnRename = new JButton("Rename");
 		btnRename.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				String nameNew2 = JOptionPane.showInputDialog("Item name:");
+				String nameNew2 = JOptionPane.showInputDialog("Block name:");
 				name = nameNew2;
 				setTitle("Edit block: " + name);
 			}
@@ -239,9 +239,8 @@ public class newBlockEditor extends JFrame {
 		harvestTypeLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_11.add(harvestTypeLabel, BorderLayout.CENTER);
 		
-		JButton harvestTypeButton = new JButton("Choose type");
-		harvestTypeButton.setHorizontalAlignment(SwingConstants.RIGHT);
-		panel_11.add(harvestTypeButton, BorderLayout.EAST);
+		JComboBox harvestTypeComboBox = new JComboBox();
+		panel_11.add(harvestTypeComboBox, BorderLayout.EAST);
 		
 		JPanel panel_10 = new JPanel();
 		panel_3.add(panel_10);

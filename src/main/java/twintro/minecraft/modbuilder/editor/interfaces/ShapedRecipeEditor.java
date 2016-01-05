@@ -19,6 +19,7 @@ import javax.swing.JLabel;
 public class ShapedRecipeEditor extends JFrame {
 
 	private JPanel contentPane;
+	private String name;
 
 	/**
 	 * Launch the application.
@@ -27,7 +28,7 @@ public class ShapedRecipeEditor extends JFrame {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					ShapedRecipeEditor frame = new ShapedRecipeEditor();
+					ShapedRecipeEditor frame = new ShapedRecipeEditor("asd");
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -39,13 +40,15 @@ public class ShapedRecipeEditor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ShapedRecipeEditor() {
+	public ShapedRecipeEditor(String name) {
+		this.name = name;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 506, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(5, 5));
 		setContentPane(contentPane);
+		this.setTitle("Edit recipe:" + name);
 		
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
