@@ -27,7 +27,7 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public class newBlockEditor extends JFrame {
+public class NewBlockEditor extends JFrame {
 
 	private String name;
 	private JPanel contentPane;
@@ -39,7 +39,7 @@ public class newBlockEditor extends JFrame {
 	private BlocksActivityPanel parent;
 	private JLabel creativeTabLabel;
 
-	public newBlockEditor(String newName, BlocksActivityPanel parent, Integer type) {
+	public NewBlockEditor(String newName, BlocksActivityPanel parent, Integer type) {
 		BorderLayout borderLayout = (BorderLayout) getContentPane().getLayout();
 		borderLayout.setVgap(5);
 		borderLayout.setHgap(5);

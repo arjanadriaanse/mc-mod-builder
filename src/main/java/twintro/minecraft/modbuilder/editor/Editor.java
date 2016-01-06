@@ -28,6 +28,7 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
 
 public class Editor {
@@ -38,6 +39,7 @@ public class Editor {
 	private ActivityPanel RecipePanel;
 	private ActivityPanel BlockPanel;
 	private ActivityPanel ItemPanel;
+	private ActivityPanel StructurePanel;
 	
 	public MetaFile metaFile;
 	public LanguageFile langFile;
@@ -214,9 +216,15 @@ public class Editor {
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
 		
+
+		JButton structuresButton = new ActivityButton("Structures");
+		structuresButton.addActionListener(buttonListener);
+		buttonPanel.add(structuresButton);
+		
 		JButton ItemsButton = new ActivityButton("Items");
 		ItemsButton.addActionListener(buttonListener);
 		buttonPanel.add(ItemsButton);
+		
 		
 		//Activity panel
 		JPanel ActivityPanel = new JPanel();
@@ -237,6 +245,8 @@ public class Editor {
 		ItemPanel = new ItemsActivityPanel("Items", "New Item", this);
 		ActivityPanel.add(ItemPanel, "Items");
 		
+		StructurePanel = new StructureActivityPanel("Structures", "New Structure", this);
+		activityPanel.add(StructurePanel, "Structures");
 		SwingUtilities.updateComponentTreeUI(frame);
 
 		interfaceOpened = true;
@@ -253,6 +263,7 @@ public class Editor {
 		RecipePanel.updateList();
 		BlockPanel.updateList();
 		ItemPanel.updateList();
+		StructurePanel.updateList();
 	}
 	
 	private void about(){
