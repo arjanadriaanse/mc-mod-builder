@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 
 import javax.swing.JToggleButton;
@@ -28,8 +29,6 @@ public class StructureEditor extends JFrame {
 	private String name;
 	private StructureActivityPanel main;
 	private JComboBox dimensionComboBox;
-	private JPanel panel_8;
-	int structureTypeIndex;
 	private JSpinner veinSizeSpinner;
 	private JSpinner minYspinner;
 	private JSpinner maxYspinner;
@@ -40,44 +39,14 @@ public class StructureEditor extends JFrame {
 	private JSpinner amountperchunkSpinner;
 
 	
-	public StructureEditor(String nameNew, StructureActivityPanel main, Integer typeHelper) {
+	public StructureEditor(String nameNew, StructureActivityPanel main) {
 		this.name = nameNew;
 		this.main = main;
-		structureTypeIndex = typeHelper;
-		
-		panel_8 = new JPanel();
-		FlowLayout flowLayout = (FlowLayout) panel_8.getLayout();
-		flowLayout.setAlignment(FlowLayout.RIGHT);
-		
-		JButton groundCoverEditingButton = new JButton("Ground Cover");
-		groundCoverEditingButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				JPanel passpanel = constructorCommons();
-				constructorGround(passpanel);
-				structureTypeIndex = 0;
-				repaint();
-			}
-		});
-		panel_8.add(groundCoverEditingButton);
-		
-		JButton oreEditingButton = new JButton("Ores");
-		oreEditingButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JPanel passpanel = constructorCommons();
-				constructorOre(passpanel);
-				structureTypeIndex = 1;
-				repaint();
-			}
-		});
-		panel_8.add(oreEditingButton);
-
 		
 		JPanel passpanel = this.constructorCommons();
-		if (structureTypeIndex == 0){
 			this.constructorGround(passpanel);
-		}else if (structureTypeIndex == 1){
 			this.constructorOre(passpanel);
-		}
+		
 		setVisible(true);
 	}
 	
@@ -280,8 +249,6 @@ public class StructureEditor extends JFrame {
 		JPanel panel_6 = new JPanel();
 		getContentPane().add(panel_6, BorderLayout.NORTH);
 		panel_6.setLayout(new BorderLayout(0, 0));
-
-		panel_6.add(panel_8, BorderLayout.NORTH);
 	
 		return panel_6;		
 	}
@@ -292,7 +259,16 @@ public class StructureEditor extends JFrame {
 
 
 	protected void saveStructure() {
-		// TODO Opslaan naar json
-		
+			OreStructureResource savable = new OreStructureResource();
+			//TODO blockbutton?
+			switch(dimensionComboBox.getSelectedIndex()){
+				case 1: savable.dimension = -1;
+				case 2: savable.dimension = 1;
+				default: savable.dimension = 0;
+			}
+			savable.maxveinsize = (Integer)veinSizeSpinner.getValue();
+			savable.chancestospawn = 0;
+			savable.maxY = (Integer)maxYspinner.getValue();
+			savable.minY = (Integer)minYspinner.getValue();
 	}
 }
