@@ -36,7 +36,7 @@ public class MetaFile extends File {
 		resource.pack.pack_format = 1;
 		resource.pack.description = "A ModBuilder Minecraft Mod";
 		resource.modbuilder = new ModbuilderResource();
-		//resource.modbuilder.id = ?;
+		//TODO resource.modbuilder.id = ?;
 		resource.modbuilder.blocks = new HashSet<String>();
 		resource.modbuilder.items = new HashSet<String>();
 		resource.modbuilder.recipes = new HashSet<String>();

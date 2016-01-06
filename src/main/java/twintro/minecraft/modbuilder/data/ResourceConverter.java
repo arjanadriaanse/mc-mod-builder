@@ -135,7 +135,7 @@ public class ResourceConverter {
 		return item;
 	}
 	
-	public static IWorldGenerator toStructure(BaseStructureResource resource) {
+	public static BuilderStruct toStructure(BaseStructureResource resource) {
 		if (resource instanceof OreStructureResource)
 			return toStructure((OreStructureResource) resource);
 		else if (resource instanceof GroundStructureResource)
@@ -143,7 +143,7 @@ public class ResourceConverter {
 		return null;
 	}
 	
-	public static IWorldGenerator toStructure(OreStructureResource resource) {
+	public static BuilderStruct toStructure(OreStructureResource resource) {
 		BuilderStructOre structure = new BuilderStructOre(
 				Block.getBlockFromName(resource.block),
 				resource.dimension      !=null ? resource.dimension      : 0,
@@ -154,7 +154,7 @@ public class ResourceConverter {
 		return structure;
 	}
 	
-	public static IWorldGenerator toStructure(GroundStructureResource resource) {
+	public static BuilderStruct toStructure(GroundStructureResource resource) {
 		Set onlyonblocks = new LinkedHashSet();
 		if (resource.onlyonblocks != null) {
 			for (String key : resource.onlyonblocks)

@@ -9,7 +9,7 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
-public class BuilderStructOre implements IWorldGenerator {
+public class BuilderStructOre implements BuilderStruct{
 	Block block;
 	int dimension;
 	int maxVeinSize;
@@ -27,21 +27,18 @@ public class BuilderStructOre implements IWorldGenerator {
 	}
 	
 	@Override
-    public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {   
+	public Random generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
 		if (dimension == world.getWorldType().getWorldTypeID()) {
-			generateOre(world, random, chunkX, chunkZ);
+			int heightRange = maxY - minY;
+			WorldGenMinable wgm = new WorldGenMinable(block.getDefaultState(), maxVeinSize);
+			for (int i = 0; i < chancesToSpawn; i++){
+				int randX = random.nextInt(16);
+				int randY = random.nextInt(heightRange) + minY;
+				int randZ = random.nextInt(16);
+				wgm.generate(world, random, new BlockPos(16*chunkX + randX, randY, 16*chunkZ + randZ));
+			}
 		}
-	}
-	
-	public void generateOre(World world, Random random, int chunkX, int chunkZ){
-		int heightRange = maxY - minY;
-		WorldGenMinable wgm = new WorldGenMinable(block.getDefaultState(), maxVeinSize);
-		for (int i = 0; i < chancesToSpawn; i++){
-			int randX = random.nextInt(16);
-			int randY = random.nextInt(heightRange) + minY;
-			int randZ = random.nextInt(16);
-			wgm.generate(world, random, new BlockPos(16*chunkX + randX, randY, 16*chunkZ + randZ));
-		}
+		return random;
 	}
 
 }

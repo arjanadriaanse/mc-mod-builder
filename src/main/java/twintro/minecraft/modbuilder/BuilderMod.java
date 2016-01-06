@@ -33,6 +33,8 @@ import net.minecraftforge.fml.common.event.FMLInitializationEvent;
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent;
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent;
 import net.minecraftforge.fml.common.registry.GameRegistry;
+import twintro.minecraft.modbuilder.data.BuilderStruct;
+import twintro.minecraft.modbuilder.data.BuilderStructRegistry;
 import twintro.minecraft.modbuilder.data.FuelHandler;
 import twintro.minecraft.modbuilder.data.MetadataSection;
 import twintro.minecraft.modbuilder.data.MetadataSerializer;
@@ -191,15 +193,17 @@ public class BuilderMod {
 		}
 		for (String path : data.structures) {
 			try {
+				BuilderStructRegistry registry = new BuilderStructRegistry();
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":structures/" + path + ".json");
 				IResource resource = manager.getResource(location);
 				BaseStructureResource structureResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseStructureResource.class);
-				IWorldGenerator structure = ResourceConverter.toStructure(structureResource);
+				BuilderStruct structure = ResourceConverter.toStructure(structureResource);
 				if (!registeredStructures.contains(path)) {
 					registeredStructures.add(path);
-					GameRegistry.registerWorldGenerator(structure, 0);
+					registry.structs.add(structure);
 				}
+				GameRegistry.registerWorldGenerator(registry, 0);
 			} catch (IOException e) {
 				// ignore
 			}
