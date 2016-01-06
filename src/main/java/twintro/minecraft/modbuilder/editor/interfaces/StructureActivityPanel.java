@@ -40,7 +40,7 @@ public class StructureActivityPanel  extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				StructureEditor editor = new StructureEditor(name, this, 0);
+				StructureEditor editor = new StructureEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}

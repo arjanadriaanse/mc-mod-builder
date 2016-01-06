@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 
 import javax.swing.JOptionPane;
 
@@ -12,6 +13,8 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class RecipesActivityPanel extends ActivityPanel {
+	public Map<String, RecipeEditor> openEditors;
+	
 	public RecipesActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
 	}

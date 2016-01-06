@@ -7,6 +7,8 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 import java.awt.GridLayout;
+import java.awt.Window;
+
 import javax.swing.JButton;
 import java.awt.FlowLayout;
 import javax.swing.BoxLayout;
@@ -15,12 +17,16 @@ import java.awt.Component;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 
-public class ShapedRecipeEditor extends JFrame {
+import java.awt.Font;
+
+public class ShapedRecipeEditor extends RecipeEditor {
 
 	private JPanel contentPane;
 	private String name;
-
+	private RecipesActivityPanel main;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -40,8 +46,8 @@ public class ShapedRecipeEditor extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public ShapedRecipeEditor(String name) {
-		this.name = name;
+	public ShapedRecipeEditor(String nameNew) {
+		this.name = nameNew;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 506, 412);
 		contentPane = new JPanel();
@@ -92,6 +98,11 @@ public class ShapedRecipeEditor extends JFrame {
 		buttons[9].setBounds(365, 115, 80, 80);
 		
 		panel_3.add(buttons[9]);
+		
+		JLabel label = new JLabel("\u2192");
+		label.setFont(new Font("Times New Roman", Font.BOLD, 69));
+		label.setBounds(288, 105, 80, 93);
+		panel_3.add(label);
 		buttons[9].setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JPanel panel_2 = new JPanel();
@@ -113,5 +124,48 @@ public class ShapedRecipeEditor extends JFrame {
 		
 		JLabel lblCreateTheShaped = new JLabel("Create the shaped recipe in shape");
 		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
+		
+
+		JButton btnRename = new JButton("Rename");
+		btnRename.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				String nameNew2 = JOptionPane.showInputDialog("Item name:");
+				RecipeEditor temp = main.openEditors.get(name);
+				main.openEditors.remove(name);
+				name = nameNew2;
+				main.openEditors.put(name, temp);
+				setTitle("Edit structure: " + name);
+			}
+		});
+		panel.add(btnRename);
+		
+		JButton btnSaveItem = new JButton("Save Item");
+		panel.add(btnSaveItem);
+		btnSaveItem.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				saveRecipe();
+			}
+		});
+		
+		JButton btnCancel = new JButton("Cancel");
+		panel.add(btnCancel);
+		btnCancel.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				cancel();
+			}
+		});
 	}
+
+	protected void cancel() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	protected void saveRecipe() {
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
+	
 }
