@@ -158,12 +158,17 @@ public class RecipeEditor extends JFrame {
 	}
 
 	protected void saveRecipe() {
-/*		String recipe = "";
-		char c = 'a'+1;
-		
-		Map<Character, ItemStackResource> recipeMap = new HashMap<Character, ItemStackResource>();
+	
+		ItemStackResource[] savableInput = new ItemStackResource[9];
+		ItemStackResource savableOutput = new ItemStackResource();
 		for (int i = 0; i < 9; i++){
-			String a = buttons[i].getText();
+			if (buttons[i].getText() != ""){
+				savableInput[i] = buttons[i].item;
+			}
+		}
+		savableOutput = buttons[9].item;
+		
+/*			String a = buttons[i].getText();
 			if (a == "") recipe += " ";
 			else {
 				for(char b = (char) ('a'+i); b<='j'; b++){

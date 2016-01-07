@@ -5,6 +5,7 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -16,6 +17,8 @@ import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+
 import java.awt.GridLayout;
 import java.awt.Font;
 import javax.swing.JSpinner;
@@ -51,7 +54,9 @@ public class SmeltingRecipeEditor extends JFrame {
 	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent) {
 		this.name = newName;
 		this.main = parent;
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		this.addWindowListener(new WindowClosingVerifierListener());
+		
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -69,7 +74,7 @@ public class SmeltingRecipeEditor extends JFrame {
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				dispose();
+				cancel();
 			}
 		});
 		cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -139,6 +144,6 @@ public class SmeltingRecipeEditor extends JFrame {
 	}
 	
 	private void cancel(){
-		
+		this.getWindowListeners()[0].windowClosing(new WindowEvent(this, 0));
 	}
 }
