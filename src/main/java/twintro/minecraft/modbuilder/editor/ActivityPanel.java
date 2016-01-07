@@ -13,10 +13,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.image.BufferedImage;
+import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ImageIcon;
@@ -148,6 +150,11 @@ public abstract class ActivityPanel extends ListPanel {
 			}
 		});
 		buttonPanel.add(addButton);
+	}
+	
+	public Set<String> getAllElements(){
+		Set<String> output = elements.keySet();
+		return output;
 	}
 	
 	protected abstract void add();

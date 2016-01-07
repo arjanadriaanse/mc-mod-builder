@@ -3,9 +3,15 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.JOptionPane;
 
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
@@ -22,6 +28,42 @@ public class RecipesActivityPanel extends ActivityPanel {
 	@Override
 	protected void add() {
 		
+	}
+	
+	public void updateItemAndBlockReferences(String old, String newName, boolean isBlock){
+		try	{
+			Set<String> names = this.getAllElements();
+			for (String nameOfElement : names){
+				RecipeElement elementToReReference = RecipeElement.getFromName(nameOfElement);
+				boolean isChanged = false;
+				if (elementToReReference.recipe.type == RecipeType.shaped){
+					ShapedRecipe elementClassed = (ShapedRecipe)elementToReReference.recipe;
+					for (ItemStackResource item : elementClassed.input.values()){	
+						if (isBlock && item.block == old) {item.block = newName; isChanged = true;}
+						if (!isBlock && item.item == old) {item.item = newName; isChanged = true;}
+					}
+					if (isBlock && elementClassed.output.block == old){elementClassed.output.block = newName; isChanged=true;}
+					if (!isBlock && elementClassed.output.item == old){elementClassed.output.item = newName; isChanged=true;}
+					if (isChanged) this.addRecipe(elementToReReference);
+				} else if (elementToReReference.recipe.type == RecipeType.shapeless){
+					ShapelessRecipe elementClassed = (ShapelessRecipe)elementToReReference.recipe;
+					for (ItemStackResource item : elementClassed.input){	
+						if (isBlock && item.block == old) {item.block = newName; isChanged = true;}
+						if (!isBlock && item.item == old) {item.item = newName; isChanged = true;}
+					}
+					if (isBlock && elementClassed.output.block == old){elementClassed.output.block = newName; isChanged=true;}
+					if (!isBlock && elementClassed.output.item == old){elementClassed.output.item = newName; isChanged=true;}
+					if (isChanged) this.addRecipe(elementToReReference);					
+				} else if (elementToReReference.recipe.type == RecipeType.smelting){
+					SmeltingRecipe elementClassed = (SmeltingRecipe)elementToReReference.recipe;
+					if (isBlock && elementClassed.input.block == old){elementClassed.input.block = newName; isChanged=true;}
+					if (!isBlock && elementClassed.input.item == old){elementClassed.input.item = newName; isChanged=true;}
+					if (isBlock && elementClassed.output.block == old){elementClassed.output.block = newName; isChanged=true;}
+					if (!isBlock && elementClassed.output.item == old){elementClassed.output.item = newName; isChanged=true;}
+					if (isChanged) this.addRecipe(elementToReReference);					
+				}
+			}
+		} catch (Exception e){}
 	}
 	
 	public void addRecipe(RecipeElement recipe){
