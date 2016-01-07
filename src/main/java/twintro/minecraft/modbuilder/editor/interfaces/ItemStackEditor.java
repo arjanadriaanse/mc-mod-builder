@@ -86,15 +86,17 @@ public class ItemStackEditor extends JDialog {
 			panel.add(stackSizeTextfield);
 			stackSizeTextfield.setColumns(10);
 
+			
 		}
 		
-		JLabel containerLabel = new JLabel("The container item");
-		panel.add(containerLabel);
-		
-		containerTextfield = new JTextField();
-		panel.add(containerTextfield);
-		containerTextfield.setColumns(10);
-		
+		if (!isProduct){
+			JLabel containerLabel = new JLabel("The container item");
+			panel.add(containerLabel);
+			
+			containerTextfield = new JTextField();
+			panel.add(containerTextfield);
+			containerTextfield.setColumns(10);
+		}
 		
 		panel_1 = new JPanel();
 		contentPane.add(panel_1, BorderLayout.SOUTH);
