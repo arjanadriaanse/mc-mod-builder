@@ -135,6 +135,16 @@ public class SmeltingRecipeEditor extends JFrame {
 		
 	}
 	
+	public void itemChanged(String old, String newName){
+		if (inputSmeltingButton.item.item == old) inputSmeltingButton.item.item = newName;
+		if (outputSmeltingButton.item.item == old) outputSmeltingButton.item.item = newName;
+	}
+	
+	public void blockChanged(String old, String newName){
+		if (inputSmeltingButton.item.block == old) inputSmeltingButton.item.block = newName;
+		if (outputSmeltingButton.item.block == old) outputSmeltingButton.item.block = newName;
+	}
+	
 	private void saveRecipe(){
 		SmeltingRecipe recipe = new SmeltingRecipe();
 		recipe.output = outputSmeltingButton.item;

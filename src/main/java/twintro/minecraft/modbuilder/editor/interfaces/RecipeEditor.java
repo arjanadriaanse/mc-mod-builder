@@ -7,8 +7,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import scala.swing.event.WindowClosed;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -56,7 +58,8 @@ public class RecipeEditor extends JFrame {
 		public RecipeEditor(String nameNew, RecipesActivityPanel parent) {
 		this.name = nameNew;
 		this.main = parent;
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		this.addWindowListener(new WindowClosingVerifierListener());
 		setBounds(100, 100, 506, 412);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -151,9 +154,19 @@ public class RecipeEditor extends JFrame {
 		});
 
 	}
+		
+	public void itemChanged(String old, String newName){
+		for(int i=0; i <10; i++)
+			if (buttons[i].item.item == old) buttons[i].item.item = newName;
+	}
+	
+	public void blockChanged(String old, String newName){
+		for (int i=0; i<10; i++)
+			if (buttons[i].item.block == old) buttons[i].item.block = newName;
+	}
 
 	protected void cancel() {
-		this.dispose();
+		WindowClosingVerifierListener.close(this);
 		//TODO ask for confirm
 	}
 
@@ -168,24 +181,6 @@ public class RecipeEditor extends JFrame {
 		}
 		savableOutput = buttons[9].item;
 		
-/*			String a = buttons[i].getText();
-			if (a == "") recipe += " ";
-			else {
-				for(char b = (char) ('a'+i); b<='j'; b++){
-					if (a == recipeMap.get(b).item || a==recipeMap.get(b).block && recipeMap.get(b).container == buttons[i].item.container){
-						recipe += b;
-						b+='j';
-					}
-					else if(!recipeMap.containsKey(b)) {
-						recipeMap.put(b, buttons[i].item);
-						recipe += b;
-					}
-				}
-			}
-		}
-		String outputItem = buttons[9].getText();
-		int outputAmount = buttons[9].item.amount;
-		*/	
 		//TODO send recipe to activity panel to save
 	}
 }

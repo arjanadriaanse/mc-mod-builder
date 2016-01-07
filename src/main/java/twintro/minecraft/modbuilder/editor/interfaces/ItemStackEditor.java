@@ -27,6 +27,7 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.Element;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
@@ -54,7 +55,8 @@ public class ItemStackEditor extends JDialog {
 
 	public ItemStackEditor(ItemStackResource item ,List<ItemElement> items, List<BlockElement> blocks, boolean isProduct, Container parent) {
 		super((Frame) parent);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
+		this.addWindowListener(new WindowClosingVerifierListener());
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -148,7 +150,7 @@ public class ItemStackEditor extends JDialog {
 			}
 
 		changed = true;
-		this.dispose();
+		WindowClosingVerifierListener.close(this);
 		} else {
 			JOptionPane.showMessageDialog(this, "Please provide an item.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -156,9 +158,7 @@ public class ItemStackEditor extends JDialog {
 	}
 	
 	private void cancel(){
-		item = null;
-		changed = false;
-		this.dispose();
+		WindowClosingVerifierListener.close(this);
 	}
 		
 }
