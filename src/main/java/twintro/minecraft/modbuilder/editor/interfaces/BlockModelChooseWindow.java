@@ -43,11 +43,26 @@ import twintro.minecraft.modbuilder.editor.ListPanel;
 public class BlockModelChooseWindow extends JFrame {
 	ListPanel listPanel;
 	NewBlockEditor main;
-	String modelType = "cube_all";
+	int modelType = 1;
 	String selectedImageName;
 	ImageIcon selectedImage;
-	Image[] textures = new Image[6];
-	String[] textureNames = new String[6];
+	Image[] textures1 = new Image[6];
+	Image[] textures2 = new Image[6];
+	String[] textureNames1 = new String[6];
+	String[] textureNames2 = new String[6];
+	Point[] loc1 = new Point[]{
+			new Point( 64,  0),
+			new Point(  0, 64),
+			new Point( 64, 64),
+			new Point(128, 64),
+			new Point(192, 64),
+			new Point( 64,128)
+	};
+	Point[] loc2 = new Point[]{
+			new Point( 50,0),
+			new Point(150,0)
+	};
+
 
 	public BlockModelChooseWindow(Map<String, ImageIcon> elements, NewBlockEditor main){
 		this.main = main;
@@ -122,10 +137,10 @@ public class BlockModelChooseWindow extends JFrame {
 			@Override
 			public void paintComponent(Graphics g) {
 				super.paintComponents(g);
-				if (modelType=="cube_all")
-					paintFullBlock(g);
-				else if (modelType=="cross")
-					paintCross(g);
+				if (modelType==1)
+					paint1(g);
+				else if (modelType==2)
+					paint2(g);
 			}
 		};
 		mainPanel.add(paintPanel, BorderLayout.CENTER);
@@ -140,39 +155,34 @@ public class BlockModelChooseWindow extends JFrame {
 		setVisible(true);
 	}
 	
-	public void paintFullBlock(Graphics g){
-		g.drawRect(64, 0, 64, 64);
-		g.drawRect(0, 64, 64, 64);
-		g.drawRect(64, 64, 64, 64);
-		g.drawRect(128, 64, 64, 64);
-		g.drawRect(192, 64, 64, 64);
-		g.drawRect(64, 128, 64, 64);
-		g.drawImage(textures[0],50,0,null);
-		g.drawImage(textures[1],150,0,null);
+	public void paint1(Graphics g){
+		for(int i=0;i<6;i++){
+			g.drawRect(loc1[i].x,loc1[i].y, 64, 64);
+			g.drawImage(textures1[i],loc1[i].x,loc1[i].y,null);
+		}
 	}
 	
-	public void paintCross(Graphics g){
-		g.drawRect(50, 0, 64, 64);
-		g.drawRect(150, 0, 64, 64);
-		g.drawImage(textures[0],50,0,null);
-		g.drawImage(textures[1],150,0,null);
-		
-		if (textures[0]!=null && textures[1]!=null) {
-	        BufferedImage skew1 = new BufferedImage(textures[0].getWidth(null), textures[0].getHeight(null), BufferedImage.TYPE_INT_ARGB);
-	        BufferedImage skew2 = new BufferedImage(textures[1].getWidth(null), textures[1].getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	public void paint2(Graphics g){
+		for(int i=0;i<2;i++){
+			g.drawRect(loc2[i].x,loc2[i].y, 64, 64);
+			g.drawImage(textures2[i],loc2[i].x,loc2[i].y,null);
+		}
+		if (textures2[0]!=null && textures2[1]!=null) {
+	        BufferedImage skew1 = new BufferedImage(textures2[0].getWidth(null), textures2[0].getHeight(null), BufferedImage.TYPE_INT_ARGB);
+	        BufferedImage skew2 = new BufferedImage(textures2[1].getWidth(null), textures2[1].getHeight(null), BufferedImage.TYPE_INT_ARGB);
 	
 	        double skewY1 = 0.3d;
 	        double skewY2 = -skewY1;
-	        double y1 = (skewY1 < 0) ? -skewY1 * textures[0].getWidth(null) : 0;
-	        double y2 = (skewY2 < 0) ? -skewY2 * textures[1].getWidth(null) : 0;
+	        double y1 = (skewY1 < 0) ? -skewY1 * textures2[0].getWidth(null) : 0;
+	        double y2 = (skewY2 < 0) ? -skewY2 * textures2[1].getWidth(null) : 0;
 	        AffineTransform at1 = AffineTransform.getTranslateInstance(0, y1);
 	        AffineTransform at2 = AffineTransform.getTranslateInstance(0, y2);
 	        at1.shear(0, skewY1);
 	        at2.shear(0, skewY2);
 	        AffineTransformOp op1 = new AffineTransformOp(at1, new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
 	        AffineTransformOp op2 = new AffineTransformOp(at2, new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
-	        skew1 = op1.filter((BufferedImage) textures[0], null);
-	        skew2 = op2.filter((BufferedImage) textures[1], null);
+	        skew1 = op1.filter((BufferedImage) textures2[0], null);
+	        skew2 = op2.filter((BufferedImage) textures2[1], null);
 	        
 	        g.clipRect(100,100,32,200);
 	        g.drawImage(skew1, 100, 100, null);
@@ -187,35 +197,41 @@ public class BlockModelChooseWindow extends JFrame {
 	}
 	
 	public void buttonPressed1(ActionEvent ae){
-		modelType = "cube_all";
+		modelType = 1;
 		listPanel.repaint();
 	}
 	
 	public void buttonPressed2(ActionEvent ae){
-		modelType = "cross";
+		modelType = 2;
 		listPanel.repaint();
 	}
 	
 	public void click(MouseEvent me){
-		if(modelType == "cube_all")
-			clickFullBlock(me);
-		if(modelType == "cross")
-			clickCross(me);
+		if(modelType == 1)
+			click1(me);
+		if(modelType == 2)
+			click2(me);
 	}
 	
-	public void clickFullBlock(MouseEvent me){
-		
+	public void click1(MouseEvent me){
+		for(int i=0;i<6;i++){
+			if (new Rectangle(loc1[i].x,loc1[i].y, 64, 64).contains(me.getPoint())) {
+				textures1[i] = selectedImage.getImage();
+				textureNames1[i] = selectedImageName;
+				break;
+			};
+		}
+		listPanel.repaint();
 	}
 	
-	public void clickCross(MouseEvent me){
-		if (new Rectangle(50,0,64,64).contains(me.getPoint())) {
-			textures[0] = selectedImage.getImage();
-			textureNames[0] = selectedImageName;
-		};
-		if (new Rectangle(150,0,64,64).contains(me.getPoint())) {
-			textures[1] = selectedImage.getImage();
-			textureNames[1] = selectedImageName;
-		};
+	public void click2(MouseEvent me){
+		for(int i=0;i<2;i++){
+			if (new Rectangle(loc2[i].x,loc2[i].y, 64, 64).contains(me.getPoint())) {
+				textures2[i] = selectedImage.getImage();
+				textureNames2[i] = selectedImageName;
+				break;
+			};
+		}
 		listPanel.repaint();
 	}
 	
