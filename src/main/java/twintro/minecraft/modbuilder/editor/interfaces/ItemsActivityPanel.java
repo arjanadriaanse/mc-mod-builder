@@ -14,11 +14,17 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
+import net.minecraft.item.Item;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
+import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemType;
+import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
@@ -123,6 +129,23 @@ public class ItemsActivityPanel extends ActivityPanel {
 			main.langFile.list.remove("item.modbuilder_" + value + ".name=" + value);
 			main.langFile.save();
 		}
+	}
+	public void updateTextureReferences(String old, String newName){
+		try	{
+			Set<String> names = this.getAllElements();
+			for (String nameOfElement : names){
+				ItemElement elementToReReference = ItemElement.getFromName(nameOfElement);
+				boolean isChanged = false;
+				if (elementToReReference.item.type == ItemType.regular){
+					ItemModelResource elementClassed = (ItemModelResource)elementToReReference.itemModel;
+					for (String texture : elementClassed.textures.values()){
+						if (texture == old){isChanged = true; texture = newName;}
+					}
+					if(isChanged)this.addItem(elementToReReference);
+				}
+				
+			}
+		}catch(Exception e){}
 	}
 	
 	@Override

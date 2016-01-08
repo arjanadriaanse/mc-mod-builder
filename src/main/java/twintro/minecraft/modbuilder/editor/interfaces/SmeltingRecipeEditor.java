@@ -24,7 +24,7 @@ import java.awt.Font;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class SmeltingRecipeEditor extends JFrame {
+public class SmeltingRecipeEditor extends RecipeEditor {
 
 	private JPanel contentPane;
 	private String name;
@@ -132,7 +132,7 @@ public class SmeltingRecipeEditor extends JFrame {
 		xpSpinner.setModel(new SpinnerNumberModel(new Float(0), null, null, new Float(0.1)));
 		panel_3.add(xpSpinner, BorderLayout.CENTER);
 		
-		
+		setVisible(true);
 	}
 	
 	public void itemChanged(String old, String newName){

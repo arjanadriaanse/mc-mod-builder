@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JOptionPane;
@@ -19,12 +20,14 @@ import com.google.gson.JsonSyntaxException;
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class BlocksActivityPanel extends ActivityPanel {
 	private Map<String,NewBlockEditor> openEditors;
@@ -44,6 +47,23 @@ public class BlocksActivityPanel extends ActivityPanel {
 			}
 		}
 		
+	}
+	
+	public void updateTextureReferences(String old, String newName){
+		try	{
+			Set<String> names = this.getAllElements();
+			for (String nameOfElement : names){
+				BlockElement elementToReReference = BlockElement.getFromName(nameOfElement);
+				boolean isChanged = false;
+				if (elementToReReference.block.type == BlockType.regular){
+					BlockModelResource elementClassed = (BlockModelResource)elementToReReference.blockModel; 
+					for (String texture : elementClassed.textures.values()){
+						if (texture == old){isChanged = true; texture = newName;}
+					}
+					if(isChanged)this.addBlock(elementToReReference);
+				}
+			}
+		}catch(Exception e){}
 	}
 	
 	public void addBlock(BlockElement block){

@@ -55,8 +55,7 @@ public class ItemStackEditor extends JDialog {
 
 	public ItemStackEditor(ItemStackResource item ,List<ItemElement> items, List<BlockElement> blocks, boolean isProduct, Container parent) {
 		super((Frame) parent);
-		setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
-		this.addWindowListener(new WindowClosingVerifierListener());
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 503, 246);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -150,7 +149,7 @@ public class ItemStackEditor extends JDialog {
 			}
 
 		changed = true;
-		WindowClosingVerifierListener.close(this);
+		this.dispose();
 		} else {
 			JOptionPane.showMessageDialog(this, "Please provide an item.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
@@ -158,7 +157,7 @@ public class ItemStackEditor extends JDialog {
 	}
 	
 	private void cancel(){
-		WindowClosingVerifierListener.close(this);
+		this.dispose();
 	}
 		
 }

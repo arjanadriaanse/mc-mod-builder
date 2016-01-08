@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,11 +24,38 @@ public class RecipesActivityPanel extends ActivityPanel {
 	
 	public RecipesActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
+		this.openEditors = new HashMap<String, RecipeEditor>();
 	}
 
 	@Override
 	protected void add() {
-		
+		String name = JOptionPane.showInputDialog("Recipe name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
+	}
+	
+	protected void addSmelting(){
+		String name = JOptionPane.showInputDialog("Recipe name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
+	}
+	
+	protected void addShaped(){
+		String name = JOptionPane.showInputDialog("Recipe name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				ShapedRecipeEditor editor = new ShapedRecipeEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
 	}
 	
 	public void updateItemAndBlockReferences(String old, String newName, boolean isBlock){
