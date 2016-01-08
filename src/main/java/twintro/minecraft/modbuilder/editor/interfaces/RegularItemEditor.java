@@ -71,8 +71,6 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		setTitle("Edit Item: " + this.name);
 		addWindowListener(new WindowClosingVerifierListener());
 		
-		//TODO tooltips for some things
-		
 		mainPanel = new JPanel();
 		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		mainPanel.setLayout(new BorderLayout(5, 0));
@@ -86,6 +84,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
 		
 		labelTexture = new JLabel("Texture");
+		labelTexture.setToolTipText("The texture of the item");
 		labelPanel.add(labelTexture);
 		
 		texturePanel = new JPanel();
@@ -93,6 +92,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		texturePanel.setLayout(new BorderLayout(0, 0));
 		
 		textureChooseButton = new JButton("Choose");
+		textureChooseButton.setToolTipText("The texture of the item");
 		textureChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textureChoose();
@@ -101,17 +101,23 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		texturePanel.add(textureChooseButton, BorderLayout.EAST);
 		
 		textureLabel = new JLabel("");
+		textureLabel.setToolTipText("The texture of the item");
 		texturePanel.add(textureLabel, BorderLayout.CENTER);
 		
-		labelMaxStackSize = new JLabel("Maximum stack size");
-		labelPanel.add(labelMaxStackSize);
-		
-		maxStackSizeSpinner = new JSpinner();
-		maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
-		interactionPanel.add(maxStackSizeSpinner);
+		if (!(this instanceof ToolItemEditor)){
+			labelMaxStackSize = new JLabel("Maximum stack size");
+			labelMaxStackSize.setToolTipText("The maximum amount of the item there can be in a stack");
+			labelPanel.add(labelMaxStackSize);
+			
+			maxStackSizeSpinner = new JSpinner();
+			maxStackSizeSpinner.setToolTipText("The maximum amount of the item there can be in a stack");
+			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
+			interactionPanel.add(maxStackSizeSpinner);
+		}
 		
 		if (!(this instanceof ToolItemEditor || this instanceof FoodItemEditor)){
 			labelCreativeTabs = new JLabel("Creative tabs");
+			labelCreativeTabs.setToolTipText("The tabs in the creative menu where the item can be found");
 			labelPanel.add(labelCreativeTabs);
 			
 			creativeTabsPanel = new JPanel();
@@ -119,6 +125,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 			creativeTabsPanel.setLayout(new BorderLayout(0, 0));
 			
 			creativeTabsComboBox = new JComboBox();
+			creativeTabsComboBox.setToolTipText("The tabs in the creative menu where the item can be found");
 			creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
 					"food", "tools", "combat", "brewing", "materials", "inventory"}));
 			creativeTabsComboBox.addItemListener(new ItemListener() {
@@ -139,6 +146,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 			creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
 			
 			creativeTabsResetButton = new JButton("Reset");
+			creativeTabsResetButton.setToolTipText("The tabs in the creative menu where the item can be found");
 			creativeTabsResetButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					creativeTabsReset();
@@ -147,10 +155,14 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 			creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
 			
 			creativeTabsLabel = new JLabel("");
+			creativeTabsLabel.setToolTipText("The tabs in the creative menu where the item can be found");
 			creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
 		}
 		
 		labelContainer = new JLabel("Container");
+		labelContainer.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
+				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
+				+ "and when you grab the cake, you will get your buckets back</html>");
 		labelContainer.setEnabled(false);
 		labelPanel.add(labelContainer);
 		
@@ -159,6 +171,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		containerPanel.setLayout(new BorderLayout(0, 0));
 		
 		containerCheckbox = new JCheckBox("Use");
+		containerCheckbox.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
+				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
+				+ "and when you grab the cake, you will get your buckets back</html>");
 		containerCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -172,6 +187,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		containerSubPanel.setLayout(new BorderLayout(0, 0));
 		
 		containerChooseButton = new JButton("Choose");
+		containerChooseButton.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
+				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
+				+ "and when you grab the cake, you will get your buckets back</html>");
 		containerChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				containerChoose();
@@ -181,19 +199,24 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		containerSubPanel.add(containerChooseButton, BorderLayout.EAST);
 		
 		containerLabel = new JLabel("");
+		containerLabel.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
+				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
+				+ "and when you grab the cake, you will get your buckets back</html>");
 		containerLabel.setEnabled(false);
 		containerSubPanel.add(containerLabel, BorderLayout.CENTER);
 		
 		labelBurnTime = new JLabel("Burn time");
+		labelBurnTime.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
 		labelBurnTime.setEnabled(false);
 		labelPanel.add(labelBurnTime);
 		
 		burntimePanel = new JPanel();
-		burntimePanel.setToolTipText("How many items will be cooked when you use the item as fuel.");
+		burntimePanel.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
 		interactionPanel.add(burntimePanel);
 		burntimePanel.setLayout(new BorderLayout(0, 0));
 		
 		burntimeCheckbox = new JCheckBox("Use");
+		burntimeCheckbox.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
 		burntimeCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -203,6 +226,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		burntimePanel.add(burntimeCheckbox, BorderLayout.EAST);
 		
 		burntimeSpinner = new JSpinner();
+		burntimeSpinner.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
 		burntimeSpinner.setEnabled(false);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		burntimePanel.add(burntimeSpinner, BorderLayout.CENTER);
@@ -233,6 +257,8 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	public RegularItemEditor(ItemsActivityPanel main, ItemElement item) {
 		this(item.name, main);
 		regularSetup(main, item);
+		if (item.item.stacksize != null)
+			maxStackSizeSpinner.setValue(item.item.stacksize);
 		for (TabResource s : ((ItemResource)item.item).tabs)
 			creativeTabsChoose(s.name());
 	}
@@ -242,8 +268,6 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
 			setIconImage(main.main.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
 		}
-		if (item.item.stacksize != null)
-			maxStackSizeSpinner.setValue(item.item.stacksize);
 		if (item.item.container != null){
 			containerLabel.setText(item.item.container);
 			containerCheckbox.setSelected(true);
@@ -285,7 +309,8 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		item.itemModel = model;
 		
 		base.model = "modbuilder:" + name;
-		base.stacksize = (Integer) maxStackSizeSpinner.getValue();
+		if (!(this instanceof ToolItemEditor))
+			base.stacksize = (Integer) maxStackSizeSpinner.getValue();
 		if (containerLabel.getText().length() > 0 && containerCheckbox.isSelected()) 
 			base.container = containerLabel.getText();
 		if (burntimeCheckbox.isSelected())

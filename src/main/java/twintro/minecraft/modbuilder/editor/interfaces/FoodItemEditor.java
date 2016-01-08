@@ -30,6 +30,9 @@ public class FoodItemEditor extends RegularItemEditor {
 	protected JLabel labelSaturation;
 	protected JLabel labelProperties;
 	protected JLabel labelEffects;
+	protected JLabel labelEffect;
+	protected JLabel labelDuration;
+	protected JLabel labelAmplifier;
 	protected JSpinner hungerRefillSpinner;
 	protected JSpinner saturationSpinner;
 	protected JCheckBox feedToWolvesCheckbox;
@@ -41,19 +44,27 @@ public class FoodItemEditor extends RegularItemEditor {
 		super(name, itemsActivityPanel);
 		setTitle("Edit Food: " + this.name);
 		
-		//TODO tooltips for some things
-		
 		labelHungerRefill = new JLabel("Hunger Refill");
+		labelHungerRefill.setToolTipText("<html>The amount of hunger points that will be refilled when the user eats the food<br>"
+				+ "Two hunger points refill one chicken wing</html>");
 		labelPanel.add(labelHungerRefill);
 		
 		hungerRefillSpinner = new JSpinner();
+		hungerRefillSpinner.setToolTipText("<html>The amount of hunger points that will be refilled when the user eats the food<br>"
+				+ "Two hunger points refill one chicken wing</html>");
 		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(hungerRefillSpinner);
 		
 		labelSaturation = new JLabel("Saturation");
+		labelSaturation.setToolTipText("<html>The amount of saturation that the user gains by eating the food<br>"
+				+ "As long as the user has saturation, he will not lose any hunger<br>"
+				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>");
 		labelPanel.add(labelSaturation);
 		
 		saturationSpinner = new JSpinner();
+		saturationSpinner.setToolTipText("<html>The amount of saturation that the user gains by eating the food<br>"
+				+ "As long as the user has saturation, he will not lose any hunger<br>"
+				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>");
 		saturationSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(saturationSpinner);
 		
@@ -69,6 +80,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.add(feedToWolvesPanel);
 		
 		feedToWolvesCheckbox = new JCheckBox("Feed to wolves");
+		feedToWolvesCheckbox.setToolTipText("Determine whether or not the food can be fed to a wolf");
 		feedToWolvesPanel.add(feedToWolvesCheckbox);
 		
 		alwaysEdiblePanel = new JPanel();
@@ -76,6 +88,8 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.add(alwaysEdiblePanel);
 		
 		alwaysEdibleCheckbox = new JCheckBox("Always edible");
+		alwaysEdibleCheckbox.setToolTipText("<html>Determine whether or not the food can be eaten, even with a full hunger bar<br>"
+				+ "This may be useful, because the user will still gain saturation</html>");
 		alwaysEdiblePanel.add(alwaysEdibleCheckbox);
 		
 		effectsListPanel = new JPanel();
@@ -87,16 +101,22 @@ public class FoodItemEditor extends RegularItemEditor {
 		effectsListTopPanel.setLayout(new GridLayout(0, 4, 0, 5));
 		effectsListPanel.add(effectsListTopPanel);
 		
-		JLabel labelEffect = new JLabel("Effect");
+		labelEffect = new JLabel("Effect");
+		labelEffect.setToolTipText("The effect type");
 		effectsListTopPanel.add(labelEffect);
 		
-		JLabel labelDuration = new JLabel("Duration");
+		labelDuration = new JLabel("Duration");
+		labelDuration.setToolTipText("<html>The duration of the effect in ticks<br>"
+				+ "One second is equal to twenty ticks</html>");
 		effectsListTopPanel.add(labelDuration);
 		
-		JLabel labelAmplifier = new JLabel("Amplifier");
+		labelAmplifier = new JLabel("Amplifier");
+		labelAmplifier.setToolTipText("<html>The amplifier for the effect<br>"
+				+ "An amplifier of zero means level one, an amplifier of one means level two, this pattern continues</html>");
 		effectsListTopPanel.add(labelAmplifier);
 		
 		addEffectButton = new JButton("Add Effect");
+		addEffectButton.setToolTipText("Add potion effects that will occur to the user when he eats the food");
 		addEffectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addEffect();
@@ -110,6 +130,8 @@ public class FoodItemEditor extends RegularItemEditor {
 	public FoodItemEditor(ItemsActivityPanel main, ItemElement item) {
 		this(item.name, main);
 		regularSetup(main, item);
+		if (item.item.stacksize != null)
+			maxStackSizeSpinner.setValue(item.item.stacksize);
 		foodSetup(item);
 	}
 	
