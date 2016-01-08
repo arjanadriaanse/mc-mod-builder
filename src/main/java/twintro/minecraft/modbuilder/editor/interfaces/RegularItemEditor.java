@@ -15,6 +15,7 @@ import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 import javax.swing.JCheckBox;
@@ -66,8 +67,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		this.main = main;
 
 		setBounds(100, 100, 500, 500);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Edit Item: " + this.name);
+		addWindowListener(new WindowClosingVerifierListener());
 		
 		//TODO tooltips for some things
 		
@@ -255,7 +257,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	}
 
 	protected void cancel() {
-		this.dispose();
+		WindowClosingVerifierListener.close(this);
 	}
 
 	protected void save() {

@@ -1,9 +1,14 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
 import java.awt.BorderLayout;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.HashSet;
+import java.util.Set;
 
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -17,13 +22,20 @@ public class FoodItemEditor extends RegularItemEditor {
 	protected JPanel propertiesPanel;
 	protected JPanel feedToWolvesPanel;
 	protected JPanel alwaysEdiblePanel;
+	protected JPanel effectsPanel;
+	protected JPanel effectsLabelPanel;
+	protected JPanel effectsListPanel;
+	protected JPanel effectsListTopPanel;
 	protected JLabel labelHungerRefill;
 	protected JLabel labelSaturation;
 	protected JLabel labelProperties;
+	protected JLabel labelEffects;
 	protected JSpinner hungerRefillSpinner;
 	protected JSpinner saturationSpinner;
 	protected JCheckBox feedToWolvesCheckbox;
 	protected JCheckBox alwaysEdibleCheckbox;
+	protected JButton addEffectButton;
+	protected EffectPanel[] effectPanels;
 	
 	public FoodItemEditor(String name, ItemsActivityPanel itemsActivityPanel) {
 		super(name, itemsActivityPanel);
@@ -66,7 +78,33 @@ public class FoodItemEditor extends RegularItemEditor {
 		alwaysEdibleCheckbox = new JCheckBox("Always edible");
 		alwaysEdiblePanel.add(alwaysEdibleCheckbox);
 		
-		//TODO effects
+		effectsListPanel = new JPanel();
+		effectsListPanel.setLayout(new GridLayout(0, 1, 0, 5));
+		effectsListPanel.add(new JLabel());
+		mainPanel.add(effectsListPanel, BorderLayout.SOUTH);
+		
+		effectsListTopPanel = new JPanel();
+		effectsListTopPanel.setLayout(new GridLayout(0, 4, 0, 5));
+		effectsListPanel.add(effectsListTopPanel);
+		
+		JLabel labelEffect = new JLabel("Effect");
+		effectsListTopPanel.add(labelEffect);
+		
+		JLabel labelDuration = new JLabel("Duration");
+		effectsListTopPanel.add(labelDuration);
+		
+		JLabel labelAmplifier = new JLabel("Amplifier");
+		effectsListTopPanel.add(labelAmplifier);
+		
+		addEffectButton = new JButton("Add Effect");
+		addEffectButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addEffect();
+			}
+		});
+		effectsListTopPanel.add(addEffectButton);
+		
+		effectPanels = new EffectPanel[0];
 	}
 	
 	public FoodItemEditor(ItemsActivityPanel main, ItemElement item) {
@@ -85,8 +123,9 @@ public class FoodItemEditor extends RegularItemEditor {
 			feedToWolvesCheckbox.setSelected(resource.wolf);
 		if (resource.alwaysedible != null)
 			alwaysEdibleCheckbox.setSelected(resource.alwaysedible);
-		
-		//TODO effects
+		if (resource.effects != null)
+			for (Integer[] effect : resource.effects)
+				addEffect(new EffectPanel(this, effect));
 	}
 
 	protected void save() {
@@ -97,10 +136,45 @@ public class FoodItemEditor extends RegularItemEditor {
 			base.wolf = feedToWolvesCheckbox.isSelected();
 			base.alwaysedible = alwaysEdibleCheckbox.isSelected();
 			
-			//TODO base.effects
+			Set<Integer[]> effects = new HashSet<Integer[]>();
+			for (EffectPanel effect : effectPanels)
+				effects.add(new Integer[]{effect.effectComboBox.getSelectedIndex(), 
+						(Integer) effect.durationSpinner.getValue(), (Integer) effect.amplifierSpinner.getValue()});
+			base.effects = effects;
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
 		}
+	}
+	
+	protected void addEffect(){
+		addEffect(new EffectPanel(this));
+	}
+	
+	protected void addEffect(EffectPanel effect){
+		EffectPanel[] newEffectPanels = new EffectPanel[effectPanels.length + 1];
+		for (int i = 0; i < effectPanels.length; i++)
+			newEffectPanels[i] = effectPanels[i];
+		newEffectPanels[effectPanels.length] = effect;
+		effect.id = effectPanels.length;
+		effectPanels = newEffectPanels;
+		
+		effectsListPanel.add(effect);
+		paintAll(getGraphics());
+	}
+	
+	public void removeEffect(int id){
+		effectsListPanel.remove(effectPanels[id]);
+
+		EffectPanel[] newEffectPanels = new EffectPanel[effectPanels.length - 1];
+		for (int i = 0; i < id; i++)
+			newEffectPanels[i] = effectPanels[i];
+		for (int i = id + 1; i < effectPanels.length; i++){
+			newEffectPanels[i - 1] = effectPanels[i];
+			effectPanels[i].id = i - 1;
+		}
+		effectPanels = newEffectPanels;
+
+		paintAll(getGraphics());
 	}
 }

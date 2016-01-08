@@ -95,7 +95,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		outputSmeltingButton = new ItemStackButton("New button");
+		outputSmeltingButton = new ItemStackButton("New button", items, blocks);
 		outputSmeltingButton.setIsProduct(true);
 		outputSmeltingButton.setBounds(243, 15, 90, 90);
 		panel_1.add(outputSmeltingButton);
@@ -105,7 +105,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 69));
 		
-		inputSmeltingButton = new ItemStackButton("New button");
+		inputSmeltingButton = new ItemStackButton("New button", items, blocks);
 		inputSmeltingButton.setIsProduct(false);
 		inputSmeltingButton.setBounds(15, 15, 90, 90);
 		panel_1.add(inputSmeltingButton);
