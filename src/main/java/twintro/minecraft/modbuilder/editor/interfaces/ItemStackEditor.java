@@ -136,6 +136,7 @@ public class ItemStackEditor extends JDialog {
 		
 		
 		if(!comboBox.getSelectedItem().toString().isEmpty()){
+		if (!isProduct)
 		item.container = containerTextfield.getText().isEmpty() ? null : containerTextfield.getText();
 		
 		

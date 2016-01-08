@@ -6,6 +6,7 @@ import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -25,18 +26,24 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	ItemStackEditor editor = null;
 	ItemStackButton thisButton = this;
 	
-	ItemStackButton(String s){
+	ItemStackButton(String s, Set<String> itemss, Set<String> blockss){
 		super(s);
-		//TODO remove dummy itemlist
+		
 		items = new ArrayList<ItemElement>();
 		blocks = new ArrayList<BlockElement>();
-		BlockElement dirt = new BlockElement();
-		dirt.name = "dirt";
-		blocks.add(dirt);
-		ItemElement sMDR = new ItemElement();
-		sMDR.name = "SuperMegaDeahRocket";
-		items.add(sMDR);
-		//end to do
+		for (String str : itemss){
+			try
+			{
+				items.add(ItemElement.getFromName(str));
+			}catch(Exception e){}
+		}
+		for (String str : blockss){
+			try
+			{
+				blocks.add(BlockElement.getFromName(str));
+			}catch(Exception e){}
+		}
+		
 		item = null;
 		isProduct = false;
 		this.addActionListener(this);

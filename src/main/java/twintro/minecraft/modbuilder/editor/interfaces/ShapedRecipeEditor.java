@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -37,28 +38,13 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 	private RecipesActivityPanel main;
 	private ItemStackButton[] buttons;
 	
-	/**
-	 * Launch the application.
-	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ShapelessRecipeEditor frame = new ShapelessRecipeEditor("asd", new RecipesActivityPanel("s", "e", new Editor()));
-					
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+
 
 	/**
 	 * Create the frame.
 	 */
-	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent) {
-		super(nameNew, parent);
+	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
+		super(nameNew, parent, items, blocks);
 	}
 
 

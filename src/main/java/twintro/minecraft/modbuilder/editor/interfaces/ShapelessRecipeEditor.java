@@ -9,8 +9,11 @@ import javax.swing.border.EmptyBorder;
 
 import scala.swing.event.WindowClosed;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -25,6 +28,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.awt.event.ActionEvent;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -43,19 +47,15 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					ShapedRecipeEditor frame = new ShapedRecipeEditor("asd", new RecipesActivityPanel("s", "e", new Editor()));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		private static List<String> stringSetToList(Set<String> set){
+			List<String> output = new ArrayList<String>();
+			for (String s : set){
+				output.add(s);
 			}
-		});
-	}
-		public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent) {
+			return output;
+		}
+	
+		public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
 		this.name = nameNew;
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -77,34 +77,12 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		panel.setLayout(new GridLayout(3, 3, 4, 4));
 		
 		buttons = new ItemStackButton[10];
-		buttons[0] = new ItemStackButton("");
-		panel.add(buttons[0]);
+		for (int i = 0; i<9; i++){
+			buttons[i] = new ItemStackButton("", items, blocks);
+			panel.add(buttons[i]);
+		}
 		
-		buttons[1] = new ItemStackButton("");
-		panel.add(buttons[1]);
-		
-		buttons[2] = new ItemStackButton("");
-		panel.add(buttons[2]);
-		
-		buttons[3] = new ItemStackButton("");
-		panel.add(buttons[3]);
-		
-		buttons[4] = new ItemStackButton("");
-		panel.add(buttons[4]);
-		
-		buttons[5] = new ItemStackButton("");
-		panel.add(buttons[5]);
-		
-		buttons[6] = new ItemStackButton("");
-		panel.add(buttons[6]);
-		
-		buttons[7] = new ItemStackButton("");
-		panel.add(buttons[7]);
-		
-		buttons[8] = new ItemStackButton("");
-		panel.add(buttons[8]);
-		
-		buttons[9] = new ItemStackButton("");
+		buttons[9] = new ItemStackButton("",items, blocks);
 		buttons[9].setIsProduct(true);
 		buttons[9].setBounds(365, 115, 80, 80);
 		
@@ -155,31 +133,65 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		setVisible(true);
 	}
 		
+	public ShapelessRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe,
+				Set<String> editorItems, Set<String> editorBlocks) {
+			this(value, recipesActivityPanel, editorItems, editorBlocks);
+			ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
+			for(int i = 0; i < shplsRcpy.input.size();i++){
+				buttons[i].item = shplsRcpy.input.get(i);
+				if (shplsRcpy.input.get(i).block != "") 
+					buttons[i].setText(shplsRcpy.input.get(i).block);
+				else
+					buttons[i].setText(shplsRcpy.input.get(i).item);
+			}
+			buttons[9].item.item = shplsRcpy.output.item;
+			buttons[9].item.block = shplsRcpy.output.block;
+			if (shplsRcpy.input.get(9).block != "") 
+				buttons[9].setText(shplsRcpy.input.get(9).block);
+			else
+				buttons[9].setText(shplsRcpy.input.get(9).item);
+			
+			this.name = value;
+		}
+
 	public void itemChanged(String old, String newName){
 		for(int i=0; i <10; i++)
 			if (buttons[i].item.item == old) buttons[i].item.item = newName;
 	}
 	
 	public void blockChanged(String old, String newName){
-		for (int i=0; i<10; i++)
+		for (int i=0; 9<10; i++)
 			if (buttons[i].item.block == old) buttons[i].item.block = newName;
 	}
 
 	protected void cancel() {
 		WindowClosingVerifierListener.close(this);
-		//TODO ask for confirm
+
+	}
+	
+	@Override
+	public void dispose() {
+		main.closeEditor(name);
+		super.dispose();
 	}
 
 	protected void saveRecipe() {
-		ItemStackResource[] savableInput = new ItemStackResource[9];
+		List<ItemStackResource> savableInput = new ArrayList<ItemStackResource>();
 		ItemStackResource savableOutput = new ItemStackResource();
 		for (int i = 0; i < 9; i++){
 			if (buttons[i].getText() != ""){
-				savableInput[i] = buttons[i].item;
+				savableInput.add(buttons[i].item);
 			}
 		}
 		savableOutput = buttons[9].item;
-		
+		ShapelessRecipe recipe = new ShapelessRecipe();
+		recipe.type = RecipeType.shapeless;
+		recipe.input = savableInput;
+		recipe.output = savableOutput;
+		RecipeElement recipeElement = new RecipeElement();
+		recipeElement.recipe = recipe;
+		recipeElement.name = this.name;
+		main.addRecipe(recipeElement);
 		//TODO send recipe to activity panel to save
 	}
 }

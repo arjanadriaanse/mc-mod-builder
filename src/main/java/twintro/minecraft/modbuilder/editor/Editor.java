@@ -10,6 +10,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -268,5 +269,13 @@ public class Editor {
 	
 	private void about(){
 		//TODO
+	}
+	
+	public Set<String> getBlocksInBlockPanel(){
+		return BlockPanel.getAllElements();
+	}
+	
+	public Set<String> getItemsInItemPanel(){
+		return ItemPanel.getAllElements();
 	}
 }

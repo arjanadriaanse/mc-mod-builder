@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -18,6 +19,7 @@ import javax.swing.border.EmptyBorder;
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
 import java.awt.Font;
@@ -35,23 +37,11 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					SmeltingRecipeEditor frame = new SmeltingRecipeEditor("asd", new RecipesActivityPanel("asd", "asd", new Editor()));
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
 
 	/**
 	 * Create the frame.
 	 */
-	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent) {
+	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
 		this.name = newName;
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -149,8 +139,10 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		SmeltingRecipe recipe = new SmeltingRecipe();
 		recipe.output = outputSmeltingButton.item;
 		recipe.input = inputSmeltingButton.item;
-		
-		//TODO send it to activity panel to save
+		RecipeElement itemToSave = new RecipeElement();
+		itemToSave.name = this.name;
+		itemToSave.recipe = recipe;
+		main.addRecipe(itemToSave);
 	}
 	
 	private void cancel(){
