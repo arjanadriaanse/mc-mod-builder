@@ -23,18 +23,18 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemsActivityPanel extends ActivityPanel {
 	private List<String> models;
-	private Map<String,NewItemEditor> openEditors;
+	private Map<String,RegularItemEditor> openEditors;
 	
 	public ItemsActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
 		this.models = new ArrayList<String>();
-		this.openEditors = new HashMap<String,NewItemEditor>();
+		this.openEditors = new HashMap<String,RegularItemEditor>();
 	}
 	
 	public ItemsActivityPanel(String header, String button, Editor main, ArrayList<String> models) {
 		super(header, button, main);
 		this.models = models;
-		this.openEditors = new HashMap<String,NewItemEditor>();
+		this.openEditors = new HashMap<String,RegularItemEditor>();
 	}
 	
 	@Override
@@ -42,23 +42,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this, 0);
-				openEditors.put(name, editor);
-			}
-		}
-		/*
-		String name = JOptionPane.showInputDialog("Item name:");
-		if (name != null)
-			if (name.replaceAll(" ", "").length() > 0)
-				new ItemEditor(this ,models, name);
-		*/
-	}
-	
-	protected void addTool(){
-		String name = JOptionPane.showInputDialog("Item name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this, 1);
+				RegularItemEditor editor = new RegularItemEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -68,7 +52,17 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewItemEditor editor = new NewItemEditor(name, this, 2);
+				FoodItemEditor editor = new FoodItemEditor(name, this);
+				openEditors.put(name, editor);
+			}
+		}
+	}
+	
+	protected void addTool(){
+		String name = JOptionPane.showInputDialog("Item name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
+				RegularItemEditor editor = new ToolItemEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -99,11 +93,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String value = (String) list.getSelectedValue();
 		try {
 			if (!openEditors.containsKey(value)){
-				int iTypeIndex;
-				if (ItemElement.getFromName(value).item.type == ItemType.food) iTypeIndex = 2;
-				else if (ItemElement.getFromName(value).item.type == ItemType.tool) iTypeIndex = 1;
-				else iTypeIndex = 0;
-				NewItemEditor editor = new NewItemEditor(this, ItemElement.getFromName(value), iTypeIndex, true);
+				ItemElement item = ItemElement.getFromName(value);
+				ItemType type = item.item.type;
+				RegularItemEditor editor;
+				if (type == ItemType.food) editor = new FoodItemEditor(this, item);
+				else if (type == ItemType.tool) editor = new ToolItemEditor(this, item);
+				else editor = new RegularItemEditor(this, item);
 				openEditors.put(value,editor);
 			}
 			else {

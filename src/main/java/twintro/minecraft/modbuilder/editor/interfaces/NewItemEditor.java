@@ -86,7 +86,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		this.name = nameNew;
 		this.main = main;
 		
-		setBounds(100, 100, 483, 758);
+		setBounds(100, 100, 470, 816);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Edit Item: " + name);
 		
@@ -314,6 +314,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_14.setLayout(new BorderLayout(0, 0));
 		
 		durabillitySpinner = new JSpinner();
+		durabillitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		
 		panel_14.add(durabillitySpinner);
 		
@@ -323,6 +324,7 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 		panel_15.setLayout(new BorderLayout(0, 0));
 		
 		efficiencySpinner = new JSpinner();
+		efficiencySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		panel_15.add(efficiencySpinner);
 		
 		JPanel panel_16 = new JPanel();
@@ -724,8 +726,6 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 			item.item = base;
 			
 			main.addItem(item);
-			
-			//TODO Saving food and tools >>MIKEPLS<<
 		}
 	}
 	
