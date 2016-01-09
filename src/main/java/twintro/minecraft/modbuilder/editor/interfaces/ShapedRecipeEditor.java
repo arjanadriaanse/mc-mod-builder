@@ -8,7 +8,10 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
 import java.awt.Window;
@@ -46,6 +49,32 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
 		super(nameNew, parent, items, blocks);
 	}
+
+
+	public ShapedRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe,
+				Set<String> editorItems, Set<String> editorBlocks) {
+		
+			this(value, recipesActivityPanel, editorItems, editorBlocks);
+			ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
+			for (int i = 0; i < 10; i++){
+				buttons[i].item = new ItemStackResource();
+			}
+			for(int i = 0; i < 9;i++){
+				Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
+				buttons[i].item = shpdRcpy.input.get(indexChar);
+				if (shpdRcpy.input.get(indexChar).item == "" || shpdRcpy.input.get(indexChar).item == null)
+					buttons[i].setText(shpdRcpy.input.get(indexChar).amount + " "+shpdRcpy.input.get(indexChar).block);
+				else
+					buttons[i].setText(shpdRcpy.input.get(indexChar).amount + " "+shpdRcpy.input.get(indexChar).item);
+			}
+			buttons[9].item = shpdRcpy.output;
+			if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
+				buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.block);
+			else
+				buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.item);
+
+			this.name = value;
+		}
 
 
 	protected void saveRecipe() {

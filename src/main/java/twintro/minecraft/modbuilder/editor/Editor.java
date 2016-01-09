@@ -237,7 +237,7 @@ public class Editor {
 		TexturePanel = new TexturesActivityPanel("Textures", "New Texture", this);
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe", this);
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe", this);
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
 		BlockPanel = new BlocksActivityPanel("Blocks", "New Block", this);
