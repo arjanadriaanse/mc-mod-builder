@@ -62,6 +62,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	protected String name;
 	protected ItemsActivityPanel main;
 	
+	/**
+	 * @wbp.parser.constructor
+	 */
 	public RegularItemEditor(String name, ItemsActivityPanel main) {
 		this.name = name;
 		this.main = main;
@@ -235,7 +238,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		((FlowLayout) buttonPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
-		saveButton = new JButton("Save");
+		saveButton = new JButton("Save Item");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				save();
@@ -363,6 +366,10 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	public void choose(String texture) {
 		textureLabel.setText(texture);
 		setIconImage(main.main.TexturePanel.elements.get(texture.split(":")[1]).getImage());
+	}
+	
+	@Override
+	public void textureChooserDispose(){
 		textureChooserIsOpen = false;
 	}
 }

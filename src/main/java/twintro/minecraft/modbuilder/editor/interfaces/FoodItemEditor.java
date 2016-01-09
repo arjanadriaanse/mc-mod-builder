@@ -44,6 +44,8 @@ public class FoodItemEditor extends RegularItemEditor {
 		super(name, itemsActivityPanel);
 		setTitle("Edit Food: " + this.name);
 		
+		saveButton.setText("Save Food");
+		
 		labelHungerRefill = new JLabel("Hunger Refill");
 		labelHungerRefill.setToolTipText("<html>The amount of hunger points that will be refilled when the user eats the food<br>"
 				+ "Two hunger points refill one chicken wing</html>");
@@ -160,8 +162,9 @@ public class FoodItemEditor extends RegularItemEditor {
 			
 			Set<Integer[]> effects = new HashSet<Integer[]>();
 			for (EffectPanel effect : effectPanels)
-				effects.add(new Integer[]{effect.effectComboBox.getSelectedIndex(), 
-						(Integer) effect.durationSpinner.getValue(), (Integer) effect.amplifierSpinner.getValue()});
+				if (effect.effectComboBox.getSelectedIndex() > 0)
+					effects.add(new Integer[]{effect.effectComboBox.getSelectedIndex(), 
+							(Integer) effect.durationSpinner.getValue(), (Integer) effect.amplifierSpinner.getValue()});
 			base.effects = effects;
 			
 			ItemElement item = writeItem(base);

@@ -71,4 +71,10 @@ public class TextureChooseWindow extends JFrame {
 		main.choose(texture);
 		this.dispose();
 	}
+	
+	@Override
+	public void dispose() {
+		main.textureChooserDispose();
+		super.dispose();
+	}
 }

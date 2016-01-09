@@ -43,6 +43,8 @@ public class ToolItemEditor extends RegularItemEditor {
 		super(name, main);
 		setTitle("Edit Tool: " + this.name);
 		
+		saveButton.setText("Save Tool");
+		
 		labelDurability = new JLabel("Durability");
 		labelDurability.setToolTipText("The amount of blocks that the tool can mine until the tool breaks");
 		labelPanel.add(labelDurability);

@@ -743,6 +743,10 @@ public class NewItemEditor extends JFrame implements TextureRunnable {
 	public void choose(String texture) {
 		textureLabel.setText(texture);
 		setIconImage(main.main.TexturePanel.elements.get(texture.split(":")[1]).getImage());
+	}
+
+	@Override
+	public void textureChooserDispose() {
 		textureChooserIsOpen = false;
 	}
 }
