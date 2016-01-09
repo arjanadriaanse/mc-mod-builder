@@ -235,7 +235,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 		burntimePanel.add(burntimeSpinner, BorderLayout.CENTER);
 		
 		buttonPanel = new JPanel();
-		((FlowLayout) buttonPanel.getLayout()).setAlignment(FlowLayout.RIGHT);
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
 		
 		saveButton = new JButton("Save Item");
