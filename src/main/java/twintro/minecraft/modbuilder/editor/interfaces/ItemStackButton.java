@@ -64,7 +64,6 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 
 	@Override
 	public void windowClosed(WindowEvent e) {
-
 		if (editor.changed){
 			item = editor.getItem();
 			if (item.block!=null && !item.block.isEmpty()){

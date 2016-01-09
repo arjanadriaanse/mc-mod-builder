@@ -173,7 +173,9 @@ public class RecipesActivityPanel extends ActivityPanel {
 				if (file.getAbsolutePath().endsWith(".json")){
 					try {
 						String name = file.getName().substring(0, file.getName().length() - 5);
-						addElement(name, RecipeElement.getFromName(name).getImage());
+						ImageIcon img = RecipeElement.getFromName(name).getImage();
+						if (img == null) img = new ImageIcon();
+						addElement(name, img);
 					} catch (Exception e) {
 						System.out.println("Could not find all recipe element objects for " + file.getName());
 					}

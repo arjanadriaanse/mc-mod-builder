@@ -41,7 +41,16 @@ public class RecipeElement extends Element {
 	@Override
 	public ImageIcon getImage() {
 		String outputName = recipe.output.item;
-		if (outputName == null) outputName = recipe.output.block;
+		if (outputName == null) {
+			outputName = recipe.output.block;
+			try{
+				return BlockElement.getFromName(outputName).getImage();
+			} catch (Exception e){}
+		} else {
+			try{
+				return ItemElement.getFromName(outputName).getImage();
+			} catch (Exception e){}
+		}
 		return TextureResources.getImage(outputName);
 	}
 }

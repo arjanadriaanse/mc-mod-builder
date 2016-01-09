@@ -121,8 +121,10 @@ public class ItemStackEditor extends JDialog {
 
 		if (item != null){
 			comboBox.setSelectedItem(item.item);
+			if (item.container != null)
 			containerTextfield.setText(item.container);
 			if (isProduct){
+				if (item.amount != null)
 				stackSizeTextfield.setText(item.amount +"");
 			}
 		}
