@@ -18,17 +18,23 @@ import java.awt.event.MouseMotionAdapter;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
@@ -37,9 +43,11 @@ import javax.swing.ScrollPaneConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.ListPanel;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class BlockModelChooseWindow extends JFrame {
 	ListPanel listPanel;
@@ -47,10 +55,10 @@ public class BlockModelChooseWindow extends JFrame {
 	int modelType = 1;
 	ImageIcon selectedImage;
 	String selectedImageName;
-	Image[] textures1 = new Image[6];
-	Image[] textures2 = new Image[6];
+	Image[] textures1 = new BufferedImage[6];
+	Image[] textures2 = new BufferedImage[2];
 	String[] textureNames1 = new String[6];
-	String[] textureNames2 = new String[6];
+	String[] textureNames2 = new String[2];
 	double[] rotation1 = new double[]{Math.PI/6,Math.PI/6};
 	double[] rotation2 = new double[]{Math.PI/4,Math.PI/6};
 	boolean rotating = false;
@@ -62,7 +70,7 @@ public class BlockModelChooseWindow extends JFrame {
 			new Point(128, 64),
 			new Point(192, 64),
 			new Point( 64,128),
-			new Point(192,192)
+			new Point(208,192)
 	};
 	Point[] loc2 = new Point[]{
 			new Point( 64,0),
@@ -72,10 +80,11 @@ public class BlockModelChooseWindow extends JFrame {
 
 	public BlockModelChooseWindow(Map<String, ImageIcon> elements, NewBlockEditor main){
 		this.main = main;
+		load();
 		
 		setBounds(100, 100, 450, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Choose Block Model");
+		setTitle("Choose Block Model: "+main.name);
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
@@ -113,15 +122,16 @@ public class BlockModelChooseWindow extends JFrame {
 		mainPanel.setLayout(new BorderLayout(0,0));
 		mainPanel.setVisible(true);
 		
-		JPanel buttonsPanel = new JPanel();
-		mainPanel.add(buttonsPanel, BorderLayout.PAGE_START);
-		buttonsPanel.setPreferredSize(new Dimension(300, 64));
-		buttonsPanel.setLayout(new FlowLayout());
+		JPanel topButtonPanel = new JPanel();
+		mainPanel.add(topButtonPanel, BorderLayout.PAGE_START);
+		topButtonPanel.setPreferredSize(new Dimension(300, 64));
+		topButtonPanel.setLayout(new FlowLayout());
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 		JRadioButton button1 = new JRadioButton("full block model");
 		JRadioButton button2 = new JRadioButton("cross model");
-		button1.setSelected(true);
+		if(modelType==1) button1.setSelected(true);
+		if(modelType==2) button2.setSelected(true);
 		button1.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent ae){
@@ -136,8 +146,23 @@ public class BlockModelChooseWindow extends JFrame {
 		});
 		buttonGroup.add(button1);
 		buttonGroup.add(button2);
-		buttonsPanel.add(button1);
-		buttonsPanel.add(button2);
+		topButtonPanel.add(button1);
+		topButtonPanel.add(button2);
+
+		JPanel botButtonPanel = new JPanel();
+		mainPanel.add(botButtonPanel, BorderLayout.PAGE_END);
+		botButtonPanel.setPreferredSize(new Dimension(300, 32));
+		botButtonPanel.setLayout(new FlowLayout());
+		
+		JButton buttonOK = new JButton("Use this model");
+		buttonOK.setSelected(true);
+		buttonOK.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				save();
+			}
+		});
+		botButtonPanel.add(buttonOK);
 		
 		JPanel paintPanel = new JPanel() {
 			@Override
@@ -150,7 +175,7 @@ public class BlockModelChooseWindow extends JFrame {
 			}
 		};
 		mainPanel.add(paintPanel, BorderLayout.LINE_START);
-		paintPanel.setPreferredSize(new Dimension(300, 336));
+		paintPanel.setPreferredSize(new Dimension(300, 304));
 		paintPanel.addMouseListener(new MouseAdapter(){
 			@Override
 			public void mousePressed(MouseEvent me) {
@@ -325,5 +350,109 @@ public class BlockModelChooseWindow extends JFrame {
 		selectedImageName = texture;
 		selectedImage = listPanel.elements.get(texture);
 		listPanel.repaint();
+	}
+	
+	public void save(){
+		BlockModelResource model = new BlockModelResource();
+		if(modelType==1){
+			if (textures1[0]==textures1[1] && textures1[0]==textures1[2] && textures1[0]==textures1[3] && textures1[0]==textures1[4] && textures1[0]==textures1[5]){
+				model.parent="block/cube_all";
+				model.textures=new HashMap<String,String>();
+				model.textures.put("all","modbuilder:"+textureNames1[0]);
+			}
+			else {
+				model.parent="block/cube";
+				model.textures=new HashMap<String,String>();
+				model.textures.put("up",    "modbuilder:"+textureNames1[0]);
+				model.textures.put("west",  "modbuilder:"+textureNames1[1]);
+				model.textures.put("south", "modbuilder:"+textureNames1[2]);
+				model.textures.put("east",  "modbuilder:"+textureNames1[3]);
+				model.textures.put("north", "modbuilder:"+textureNames1[4]);
+				model.textures.put("down",  "modbuilder:"+textureNames1[5]);
+			}
+		}
+		if(modelType==2){
+			model.parent="block/cross";
+			model.textures=new HashMap<String,String>();
+			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
+		}
+		main.model=model;
+		this.dispose();
+	}
+	
+	public void load(){
+		if(main.model==null) return;
+		if(main.model.parent=="block/cube") {
+			String[] name = new String[]{"up","west","south","east","north","down"};
+			for(int i=0;i<6;i++){
+				if (main.model.textures.get(name[i]).split(":")[0].equals("modbuilder")) {
+					String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get(name[i]).split(":")[1] + ".png";
+					try{
+						Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
+						BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+						bi.createGraphics().drawImage(img,0,0,null);
+						textures1[i]=bi;
+					} 
+					catch (IOException e){
+					    e.printStackTrace();
+					}
+					textureNames1[i]=main.model.textures.get(name[i]).split(":")[1];
+				}
+			}
+			modelType=1;
+			return;
+		}
+		if(main.model.parent=="block/cross") {
+			if (main.model.textures.get("cross").split(":")[0].equals("modbuilder")) {
+				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get("cross").split(":")[1] + ".png";
+				try{
+					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
+					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+					bi.createGraphics().drawImage(img,0,0,null);
+					textures2[0]=bi;
+				} 
+				catch (IOException e){
+				    e.printStackTrace();
+				}
+				textureNames2[0]=main.model.textures.get("cross").split(":")[1];
+				textures2[1]=textures2[0];
+				textureNames2[1]=textureNames2[0];
+			}
+			modelType=2;
+			return;
+		}
+		if(main.model.parent=="block/cube_all") {
+			if (main.model.textures.get("all").split(":")[0].equals("modbuilder")) {
+				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get("all").split(":")[1] + ".png";
+				try{
+					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
+					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
+					bi.createGraphics().drawImage(img,0,0,null);
+					textures1[0]=bi;
+				} 
+				catch (IOException e){
+				    e.printStackTrace();
+				}
+				textureNames1[0]=main.model.textures.get("all").split(":")[1];
+				textures1[1]=textures1[0];
+				textureNames1[1]=textureNames1[0];
+				textures1[2]=textures1[1];
+				textureNames1[2]=textureNames1[1];
+				textures1[3]=textures1[2];
+				textureNames1[3]=textureNames1[2];
+				textures1[4]=textures1[3];
+				textureNames1[4]=textureNames1[3];
+				textures1[5]=textures1[4];
+				textureNames1[5]=textureNames1[4];
+			}
+			modelType=1;
+			return;
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		main.blockModelChooserDispose();
+		super.dispose();
 	}
 }

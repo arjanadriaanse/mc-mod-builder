@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
@@ -27,18 +29,35 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import twintro.minecraft.modbuilder.data.resources.TabResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+
 public class NewBlockEditor extends JFrame {
 
-	private String name;
+	public String name;
 	private JPanel contentPane;
 	private JLabel modelLabel;
-	private JTextField slipperinessTextField;
-	private JTextField hardnessTextField;
-	private JTextField resistanceTextField;
 	private JLabel lblCreativeTab;
 	private BlocksActivityPanel parent;
 	private JLabel creativeTabLabel;
-	private boolean modelChooserIsOpen = false;
+	private JSpinner lightnessSpinner;
+	private JSpinner opacitySpinner;
+	private JSpinner harvestLevelSpinner;
+	private JSpinner burntimeSpinner;
+	private JCheckBox unbreakableCheckBox;
+	private JTextField slipperinessTextField;
+	private JTextField hardnessTextField;
+	private JTextField resistanceTextField;
+	public boolean modelChooserIsOpen = false;
+	public BlockModelResource model;
 
 	public NewBlockEditor(String newName, BlocksActivityPanel parent, Integer type) {
 		BorderLayout borderLayout = (BorderLayout) getContentPane().getLayout();
@@ -195,14 +214,14 @@ public class NewBlockEditor extends JFrame {
 		panel_3.add(panel_4);
 		panel_4.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner lightnessSpinner = new JSpinner();
+		lightnessSpinner = new JSpinner();
 		panel_4.add(lightnessSpinner, BorderLayout.NORTH);
 		
 		JPanel panel_5 = new JPanel();
 		panel_3.add(panel_5);
 		panel_5.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner opacitySpinner = new JSpinner();
+		opacitySpinner = new JSpinner();
 		panel_5.add(opacitySpinner, BorderLayout.CENTER);
 		
 		JPanel panel_6 = new JPanel();
@@ -247,7 +266,7 @@ public class NewBlockEditor extends JFrame {
 		panel_3.add(panel_10);
 		panel_10.setLayout(new BorderLayout(0, 0));
 		
-		JCheckBox unbreakableCheckBox = new JCheckBox("");
+		unbreakableCheckBox = new JCheckBox("");
 		unbreakableCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_10.add(unbreakableCheckBox, BorderLayout.CENTER);
 		
@@ -255,14 +274,14 @@ public class NewBlockEditor extends JFrame {
 		panel_3.add(panel_13);
 		panel_13.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner harvestLevelSpinner = new JSpinner();
+		harvestLevelSpinner = new JSpinner();
 		panel_13.add(harvestLevelSpinner, BorderLayout.CENTER);
 		
 		JPanel panel_12 = new JPanel();
 		panel_3.add(panel_12);
 		panel_12.setLayout(new BorderLayout(0, 0));
 		
-		JSpinner burntimeSpinner = new JSpinner();
+		burntimeSpinner = new JSpinner();
 		panel_12.add(burntimeSpinner, BorderLayout.CENTER);
 		
 	
@@ -277,7 +296,7 @@ public class NewBlockEditor extends JFrame {
 	}
 
 	private void saveBlock(){
-		//TODO saving blocks
+		//TODO save block
 	}
 
 	private void selectTab(String tab){
@@ -292,6 +311,11 @@ public class NewBlockEditor extends JFrame {
 
 	private void cancel(){
 		this.dispose();
+	}
+
+	public void blockModelChooserDispose() {
+		modelChooserIsOpen = false;
+		
 	}
 	
 }
