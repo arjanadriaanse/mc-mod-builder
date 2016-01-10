@@ -8,6 +8,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
@@ -37,9 +38,6 @@ import java.awt.Font;
 public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 
 	private JPanel contentPane;
-	private String name;
-	private RecipesActivityPanel main;
-	private ItemStackButton[] buttons;
 	
 
 
@@ -48,6 +46,8 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 	 */
 	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
 		super(nameNew, parent, items, blocks);
+		lblCreateTheShaped.setText("Create the recipe in the desired pattern");
+		this.name = nameNew;
 	}
 
 
@@ -61,45 +61,84 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 			}
 			for(int i = 0; i < 9;i++){
 				Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
-				buttons[i].item = shpdRcpy.input.get(indexChar);
-				if (shpdRcpy.input.get(indexChar).item == "" || shpdRcpy.input.get(indexChar).item == null)
-					buttons[i].setText(shpdRcpy.input.get(indexChar).amount + " "+shpdRcpy.input.get(indexChar).block);
-				else
-					buttons[i].setText(shpdRcpy.input.get(indexChar).amount + " "+shpdRcpy.input.get(indexChar).item);
+				if (indexChar != ' ' && indexChar != null) {
+					buttons[i].item = shpdRcpy.input.get(indexChar);
+					if (shpdRcpy.input.get(indexChar).item == "" || shpdRcpy.input.get(indexChar).item == null)
+						buttons[i].setText(shpdRcpy.input.get(indexChar).block);
+					else
+						buttons[i].setText(shpdRcpy.input.get(indexChar).item);
+				} 
 			}
 			buttons[9].item = shpdRcpy.output;
-			if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
-				buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.block);
-			else
-				buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.item);
+			if(buttons[9].item.amount != null && buttons[9].item.amount != 0){
+				if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
+					buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.block);
+				else
+					buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.item);
+			} else {
+				if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
+					buttons[9].setText(shpdRcpy.output.block);
+				else
+					buttons[9].setText(shpdRcpy.output.item);
+			}
 
 			this.name = value;
 		}
 
 
 	protected void saveRecipe() {
-		String recipe = "";
-		char c = 'a'+1;
+		String[] recipe = {"","",""};
 		
 		Map<Character, ItemStackResource> recipeMap = new HashMap<Character, ItemStackResource>();
-		for (int i = 0; i < 9; i++){
-			String a = buttons[i].getText();
-			if (a == "") recipe += " ";
+		int t =0;
+		while (buttons[t].item.item == null && buttons[t].item.block == null){
+			recipe[t/3] += " ";
+			t++;
+			if (t == 9){
+				JOptionPane.showMessageDialog(this, "Please give atleast one item to have as input");
+				return;
+			}
+		}
+		if (buttons[9].item == null){
+			JOptionPane.showMessageDialog(this, "Please give an output item");
+			return;
+		}
+		recipeMap.put('a', buttons[t].item);
+		recipe[t/3] += "a";	
+		for (int i = t+1; i < 9; i++){
+			String a = "";
+			if (buttons[i].item.item == "" || buttons[i].item.item == null){
+				a = buttons[i].item.block;
+			}else{
+				a = buttons[i].item.item;
+			}
+			if (a == "" || a == null) recipe[i/3] += " ";
 			else {
-				for(char b = (char) ('a'+i); b<='j'; b++){
+				for(char b = (char) ('a'); b<='a'+i ; b++){
 					if (a == recipeMap.get(b).item || a==recipeMap.get(b).block && recipeMap.get(b).container == buttons[i].item.container){
-						recipe += b;
+						recipe[i/3] += b;
 						b+='j';
 					}
 					else if(!recipeMap.containsKey(b)) {
 						recipeMap.put(b, buttons[i].item);
-						recipe += b;
+						recipe[i/3] += b;
 					}
 				}
 			}
 		}
-		String outputItem = buttons[9].getText();
-		int outputAmount = buttons[9].item.amount;
-		//TODO send values to activity panel to save
+		ItemStackResource outputItem = buttons[9].item;
+		int outputAmount;
+		RecipeElement savable = new RecipeElement();
+		savable.name = this.name;
+		ShapedRecipe shapedRecipe = new ShapedRecipe();
+		List<String> recipeListForm = new ArrayList<String>();
+		for (int i = 0; i < 3; i++)
+			recipeListForm.add(recipe[i]);
+		shapedRecipe.shape = recipeListForm;
+		shapedRecipe.input = recipeMap; 
+		shapedRecipe.output = outputItem;
+		shapedRecipe.type = RecipeType.shaped;
+		savable.recipe = shapedRecipe;
+		main.addRecipe(savable);
 	}
 }

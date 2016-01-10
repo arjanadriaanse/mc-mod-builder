@@ -40,9 +40,10 @@ import javax.swing.JFrame;
 public class ShapelessRecipeEditor extends RecipeEditor {
 
 	private JPanel contentPane;
-	private String name;
-	private RecipesActivityPanel main;
-	private ItemStackButton[] buttons;
+	protected String name;
+	protected RecipesActivityPanel main;
+	protected ItemStackButton[] buttons;
+	protected JLabel lblCreateTheShaped;
 	
 	/**
 	 * Launch the application.
@@ -79,7 +80,9 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		buttons = new ItemStackButton[10];
 		for (int i = 0; i<9; i++){
 			buttons[i] = new ItemStackButton("", items, blocks);
+			buttons[i].setText("");
 			panel.add(buttons[i]);
+			buttons[i].item = new ItemStackResource();
 		}
 		
 		buttons[9] = new ItemStackButton("",items, blocks);
@@ -98,7 +101,7 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JLabel lblCreateTheShaped = new JLabel("Create the recipe, the shape does not matter");
+		lblCreateTheShaped = new JLabel("Create the recipe, the shape does not matter");
 		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
 		
 
@@ -195,6 +198,6 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		recipeElement.recipe = recipe;
 		recipeElement.name = this.name;
 		main.addRecipe(recipeElement);
-		//TODO send recipe to activity panel to save
+
 	}
 }

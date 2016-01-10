@@ -1,5 +1,7 @@
 package twintro.minecraft.modbuilder.editor.interfaces;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -8,7 +10,9 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
@@ -16,6 +20,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
+import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
@@ -30,6 +35,26 @@ public class RecipesActivityPanel extends ActivityPanel {
 		this.openEditors = new HashMap<String, RecipeEditor>();
 	}
 
+	protected void createButtonPanel(JPanel buttonPanel, String button) {
+		JButton ShapedButton = new ActivityButton("New shaped recipe");
+		ShapedButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addShaped();
+			}
+		});
+		buttonPanel.add(ShapedButton);
+		
+		JButton shapedButton = new ActivityButton("New smelting recipe");
+		shapedButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addSmelting();
+			}
+		});
+		buttonPanel.add(shapedButton);
+		
+		super.createButtonPanel(buttonPanel, button);
+	}
+	
 	private Set<String> getEditorBlocks(){
 		return main.getBlocksInBlockPanel();
 	}
@@ -131,11 +156,13 @@ public class RecipesActivityPanel extends ActivityPanel {
 				RecipeElement recipe = RecipeElement.getFromName(value);
 				RecipeType type = recipe.recipe.type;
 				RecipeEditor editor;
-				//if (type == RecipeType.shapeless) 
+				if (type == RecipeType.shaped)
+					editor = new ShapedRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
+			
+				else 
 					editor = new ShapelessRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
-				//else if (type == ItemType.tool) editor = new ToolItemEditor(this, item);
-				//else editor = new RegularItemEditor(this, item);
-				openEditors.put(value,editor);
+					
+					openEditors.put(value,editor);
 			}
 			else {
 				openEditors.get(value).setVisible(true);
