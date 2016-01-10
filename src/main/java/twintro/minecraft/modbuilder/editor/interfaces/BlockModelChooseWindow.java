@@ -51,7 +51,7 @@ public class BlockModelChooseWindow extends JFrame {
 	Image[] textures2 = new Image[6];
 	String[] textureNames1 = new String[6];
 	String[] textureNames2 = new String[6];
-	double[] rotation1 = new double[]{Math.PI/4,Math.PI/6};
+	double[] rotation1 = new double[]{Math.PI/6,Math.PI/6};
 	double[] rotation2 = new double[]{Math.PI/4,Math.PI/6};
 	boolean rotating = false;
 	Point mousecoords;
@@ -62,7 +62,7 @@ public class BlockModelChooseWindow extends JFrame {
 			new Point(128, 64),
 			new Point(192, 64),
 			new Point( 64,128),
-			new Point(160,112)
+			new Point(192,192)
 	};
 	Point[] loc2 = new Point[]{
 			new Point( 64,0),
@@ -179,13 +179,32 @@ public class BlockModelChooseWindow extends JFrame {
 		}
 		if (textures1[0]!=null && textures1[1]!=null && textures1[2]!=null && textures1[3]!=null && textures1[4]!=null && textures1[5]!=null){
 			double w2 = Math.sqrt(2)/2;
-			BufferedImage skew1 = transformImage(textures1[3], w2, -0.3, 0,0.85,w2,1.3);
-	        BufferedImage skew2 = transformImage(textures1[2], w2, 0.3, 0,0.85,0,1);
-	        BufferedImage skew3 = transformImage(textures1[0], w2, 0.3, -w2,0.3,w2,0.7);
+			double sh = Math.sin(rotation1[0]);
+			double ch = Math.cos(rotation1[0]);
+			double sv = Math.sin(rotation1[1]);
+			double cv = Math.cos(rotation1[1]);
+	        BufferedImage img0 = transformImage(textures1[0], w2*(ch+sh), w2*sv*(ch-sh), w2*(-ch+sh),w2*sv*(ch+sh), 2-w2*sh, 2-cv/2-w2*sv*ch);
+	        BufferedImage img1 = transformImage(textures1[1], w2*(-ch+sh), w2*sv*(ch+sh), 0,cv, 2-w2*sh, 2-cv/2-w2*sv*ch);
+	        BufferedImage img2 = transformImage(textures1[2], w2*(sh+ch), w2*sv*(-sh+ch), 0,cv, 2-w2*ch, 2-cv/2+w2*sv*sh);
+	        BufferedImage img3 = transformImage(textures1[3], w2*(ch-sh), w2*sv*(-ch-sh), 0,cv, 2+w2*sh, 2-cv/2+w2*sv*ch);
+	        BufferedImage img4 = transformImage(textures1[4], w2*(-sh-ch), w2*sv*(sh-ch), 0,cv, 2+w2*ch, 2-cv/2-w2*sv*sh);
+	        BufferedImage img5 = transformImage(textures1[5], -w2*(ch+sh), -w2*sv*(ch-sh), -w2*(-ch+sh),-w2*sv*(ch+sh), 2+w2*sh, 2+cv/2+w2*sv*ch);
 	        
-	        g.drawImage(skew1, loc1[6].x, loc1[6].y, null);
-	        g.drawImage(skew2, loc1[6].x, loc1[6].y, null);
-	        g.drawImage(skew3, loc1[6].x, loc1[6].y, null);
+	        BufferedImage[] front = new BufferedImage[3];
+	        BufferedImage[] back = new BufferedImage[3];
+	        if (sv>=0) {front[0] = img0; back[0] = img5;}
+	        else {front[0] = img5; back[0] = img0;}
+	        if (ch>=sh ^ cv>=0) {front[1] = img1; back[1] = img3;}
+	        else {front[1] = img3; back[1] = img1;}
+	        if (-sh>=ch ^ cv>=0) {front[2] = img2; back[2] = img4;}
+	        else {front[2] = img4; back[2] = img2;}
+	        
+	        for(BufferedImage img : back) {
+		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
+	        }
+	        for(BufferedImage img : front) {
+		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
+	        }
 		}
 	}
 	
@@ -199,23 +218,23 @@ public class BlockModelChooseWindow extends JFrame {
 			double ch = Math.cos(rotation2[0]);
 			double sv = Math.sin(rotation2[1]);
 			double cv = Math.cos(rotation2[1]);
-	        BufferedImage img1 = transformImage(textures2[0], 2*ch,-2*sh*sv, 0, 2*cv, 2*Math.max(0,-ch), 2*(Math.max(0, sh*sv)+Math.max(0,-cv)));
-	        BufferedImage img2 = transformImage(textures2[1], 2*sh, 2*ch*sv, 0, 2*cv, 2*Math.max(0,-sh), 2*(Math.max(0,-ch*sv)+Math.max(0,-cv)));
+	        BufferedImage img0 = transformImage(textures2[0], 2*ch,-2*sh*sv, 0, 2*cv, 2*Math.max(0,-ch), 2*(Math.max(0, sh*sv)+Math.max(0,-cv)));
+	        BufferedImage img1 = transformImage(textures2[1], 2*sh, 2*ch*sv, 0, 2*cv, 2*Math.max(0,-sh), 2*(Math.max(0,-ch*sv)+Math.max(0,-cv)));
 	        
 	        if (ch*sh>=0 ^ cv<=0)
 	        	g.clipRect(loc2[2].x-128,loc2[2].y-128,128,256);
 	        else
 		        g.clipRect(loc2[2].x,loc2[2].y-128,128,256);
-	        g.drawImage(img2, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
+	        g.drawImage(img1, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
 	        g.setClip(null);
 	        g.clipRect(loc2[2].x-128,loc2[2].y-128,256,256);
-	        g.drawImage(img1, loc2[2].x-(int) Math.round(Math.abs(64*ch)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(sh*sv))), null);
+	        g.drawImage(img0, loc2[2].x-(int) Math.round(Math.abs(64*ch)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(sh*sv))), null);
 	        g.setClip(null);
 	        if (ch*sh>=0 ^ cv<=0)
 		        g.clipRect(loc2[2].x,loc2[2].y-128,128,256);
 	        else
 	        	g.clipRect(loc2[2].x-128,loc2[2].y-128,128,256);
-	        g.drawImage(img2, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
+	        g.drawImage(img1, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
 	        g.setClip(null);
 		}
 	}
@@ -276,7 +295,7 @@ public class BlockModelChooseWindow extends JFrame {
 	public void mousemove(MouseEvent me){
 		if (rotating) {
 			Point coords = me.getPoint();
-			int s = 16;
+			int s = 32;
 			if (modelType==1) {
 				rotation1[0]+=((double)(coords.x-mousecoords.x))/s;
 				rotation1[1]+=((double)(coords.y-mousecoords.y))/s;
