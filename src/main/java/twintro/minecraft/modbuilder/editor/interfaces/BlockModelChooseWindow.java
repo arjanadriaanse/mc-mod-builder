@@ -289,7 +289,7 @@ public class BlockModelChooseWindow extends JFrame {
 	
 	public void mouseclick1(MouseEvent me){
 		for(int i=0;i<6;i++){
-			if (new Rectangle(loc1[i].x,loc1[i].y, 64, 64).contains(me.getPoint())) {
+			if (selectedImage!=null && new Rectangle(loc1[i].x,loc1[i].y, 64, 64).contains(me.getPoint())) {
 				textures1[i] = selectedImage.getImage();
 				textureNames1[i] = selectedImageName;
 				break;
@@ -304,7 +304,7 @@ public class BlockModelChooseWindow extends JFrame {
 	
 	public void mouseclick2(MouseEvent me){
 		for(int i=0;i<2;i++){
-			if (new Rectangle(loc2[i].x,loc2[i].y, 64, 64).contains(me.getPoint())) {
+			if (selectedImage!=null && new Rectangle(loc2[i].x,loc2[i].y, 64, 64).contains(me.getPoint())) {
 				textures2[i] = selectedImage.getImage();
 				textureNames2[i] = selectedImageName;
 				break;
@@ -355,6 +355,7 @@ public class BlockModelChooseWindow extends JFrame {
 	public void save(){
 		BlockModelResource model = new BlockModelResource();
 		if(modelType==1){
+			if (textures1[0]==null || textures1[1]==null || textures1[2]==null || textures1[3]==null || textures1[4]==null || textures1[5]==null) return;
 			if (textures1[0]==textures1[1] && textures1[0]==textures1[2] && textures1[0]==textures1[3] && textures1[0]==textures1[4] && textures1[0]==textures1[5]){
 				model.parent="block/cube_all";
 				model.textures=new HashMap<String,String>();
@@ -372,6 +373,7 @@ public class BlockModelChooseWindow extends JFrame {
 			}
 		}
 		if(modelType==2){
+			if (textures2[0]==null || textures2[1]==null) return;
 			model.parent="block/cross";
 			model.textures=new HashMap<String,String>();
 			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
