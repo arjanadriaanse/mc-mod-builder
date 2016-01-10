@@ -156,13 +156,19 @@ public class RecipesActivityPanel extends ActivityPanel {
 				RecipeElement recipe = RecipeElement.getFromName(value);
 				RecipeType type = recipe.recipe.type;
 				RecipeEditor editor;
-				if (type == RecipeType.shaped)
+				
+				switch(type){
+				case shaped:
 					editor = new ShapedRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
-			
-				else 
+					break;
+				case smelting:
+					editor = new SmeltingRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
+					break;
+				default:
 					editor = new ShapelessRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
-					
-					openEditors.put(value,editor);
+					break;
+				}
+				openEditors.put(value,editor);
 			}
 			else {
 				openEditors.get(value).setVisible(true);
