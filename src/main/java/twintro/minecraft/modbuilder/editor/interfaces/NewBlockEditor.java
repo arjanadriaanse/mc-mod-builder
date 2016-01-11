@@ -40,7 +40,7 @@ import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Disp
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
-public class NewBlockEditor extends JFrame {
+public class NewBlockEditor extends JFrame implements BlockModelRunnable {
 
 	public String name;
 	private JPanel contentPane;
@@ -312,11 +312,20 @@ public class NewBlockEditor extends JFrame {
 	private void cancel(){
 		this.dispose();
 	}
-
+	
+	@Override
 	public void blockModelChooserDispose() {
 		modelChooserIsOpen = false;
-		
 	}
-	
+
+	@Override
+	public BlockModelResource getModel() {
+		return model;
+	}
+
+	@Override
+	public void setModel(BlockModelResource model) {
+		this.model = model;
+	}
 }
 

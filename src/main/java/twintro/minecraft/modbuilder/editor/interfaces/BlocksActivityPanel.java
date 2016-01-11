@@ -21,6 +21,7 @@ import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
+import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
@@ -30,11 +31,11 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class BlocksActivityPanel extends ActivityPanel {
-	private Map<String,NewBlockEditor> openEditors;
+	private Map<String,BlockEditor> openEditors;
 	
 	public BlocksActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
-		this.openEditors = new HashMap<String, NewBlockEditor>();
+		this.openEditors = new HashMap<String, BlockEditor>();
 	}
 
 	@Override
@@ -42,7 +43,7 @@ public class BlocksActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Block name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewBlockEditor editor = new NewBlockEditor(name, this, 0);
+				BlockEditor editor = new BlockEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -93,6 +94,17 @@ public class BlocksActivityPanel extends ActivityPanel {
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
+		try {
+			if (!openEditors.containsKey(value)){
+				BlockElement block = BlockElement.getFromName(value);
+				openEditors.put(value, new BlockEditor(this, block));
+			}
+			else {
+				openEditors.get(value).setVisible(true);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	@Override
@@ -128,5 +140,10 @@ public class BlocksActivityPanel extends ActivityPanel {
 				}
 			}
 		}
+	}
+	
+	public void closeEditor(String name){
+		if (openEditors.containsKey(name))
+			openEditors.remove(name);
 	}
 }

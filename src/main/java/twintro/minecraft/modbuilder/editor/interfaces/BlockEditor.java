@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.util.HashMap;
 
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
@@ -27,17 +28,24 @@ import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import twintro.minecraft.modbuilder.data.resources.MaterialResource;
+import twintro.minecraft.modbuilder.data.resources.TabResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
+import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
+import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 
-public class BlockEditor extends JFrame {
+public class BlockEditor extends JFrame implements BlockModelRunnable {
 	protected JPanel buttonPanel;
 	protected JPanel mainPanel;
 	protected JPanel labelPanel;
 	protected JPanel interactionPanel;
 	protected JPanel modelPanel;
-	protected JPanel creativeTabsPanel;
-	protected JPanel creativeTabsSubPanel;
 	protected JLabel labelCreativeTabs;
 	protected JLabel labelModel;
 	protected JLabel labelLightness;
@@ -48,14 +56,13 @@ public class BlockEditor extends JFrame {
 	protected JLabel labelHarvestLevel;
 	protected JLabel labelBurntime;
 	protected JLabel labelHarvestType;
+	protected JLabel labelMaterial;
 	protected JLabel labelUnbreakable;
 	protected JLabel modelLabel;
-	protected JLabel creativeTabsLabel;
 	protected JButton renameButton;
 	protected JButton saveBlockButton;
 	protected JButton cancelButton;
 	protected JButton modelChooseButton;
-	protected JButton creativeTabsResetButton;
 	protected JSpinner lightnessSpinner;
 	protected JSpinner opacitySpinner;
 	protected JSpinner slipperinessSpinner;
@@ -65,11 +72,13 @@ public class BlockEditor extends JFrame {
 	protected JSpinner burntimeSpinner;
 	protected JComboBox creativeTabsComboBox;
 	protected JComboBox harvestTypeComboBox;
+	protected JComboBox materialComboBox;
 	protected JCheckBox unbreakableCheckBox;
 	
 	protected boolean modelChooserIsOpen = false;
 	protected String name;
 	protected BlocksActivityPanel main;
+	protected BlockModelResource model;
 	
 	public BlockEditor(String name, BlocksActivityPanel main) {
 		this.name = name;
@@ -109,54 +118,24 @@ public class BlockEditor extends JFrame {
 			}
 		});
 		
-		modelLabel = new JLabel("");
+		modelLabel = new JLabel("No Model");
 		modelLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		modelPanel.add(modelLabel, BorderLayout.CENTER);
 		
-		labelCreativeTabs = new JLabel("Creative tabs");
+		labelCreativeTabs = new JLabel("Creative tab");
 		labelPanel.add(labelCreativeTabs);
 		
-		creativeTabsPanel = new JPanel();
-		interactionPanel.add(creativeTabsPanel);
-		creativeTabsPanel.setLayout(new BorderLayout(0, 0));
-		
 		creativeTabsComboBox = new JComboBox();
-		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
+		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
 				"food", "tools", "combat", "brewing", "materials", "inventory"}));
-		creativeTabsComboBox.addItemListener(new ItemListener() {
-			@Override
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == e.SELECTED){
-					if (e.getItem() != "Add"){
-						creativeTabsChoose((String) e.getItem());
-						((JComboBox) e.getSource()).setSelectedIndex(0);
-					}
-				}
-			}
-		});
-		creativeTabsPanel.add(creativeTabsComboBox, BorderLayout.EAST);
-		
-		creativeTabsSubPanel = new JPanel();
-		creativeTabsPanel.add(creativeTabsSubPanel, BorderLayout.CENTER);
-		creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
-		
-		creativeTabsResetButton = new JButton("Reset");
-		creativeTabsResetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetTab();
-			}
-		});
-		creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
-		
-		creativeTabsLabel = new JLabel("");
-		creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
+		interactionPanel.add(creativeTabsComboBox);
 		
 		labelLightness = new JLabel("Lightness");
 		labelLightness.setToolTipText("Amount of light the block gives off (0-15)");
 		labelPanel.add(labelLightness);
 		
 		lightnessSpinner = new JSpinner();
-		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
 		interactionPanel.add(lightnessSpinner);
 		
 		labelOpacity = new JLabel("Opacity");
@@ -171,7 +150,7 @@ public class BlockEditor extends JFrame {
 		labelPanel.add(labelSlipperiness);
 		
 		slipperinessSpinner = new JSpinner();
-		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(1)));
+		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
 		interactionPanel.add(slipperinessSpinner);
 		
 		labelHardness = new JLabel("Hardness");
@@ -208,8 +187,18 @@ public class BlockEditor extends JFrame {
 		labelPanel.add(labelHarvestType);
 		
 		harvestTypeComboBox = new JComboBox();
-		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"HarvestType"}));
+		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
 		interactionPanel.add(harvestTypeComboBox);
+		
+		labelMaterial = new JLabel("Material");
+		labelPanel.add(labelMaterial);
+		
+		materialComboBox = new JComboBox();
+		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "air", "grass", "ground", "wood", "rock", "iron", "anvil", 
+				"water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", "redstone_light", 
+				"tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", "cake", "web", 
+				"piston", "barrier"}));
+		interactionPanel.add(materialComboBox);
 		
 		labelUnbreakable = new JLabel("Unbreakable");
 		labelPanel.add(labelUnbreakable);
@@ -252,7 +241,30 @@ public class BlockEditor extends JFrame {
 	public BlockEditor(BlocksActivityPanel main, BlockElement block){
 		this(block.name, main);
 		
-		//TODO read block and setup all values
+		if (block.blockModel != null)
+			setModel(block.blockModel);
+		if (block.block.material != null)
+			materialComboBox.setSelectedItem(block.block.material.name());
+		if (block.block.tab != null)
+			creativeTabsComboBox.setSelectedItem(block.block.tab.name());
+		if (block.block.light != null)
+			lightnessSpinner.setValue(block.block.light);
+		if (block.block.opacity != null)
+			opacitySpinner.setValue(block.block.opacity);
+		if (block.block.slipperiness != null)
+			slipperinessSpinner.setValue(block.block.slipperiness);
+		if (block.block.hardness != null)
+			hardnessSpinner.setValue(block.block.hardness);
+		if (block.block.resistance != null)
+			resistanceSpinner.setValue(block.block.resistance);
+		if (block.block.unbreakable != null)
+			unbreakableCheckBox.setSelected(block.block.unbreakable);
+		if (block.block.harvesttype != null)
+			creativeTabsComboBox.setSelectedItem(block.block.harvesttype);
+		if (block.block.harvestlevel != null)
+			harvestLevelSpinner.setValue(block.block.harvestlevel);
+		if (block.block.burntime != null)
+			burntimeSpinner.setValue(block.block.burntime);
 	}
 	
 	protected void cancel(){
@@ -260,8 +272,40 @@ public class BlockEditor extends JFrame {
 	}
 
 	protected void save(){
-		if (!modelChooserIsOpen && modelLabel.getText().length() > 0){
-			//TODO saving blocks
+		if (!modelChooserIsOpen && !(model == null) && materialComboBox.getSelectedIndex() != 0){
+			BlockElement block = new BlockElement();
+			block.name = name;
+			block.blockModel = model;
+			
+			ItemModelResource itemModel = new ItemModelResource();
+			itemModel.parent = "examplemod:block/" + name;
+			itemModel.display = Display.block();
+			block.itemModel = itemModel;
+			
+			BlockstateResource blockstate = new BlockstateResource();
+			blockstate.variants = new HashMap<String, Variant>();
+			Variant variant = blockstate.new Variant();
+			variant.model = "modbuilder:" + name;
+			blockstate.variants.put("normal", variant);
+			block.blockstate = blockstate;
+			
+			BaseBlockResource base = new BlockResource();
+			base.material = MaterialResource.valueOf((String) materialComboBox.getSelectedItem());
+			base.model = "modbuilder:" + name;
+			base.tab = TabResource.valueOf((String) creativeTabsComboBox.getSelectedItem());
+			base.light = (Integer) lightnessSpinner.getValue();
+			base.opacity = (Integer) opacitySpinner.getValue();
+			base.slipperiness = (Float) slipperinessSpinner.getValue();
+			base.hardness = (Float) hardnessSpinner.getValue();
+			base.resistance = (Float) resistanceSpinner.getValue();
+			base.unbreakable = unbreakableCheckBox.isSelected();
+			if (harvestTypeComboBox.getSelectedIndex() != 0) 
+				base.harvesttype = (String) harvestTypeComboBox.getSelectedItem();
+			base.harvestlevel = (Integer) harvestLevelSpinner.getValue();
+			base.burntime = (Integer) burntimeSpinner.getValue();
+			block.block = base;
+			
+			main.addBlock(block);
 		}
 	}
 	
@@ -274,24 +318,32 @@ public class BlockEditor extends JFrame {
 	
 	protected void chooseModel() {
 		if (!modelChooserIsOpen){
-			new BlockModelChooseWindow(main.main.TexturePanel.elements, null);//TODO null is niet de bedoeling?? :) :O :D :P
+			new BlockModelChooseWindow(main.main.TexturePanel.elements, this);
 			modelChooserIsOpen = true;
 		}
-	}
-
-	protected void creativeTabsChoose(String tab){
-		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ",");
-		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab);
-	}
-	
-	protected void resetTab(){
-		creativeTabsLabel.setText("");
 	}
 	
 	@Override
 	public void dispose() {
-		//TODO main.closeEditor(name);
+		main.closeEditor(name);
 		super.dispose();
+	}
+
+	@Override
+	public BlockModelResource getModel() {
+		return model;
+	}
+
+	@Override
+	public void setModel(BlockModelResource model) {
+		this.model = model;
+		if (model.parent == "block/cross") modelLabel.setText("Cross model");
+		else modelLabel.setText("Block model");
+	}
+
+	@Override
+	public void blockModelChooserDispose() {
+		modelChooserIsOpen = false;
 	}
 }
 

@@ -51,7 +51,7 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public class BlockModelChooseWindow extends JFrame {
 	ListPanel listPanel;
-	NewBlockEditor main;
+	BlockModelRunnable main;
 	int modelType = 1;
 	ImageIcon selectedImage;
 	String selectedImageName;
@@ -78,13 +78,13 @@ public class BlockModelChooseWindow extends JFrame {
 	        new Point(160,160)
 	};
 
-	public BlockModelChooseWindow(Map<String, ImageIcon> elements, NewBlockEditor main){
+	public BlockModelChooseWindow(Map<String, ImageIcon> elements, BlockModelRunnable main){
 		this.main = main;
 		load();
 		
 		setBounds(100, 100, 450, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setTitle("Choose Block Model: "+main.name);
+		setTitle("Choose Block Model:");
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
@@ -378,17 +378,18 @@ public class BlockModelChooseWindow extends JFrame {
 			model.textures=new HashMap<String,String>();
 			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
 		}
-		main.model=model;
+		main.setModel(model);
 		this.dispose();
 	}
 	
 	public void load(){
-		if(main.model==null) return;
-		if(main.model.parent=="block/cube") {
+		BlockModelResource model = main.getModel();
+		if(model==null) return;
+		if(model.parent.equals("block/cube")) {
 			String[] name = new String[]{"up","west","south","east","north","down"};
 			for(int i=0;i<6;i++){
-				if (main.model.textures.get(name[i]).split(":")[0].equals("modbuilder")) {
-					String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get(name[i]).split(":")[1] + ".png";
+				if (model.textures.get(name[i]).split(":")[0].equals("modbuilder")) {
+					String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get(name[i]).split(":")[1] + ".png";
 					try{
 						Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 						BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -398,15 +399,15 @@ public class BlockModelChooseWindow extends JFrame {
 					catch (IOException e){
 					    e.printStackTrace();
 					}
-					textureNames1[i]=main.model.textures.get(name[i]).split(":")[1];
+					textureNames1[i]=model.textures.get(name[i]).split(":")[1];
 				}
 			}
 			modelType=1;
 			return;
 		}
-		if(main.model.parent=="block/cross") {
-			if (main.model.textures.get("cross").split(":")[0].equals("modbuilder")) {
-				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get("cross").split(":")[1] + ".png";
+		if(model.parent.equals("block/cross")) {
+			if (model.textures.get("cross").split(":")[0].equals("modbuilder")) {
+				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get("cross").split(":")[1] + ".png";
 				try{
 					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -416,16 +417,16 @@ public class BlockModelChooseWindow extends JFrame {
 				catch (IOException e){
 				    e.printStackTrace();
 				}
-				textureNames2[0]=main.model.textures.get("cross").split(":")[1];
+				textureNames2[0]=model.textures.get("cross").split(":")[1];
 				textures2[1]=textures2[0];
 				textureNames2[1]=textureNames2[0];
 			}
 			modelType=2;
 			return;
 		}
-		if(main.model.parent=="block/cube_all") {
-			if (main.model.textures.get("all").split(":")[0].equals("modbuilder")) {
-				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + main.model.textures.get("all").split(":")[1] + ".png";
+		if(model.parent.equals("block/cube_all")) {
+			if (model.textures.get("all").split(":")[0].equals("modbuilder")) {
+				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get("all").split(":")[1] + ".png";
 				try{
 					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -435,7 +436,7 @@ public class BlockModelChooseWindow extends JFrame {
 				catch (IOException e){
 				    e.printStackTrace();
 				}
-				textureNames1[0]=main.model.textures.get("all").split(":")[1];
+				textureNames1[0]=model.textures.get("all").split(":")[1];
 				textures1[1]=textures1[0];
 				textureNames1[1]=textureNames1[0];
 				textures1[2]=textures1[1];
