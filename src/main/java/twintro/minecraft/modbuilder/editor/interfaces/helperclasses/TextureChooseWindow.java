@@ -68,7 +68,7 @@ public class TextureChooseWindow extends JFrame {
 	}
 	
 	public void choose(String texture){
-		main.choose(texture);
+		main.chooseTexture(texture);
 		this.dispose();
 	}
 	

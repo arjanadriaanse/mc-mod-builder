@@ -38,8 +38,8 @@ public class Editor {
 	private JPanel activityPanel;
 	public ActivityPanel TexturePanel;
 	private ActivityPanel RecipePanel;
-	private ActivityPanel BlockPanel;
-	private ActivityPanel ItemPanel;
+	public ActivityPanel BlockPanel;
+	public ActivityPanel ItemPanel;
 	private ActivityPanel StructurePanel;
 	
 	public MetaFile metaFile;

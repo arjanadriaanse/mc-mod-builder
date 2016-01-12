@@ -16,6 +16,8 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TextureChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TextureRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
@@ -31,7 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 
-public class RegularItemEditor extends JFrame implements TextureRunnable {
+public class RegularItemEditor extends JFrame implements TextureRunnable, MaterialRunnable {
 	protected JPanel mainPanel;
 	protected JPanel buttonPanel;
 	protected JPanel texturePanel;
@@ -60,8 +62,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	protected JComboBox creativeTabsComboBox;
 	protected JCheckBox containerCheckbox;
 	protected JCheckBox burntimeCheckbox;
-	
-	protected boolean textureChooserIsOpen;
+
+	protected boolean textureChooserIsOpen = false;
+	protected boolean materialChooserIsOpen = false;
 	protected String name;
 	protected ItemsActivityPanel main;
 	
@@ -291,7 +294,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	}
 
 	protected void save() {
-		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
+		if (!textureChooserIsOpen && !materialChooserIsOpen && textureLabel.getText().length() > 0){
 			ItemResource base = new ItemResource();
 			base.tabs = new HashSet<TabResource>();
 			if (creativeTabsLabel.getText().length() > 0)
@@ -333,7 +336,10 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	}
 
 	protected void containerChoose() {
-		//TODO material list
+		if (!materialChooserIsOpen){
+			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main.main, this);
+			materialChooserIsOpen = true;
+		}
 	}
 
 	protected void containerUse() {
@@ -366,7 +372,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	}
 
 	@Override
-	public void choose(String texture) {
+	public void chooseTexture(String texture) {
 		textureLabel.setText(texture);
 		setIconImage(main.main.TexturePanel.elements.get(texture.split(":")[1]).getImage());
 	}
@@ -374,5 +380,15 @@ public class RegularItemEditor extends JFrame implements TextureRunnable {
 	@Override
 	public void textureChooserDispose(){
 		textureChooserIsOpen = false;
+	}
+
+	@Override
+	public void chooseMaterial(String material) {
+		containerLabel.setText(material);
+	}
+
+	@Override
+	public void materialChooserDispose() {
+		materialChooserIsOpen = false;
 	}
 }
