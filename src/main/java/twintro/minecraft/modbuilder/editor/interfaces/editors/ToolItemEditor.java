@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -15,6 +15,7 @@ import javax.swing.SpinnerNumberModel;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ToolItemEditor extends RegularItemEditor {

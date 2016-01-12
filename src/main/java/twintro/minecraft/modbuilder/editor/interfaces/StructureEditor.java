@@ -16,6 +16,7 @@ import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 
 import javax.swing.JToggleButton;
 import javax.swing.JComboBox;

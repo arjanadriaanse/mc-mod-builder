@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -12,6 +12,8 @@ import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 

@@ -26,11 +26,11 @@ import javax.swing.UIManager;
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 
 public class Editor {
 	private boolean interfaceOpened = false;

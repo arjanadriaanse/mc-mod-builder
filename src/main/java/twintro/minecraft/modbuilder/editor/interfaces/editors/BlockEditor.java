@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -37,6 +37,9 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.BlockModelChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.BlockModelRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 

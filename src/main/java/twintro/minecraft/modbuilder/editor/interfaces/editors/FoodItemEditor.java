@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
@@ -16,6 +16,8 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class FoodItemEditor extends RegularItemEditor {
