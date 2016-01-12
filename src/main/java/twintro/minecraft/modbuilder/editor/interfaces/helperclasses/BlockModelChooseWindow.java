@@ -208,12 +208,12 @@ public class BlockModelChooseWindow extends JFrame {
 			double ch = Math.cos(rotation1[0]);
 			double sv = Math.sin(rotation1[1]);
 			double cv = Math.cos(rotation1[1]);
-	        BufferedImage img0 = transformImage(textures1[0], w2*(ch+sh), w2*sv*(ch-sh), w2*(-ch+sh),w2*sv*(ch+sh), 2-w2*sh, 2-cv/2-w2*sv*ch);
+	        BufferedImage img0 = transformImage(textures1[0], w2*(ch+sh), w2*sv*(ch-sh), w2*(sh-ch),w2*sv*(ch+sh), 2-w2*sh, 2-cv/2-w2*sv*ch);
 	        BufferedImage img1 = transformImage(textures1[1], w2*(-ch+sh), w2*sv*(ch+sh), 0,cv, 2-w2*sh, 2-cv/2-w2*sv*ch);
 	        BufferedImage img2 = transformImage(textures1[2], w2*(sh+ch), w2*sv*(-sh+ch), 0,cv, 2-w2*ch, 2-cv/2+w2*sv*sh);
 	        BufferedImage img3 = transformImage(textures1[3], w2*(ch-sh), w2*sv*(-ch-sh), 0,cv, 2+w2*sh, 2-cv/2+w2*sv*ch);
 	        BufferedImage img4 = transformImage(textures1[4], w2*(-sh-ch), w2*sv*(sh-ch), 0,cv, 2+w2*ch, 2-cv/2-w2*sv*sh);
-	        BufferedImage img5 = transformImage(textures1[5], -w2*(ch+sh), -w2*sv*(ch-sh), -w2*(-ch+sh),-w2*sv*(ch+sh), 2+w2*sh, 2+cv/2+w2*sv*ch);
+	        BufferedImage img5 = transformImage(textures1[5], w2*(ch+sh), w2*sv*(ch-sh), w2*(ch-sh),w2*sv*(-ch-sh), 2-w2*ch, 2+cv/2+w2*sv*sh);
 	        
 	        BufferedImage[] front = new BufferedImage[3];
 	        BufferedImage[] back = new BufferedImage[3];
