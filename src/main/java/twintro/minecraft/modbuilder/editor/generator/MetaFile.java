@@ -3,17 +3,12 @@ package twintro.minecraft.modbuilder.editor.generator;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-
-import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.meta.MetadataResource;
 import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 import twintro.minecraft.modbuilder.data.resources.meta.PackResource;
@@ -50,14 +45,7 @@ public class MetaFile extends File {
 	}
 	
 	private void open(){
-		try{
-			GsonBuilder builder = new GsonBuilder();
-			Gson gson = builder.create();
-			resource = gson.fromJson(new FileReader(this), MetadataResource.class);
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+		//TODO
 	}
 	
 	public void save(){
@@ -65,25 +53,6 @@ public class MetaFile extends File {
 			ResourcePackGenerator.createFile(resource, this);
 		} catch (IOException e) {
 			e.printStackTrace();
-		}
-	}
-	
-	public void rename(String originalName, String newName){
-		if (resource.modbuilder.blocks.contains(originalName)){
-			resource.modbuilder.blocks.remove(originalName);
-			resource.modbuilder.blocks.add(newName);
-		}
-		else if (resource.modbuilder.items.contains(originalName)){
-			resource.modbuilder.items.remove(originalName);
-			resource.modbuilder.items.add(newName);
-		}
-		else if (resource.modbuilder.recipes.contains(originalName)){
-			resource.modbuilder.recipes.remove(originalName);
-			resource.modbuilder.recipes.add(newName);
-		}
-		else if (resource.modbuilder.structures.contains(originalName)){
-			resource.modbuilder.structures.remove(originalName);
-			resource.modbuilder.structures.add(newName);
 		}
 	}
 }

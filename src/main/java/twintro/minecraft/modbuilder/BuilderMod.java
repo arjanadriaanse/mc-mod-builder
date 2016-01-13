@@ -47,7 +47,7 @@ import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
 import twintro.minecraft.modbuilder.data.resources.structures.BaseStructureResource;
 
-@Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION)
+@Mod(modid = BuilderMod.MODID, version = BuilderMod.VERSION, guiFactory = "twintro.minecraft.modbuilder.BuilderModGuiFactory")
 public class BuilderMod {
 	public static final String MODID = "modbuilder";
 	public static final String VERSION = "0.1";

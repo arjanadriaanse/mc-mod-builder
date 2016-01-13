@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
@@ -27,20 +26,20 @@ import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 
 public class Editor {
 	private boolean interfaceOpened = false;
 	
 	private JPanel activityPanel;
 	public ActivityPanel TexturePanel;
-	public ActivityPanel RecipePanel;
-	public ActivityPanel BlockPanel;
-	public ActivityPanel ItemPanel;
-	public ActivityPanel StructurePanel;
+	private ActivityPanel RecipePanel;
+	private ActivityPanel BlockPanel;
+	private ActivityPanel ItemPanel;
+	private ActivityPanel StructurePanel;
 	
 	public MetaFile metaFile;
 	public LanguageFile langFile;
@@ -50,11 +49,6 @@ public class Editor {
 	/**
 	 * Launch the application.
 	 */
-	public BlocksActivityPanel getBlockPanel(){
-		return (BlocksActivityPanel) BlockPanel;
-	}
-	
-	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -242,7 +236,7 @@ public class Editor {
 		TexturePanel = new TexturesActivityPanel("Textures", "New Texture", this);
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe", this);
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Recipe", this);
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
 		BlockPanel = new BlocksActivityPanel("Blocks", "New Block", this);
@@ -274,13 +268,5 @@ public class Editor {
 	
 	private void about(){
 		//TODO
-	}
-	
-	public Set<String> getBlocksInBlockPanel(){
-		return BlockPanel.getAllElements();
-	}
-	
-	public Set<String> getItemsInItemPanel(){
-		return ItemPanel.getAllElements();
 	}
 }

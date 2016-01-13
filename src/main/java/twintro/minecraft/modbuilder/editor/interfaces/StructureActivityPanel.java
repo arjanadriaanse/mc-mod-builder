@@ -26,27 +26,29 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
-public class BlocksActivityPanel extends ActivityPanel {
-	private Map<String,NewBlockEditor> openEditors;
+
+public class StructureActivityPanel  extends ActivityPanel {
+	public Map<String,StructureEditor> openEditors;
 	
-	public BlocksActivityPanel(String header, String button, Editor main) {
+	public StructureActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
-		this.openEditors = new HashMap<String, NewBlockEditor>();
+		this.openEditors = new HashMap<String, StructureEditor>();
 	}
 
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Block name:");
+		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				NewBlockEditor editor = new NewBlockEditor(name, this, 0);
+				StructureEditor editor = new StructureEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
 		
 	}
 	
-	public void addBlock(BlockElement block){
+	public void addStructure(){
+		/*
 		if (block.itemModel != null)
 			createFile(block.itemModel, "assets/modbuilder/models/item/" + block.name + ".json");
 		if (block.blockModel != null)
@@ -60,6 +62,7 @@ public class BlocksActivityPanel extends ActivityPanel {
 		
 		main.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
 		main.langFile.save();
+		*/
 	}
 	
 	public void createFile(Object model, String dir){
@@ -81,10 +84,11 @@ public class BlocksActivityPanel extends ActivityPanel {
 		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value, 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
-			ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
+		/*	ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
 			ResourcePackGenerator.deleteFile("assets/modbuilder/blockstates/" + value + ".json");
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/block/" + value + ".json");
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
+			*/
 			removeElement(value);
 			main.metaFile.resource.modbuilder.blocks.remove(value);
 			main.metaFile.save();
@@ -95,7 +99,7 @@ public class BlocksActivityPanel extends ActivityPanel {
 	
 	@Override
 	public void updateList() {
-		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/blocks/"));
+		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/structures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
 				if (file.getAbsolutePath().endsWith(".json")){
@@ -103,7 +107,7 @@ public class BlocksActivityPanel extends ActivityPanel {
 						String name = file.getName().substring(0, file.getName().length() - 5);
 						addElement(name, BlockElement.getFromName(name).getImage());
 					} catch (Exception e) {
-						System.out.println("Could not find all block element objects for " + file.getName());
+						System.out.println("Could not find all structure element objects for " + file.getName());
 					}
 				}
 			}
