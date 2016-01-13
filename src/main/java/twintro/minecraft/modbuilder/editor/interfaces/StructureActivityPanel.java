@@ -28,11 +28,11 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 
 public class StructureActivityPanel  extends ActivityPanel {
-	public Map<String,GroundStructureEditor> openEditors;
+	public Map<String, StructureEditor> openEditors;
 	
 	public StructureActivityPanel(String header, String button, Editor main) {
 		super(header, button, main);
-		this.openEditors = new HashMap<String, GroundStructureEditor>();
+		this.openEditors = new HashMap<String, StructureEditor>();
 	}
 
 	@Override
@@ -40,7 +40,7 @@ public class StructureActivityPanel  extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				GroundStructureEditor editor = new GroundStructureEditor(name, this);
+				GroundStructureEditor editor = new StructureEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
