@@ -38,6 +38,7 @@ public class NewBlockEditor extends JFrame {
 	private JLabel lblCreativeTab;
 	private BlocksActivityPanel parent;
 	private JLabel creativeTabLabel;
+	private boolean modelChooserIsOpen = false;
 
 	public NewBlockEditor(String newName, BlocksActivityPanel parent, Integer type) {
 		BorderLayout borderLayout = (BorderLayout) getContentPane().getLayout();
@@ -64,9 +65,9 @@ public class NewBlockEditor extends JFrame {
 		});
 		panel.add(btnRename);
 		
-		JButton btnSaveItem = new JButton("Save Item");
-		panel.add(btnSaveItem);
-		btnSaveItem.addActionListener(new ActionListener() {
+		JButton btnSaveBlock = new JButton("Save Block");
+		panel.add(btnSaveBlock);
+		btnSaveBlock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				saveBlock();
 			}
@@ -269,8 +270,10 @@ public class NewBlockEditor extends JFrame {
 	}
 
 	protected void chooseModel() {
-		// TODO Jorke, modelmaker3000
-		
+		if (!modelChooserIsOpen){
+			new BlockModelChooseWindow(parent.main.TexturePanel.elements, this);
+			modelChooserIsOpen = true;
+		}
 	}
 
 	private void saveBlock(){

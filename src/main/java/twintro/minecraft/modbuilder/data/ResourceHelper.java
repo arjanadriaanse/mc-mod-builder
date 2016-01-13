@@ -6,7 +6,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 import net.minecraft.block.material.Material;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.init.Blocks;
+import net.minecraft.item.ItemStack;
+import net.minecraftforge.fml.common.registry.GameRegistry;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 
@@ -147,5 +152,9 @@ public class ResourceHelper {
 			name = name.substring(prefix.length());
 
 		return name.replaceAll("(.)([A-Z])", "$1_$2").toLowerCase();
+	}
+	
+	public static String generateSprites() {
+		return null;
 	}
 }
