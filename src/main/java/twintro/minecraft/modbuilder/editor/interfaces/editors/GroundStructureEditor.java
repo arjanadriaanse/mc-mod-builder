@@ -45,8 +45,8 @@ public class GroundStructureEditor extends StructureEditor
 	private JButton onBlocksButton;
 	private JSpinner amountperchunkSpinner;
 
-	
 	public GroundStructureEditor(String nameNew, StructureActivityPanel parent, Set<String> blocks) {
+		super(nameNew, parent, blocks);
 		this.name = nameNew;
 		this.main = parent;
 		
