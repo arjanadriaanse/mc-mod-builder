@@ -46,7 +46,6 @@ public class ResourceConverter {
 
 	public static BuilderBlock toBlock(BlockResource resource) {
 		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
-		//setUnlocalizedName(ModInformation.MODID + "_" + name);
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)
@@ -107,8 +106,7 @@ public class ResourceConverter {
 	}
 
 	public static ItemTool toItem(ToolItemResource resource) {
-		ToolMaterial material = EnumHelper.addToolMaterial(
-				resource.name           != null ? resource.name           : "",
+		ToolMaterial material = EnumHelper.addToolMaterial("",
 				resource.harvestlevel   != null ? resource.harvestlevel   : 2,
 				resource.durability     != null ? resource.durability     : 250,
 				resource.efficiency     != null ? resource.efficiency     : 6.0F,

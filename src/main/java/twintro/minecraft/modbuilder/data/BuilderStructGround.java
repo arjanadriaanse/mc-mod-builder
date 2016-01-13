@@ -32,7 +32,7 @@ public class BuilderStructGround implements BuilderStruct{
 	 * 		Warning: round cover will always generate on the highest possible space, so generating anything in the nether is useless as blocks will only try generating on top of the bedrock layer.
 	 * @param amountperchunk
 	 * 		-The amount of blocks the generator will try placing in a chunk.
-	 * 		A try will fail if the highest solid block on a random location is not in the onlyonblocks parameter, or the block above it is occupied by a non-solid block.
+	 * 		A try will fail if block doesn't stand on a block in the onlyonblocks parameter, or if the block is already occupied by a non-solid block.
 	 */
 	public BuilderStructGround(Block block, Set<Block> onlyonblocks, int dimension, int amountperchunk) {
 		this.block = block;

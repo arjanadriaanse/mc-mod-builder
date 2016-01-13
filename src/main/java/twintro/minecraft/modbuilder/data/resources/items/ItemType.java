@@ -1,5 +1,8 @@
 package twintro.minecraft.modbuilder.data.resources.items;
 
+/**
+ * The enum for all item types.
+ */
 public enum ItemType {
 	regular(ItemResource.class), food(FoodItemResource.class), tool(ToolItemResource.class);
 

@@ -90,6 +90,6 @@ public class BlockElement extends InventoryElement {
 	
 	@Override
 	public ImageIcon getImage() {
-		return getImage(blockModel.textures, "layer0");
+		return getImage(blockModel.textures, "all");
 	}
 }

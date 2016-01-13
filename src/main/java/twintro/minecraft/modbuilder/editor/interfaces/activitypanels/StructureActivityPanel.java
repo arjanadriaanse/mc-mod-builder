@@ -23,8 +23,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.StructureEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.StructureEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
@@ -42,7 +41,7 @@ public class StructureActivityPanel  extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				StructureEditor editor = new GroundStructureEditor(name, this, main.getBlocksInBlockPanel());
+				StructureEditor editor = new StructureEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -83,7 +82,8 @@ public class StructureActivityPanel  extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value, 
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + "?\r\n"
+				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
 		/*	ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
