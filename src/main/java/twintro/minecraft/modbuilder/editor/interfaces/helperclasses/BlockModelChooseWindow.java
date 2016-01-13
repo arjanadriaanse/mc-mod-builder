@@ -82,7 +82,6 @@ public class BlockModelChooseWindow extends JFrame {
 		this.main = main;
 		load();
 		
-		setBounds(100, 100, 450, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Block Model:");
 		
@@ -118,7 +117,7 @@ public class BlockModelChooseWindow extends JFrame {
 		
 		JPanel mainPanel = new JPanel();
 		listPanel.add(mainPanel, BorderLayout.LINE_START);
-		mainPanel.setPreferredSize(new Dimension(300, 400));
+		mainPanel.setPreferredSize(new Dimension(600, 800));
 		mainPanel.setLayout(new BorderLayout(0,0));
 		mainPanel.setVisible(true);
 		
