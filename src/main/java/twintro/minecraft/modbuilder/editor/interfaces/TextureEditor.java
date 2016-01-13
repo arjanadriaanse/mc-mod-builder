@@ -40,7 +40,7 @@ import javax.swing.JPanel;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
-public class TextureEditor{
+public class TextureEditor extends JFrame {
 	//TODO undo
 	
 	String name;
