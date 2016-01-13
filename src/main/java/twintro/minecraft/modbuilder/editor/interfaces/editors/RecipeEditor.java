@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import javax.swing.JFrame;
 

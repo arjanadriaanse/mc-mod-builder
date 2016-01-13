@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -24,6 +24,9 @@ import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.ToolItemEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 

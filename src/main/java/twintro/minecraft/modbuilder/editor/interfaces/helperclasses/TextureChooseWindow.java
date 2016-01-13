@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -68,7 +68,7 @@ public class TextureChooseWindow extends JFrame {
 	}
 	
 	public void choose(String texture){
-		main.choose(texture);
+		main.chooseTexture(texture);
 		this.dispose();
 	}
 	

@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
@@ -15,10 +15,15 @@ import javax.swing.SpinnerNumberModel;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialRunnable;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
 
 public class ToolItemEditor extends RegularItemEditor {
 	protected JPanel affectedBlocksPanel;
+	protected JPanel affectedBlocksSubPanel;
 	protected JPanel repairMaterialPanel;
 	protected JPanel repairMaterialSubPanel;
 	protected JLabel labelDurability;
@@ -31,6 +36,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	protected JLabel affectedBlocksLabel;
 	protected JLabel repairMaterialLabel;
 	protected JButton affectedBlocksButton;
+	protected JButton affectedBlocksResetButton;
 	protected JButton repairMaterialChooseButton;
 	protected JSpinner durabilitySpinner;
 	protected JSpinner efficiencySpinner;
@@ -111,9 +117,22 @@ public class ToolItemEditor extends RegularItemEditor {
 		});
 		affectedBlocksPanel.add(affectedBlocksButton, BorderLayout.EAST);
 		
+		affectedBlocksSubPanel = new JPanel();
+		affectedBlocksPanel.add(affectedBlocksSubPanel, BorderLayout.CENTER);
+		affectedBlocksSubPanel.setLayout(new BorderLayout(0, 0));
+		
+		affectedBlocksResetButton = new JButton("Reset");
+		affectedBlocksResetButton.setToolTipText("The blocks that are mined faster with the tool");
+		affectedBlocksResetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetBlocks();
+			}
+		});
+		affectedBlocksSubPanel.add(affectedBlocksResetButton, BorderLayout.EAST);
+		
 		affectedBlocksLabel = new JLabel("");
-		affectedBlocksPanel.setToolTipText("The blocks that are mined faster with the tool");
-		affectedBlocksPanel.add(affectedBlocksLabel, BorderLayout.CENTER);
+		affectedBlocksLabel.setToolTipText("The blocks that are mined faster with the tool");
+		affectedBlocksSubPanel.add(affectedBlocksLabel, BorderLayout.CENTER);
 		
 		labelRepairMaterial = new JLabel("Repair Material");
 		labelRepairMaterial.setToolTipText("The material that is required to repair the tool in an anvil");
@@ -151,7 +170,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		repairMaterialLabel = new JLabel("");
 		repairMaterialLabel.setToolTipText("The material that is required to repair the tool in an anvil");
 		repairMaterialLabel.setEnabled(false);
-		containerSubPanel.add(repairMaterialLabel, BorderLayout.CENTER);
+		repairMaterialSubPanel.add(repairMaterialLabel, BorderLayout.CENTER);
 	}
 	
 	public ToolItemEditor(ItemsActivityPanel main, ItemElement item) {
@@ -174,7 +193,10 @@ public class ToolItemEditor extends RegularItemEditor {
 		if (resource.enchantability != null)
 			enchantibilitySpinner.setValue(resource.enchantability);
 		if (resource.blocks != null){
-			//TODO read resource.blocks
+			for (String block : resource.blocks){
+				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+				affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
+			}
 		}
 		if (resource.repairblock != null){
 			repairMaterialLabel.setText(resource.repairblock);
@@ -201,7 +223,11 @@ public class ToolItemEditor extends RegularItemEditor {
 				for (String s : affectedBlocksLabel.getText().split(","))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
-				//TODO base.repairblock of base.repairitem = repairMaterialLabel.getText();
+				if (VanillaElements.isItem(repairMaterialLabel.getText()) || 
+						main.main.ItemPanel.elements.keySet().contains(repairMaterialLabel.getText()))
+					base.repairitem = repairMaterialLabel.getText();
+				else
+					base.repairblock = repairMaterialLabel.getText();
 			}
 			
 			ItemElement item = writeItem(base);
@@ -210,7 +236,25 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addBlock(){
-		//TODO material list
+		if (!materialChooserIsOpen){
+			new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, main.main, new MaterialRunnable() {
+				@Override
+				public void chooseMaterial(String material) {
+					if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+					affectedBlocksLabel.setText(affectedBlocksLabel.getText() + material);
+				}
+
+				@Override
+				public void materialChooserDispose() {
+					materialChooserIsOpen = false;
+				}
+			});
+			materialChooserIsOpen = true;
+		}
+	}
+	
+	protected void resetBlocks(){
+		affectedBlocksLabel.setText("");
 	}
 	
 	protected void repairMaterialUse(){
@@ -221,6 +265,19 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void repairMaterialChoose(){
-		//TODO material list
+		if (!materialChooserIsOpen){
+			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main.main, new MaterialRunnable() {
+				@Override
+				public void chooseMaterial(String material) {
+					repairMaterialLabel.setText(material);
+				}
+
+				@Override
+				public void materialChooserDispose() {
+					materialChooserIsOpen = false;
+				}
+			});
+			materialChooserIsOpen = true;
+		}
 	}
 }

@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -14,6 +14,7 @@ import javax.swing.JOptionPane;
 
 import sun.awt.WindowClosingListener;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.ItemStackEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
@@ -26,7 +27,7 @@ public class ItemStackButton extends JButton implements WindowListener, ActionLi
 	ItemStackEditor editor = null;
 	ItemStackButton thisButton = this;
 	
-	ItemStackButton(String s, Set<String> itemss, Set<String> blockss){
+	public ItemStackButton(String s, Set<String> itemss, Set<String> blockss){
 		super(s);
 		
 		items = new ArrayList<ItemElement>();

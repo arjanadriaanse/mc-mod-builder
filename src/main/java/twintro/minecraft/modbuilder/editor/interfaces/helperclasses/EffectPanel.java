@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -11,11 +11,13 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
+
 public class EffectPanel extends JPanel {
-	protected JComboBox effectComboBox;
-	protected JSpinner durationSpinner;
-	protected JSpinner amplifierSpinner;
-	protected JButton removeButton;
+	public JComboBox effectComboBox;
+	public JSpinner durationSpinner;
+	public JSpinner amplifierSpinner;
+	public JButton removeButton;
 	
 	public FoodItemEditor main;
 	public int id;
