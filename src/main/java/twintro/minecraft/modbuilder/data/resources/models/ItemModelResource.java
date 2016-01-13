@@ -2,13 +2,29 @@ package twintro.minecraft.modbuilder.data.resources.models;
 
 import java.util.Map;
 
+/**
+ * Contains properties for the item model. This is what the model looks like when you hold it.
+ * Blocks also have an item model, which decides how they look when placed in your inventory.
+ */
 public class ItemModelResource {
 	public String parent;
+	/**
+	 * Map of all textures used for the model. The first string is an indicator for the place of the texture, like "layer0", and the second string is a reference to the file location of the texture.
+	 */
 	public Map<String, String> textures;
+	/**
+	 * How the item is displayed when you are holding it (on screen, so not in your inventory).
+	 */
 	public Display display;
 	
 	public static class Display {
+		/**
+		 * How the item looks in your hand when viewing from third person mode. 
+		 */
 		public Perspective thirdperson;
+		/**
+		 * How the item looks in your hand when viewing from first person mode. 
+		 */
 		public Perspective firstperson;
 		
 		private Display(int type){

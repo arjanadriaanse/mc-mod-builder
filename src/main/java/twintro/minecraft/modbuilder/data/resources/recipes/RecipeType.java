@@ -1,5 +1,8 @@
 package twintro.minecraft.modbuilder.data.resources.recipes;
 
+/**
+ * The enum for all recipe types.
+ */
 public enum RecipeType {
 	shaped(ShapedRecipe.class), shapeless(ShapelessRecipe.class), smelting(SmeltingRecipe.class);
 

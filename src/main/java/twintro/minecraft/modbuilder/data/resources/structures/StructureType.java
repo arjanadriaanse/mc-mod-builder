@@ -1,5 +1,8 @@
 package twintro.minecraft.modbuilder.data.resources.structures;
 
+/**
+ * The enum for all structure types.
+ */
 public enum StructureType {
 	ore(OreStructureResource.class),
 	ground(GroundStructureResource.class);
