@@ -23,7 +23,8 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.interfaces.StructureEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.StructureEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
@@ -41,7 +42,7 @@ public class StructureActivityPanel  extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				StructureEditor editor = new StructureEditor(name, this);
+				StructureEditor editor = new GroundStructureEditor(name, this, main.getBlocksInBlockPanel());
 				openEditors.put(name, editor);
 			}
 		}

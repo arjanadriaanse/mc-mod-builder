@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
@@ -19,6 +19,7 @@ import twintro.minecraft.modbuilder.data.resources.structures.GroundStructureRes
 import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
 import twintro.minecraft.modbuilder.data.resources.structures.StructureType;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 
@@ -62,7 +63,7 @@ public class GroundStructureEditor extends StructureEditor
 		btnRename.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String nameNew2 = JOptionPane.showInputDialog("Item name:");
-				GroundStructureEditor temp = main.openEditors.get(name);
+				GroundStructureEditor temp = (GroundStructureEditor) main.openEditors.get(name);
 				main.openEditors.remove(name);
 				name = nameNew2;
 				main.openEditors.put(name, temp);
