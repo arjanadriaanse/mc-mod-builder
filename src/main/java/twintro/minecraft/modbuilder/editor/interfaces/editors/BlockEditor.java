@@ -38,8 +38,8 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Var
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.BlockModelChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.BlockModelRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 

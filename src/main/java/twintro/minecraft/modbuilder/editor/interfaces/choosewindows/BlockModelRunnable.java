@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
+package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 

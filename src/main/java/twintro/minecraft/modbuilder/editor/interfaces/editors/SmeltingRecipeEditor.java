@@ -110,9 +110,8 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		outputSmeltingButton = new ItemStackButton("New button", items, blocks);
-		outputSmeltingButton.setText("");
-		outputSmeltingButton.setIsProduct(true);
+		outputSmeltingButton = new ItemStackButton("", main.main);
+		outputSmeltingButton.setProduct();
 		outputSmeltingButton.setBounds(243, 15, 90, 90);
 		panel_1.add(outputSmeltingButton);
 		
@@ -121,9 +120,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 69));
 		
-		inputSmeltingButton = new ItemStackButton("New button", items, blocks);
-		inputSmeltingButton.setText("");
-		inputSmeltingButton.setIsProduct(false);
+		inputSmeltingButton = new ItemStackButton("", main.main);
 		inputSmeltingButton.setBounds(15, 15, 90, 90);
 		panel_1.add(inputSmeltingButton);
 		
@@ -146,30 +143,8 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 			Set<String> editorItems, Set<String> editorBlocks) {
 		this(value, recipesActivityPanel, editorItems, editorBlocks);
 		SmeltingRecipe smltngRcpy = (SmeltingRecipe)recipe.recipe;
-		outputSmeltingButton.item = smltngRcpy.output;
-		if (outputSmeltingButton.item.block == null || outputSmeltingButton.item.block == ""){
-			if (outputSmeltingButton.item.amount != null && outputSmeltingButton.item.amount != 0){
-				outputSmeltingButton.setText(outputSmeltingButton.item.amount + " " + outputSmeltingButton.item.item);
-			}else{
-				outputSmeltingButton.setText(outputSmeltingButton.item.item);
-			}
-		} else {
-			if (outputSmeltingButton.item.amount != null && outputSmeltingButton.item.amount != 0){
-				outputSmeltingButton.setText(outputSmeltingButton.item.amount + " " + outputSmeltingButton.item.block);
-			}else{
-				outputSmeltingButton.setText(outputSmeltingButton.item.block);
-			}
-		}
-		inputSmeltingButton.item = smltngRcpy.input;
-		if (inputSmeltingButton.item.block == null || inputSmeltingButton.item.block == ""){
-			inputSmeltingButton.setText(inputSmeltingButton.item.item);
-
-		} else {
-			inputSmeltingButton.setText(inputSmeltingButton.item.block);
-		}
-		if (smltngRcpy.xp != 0.0 && smltngRcpy.xp != 0){
-			xpSpinner.setValue(smltngRcpy.xp);
-		}
+		outputSmeltingButton.chooseItem(smltngRcpy.output);
+		inputSmeltingButton.chooseItem(smltngRcpy.input);
 	}
 
 	

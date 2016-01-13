@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
+package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;

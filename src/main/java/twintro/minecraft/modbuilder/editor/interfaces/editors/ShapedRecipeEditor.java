@@ -57,31 +57,13 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		
 			this(value, recipesActivityPanel, editorItems, editorBlocks);
 			ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
-			for (int i = 0; i < 10; i++){
-				buttons[i].item = new ItemStackResource();
-			}
+			
 			for(int i = 0; i < 9;i++){
 				Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
-				if (indexChar != ' ' && indexChar != null) {
-					buttons[i].item = shpdRcpy.input.get(indexChar);
-					if (shpdRcpy.input.get(indexChar).item == "" || shpdRcpy.input.get(indexChar).item == null)
-						buttons[i].setText(shpdRcpy.input.get(indexChar).block);
-					else
-						buttons[i].setText(shpdRcpy.input.get(indexChar).item);
-				} 
+				if (indexChar != ' ' && indexChar != null)
+					buttons[i].chooseItem(shpdRcpy.input.get(indexChar));
 			}
-			buttons[9].item = shpdRcpy.output;
-			if(buttons[9].item.amount != null && buttons[9].item.amount != 0){
-				if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
-					buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.block);
-				else
-					buttons[9].setText(shpdRcpy.output.amount + " "+shpdRcpy.output.item);
-			} else {
-				if (shpdRcpy.output.item == "" || shpdRcpy.output.item == null) 
-					buttons[9].setText(shpdRcpy.output.block);
-				else
-					buttons[9].setText(shpdRcpy.output.item);
-			}
+			buttons[9].chooseItem(shpdRcpy.output);
 
 			this.name = value;
 		}

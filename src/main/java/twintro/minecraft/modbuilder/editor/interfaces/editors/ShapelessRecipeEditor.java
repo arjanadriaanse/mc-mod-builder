@@ -81,14 +81,13 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		
 		buttons = new ItemStackButton[10];
 		for (int i = 0; i<9; i++){
-			buttons[i] = new ItemStackButton("", items, blocks);
-			buttons[i].setText("");
+			buttons[i] = new ItemStackButton("", main.main);
 			panel.add(buttons[i]);
 			buttons[i].item = new ItemStackResource();
 		}
 		
-		buttons[9] = new ItemStackButton("",items, blocks);
-		buttons[9].setIsProduct(true);
+		buttons[9] = new ItemStackButton("", main.main);
+		buttons[9].setProduct();
 		buttons[9].setBounds(365, 115, 80, 80);
 		
 		panel_3.add(buttons[9]);
@@ -142,22 +141,10 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 				Set<String> editorItems, Set<String> editorBlocks) {
 			this(value, recipesActivityPanel, editorItems, editorBlocks);
 			ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
-			for (int i = 0; i < 10; i++){
-				buttons[i].item = new ItemStackResource();
-			}
-			for(int i = 0; i < shplsRcpy.input.size();i++){
-				buttons[i].item = shplsRcpy.input.get(i);
-				if (shplsRcpy.input.get(i).item == "" || shplsRcpy.input.get(i).item == null)
-					buttons[i].setText(shplsRcpy.input.get(i).amount + " "+shplsRcpy.input.get(i).block);
-				else
-					buttons[i].setText(shplsRcpy.input.get(i).amount + " "+shplsRcpy.input.get(i).item);
-			}
-			buttons[9].item = shplsRcpy.output;
-			if (shplsRcpy.output.item == "" || shplsRcpy.output.item == null) 
 			
-				buttons[9].setText(shplsRcpy.output.amount + " "+shplsRcpy.output.block);
-			else
-				buttons[9].setText(shplsRcpy.output.amount + " "+shplsRcpy.output.item);
+			for(int i = 0; i < shplsRcpy.input.size();i++)
+				buttons[i].chooseItem(shplsRcpy.input.get(i));
+			buttons[9].chooseItem(shplsRcpy.output);
 
 			this.name = value;
 		}

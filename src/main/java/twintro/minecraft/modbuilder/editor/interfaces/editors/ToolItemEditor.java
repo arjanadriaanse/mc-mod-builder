@@ -17,8 +17,8 @@ import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
 

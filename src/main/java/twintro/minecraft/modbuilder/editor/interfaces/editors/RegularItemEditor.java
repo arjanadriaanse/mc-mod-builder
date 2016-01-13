@@ -18,10 +18,10 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TextureChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TextureRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
