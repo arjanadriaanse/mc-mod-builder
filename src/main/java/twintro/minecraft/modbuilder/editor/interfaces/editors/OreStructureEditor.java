@@ -34,7 +34,8 @@ public class OreStructureEditor extends StructureEditor {
 	private JLabel coverBlockLabel;
 
 
-	public OreStructureEditor(String nameNew, StructureActivityPanel parent, Set<String> editorBlocks) {
+	public OreStructureEditor(String nameNew, StructureActivityPanel parent, Set<String> blocks) {
+		super(nameNew, parent, blocks);
 		
 		this.main = parent;
 		
