@@ -26,11 +26,11 @@ import javax.swing.UIManager;
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.BlocksActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 
 public class Editor {
 	private boolean interfaceOpened = false;
@@ -38,8 +38,8 @@ public class Editor {
 	private JPanel activityPanel;
 	public ActivityPanel TexturePanel;
 	private ActivityPanel RecipePanel;
-	public ActivityPanel BlockPanel;
-	public ActivityPanel ItemPanel;
+	private ActivityPanel BlockPanel;
+	private ActivityPanel ItemPanel;
 	private ActivityPanel StructurePanel;
 	
 	public MetaFile metaFile;
@@ -50,6 +50,11 @@ public class Editor {
 	/**
 	 * Launch the application.
 	 */
+	public BlocksActivityPanel getBlockPanel(){
+		return (BlocksActivityPanel) BlockPanel;
+	}
+	
+	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
