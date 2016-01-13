@@ -42,7 +42,7 @@ public class BuilderStructGround implements BuilderStruct{
 	}
 	
 	@Override
-	public Random generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
+	public Random generateComponent(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
 		if (dimension == world.getWorldType().getWorldTypeID()) {
 			for (int i = 0; i < amountperchunk; i++){
 				int randX = random.nextInt(16);

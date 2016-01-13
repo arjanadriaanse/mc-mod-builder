@@ -153,6 +153,7 @@ public class ResourceConverter {
 	public static BuilderStructOre toStructure(OreStructureResource resource) {
 		BuilderStructOre structure = new BuilderStructOre(
 				Block.getBlockFromName(resource.block),
+				resource.replaceblock   !=null ? Block.getBlockFromName(resource.replaceblock) : null,
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
 				resource.chancestospawn !=null ? resource.chancestospawn : 16,

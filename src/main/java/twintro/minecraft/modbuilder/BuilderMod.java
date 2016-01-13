@@ -82,6 +82,10 @@ public class BuilderMod {
 	 * Contains the name of each registered {@link Structure}.
 	 */
 	private Set<String> registeredStructures = new HashSet<String>();
+	/**
+	 * Contains all structures that will be generated.
+	 */
+	BuilderStructRegistry registry = new BuilderStructRegistry();
 	
 	/**
 	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
@@ -193,7 +197,6 @@ public class BuilderMod {
 		}
 		for (String path : data.structures) {
 			try {
-				BuilderStructRegistry registry = new BuilderStructRegistry();
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":structures/" + path + ".json");
 				IResource resource = manager.getResource(location);
 				BaseStructureResource structureResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),

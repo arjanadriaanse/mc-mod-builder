@@ -31,5 +31,5 @@ public abstract interface BuilderStruct {
 	 * 		-The chunk provider used by minecraft.
 	 * @return
 	 */
-	public abstract Random generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider);
+	public abstract Random generateComponent(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider);
 }

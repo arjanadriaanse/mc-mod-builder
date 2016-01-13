@@ -2,7 +2,10 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Random;
 
+import com.google.common.base.Predicate;
+
 import net.minecraft.block.Block;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -14,6 +17,7 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  */
 public class BuilderStructOre implements BuilderStruct{
 	Block block;
+	Block replaceblock;
 	int dimension;
 	int maxVeinSize;
 	int chancesToSpawn;
@@ -37,17 +41,31 @@ public class BuilderStructOre implements BuilderStruct{
 	 * 		The maximum Y-level the ore will be generated on.\\
 	 * 		Note that the Y-level range is for the center of the vein; it is possible that some blocks are outside the range.
 	 */
-	public BuilderStructOre(Block block, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
+	public BuilderStructOre(Block block, Block replaceblock, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
 		this.block = block;
 		this.dimension = dimension;
 		this.maxVeinSize = maxVeinSize;
 		this.chancesToSpawn = chancesToSpawn;
 		this.minY = minY;
 		this.maxY = maxY;
+		if (replaceblock!=null)
+			switch (dimension) {
+				case -1: {
+					replaceblock=Blocks.netherrack;
+					break;
+				}
+				case 1: {
+					replaceblock=Blocks.end_stone;
+					break;
+				}
+				default: {
+					replaceblock=Blocks.stone;
+				}
+			}
 	}
 	
 	@Override
-	public Random generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
+	public Random generateComponent(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
 		if (dimension == world.getWorldType().getWorldTypeID()) {
 			int heightRange = maxY - minY;
 			WorldGenMinable wgm = new WorldGenMinable(block.getDefaultState(), maxVeinSize);

@@ -11,6 +11,10 @@ public class OreStructureResource extends BaseStructureResource {
 	 */
 	public String block;
 	/**
+	 * The block that the ore will replace. If set to null, it will default to stone in the overworld, netherrack in the nether and endstone in the end.
+	 */
+	public String replaceblock;
+	/**
 	 * The dimension the ore needs to generate in. Use -1 for nether, 0 for overworld or 1 for the end.
 	 */
 	public Integer dimension;
