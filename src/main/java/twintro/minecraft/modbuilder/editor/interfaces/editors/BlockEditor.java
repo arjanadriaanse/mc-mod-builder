@@ -313,7 +313,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			block.blockModel = model;
 			
 			ItemModelResource itemModel = new ItemModelResource();
-			itemModel.parent = "examplemod:block/" + name;
+			itemModel.parent = "modbuilder:block/" + name;
 			itemModel.display = Display.block();
 			block.itemModel = itemModel;
 			
