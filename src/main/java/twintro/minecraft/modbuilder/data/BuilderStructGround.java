@@ -11,12 +11,29 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+/**
+ * Base ground cover generation. This is used for generating things like flowers, tall grass and pumpkins.
+ */
 public class BuilderStructGround implements BuilderStruct{
 	Block block;
 	Set<Block> onlyonblocks;
 	int dimension;
 	int amountperchunk;
 	
+	/**
+	 * Base ground cover generation.
+	 * @param block
+	 * 		-The block that will be generated in the world.
+	 * @param onlyonblocks
+	 * 		-The set of blocks the ground cover has to stand on (e.g grass for flowers, sand for cacti).
+	 * 		If the set is empty or null, the ground cover can be generated on any block.
+	 * @param dimension
+	 * 		-The dimension the ground cover occurs in. Set to 0 for overworld, -1 for nether, or 1 for end.\\
+	 * 		Warning: round cover will always generate on the highest possible space, so generating anything in the nether is useless as blocks will only try generating on top of the bedrock layer.
+	 * @param amountperchunk
+	 * 		-The amount of blocks the generator will try placing in a chunk.
+	 * 		A try will fail if the highest solid block on a random location is not in the onlyonblocks parameter, or the block above it is occupied by a non-solid block.
+	 */
 	public BuilderStructGround(Block block, Set<Block> onlyonblocks, int dimension, int amountperchunk) {
 		this.block = block;
 		this.onlyonblocks = onlyonblocks;
@@ -33,7 +50,7 @@ public class BuilderStructGround implements BuilderStruct{
 				BlockPos pos = new BlockPos(chunkX*16+randX,0,chunkZ*16+randZ);
 				int Y = world.getTopSolidOrLiquidBlock(pos).getY();
 				pos=pos.add(0,Y,0);
-				if (onlyonblocks!=null)
+				if (onlyonblocks!=null && onlyonblocks.size()>0)
 					if (onlyonblocks.contains(world.getBlockState(pos.add(0,-1,0)).getBlock()))
 						if (world.getBlockState(pos).getBlock()==Blocks.air)
 							world.setBlockState(pos,block.getDefaultState());

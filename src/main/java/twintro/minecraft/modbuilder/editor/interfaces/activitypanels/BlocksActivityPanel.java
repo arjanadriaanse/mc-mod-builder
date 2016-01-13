@@ -111,7 +111,8 @@ public class BlocksActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value, 
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + "?\r\n"
+				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
 			ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
