@@ -295,7 +295,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		if (block.block.unbreakable != null)
 			unbreakableCheckBox.setSelected(block.block.unbreakable);
 		if (block.block.harvesttype != null)
-			creativeTabComboBox.setSelectedItem(block.block.harvesttype);
+			harvestTypeComboBox.setSelectedItem(block.block.harvesttype);
 		if (block.block.harvestlevel != null)
 			harvestLevelSpinner.setValue(block.block.harvestlevel);
 		if (block.block.burntime != null)
