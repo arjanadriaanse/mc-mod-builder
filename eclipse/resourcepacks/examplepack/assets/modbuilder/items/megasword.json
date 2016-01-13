@@ -3,5 +3,6 @@
    "model": "modbuilder:megasword",
    "damage": 10,
    "durability": 256,
-   "repairblock": "minecraft:iron"
+   "repairblock": "minecraft:iron",
+   "tabs": ["combat"]
 }

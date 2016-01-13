@@ -20,8 +20,10 @@ public class BuilderStructRegistry implements IWorldGenerator {
 		
 	@Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {   
+		long seed = world.getSeed();
 		for (BuilderStruct struct: structs) {
-			random = struct.generate(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+			struct.generate(new Random(seed), chunkX, chunkZ, world, chunkGenerator, chunkProvider);
+			seed+=random.nextInt();
 		}
 	}
 }

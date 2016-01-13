@@ -26,7 +26,7 @@ public class BuilderItemTool extends ItemTool {
 	}
 	
 	@Override
-	public CreativeTabs[] getCreativeTabs(){
-		return tabs;
+	public CreativeTabs[] getCreativeTabs() {
+		return tabs != null ? tabs : super.getCreativeTabs();
 	}
 }

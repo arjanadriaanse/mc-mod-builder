@@ -91,10 +91,19 @@ public class ResourceConverter {
 	public static ItemFood toItem(final FoodItemResource resource) {
 		BuilderItemFood item;
 		if (resource.saturation == null)
-			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false, resource.effects, resource.tabs != null ? getTabs(resource.tabs) : null);
+			item = new BuilderItemFood(
+					resource.amount,
+					resource.wolf != null ? resource.wolf : false,
+					resource.effects,
+					resource.tabs != null ? getTabs(resource.tabs) : null,
+					resource.container != null ? new ItemStack(Item.getByNameOrId(resource.container)) : null);
 		else
-			item = new BuilderItemFood(resource.amount, resource.saturation,
-					resource.wolf != null ? resource.wolf : false, resource.effects, resource.tabs != null ? getTabs(resource.tabs) : null);
+			item = new BuilderItemFood(
+					resource.amount, resource.saturation,
+					resource.wolf != null ? resource.wolf : false,
+					resource.effects,
+					resource.tabs != null ? getTabs(resource.tabs) : null,
+					resource.container != null ? new ItemStack(Item.getByNameOrId(resource.container)) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
@@ -141,7 +150,7 @@ public class ResourceConverter {
 		return null;
 	}
 	
-	public static BuilderStruct toStructure(OreStructureResource resource) {
+	public static BuilderStructOre toStructure(OreStructureResource resource) {
 		BuilderStructOre structure = new BuilderStructOre(
 				Block.getBlockFromName(resource.block),
 				resource.dimension      !=null ? resource.dimension      : 0,
@@ -152,9 +161,9 @@ public class ResourceConverter {
 		return structure;
 	}
 	
-	public static BuilderStruct toStructure(GroundStructureResource resource) {
+	public static BuilderStructGround toStructure(GroundStructureResource resource) {
 		Set onlyonblocks = new LinkedHashSet();
-		if (resource.onlyonblocks != null) {
+		if (resource.onlyonblocks != null && resource.onlyonblocks.size()>0) {
 			for (String key : resource.onlyonblocks)
 				onlyonblocks.add(Block.getBlockFromName(key));
 		}

@@ -1,8 +1,9 @@
 {
-   "type":"food",
-   "model":"modbuilder:seedstew",
-   "amount": 8,
-   "stacksize": 1,
+  "type": "food",
+  "model": "modbuilder:seedstew",
+  "amount": 8,
+  "stacksize": 16,
   "container": "minecraft:bowl",
-  "effects": [[8,1200,5]]
+  "effects": [ [ 8, 1200, 5 ] ],
+  "alwaysedible": true
 }
