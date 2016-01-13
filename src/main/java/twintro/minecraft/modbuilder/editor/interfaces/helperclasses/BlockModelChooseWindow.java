@@ -359,6 +359,7 @@ public class BlockModelChooseWindow extends JFrame {
 				model.parent="block/cube_all";
 				model.textures=new HashMap<String,String>();
 				model.textures.put("all","modbuilder:"+textureNames1[0]);
+				model.textures.put("particle","modbuilder:"+textureNames1[0]);
 			}
 			else {
 				model.parent="block/cube";
@@ -369,6 +370,7 @@ public class BlockModelChooseWindow extends JFrame {
 				model.textures.put("east",  "modbuilder:"+textureNames1[3]);
 				model.textures.put("north", "modbuilder:"+textureNames1[4]);
 				model.textures.put("down",  "modbuilder:"+textureNames1[5]);
+				model.textures.put("particle",    "modbuilder:"+textureNames1[0]);
 			}
 		}
 		if(modelType==2){
@@ -376,6 +378,7 @@ public class BlockModelChooseWindow extends JFrame {
 			model.parent="block/cross";
 			model.textures=new HashMap<String,String>();
 			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
+			model.textures.put("particle", "modbuilder:"+textureNames2[0]);
 		}
 		main.setModel(model);
 		this.dispose();
