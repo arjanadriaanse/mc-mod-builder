@@ -1,5 +1,9 @@
 package twintro.minecraft.modbuilder.data.resources.items;
 
+import java.util.Set;
+
+import twintro.minecraft.modbuilder.data.resources.TabResource;
+
 /**
  * Contains all basic properties for items.
  */
@@ -12,6 +16,10 @@ public abstract class BaseItemResource {
 	 * The name of the itemmodel this item uses.
 	 */
 	public String model;
+	/**
+	 * The creative tabs the item is in.
+	 */
+	public Set<TabResource> tabs;
 	/**
 	 * How many items one stack can contain. Usually this is 64 (which is also the maximum).
 	 * Tools should only have 1 item max, or else the durability is bugged.

@@ -91,10 +91,10 @@ public class ResourceConverter {
 	public static ItemFood toItem(final FoodItemResource resource) {
 		BuilderItemFood item;
 		if (resource.saturation == null)
-			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false, resource.effects);
+			item = new BuilderItemFood(resource.amount, resource.wolf != null ? resource.wolf : false, resource.effects, resource.tabs != null ? getTabs(resource.tabs) : null);
 		else
 			item = new BuilderItemFood(resource.amount, resource.saturation,
-					resource.wolf != null ? resource.wolf : false, resource.effects);
+					resource.wolf != null ? resource.wolf : false, resource.effects, resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
@@ -125,7 +125,7 @@ public class ResourceConverter {
 			for (String key : resource.blocks)
 				blocks.add(Block.getBlockFromName(key));
 		}
-		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks);
+		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)

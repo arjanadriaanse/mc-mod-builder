@@ -8,7 +8,6 @@ import twintro.minecraft.modbuilder.data.resources.TabResource;
  * The regular item type
  */
 public class ItemResource extends BaseItemResource {
-	public Set<TabResource> tabs;
 
 	public ItemResource() {
 		type = ItemType.regular;

@@ -2,12 +2,14 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Set;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.item.ItemTool;
 
 /**
  * Base class for new {@link ItemTool}s.
  */
 public class BuilderItemTool extends ItemTool {
+	CreativeTabs[] tabs;
 
 	/**
 	 * 
@@ -18,8 +20,13 @@ public class BuilderItemTool extends ItemTool {
 	 * @param effectiveBlocks
 	 * 		-Set of all Block objects this tool is effective on.
 	 */
-	public BuilderItemTool(float attackDamage, ToolMaterial material, Set effectiveBlocks) {
+	public BuilderItemTool(float attackDamage, ToolMaterial material, Set effectiveBlocks, CreativeTabs[] tabs) {
 		super(attackDamage, material, effectiveBlocks);
+		this.tabs = tabs;
 	}
-
+	
+	@Override
+	public CreativeTabs[] getCreativeTabs(){
+		return tabs;
+	}
 }

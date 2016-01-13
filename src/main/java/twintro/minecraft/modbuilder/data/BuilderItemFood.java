@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Set;
 
+import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
@@ -13,6 +14,7 @@ import net.minecraft.world.World;
  */
 public class BuilderItemFood extends ItemFood {
 	Set<Integer[]> effects;
+	CreativeTabs[] tabs;
 
 	/**
 	 * 
@@ -27,9 +29,10 @@ public class BuilderItemFood extends ItemFood {
 	 * 		The third integer is the amplifier of the effect. In vanilla minecraft this ranges from 0 to 5, but in mods every value is usable.
 	 * 		This will not change some effects (e.g. blindness).
 	 */
-	public BuilderItemFood(int amount, boolean isWolfFood, Set<Integer[]> effects) {
+	public BuilderItemFood(int amount, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs) {
 		super(amount, isWolfFood);
 		this.effects = effects;
+		this.tabs = tabs;
 	}
 
 	/**
@@ -48,9 +51,10 @@ public class BuilderItemFood extends ItemFood {
 	 * 		The third integer is the amplifier of the effect. In vanilla minecraft this ranges from 0 to 5, but in mods every value is usable.
 	 * 		This will not change some effects (e.g. blindness).
 	 */
-	public BuilderItemFood(int amount, float saturation, boolean isWolfFood, Set<Integer[]> effects) {
+	public BuilderItemFood(int amount, float saturation, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs) {
 		super(amount, saturation, isWolfFood);
 		this.effects = effects;
+		this.tabs = tabs;
 	}
 	
 	@Override
@@ -61,5 +65,9 @@ public class BuilderItemFood extends ItemFood {
 		        if (!world.isRemote && entry.length == 3)
 		            player.addPotionEffect(new PotionEffect(entry[0], entry[1], entry[2]));
 	}
-
+	
+	@Override
+	public CreativeTabs[] getCreativeTabs() {
+		return tabs;
+	}
 }
