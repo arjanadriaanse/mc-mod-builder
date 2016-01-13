@@ -4,6 +4,9 @@ import java.util.Set;
 
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 
+/**
+ * The regular item type
+ */
 public class ItemResource extends BaseItemResource {
 	public Set<TabResource> tabs;
 

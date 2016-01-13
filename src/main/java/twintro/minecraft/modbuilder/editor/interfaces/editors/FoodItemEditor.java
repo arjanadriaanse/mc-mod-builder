@@ -11,6 +11,7 @@ import java.util.Set;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -41,6 +42,22 @@ public class FoodItemEditor extends RegularItemEditor {
 	protected JCheckBox alwaysEdibleCheckbox;
 	protected JButton addEffectButton;
 	protected EffectPanel[] effectPanels;
+
+	private static final String hungerRefillTooltip = "<html>The amount of hunger points that will be refilled when the user eats the food<br>"
+			+ "Two hunger points refill one chicken wing</html>";
+	private static final String saturationTooltip = "<html>The amount of saturation that the user gains by eating the food<br>"
+				+ "As long as the user has saturation, he will not lose any hunger<br>"
+				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>";
+	private static final String feedToWolvesTooltip = "Determine whether or not the food can be fed to a wolf";
+	private static final String alwaysEdibleTooltip = "<html>Determine whether or not the food can be eaten, even with a full hunger bar<br>"
+				+ "This may be useful, because the user will still gain saturation</html>";
+	public static final String effectTypeTooltip = "The effect type";
+	public static final String effectDurationTooltip = "<html>The duration of the effect in ticks<br>"
+				+ "One second is equal to twenty ticks</html>";
+	public static final String effectAmplifierTooltip = "<html>The amplifier for the effect<br>"
+			+ "An amplifier of zero means level one, an amplifier of one means level two, this pattern continues</html>";
+	public static final String removeEffectTooltip = "Remove this effect";
+	private static final String addEffectTooltip = "Add potion effects that will occur to the user when he eats the food";
 	
 	public FoodItemEditor(String name, ItemsActivityPanel itemsActivityPanel) {
 		super(name, itemsActivityPanel);
@@ -49,26 +66,20 @@ public class FoodItemEditor extends RegularItemEditor {
 		saveButton.setText("Save Food");
 		
 		labelHungerRefill = new JLabel("Hunger Refill");
-		labelHungerRefill.setToolTipText("<html>The amount of hunger points that will be refilled when the user eats the food<br>"
-				+ "Two hunger points refill one chicken wing</html>");
+		labelHungerRefill.setToolTipText(hungerRefillTooltip);
 		labelPanel.add(labelHungerRefill);
 		
 		hungerRefillSpinner = new JSpinner();
-		hungerRefillSpinner.setToolTipText("<html>The amount of hunger points that will be refilled when the user eats the food<br>"
-				+ "Two hunger points refill one chicken wing</html>");
+		hungerRefillSpinner.setToolTipText(hungerRefillTooltip);
 		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(hungerRefillSpinner);
 		
 		labelSaturation = new JLabel("Saturation");
-		labelSaturation.setToolTipText("<html>The amount of saturation that the user gains by eating the food<br>"
-				+ "As long as the user has saturation, he will not lose any hunger<br>"
-				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>");
+		labelSaturation.setToolTipText(saturationTooltip);
 		labelPanel.add(labelSaturation);
 		
 		saturationSpinner = new JSpinner();
-		saturationSpinner.setToolTipText("<html>The amount of saturation that the user gains by eating the food<br>"
-				+ "As long as the user has saturation, he will not lose any hunger<br>"
-				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>");
+		saturationSpinner.setToolTipText(saturationTooltip);
 		saturationSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(saturationSpinner);
 		
@@ -84,7 +95,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.add(feedToWolvesPanel);
 		
 		feedToWolvesCheckbox = new JCheckBox("Feed to wolves");
-		feedToWolvesCheckbox.setToolTipText("Determine whether or not the food can be fed to a wolf");
+		feedToWolvesCheckbox.setToolTipText(feedToWolvesTooltip);
 		feedToWolvesPanel.add(feedToWolvesCheckbox);
 		
 		alwaysEdiblePanel = new JPanel();
@@ -92,8 +103,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.add(alwaysEdiblePanel);
 		
 		alwaysEdibleCheckbox = new JCheckBox("Always edible");
-		alwaysEdibleCheckbox.setToolTipText("<html>Determine whether or not the food can be eaten, even with a full hunger bar<br>"
-				+ "This may be useful, because the user will still gain saturation</html>");
+		alwaysEdibleCheckbox.setToolTipText(alwaysEdibleTooltip);
 		alwaysEdiblePanel.add(alwaysEdibleCheckbox);
 		
 		effectsListPanel = new JPanel();
@@ -106,21 +116,19 @@ public class FoodItemEditor extends RegularItemEditor {
 		effectsListPanel.add(effectsListTopPanel);
 		
 		labelEffect = new JLabel("Effect");
-		labelEffect.setToolTipText("The effect type");
+		labelEffect.setToolTipText(effectTypeTooltip);
 		effectsListTopPanel.add(labelEffect);
 		
 		labelDuration = new JLabel("Duration");
-		labelDuration.setToolTipText("<html>The duration of the effect in ticks<br>"
-				+ "One second is equal to twenty ticks</html>");
+		labelDuration.setToolTipText(effectDurationTooltip);
 		effectsListTopPanel.add(labelDuration);
 		
 		labelAmplifier = new JLabel("Amplifier");
-		labelAmplifier.setToolTipText("<html>The amplifier for the effect<br>"
-				+ "An amplifier of zero means level one, an amplifier of one means level two, this pattern continues</html>");
+		labelAmplifier.setToolTipText(effectAmplifierTooltip);
 		effectsListTopPanel.add(labelAmplifier);
 		
 		addEffectButton = new JButton("Add Effect");
-		addEffectButton.setToolTipText("Add potion effects that will occur to the user when he eats the food");
+		addEffectButton.setToolTipText(addEffectTooltip);
 		addEffectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addEffect();
@@ -171,6 +179,9 @@ public class FoodItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

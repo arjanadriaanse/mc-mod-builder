@@ -8,6 +8,7 @@ import java.util.HashSet;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -45,6 +46,16 @@ public class ToolItemEditor extends RegularItemEditor {
 	protected JSpinner enchantibilitySpinner;
 	protected JCheckBox repairMaterialCheckbox;
 
+	private static final String durabilityTooltip = "The amount of blocks that the tool can mine until the tool breaks";
+	private static final String efficiencyTooltip = "<html>The speed at which the tool mines<br>"
+			+ "Wood tools have efficiency 2, stone 4, iron 6, diamond 8</html>";
+	private static final String damageTooltip = "<html>The amount of health points of damage the tool deals when used as a weapon<br>"
+			+ "One heart of health is two health points</html>";
+	private static final String harvestLevelTooltip = "Idk what this does"; //TODO
+	private static final String enchantibilityTooltip = "Idk what this does"; //TODO
+	private static final String affectedBlocksTooltip = "The blocks that are mined faster with the tool";
+	private static final String repairMaterialTooltip = "The material that is required to repair the tool in an anvil";
+
 	public ToolItemEditor(String name, ItemsActivityPanel main) {
 		super(name, main);
 		setTitle("Edit Tool: " + this.name);
@@ -52,56 +63,52 @@ public class ToolItemEditor extends RegularItemEditor {
 		saveButton.setText("Save Tool");
 		
 		labelDurability = new JLabel("Durability");
-		labelDurability.setToolTipText("The amount of blocks that the tool can mine until the tool breaks");
+		labelDurability.setToolTipText(durabilityTooltip);
 		labelPanel.add(labelDurability);
 		
 		durabilitySpinner = new JSpinner();
-		durabilitySpinner.setToolTipText("The amount of blocks that the tool can mine until the tool breaks");
+		durabilitySpinner.setToolTipText(durabilityTooltip);
 		durabilitySpinner.setModel(new SpinnerNumberModel(new Integer(128), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(durabilitySpinner);
 		
 		labelEfficiency = new JLabel("Efficiency");
-		labelEfficiency.setToolTipText("<html>The speed at which the tool mines<br>"
-				+ "Wood tools have efficiency 2, stone 4, iron 6, diamond 8</html>");
+		labelEfficiency.setToolTipText(efficiencyTooltip);
 		labelPanel.add(labelEfficiency);
 		
 		efficiencySpinner = new JSpinner();
-		efficiencySpinner.setToolTipText("<html>The speed at which the tool mines<br>"
-				+ "Wood tools have efficiency 2, stone 4, iron 6, diamond 8</html>");
+		efficiencySpinner.setToolTipText(efficiencyTooltip);
 		efficiencySpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(2), null, new Float(2)));
 		interactionPanel.add(efficiencySpinner);
 		
 		labelDamage = new JLabel("Damage");
-		labelDamage.setToolTipText("<html>The amount of health points of damage the tool deals when used as a weapon<br>"
-				+ "One heart of health is two health points</html>");
+		labelDamage.setToolTipText(damageTooltip);
 		labelPanel.add(labelDamage);
 		
 		damageSpinner = new JSpinner();
-		damageSpinner.setToolTipText("<html>The amount of health points of damage the tool deals when used as a weapon<br>"
-				+ "One heart of health is two health points</html>");
+		damageSpinner.setToolTipText(damageTooltip);
 		damageSpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(1), null, new Float(1)));
 		interactionPanel.add(damageSpinner);
 		
 		labelHarvestLevel = new JLabel("Harvest Level");
-		labelHarvestLevel.setToolTipText("Idk what this does");//TODO
+		labelHarvestLevel.setToolTipText(harvestLevelTooltip);
 		labelPanel.add(labelHarvestLevel);
 		
 		harvestLevelSpinner = new JSpinner();
-		harvestLevelSpinner.setToolTipText("Idk what this does");//TODO
+		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(harvestLevelSpinner);
 		
 		labelEnchantibility = new JLabel("Enchantibility");
-		labelEnchantibility.setToolTipText("Idk what this does");//TODO
+		labelEnchantibility.setToolTipText(enchantibilityTooltip);
 		labelPanel.add(labelEnchantibility);
 		
 		enchantibilitySpinner = new JSpinner();
-		enchantibilitySpinner.setToolTipText("Idk what this does");//TODO
+		enchantibilitySpinner.setToolTipText(enchantibilityTooltip);
 		enchantibilitySpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(enchantibilitySpinner);
 		
 		labelAffectedBlocks = new JLabel("Affected Blocks");
-		labelAffectedBlocks.setToolTipText("The blocks that are mined faster with the tool");
+		labelAffectedBlocks.setToolTipText(affectedBlocksTooltip);
 		labelPanel.add(labelAffectedBlocks);
 		
 		affectedBlocksPanel = new JPanel();
@@ -109,7 +116,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		affectedBlocksPanel.setLayout(new BorderLayout(0, 0));
 		
 		affectedBlocksButton = new JButton("Add Block");
-		affectedBlocksButton.setToolTipText("The blocks that are mined faster with the tool");
+		affectedBlocksButton.setToolTipText(affectedBlocksTooltip);
 		affectedBlocksButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addBlock();
@@ -122,7 +129,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		affectedBlocksSubPanel.setLayout(new BorderLayout(0, 0));
 		
 		affectedBlocksResetButton = new JButton("Reset");
-		affectedBlocksResetButton.setToolTipText("The blocks that are mined faster with the tool");
+		affectedBlocksResetButton.setToolTipText(affectedBlocksTooltip);
 		affectedBlocksResetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetBlocks();
@@ -131,11 +138,11 @@ public class ToolItemEditor extends RegularItemEditor {
 		affectedBlocksSubPanel.add(affectedBlocksResetButton, BorderLayout.EAST);
 		
 		affectedBlocksLabel = new JLabel("");
-		affectedBlocksLabel.setToolTipText("The blocks that are mined faster with the tool");
+		affectedBlocksLabel.setToolTipText(affectedBlocksTooltip);
 		affectedBlocksSubPanel.add(affectedBlocksLabel, BorderLayout.CENTER);
 		
 		labelRepairMaterial = new JLabel("Repair Material");
-		labelRepairMaterial.setToolTipText("The material that is required to repair the tool in an anvil");
+		labelRepairMaterial.setToolTipText(repairMaterialTooltip);
 		labelRepairMaterial.setEnabled(false);
 		labelPanel.add(labelRepairMaterial);
 		
@@ -144,7 +151,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		repairMaterialPanel.setLayout(new BorderLayout(0, 0));
 		
 		repairMaterialCheckbox = new JCheckBox("Use");
-		repairMaterialCheckbox.setToolTipText("The material that is required to repair the tool in an anvil");
+		repairMaterialCheckbox.setToolTipText(repairMaterialTooltip);
 		repairMaterialCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -158,7 +165,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		repairMaterialSubPanel.setLayout(new BorderLayout(0, 0));
 		
 		repairMaterialChooseButton = new JButton("Choose");
-		repairMaterialChooseButton.setToolTipText("The material that is required to repair the tool in an anvil");
+		repairMaterialChooseButton.setToolTipText(repairMaterialTooltip);
 		repairMaterialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				repairMaterialChoose();
@@ -168,7 +175,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		repairMaterialSubPanel.add(repairMaterialChooseButton, BorderLayout.EAST);
 		
 		repairMaterialLabel = new JLabel("");
-		repairMaterialLabel.setToolTipText("The material that is required to repair the tool in an anvil");
+		repairMaterialLabel.setToolTipText(repairMaterialTooltip);
 		repairMaterialLabel.setEnabled(false);
 		repairMaterialSubPanel.add(repairMaterialLabel, BorderLayout.CENTER);
 	}
@@ -232,6 +239,9 @@ public class ToolItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

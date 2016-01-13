@@ -12,6 +12,9 @@ import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
 
+/**
+ * The actual structure generator. This generator will generate every structure in the "structs" variable.
+ */
 public class BuilderStructRegistry implements IWorldGenerator {
 	public Set<BuilderStruct> structs = new LinkedHashSet();
 		

@@ -14,6 +14,7 @@ import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JList;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
@@ -21,6 +22,7 @@ import javax.swing.ScrollPaneConstants;
 import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
 
 public class MaterialChooseWindow extends JFrame {
@@ -29,20 +31,23 @@ public class MaterialChooseWindow extends JFrame {
 	public static final int ITEMS_AND_BLOCKS = 2;
 	
 	private Editor main;
-	private boolean listWindowOpen = false;
 	private MaterialRunnable runnable;
+	private ListWindow listWindow = null;
 	
 	public MaterialChooseWindow(int type, Editor main, MaterialRunnable runnable){
 		this.main = main;
 		this.runnable = runnable;
 		
-		setBounds(100, 100, 600, 100);
+		if (type == 2)
+			setBounds(100, 100, 300, 120);
+		else
+			setBounds(100, 100, 300, 90);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new GridLayout(1, 0, 5, 0));
+		panel.setLayout(new GridLayout(0, 2, 5, 5));
 		
 		if (type != 1){
 			JButton customItemButton = new JButton("Custom item");
@@ -84,39 +89,53 @@ public class MaterialChooseWindow extends JFrame {
 			});
 		}
 		
+		JButton otherButton = new JButton("Other");
+		panel.add(otherButton);
+		otherButton.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				other();
+			}
+		});
+		
 		setVisible(true);
 	}
 	
 	private void customItem(){
-		if (!listWindowOpen){
-			new ListWindow(main.ItemPanel.elements, this);
-			listWindowOpen = true;
+		if (listWindow == null){
+			listWindow = new ListWindow(main.ItemPanel.elements, this);
 		}
 	}
 	
 	private void customBlock(){
-		if (!listWindowOpen){
-			new ListWindow(main.BlockPanel.elements, this);
-			listWindowOpen = true;
+		if (listWindow == null){
+			listWindow = new ListWindow(main.BlockPanel.elements, this);
 		}
 	}
 	
 	private void vanillaItem(){
-		if (!listWindowOpen){
-			new ListWindow(VanillaElements.vanillaItems, this);
-			listWindowOpen = true;
+		if (listWindow == null){
+			listWindow = new ListWindow(VanillaElements.vanillaItems, this);
 		}
 	}
 	
 	private void vanillaBlock(){
-		if (!listWindowOpen){
-			new ListWindow(VanillaElements.vanillaBlocks, this);
-			listWindowOpen = true;
+		if (listWindow == null){
+			listWindow = new ListWindow(VanillaElements.vanillaBlocks, this);
+		}
+	}
+	
+	private void other(){
+		if (listWindow == null){
+			String material = JOptionPane.showInputDialog("Material name:");
+			if (material != null){
+				choose(material);
+			}
 		}
 	}
 	
 	public void listWindowDispose(){
-		listWindowOpen = false;
+		listWindow = null;
 	}
 	
 	public void choose(String value){
@@ -126,6 +145,7 @@ public class MaterialChooseWindow extends JFrame {
 	
 	@Override
 	public void dispose() {
+		if (listWindow != null) listWindow.dispose();
 		runnable.materialChooserDispose();
 		super.dispose();
 	}
@@ -211,7 +231,6 @@ public class MaterialChooseWindow extends JFrame {
 		
 		private void choose(String value){
 			main.choose(value);
-			dispose();
 		}
 		
 		@Override

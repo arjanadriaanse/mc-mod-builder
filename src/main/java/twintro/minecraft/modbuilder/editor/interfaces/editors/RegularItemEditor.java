@@ -6,6 +6,8 @@ import java.awt.BorderLayout;
 import java.awt.FlowLayout;
 import javax.swing.JButton;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.GridLayout;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -67,6 +69,14 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	protected boolean materialChooserIsOpen = false;
 	protected String name;
 	protected ItemsActivityPanel main;
+
+	private static final String textureTooltip = "The texture of the item";
+	private static final String maxStackSizeTooltip = "The maximum amount of the item there can be in a stack";
+	private static final String creativeTabsTooltip = "The tabs in the creative menu where the item can be found";
+	private static final String containerTooltip = "<html>The item that will be left behind when you use this item in a crafing recipe<br>"
+				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
+				+ "and when you grab the cake, you will get your buckets back</html>";
+	private static final String burntimeTooltip = "The amount of items that will get cooked when you use this item as a fuel source in a furnace";
 	
 	/**
 	 * @wbp.parser.constructor
@@ -93,7 +103,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
 		
 		labelTexture = new JLabel("Texture");
-		labelTexture.setToolTipText("The texture of the item");
+		labelTexture.setToolTipText(textureTooltip);
 		labelPanel.add(labelTexture);
 		
 		texturePanel = new JPanel();
@@ -101,7 +111,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		texturePanel.setLayout(new BorderLayout(0, 0));
 		
 		textureChooseButton = new JButton("Choose");
-		textureChooseButton.setToolTipText("The texture of the item");
+		textureChooseButton.setToolTipText(textureTooltip);
 		textureChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textureChoose();
@@ -110,23 +120,23 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		texturePanel.add(textureChooseButton, BorderLayout.EAST);
 		
 		textureLabel = new JLabel("");
-		textureLabel.setToolTipText("The texture of the item");
+		textureLabel.setToolTipText(textureTooltip);
 		texturePanel.add(textureLabel, BorderLayout.CENTER);
 		
 		if (!(this instanceof ToolItemEditor)){
 			labelMaxStackSize = new JLabel("Maximum stack size");
-			labelMaxStackSize.setToolTipText("The maximum amount of the item there can be in a stack");
+			labelMaxStackSize.setToolTipText(maxStackSizeTooltip);
 			labelPanel.add(labelMaxStackSize);
 			
 			maxStackSizeSpinner = new JSpinner();
-			maxStackSizeSpinner.setToolTipText("The maximum amount of the item there can be in a stack");
+			maxStackSizeSpinner.setToolTipText(maxStackSizeTooltip);
 			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
 			interactionPanel.add(maxStackSizeSpinner);
 		}
 		
 		if (!(this instanceof ToolItemEditor || this instanceof FoodItemEditor)){
 			labelCreativeTabs = new JLabel("Creative tabs");
-			labelCreativeTabs.setToolTipText("The tabs in the creative menu where the item can be found");
+			labelCreativeTabs.setToolTipText(creativeTabsTooltip);
 			labelPanel.add(labelCreativeTabs);
 			
 			creativeTabsPanel = new JPanel();
@@ -134,7 +144,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			creativeTabsPanel.setLayout(new BorderLayout(0, 0));
 			
 			creativeTabsComboBox = new JComboBox();
-			creativeTabsComboBox.setToolTipText("The tabs in the creative menu where the item can be found");
+			creativeTabsComboBox.setToolTipText(creativeTabsTooltip);
 			creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
 					"food", "tools", "combat", "brewing", "materials", "inventory"}));
 			creativeTabsComboBox.addItemListener(new ItemListener() {
@@ -155,7 +165,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
 			
 			creativeTabsResetButton = new JButton("Reset");
-			creativeTabsResetButton.setToolTipText("The tabs in the creative menu where the item can be found");
+			creativeTabsResetButton.setToolTipText(creativeTabsTooltip);
 			creativeTabsResetButton.addActionListener(new ActionListener() {
 				public void actionPerformed(ActionEvent e) {
 					creativeTabsReset();
@@ -164,14 +174,12 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
 			
 			creativeTabsLabel = new JLabel("");
-			creativeTabsLabel.setToolTipText("The tabs in the creative menu where the item can be found");
+			creativeTabsLabel.setToolTipText(creativeTabsTooltip);
 			creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
 		}
 		
 		labelContainer = new JLabel("Container");
-		labelContainer.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
-				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
-				+ "and when you grab the cake, you will get your buckets back</html>");
+		labelContainer.setToolTipText(containerTooltip);
 		labelContainer.setEnabled(false);
 		labelPanel.add(labelContainer);
 		
@@ -180,9 +188,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		containerPanel.setLayout(new BorderLayout(0, 0));
 		
 		containerCheckbox = new JCheckBox("Use");
-		containerCheckbox.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
-				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
-				+ "and when you grab the cake, you will get your buckets back</html>");
+		containerCheckbox.setToolTipText(containerTooltip);
 		containerCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -196,9 +202,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		containerSubPanel.setLayout(new BorderLayout(0, 0));
 		
 		containerChooseButton = new JButton("Choose");
-		containerChooseButton.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
-				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
-				+ "and when you grab the cake, you will get your buckets back</html>");
+		containerChooseButton.setToolTipText(containerTooltip);
 		containerChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				containerChoose();
@@ -208,24 +212,22 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		containerSubPanel.add(containerChooseButton, BorderLayout.EAST);
 		
 		containerLabel = new JLabel("");
-		containerLabel.setToolTipText("<html>The item that will be left behind when you use this item in a crafing recipe<br>"
-				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
-				+ "and when you grab the cake, you will get your buckets back</html>");
+		containerLabel.setToolTipText(containerTooltip);
 		containerLabel.setEnabled(false);
 		containerSubPanel.add(containerLabel, BorderLayout.CENTER);
 		
 		labelBurnTime = new JLabel("Burn time");
-		labelBurnTime.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
+		labelBurnTime.setToolTipText(burntimeTooltip);
 		labelBurnTime.setEnabled(false);
 		labelPanel.add(labelBurnTime);
 		
 		burntimePanel = new JPanel();
-		burntimePanel.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
+		burntimePanel.setToolTipText(burntimeTooltip);
 		interactionPanel.add(burntimePanel);
 		burntimePanel.setLayout(new BorderLayout(0, 0));
 		
 		burntimeCheckbox = new JCheckBox("Use");
-		burntimeCheckbox.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
+		burntimeCheckbox.setToolTipText(burntimeTooltip);
 		burntimeCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -235,7 +237,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		burntimePanel.add(burntimeCheckbox, BorderLayout.EAST);
 		
 		burntimeSpinner = new JSpinner();
-		burntimeSpinner.setToolTipText("The amount of items that will get cooked when you use this item as a fuel source in a furnace");
+		burntimeSpinner.setToolTipText(burntimeTooltip);
 		burntimeSpinner.setEnabled(false);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		burntimePanel.add(burntimeSpinner, BorderLayout.CENTER);
@@ -303,6 +305,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	

@@ -49,7 +49,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 	protected JPanel labelPanel;
 	protected JPanel interactionPanel;
 	protected JPanel modelPanel;
-	protected JLabel labelCreativeTabs;
+	protected JLabel labelCreativeTab;
 	protected JLabel labelModel;
 	protected JLabel labelLightness;
 	protected JLabel labelOpacity;
@@ -73,7 +73,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 	protected JSpinner resistanceSpinner;
 	protected JSpinner harvestLevelSpinner;
 	protected JSpinner burntimeSpinner;
-	protected JComboBox creativeTabsComboBox;
+	protected JComboBox creativeTabComboBox;
 	protected JComboBox harvestTypeComboBox;
 	protected JComboBox materialComboBox;
 	protected JCheckBox unbreakableCheckBox;
@@ -82,6 +82,19 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 	protected String name;
 	protected BlocksActivityPanel main;
 	protected BlockModelResource model;
+
+	private static final String modelTooltip = "The model determines what the block looks like in the game";
+	private static final String creativeTabTooltip = ""; //TODO
+	private static final String lightnessTooltip = ""; //TODO
+	private static final String opacityTooltip = ""; //TODO
+	private static final String slipperinessTooltip = ""; //TODO
+	private static final String hardnessTooltip = ""; //TODO
+	private static final String resistanceTooltip = ""; //TODO
+	private static final String harvestLevelTooltip = ""; //TODO
+	private static final String burntimeTooltip = ""; //TODO
+	private static final String harvestTypeTooltip = ""; //TODO
+	private static final String materialTooltip = ""; //TODO
+	private static final String unbreakableTooltip = ""; //TODO
 	
 	public BlockEditor(String name, BlocksActivityPanel main) {
 		this.name = name;
@@ -91,8 +104,6 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Edit Block: " + this.name);
 		addWindowListener(new WindowClosingVerifierListener());
-		
-		//TODO toolips
 		
 		mainPanel = new JPanel();
 		getContentPane().add(mainPanel, BorderLayout.NORTH);
@@ -107,6 +118,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
 		
 		labelModel = new JLabel("Model");
+		labelModel.setToolTipText(modelTooltip);
 		labelPanel.add(labelModel);
 		
 		modelPanel = new JPanel();
@@ -114,6 +126,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		modelPanel.setLayout(new BorderLayout(0, 0));
 		
 		modelChooseButton = new JButton("Choose");
+		modelChooseButton.setToolTipText(modelTooltip);
 		modelPanel.add(modelChooseButton, BorderLayout.EAST);
 		modelChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -122,81 +135,98 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		});
 		
 		modelLabel = new JLabel("No Model");
+		modelLabel.setToolTipText(modelTooltip);
 		modelLabel.setHorizontalAlignment(SwingConstants.RIGHT);
 		modelPanel.add(modelLabel, BorderLayout.CENTER);
 		
-		labelCreativeTabs = new JLabel("Creative tab");
-		labelPanel.add(labelCreativeTabs);
+		labelCreativeTab = new JLabel("Creative tab");
+		labelCreativeTab.setToolTipText(creativeTabTooltip);
+		labelPanel.add(labelCreativeTab);
 		
-		creativeTabsComboBox = new JComboBox();
-		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
+		creativeTabComboBox = new JComboBox();
+		creativeTabComboBox.setToolTipText(creativeTabTooltip);
+		creativeTabComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
 				"food", "tools", "combat", "brewing", "materials", "inventory"}));
-		interactionPanel.add(creativeTabsComboBox);
+		interactionPanel.add(creativeTabComboBox);
 		
 		labelLightness = new JLabel("Lightness");
-		labelLightness.setToolTipText("Amount of light the block gives off (0-15)");
+		labelLightness.setToolTipText(lightnessTooltip);
 		labelPanel.add(labelLightness);
 		
 		lightnessSpinner = new JSpinner();
+		lightnessSpinner.setToolTipText(lightnessTooltip);
 		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
 		interactionPanel.add(lightnessSpinner);
 		
 		labelOpacity = new JLabel("Opacity");
+		labelOpacity.setToolTipText(opacityTooltip);
 		labelPanel.add(labelOpacity);
 		
 		opacitySpinner = new JSpinner();
+		opacitySpinner.setToolTipText(opacityTooltip);
 		opacitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(255), new Integer(1)));
 		interactionPanel.add(opacitySpinner);
 		
 		labelSlipperiness = new JLabel("Slipperiness");
-		labelSlipperiness.setToolTipText("Reccomended values below 1");
+		labelSlipperiness.setToolTipText(slipperinessTooltip);
 		labelPanel.add(labelSlipperiness);
 		
 		slipperinessSpinner = new JSpinner();
+		slipperinessSpinner.setToolTipText(slipperinessTooltip);
 		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
 		interactionPanel.add(slipperinessSpinner);
 		
 		labelHardness = new JLabel("Hardness");
+		labelHardness.setToolTipText(hardnessTooltip);
 		labelPanel.add(labelHardness);
 		
 		hardnessSpinner = new JSpinner();
+		hardnessSpinner.setToolTipText(hardnessTooltip);
 		hardnessSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(hardnessSpinner);
 		
 		labelResistance = new JLabel("Resistance");
-		labelResistance.setToolTipText("resistance to explosions");
+		labelResistance.setToolTipText(resistanceTooltip);
 		labelPanel.add(labelResistance);
 		
 		resistanceSpinner = new JSpinner();
+		resistanceSpinner.setToolTipText(resistanceTooltip);
 		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(resistanceSpinner);
 		
 		labelHarvestLevel = new JLabel("Harvest level");
-		labelHarvestLevel.setToolTipText("(0=wood, 1=stone, etc)");
+		labelHarvestLevel.setToolTipText(harvestLevelTooltip);
 		labelPanel.add(labelHarvestLevel);
 		
 		harvestLevelSpinner = new JSpinner();
+		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(harvestLevelSpinner);
 		
 		labelBurntime = new JLabel("Burn time");
+		labelBurntime.setToolTipText(burntimeTooltip);
 		labelPanel.add(labelBurntime);
 		
 		burntimeSpinner = new JSpinner();
+		burntimeSpinner.setToolTipText(burntimeTooltip);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(burntimeSpinner);
 		
 		labelHarvestType = new JLabel("Harvest type");
+		labelHarvestType.setToolTipText(harvestTypeTooltip);
 		labelPanel.add(labelHarvestType);
 		
 		harvestTypeComboBox = new JComboBox();
+		harvestTypeComboBox.setToolTipText(harvestTypeTooltip);
 		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
 		interactionPanel.add(harvestTypeComboBox);
 		
 		labelMaterial = new JLabel("Material");
+		labelMaterial.setToolTipText(materialTooltip);
 		labelPanel.add(labelMaterial);
 		
 		materialComboBox = new JComboBox();
+		materialComboBox.setToolTipText(materialTooltip);
 		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "air", "grass", "ground", "wood", "rock", "iron", "anvil", 
 				"water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", "redstone_light", 
 				"tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", "cake", "web", 
@@ -204,9 +234,11 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		interactionPanel.add(materialComboBox);
 		
 		labelUnbreakable = new JLabel("Unbreakable");
+		labelUnbreakable.setToolTipText(unbreakableTooltip);
 		labelPanel.add(labelUnbreakable);
 		
 		unbreakableCheckBox = new JCheckBox("");
+		unbreakableCheckBox.setToolTipText(unbreakableTooltip);
 		interactionPanel.add(unbreakableCheckBox);
 		unbreakableCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		
@@ -249,7 +281,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		if (block.block.material != null)
 			materialComboBox.setSelectedItem(block.block.material.name());
 		if (block.block.tab != null)
-			creativeTabsComboBox.setSelectedItem(block.block.tab.name());
+			creativeTabComboBox.setSelectedItem(block.block.tab.name());
 		if (block.block.light != null)
 			lightnessSpinner.setValue(block.block.light);
 		if (block.block.opacity != null)
@@ -263,7 +295,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		if (block.block.unbreakable != null)
 			unbreakableCheckBox.setSelected(block.block.unbreakable);
 		if (block.block.harvesttype != null)
-			creativeTabsComboBox.setSelectedItem(block.block.harvesttype);
+			creativeTabComboBox.setSelectedItem(block.block.harvesttype);
 		if (block.block.harvestlevel != null)
 			harvestLevelSpinner.setValue(block.block.harvestlevel);
 		if (block.block.burntime != null)
@@ -295,7 +327,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			BaseBlockResource base = new BlockResource();
 			base.material = MaterialResource.valueOf((String) materialComboBox.getSelectedItem());
 			base.model = "modbuilder:" + name;
-			base.tab = TabResource.valueOf((String) creativeTabsComboBox.getSelectedItem());
+			base.tab = TabResource.valueOf((String) creativeTabComboBox.getSelectedItem());
 			base.light = (Integer) lightnessSpinner.getValue();
 			base.opacity = (Integer) opacitySpinner.getValue();
 			base.slipperiness = (Float) slipperinessSpinner.getValue();
@@ -309,6 +341,9 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			block.block = base;
 			
 			main.addBlock(block);
+		}
+		else{
+			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
 	
