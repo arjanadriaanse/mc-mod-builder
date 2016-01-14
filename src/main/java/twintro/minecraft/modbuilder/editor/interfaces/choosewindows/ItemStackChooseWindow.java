@@ -16,7 +16,7 @@ import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ItemStackChooseWindow extends JFrame {
 	private JPanel mainPanel;
@@ -236,7 +236,7 @@ public class ItemStackChooseWindow extends JFrame {
 			ItemStackResource item = new ItemStackResource();
 			
 			//TODO material.split":"[1] also in ToolItemEditor 233
-			if (VanillaElements.isItem(material))
+			if (MaterialResources.isItem(material))
 				item.item = material;
 			else
 				item.block = material;

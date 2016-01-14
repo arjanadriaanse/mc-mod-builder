@@ -20,7 +20,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivi
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
-import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ToolItemEditor extends RegularItemEditor {
 	protected JPanel affectedBlocksPanel;
@@ -230,7 +230,7 @@ public class ToolItemEditor extends RegularItemEditor {
 				for (String s : affectedBlocksLabel.getText().split(","))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
-				if (VanillaElements.isItem(repairMaterialLabel.getText()))
+				if (MaterialResources.isItem(repairMaterialLabel.getText()))
 					base.repairitem = repairMaterialLabel.getText();
 				else
 					base.repairblock = repairMaterialLabel.getText();

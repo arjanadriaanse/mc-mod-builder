@@ -31,7 +31,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActiv
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
-import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class Editor {
 	private static boolean interfaceOpened = false;

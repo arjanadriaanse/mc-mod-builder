@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
 import sun.awt.WindowClosingListener;
+import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
@@ -20,6 +21,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackRun
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ItemStackEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ItemStackButton extends JButton{
 	private boolean isProduct = false;
@@ -64,12 +66,14 @@ public class ItemStackButton extends JButton{
 				setText(item.amount + " " + item.block);
 			}
 			else setText(item.block);
+			setIcon(MaterialResources.getImage(item.block));
 		}
 		else if (item.item != null && !item.item.isEmpty()){
 			if (item.amount != null && item.amount > 1){
 				setText(item.amount + " " + item.item);
 			}
 			else setText(item.item);
+			setIcon(MaterialResources.getImage(item.item));
 		}
 		else{
 			setText("");
@@ -84,5 +88,17 @@ public class ItemStackButton extends JButton{
 				itemStackChooser = new ItemStackChooseWindow(isProduct, runnable, item);
 		}
 	}
-
+	
+	@Override
+	public void setText(String text) {
+		if (text != null && text != ""){
+			if (item.container != null && item.container != "") 
+				setToolTipText("<html>" + text + "<br>Container: " + item.container + "</html>");
+			else 
+				setToolTipText(text);
+		}
+		else setToolTipText(null);
+		text = text.replace("modbuilder:", "");
+		super.setText(MaterialResources.getName(text));
+	}
 }

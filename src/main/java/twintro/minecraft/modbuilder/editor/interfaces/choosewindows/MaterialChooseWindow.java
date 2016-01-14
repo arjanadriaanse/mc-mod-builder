@@ -23,7 +23,7 @@ import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
-import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class MaterialChooseWindow extends JFrame {
 	public static final int ITEMS_ONLY = 0;
@@ -125,13 +125,13 @@ public class MaterialChooseWindow extends JFrame {
 	
 	private void vanillaItem(){
 		if (listWindow == null){
-			listWindow = new ListWindow(VanillaElements.vanillaItems, this);
+			listWindow = new ListWindow(MaterialResources.vanillaItems, this);
 		}
 	}
 	
 	private void vanillaBlock(){
 		if (listWindow == null){
-			listWindow = new ListWindow(VanillaElements.vanillaBlocks, this);
+			listWindow = new ListWindow(MaterialResources.vanillaBlocks, this);
 		}
 	}
 	
@@ -237,7 +237,7 @@ public class MaterialChooseWindow extends JFrame {
 				public void mouseClicked(MouseEvent e){
 					if (e.getClickCount() == 2){
 						String value = (String) ((JList) e.getSource()).getSelectedValue();
-						choose(VanillaElements.getId(value));
+						choose(MaterialResources.getId(value));
 					}
 				}
 			});
