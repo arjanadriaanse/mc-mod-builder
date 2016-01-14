@@ -34,14 +34,14 @@ public class ItemsActivityPanel extends ActivityPanel {
 	private List<String> models;
 	private Map<String,RegularItemEditor> openEditors;
 	
-	public ItemsActivityPanel(String header, String button, Editor main) {
-		super(header, button, main);
+	public ItemsActivityPanel(String header, String button) {
+		super(header, button);
 		this.models = new ArrayList<String>();
 		this.openEditors = new HashMap<String,RegularItemEditor>();
 	}
 	
-	public ItemsActivityPanel(String header, String button, Editor main, ArrayList<String> models) {
-		super(header, button, main);
+	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
+		super(header, button);
 		this.models = models;
 		this.openEditors = new HashMap<String,RegularItemEditor>();
 	}
@@ -82,11 +82,11 @@ public class ItemsActivityPanel extends ActivityPanel {
 		createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
 		addElement(item.name, item.getImage());
 		
-		main.metaFile.resource.modbuilder.items.add(item.name);
-		main.metaFile.save();
+		Editor.metaFile.resource.modbuilder.items.add(item.name);
+		Editor.metaFile.save();
 		
-		main.langFile.list.add("item.modbuilder_" + item.name + ".name=" + item.name);
-		main.langFile.save();
+		Editor.langFile.list.add("item.modbuilder_" + item.name + ".name=" + item.name);
+		Editor.langFile.save();
 	}
 	
 	public void createFile(Object model, String dir){
@@ -128,10 +128,12 @@ public class ItemsActivityPanel extends ActivityPanel {
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
 			ResourcePackGenerator.deleteFile("assets/modbuilder/items/" + value + ".json");
 			removeElement(value);
-			main.metaFile.resource.modbuilder.items.remove(value);
-			main.metaFile.save();
-			main.langFile.list.remove("item.modbuilder_" + value + ".name=" + value);
-			main.langFile.save();
+			
+			Editor.metaFile.resource.modbuilder.items.remove(value);
+			Editor.metaFile.save();
+			
+			Editor.langFile.list.remove("item.modbuilder_" + value + ".name=" + value);
+			Editor.langFile.save();
 		}
 	}
 	public void updateTextureReferences(String old, String newName){

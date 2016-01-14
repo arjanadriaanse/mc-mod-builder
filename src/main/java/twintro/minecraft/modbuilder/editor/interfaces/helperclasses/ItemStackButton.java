@@ -23,7 +23,6 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class ItemStackButton extends JButton{
 	private boolean isProduct = false;
-	private Editor main;
 	private ItemStackChooseWindow itemStackChooser;
 
 	public ItemStackResource item;
@@ -40,9 +39,8 @@ public class ItemStackButton extends JButton{
 		}
 	};
 	
-	public ItemStackButton(String s, Editor main){
+	public ItemStackButton(String s){
 		super(s);
-		this.main = main;
 		this.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
@@ -78,9 +76,9 @@ public class ItemStackButton extends JButton{
 	public void click(){
 		if (itemStackChooser == null){
 			if (item == null)
-				itemStackChooser = new ItemStackChooseWindow(isProduct, main, runnable);
+				itemStackChooser = new ItemStackChooseWindow(isProduct, runnable);
 			else
-				itemStackChooser = new ItemStackChooseWindow(isProduct, main, runnable, item);
+				itemStackChooser = new ItemStackChooseWindow(isProduct, runnable, item);
 		}
 	}
 

@@ -34,28 +34,23 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureAc
 import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
 
 public class Editor {
-	private boolean interfaceOpened = false;
+	private static boolean interfaceOpened = false;
+	private static JFrame frame;
+	private static JPanel activityPanel;
+	private static JMenuItem mntmExport;
 	
-	private JPanel activityPanel;
-	public ActivityPanel TexturePanel;
-	public ActivityPanel RecipePanel;
-	public ActivityPanel BlockPanel;
-	public ActivityPanel ItemPanel;
-	public ActivityPanel StructurePanel;
+	public static ActivityPanel TexturePanel;
+	public static ActivityPanel RecipePanel;
+	public static ActivityPanel BlockPanel;
+	public static ActivityPanel ItemPanel;
+	public static ActivityPanel StructurePanel;
 	
-	public MetaFile metaFile;
-	public LanguageFile langFile;
-	
-	private JMenuItem mntmExport;
+	public static MetaFile metaFile;
+	public static LanguageFile langFile;
 	
 	/**
 	 * Launch the application.
 	 */
-	public BlocksActivityPanel getBlockPanel(){
-		return (BlocksActivityPanel) BlockPanel;
-	}
-	
-	
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -67,8 +62,7 @@ public class Editor {
 			@Override
 			public void run() {
 				try {
-					Editor window = new Editor();
-					window.frame.setVisible(true);
+					initialize();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -76,19 +70,10 @@ public class Editor {
 		});
 	}
 
-	private JFrame frame;
-
-	/**
-	 * Create the application.
-	 */
-	public Editor() {
-		initialize();
-	}
-
 	/**
 	 * Initialize the contents of the frame.
 	 */
-	private void initialize() {
+	private static void initialize() {
 		//Window
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 600);
@@ -141,9 +126,11 @@ public class Editor {
 				about();
 			}
 		});
+		
+		frame.setVisible(true);
 	}
 	
-	private void newMod(){
+	private static void newMod(){
 		if (chooseFolder(true)){
 			metaFile = MetaFile.create(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
 			langFile = LanguageFile.create(ResourcePackGenerator.resourcePackFolderDir + 
@@ -151,7 +138,7 @@ public class Editor {
 		}
 	}
 	
-	private void openMod(){
+	private static void openMod(){
 		if (chooseFolder(false)){
 			metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
 			langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
@@ -159,7 +146,7 @@ public class Editor {
 		}
 	}
 	
-	private boolean chooseFolder(boolean newMod){
+	private static boolean chooseFolder(boolean newMod){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
@@ -180,7 +167,7 @@ public class Editor {
 		return false;
 	}
 	
-	private void exportMod(){
+	private static void exportMod(){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		if (menu.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION){
@@ -194,7 +181,7 @@ public class Editor {
 		}
 	}
 	
-	private void createInterface(){
+	private static void createInterface(){
 		//Main panel
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setBackground(SystemColor.control);
@@ -240,20 +227,19 @@ public class Editor {
 		ActivityPanel.setLayout(new CardLayout(0, 0));
 		activityPanel = ActivityPanel;
 		
-		TexturePanel = new TexturesActivityPanel("Textures", "New Texture", this);
+		TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe", this);
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe");
 		ActivityPanel.add(RecipePanel, "Recipes");
 		
-		BlockPanel = new BlocksActivityPanel("Blocks", "New Block", this);
+		BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		ItemPanel = new ItemsActivityPanel("Items", "New Item", this);
+		ItemPanel = new ItemsActivityPanel("Items", "New Item");
 		ActivityPanel.add(ItemPanel, "Items");
-		VanillaElements.customItems = ItemPanel.elements;
 		
-		StructurePanel = new StructureActivityPanel("Structures", "New Structure", this);
+		StructurePanel = new StructureActivityPanel("Structures", "New Structure");
 		activityPanel.add(StructurePanel, "Structures");
 		SwingUtilities.updateComponentTreeUI(frame);
 
@@ -261,12 +247,12 @@ public class Editor {
 		mntmExport.setEnabled(true);
 	}
 	
-	private void changePanel(String panel){
+	private static void changePanel(String panel){
 		CardLayout cl = (CardLayout)(activityPanel.getLayout());
 		cl.show(activityPanel, panel);
 	}
 	
-	private void updateInterface(){
+	private static void updateInterface(){
 		TexturePanel.updateList();
 		RecipePanel.updateList();
 		BlockPanel.updateList();
@@ -274,15 +260,7 @@ public class Editor {
 		StructurePanel.updateList();
 	}
 	
-	private void about(){
+	private static void about(){
 		//TODO
-	}
-	
-	public Set<String> getBlocksInBlockPanel(){
-		return BlockPanel.getAllElements();
-	}
-	
-	public Set<String> getItemsInItemPanel(){
-		return ItemPanel.getAllElements();
 	}
 }

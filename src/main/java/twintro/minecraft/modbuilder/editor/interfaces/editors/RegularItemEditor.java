@@ -17,6 +17,7 @@ import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
@@ -277,7 +278,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	protected void regularSetup(ItemsActivityPanel main, ItemElement item){
 		if (item.itemModel.textures.containsKey("layer0")) {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
-			setIconImage(main.main.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
+			setIconImage(Editor.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
 		}
 		if (item.item.container != null){
 			containerLabel.setText(item.item.container);
@@ -342,7 +343,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 
 	protected void containerChoose() {
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main.main, this);
+			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, this);
 			materialChooserIsOpen = true;
 		}
 	}
@@ -365,7 +366,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 
 	protected void textureChoose() {
 		if (!textureChooserIsOpen){
-			new TextureChooseWindow(main.main.TexturePanel.elements, this);
+			new TextureChooseWindow(this);
 			textureChooserIsOpen = true;
 		}
 	}
@@ -379,7 +380,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	@Override
 	public void chooseTexture(String texture) {
 		textureLabel.setText(texture);
-		setIconImage(main.main.TexturePanel.elements.get(texture.split(":")[1]).getImage());
+		setIconImage(Editor.TexturePanel.elements.get(texture.split(":")[1]).getImage());
 	}
 	
 	@Override

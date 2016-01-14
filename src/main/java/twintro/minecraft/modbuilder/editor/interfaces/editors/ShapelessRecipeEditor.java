@@ -58,7 +58,7 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 			return output;
 		}
 	
-		public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
+		public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent) {
 		this.name = nameNew;
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -81,12 +81,12 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		
 		buttons = new ItemStackButton[10];
 		for (int i = 0; i<9; i++){
-			buttons[i] = new ItemStackButton("", main.main);
+			buttons[i] = new ItemStackButton("");
 			panel.add(buttons[i]);
 			buttons[i].item = new ItemStackResource();
 		}
 		
-		buttons[9] = new ItemStackButton("", main.main);
+		buttons[9] = new ItemStackButton("");
 		buttons[9].setProduct();
 		buttons[9].setBounds(365, 115, 80, 80);
 		
@@ -137,9 +137,8 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		setVisible(true);
 	}
 		
-	public ShapelessRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe,
-				Set<String> editorItems, Set<String> editorBlocks) {
-			this(value, recipesActivityPanel, editorItems, editorBlocks);
+	public ShapelessRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
+			this(value, recipesActivityPanel);
 			ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
 			
 			for(int i = 0; i < shplsRcpy.input.size();i++)

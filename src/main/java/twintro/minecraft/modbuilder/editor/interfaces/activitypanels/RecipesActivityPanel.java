@@ -34,8 +34,8 @@ import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 public class RecipesActivityPanel extends ActivityPanel {
 	public Map<String, RecipeEditor> openEditors;
 	
-	public RecipesActivityPanel(String header, String button, Editor main) {
-		super(header, button, main);
+	public RecipesActivityPanel(String header, String button) {
+		super(header, button);
 		this.openEditors = new HashMap<String, RecipeEditor>();
 	}
 
@@ -59,20 +59,12 @@ public class RecipesActivityPanel extends ActivityPanel {
 		super.createButtonPanel(buttonPanel, button);
 	}
 	
-	private Set<String> getEditorBlocks(){
-		return main.getBlocksInBlockPanel();
-	}
-	
-	private Set<String> getEditorItems(){
-		return main.getItemsInItemPanel();
-	}
-	
 	@Override
 	protected void add() {
 		String name = JOptionPane.showInputDialog("Recipe name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, this, getEditorItems(), getEditorBlocks());
+				ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -82,7 +74,7 @@ public class RecipesActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Recipe name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, this, getEditorItems(), getEditorBlocks());
+				SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -92,7 +84,7 @@ public class RecipesActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Recipe name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				ShapedRecipeEditor editor = new ShapedRecipeEditor(name, this, getEditorItems(), getEditorBlocks());
+				ShapedRecipeEditor editor = new ShapedRecipeEditor(name, this);
 				openEditors.put(name, editor);
 			}
 		}
@@ -140,8 +132,8 @@ public class RecipesActivityPanel extends ActivityPanel {
 		if (img == null) img = new ImageIcon();
 		addElement(recipe.name, img);
 		
-		main.metaFile.resource.modbuilder.recipes.add(recipe.name);
-		main.metaFile.save();
+		Editor.metaFile.resource.modbuilder.recipes.add(recipe.name);
+		Editor.metaFile.save();
 	}
 	
 	public void createFile(Object model, String dir){
@@ -163,13 +155,13 @@ public class RecipesActivityPanel extends ActivityPanel {
 				
 				switch(type){
 				case shaped:
-					editor = new ShapedRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
+					editor = new ShapedRecipeEditor(value, this, recipe);
 					break;
 				case smelting:
-					editor = new SmeltingRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
+					editor = new SmeltingRecipeEditor(value, this, recipe);
 					break;
 				default:
-					editor = new ShapelessRecipeEditor(value, this, recipe, getEditorItems(), getEditorBlocks());
+					editor = new ShapelessRecipeEditor(value, this, recipe);
 					break;
 				}
 				openEditors.put(value,editor);
@@ -191,8 +183,9 @@ public class RecipesActivityPanel extends ActivityPanel {
 		if (result == JOptionPane.YES_OPTION){
 			ResourcePackGenerator.deleteFile("assets/modbuilder/recipes/" + value + ".json");
 			removeElement(value);
-			main.metaFile.resource.modbuilder.recipes.remove(value);
-			main.metaFile.save();
+			
+			Editor.metaFile.resource.modbuilder.recipes.remove(value);
+			Editor.metaFile.save();
 		}
 	}
 

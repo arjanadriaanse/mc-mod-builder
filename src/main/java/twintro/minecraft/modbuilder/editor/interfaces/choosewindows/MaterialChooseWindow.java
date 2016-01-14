@@ -30,12 +30,10 @@ public class MaterialChooseWindow extends JFrame {
 	public static final int BLOCKS_ONLY = 1;
 	public static final int ITEMS_AND_BLOCKS = 2;
 	
-	private Editor main;
 	private MaterialRunnable runnable;
 	private ListWindow listWindow = null;
 	
-	public MaterialChooseWindow(int type, Editor main, MaterialRunnable runnable){
-		this.main = main;
+	public MaterialChooseWindow(int type, MaterialRunnable runnable){
 		this.runnable = runnable;
 		
 		if (type == 2)
@@ -103,13 +101,13 @@ public class MaterialChooseWindow extends JFrame {
 	
 	private void customItem(){
 		if (listWindow == null){
-			listWindow = new ListWindow(main.ItemPanel.elements, this);
+			listWindow = new ListWindow(Editor.ItemPanel.elements, this);
 		}
 	}
 	
 	private void customBlock(){
 		if (listWindow == null){
-			listWindow = new ListWindow(main.BlockPanel.elements, this);
+			listWindow = new ListWindow(Editor.BlockPanel.elements, this);
 		}
 	}
 	

@@ -356,7 +356,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 	
 	protected void chooseModel() {
 		if (!modelChooserIsOpen){
-			new BlockModelChooseWindow(main.main.TexturePanel.elements, this);
+			new BlockModelChooseWindow(this);
 			modelChooserIsOpen = true;
 		}
 	}

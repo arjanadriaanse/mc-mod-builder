@@ -36,13 +36,11 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
 public abstract class ActivityPanel extends ListPanel {
 	public JList list;
-	public Editor main;
 	
-	public ActivityPanel(String header, String button, Editor main) {
+	public ActivityPanel(String header, String button) {
 		this.setLayout(new BorderLayout(0, 0));
 		elements = new HashMap<String, ImageIcon>();
 		addElements(header, button);
-		this.main = main;
 	}
 	
 	protected void addElement(String name, ImageIcon img){

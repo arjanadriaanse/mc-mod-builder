@@ -46,6 +46,7 @@ import javax.swing.event.ListSelectionListener;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 
@@ -78,7 +79,7 @@ public class BlockModelChooseWindow extends JFrame {
 	        new Point(160,160)
 	};
 
-	public BlockModelChooseWindow(Map<String, ImageIcon> elements, BlockModelRunnable main){
+	public BlockModelChooseWindow(BlockModelRunnable main){
 		this.main = main;
 		load();
 		
@@ -87,7 +88,7 @@ public class BlockModelChooseWindow extends JFrame {
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
-		listPanel.elements = elements;
+		listPanel.elements = Editor.TexturePanel.elements;
 		getContentPane().add(listPanel, BorderLayout.LINE_END);
 		
 		JScrollPane scrollPane = new JScrollPane();

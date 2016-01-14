@@ -31,7 +31,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 public class SmeltingRecipeEditor extends RecipeEditor {
-
 	private JPanel contentPane;
 	private String name;
 	private RecipesActivityPanel main;
@@ -40,14 +39,10 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 	private JSpinner xpSpinner;
 
 	/**
-	 * Launch the application.
-	 */
-
-	/**
 	 * Create the frame.
 	 * @wbp.parser.constructor
 	 */
-	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
+	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent) {
 		this.name = newName;
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -110,7 +105,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		outputSmeltingButton = new ItemStackButton("", main.main);
+		outputSmeltingButton = new ItemStackButton("");
 		outputSmeltingButton.setProduct();
 		outputSmeltingButton.setBounds(243, 15, 90, 90);
 		panel_1.add(outputSmeltingButton);
@@ -120,7 +115,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 69));
 		
-		inputSmeltingButton = new ItemStackButton("", main.main);
+		inputSmeltingButton = new ItemStackButton("");
 		inputSmeltingButton.setBounds(15, 15, 90, 90);
 		panel_1.add(inputSmeltingButton);
 		
@@ -139,12 +134,12 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		setVisible(true);
 	}
 	
-	public SmeltingRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe,
-			Set<String> editorItems, Set<String> editorBlocks) {
-		this(value, recipesActivityPanel, editorItems, editorBlocks);
+	public SmeltingRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
+		this(value, recipesActivityPanel);
 		SmeltingRecipe smltngRcpy = (SmeltingRecipe)recipe.recipe;
 		outputSmeltingButton.chooseItem(smltngRcpy.output);
 		inputSmeltingButton.chooseItem(smltngRcpy.input);
+		xpSpinner.setValue(smltngRcpy.xp);
 	}
 
 	

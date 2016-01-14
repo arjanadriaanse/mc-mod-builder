@@ -45,17 +45,15 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 	/**
 	 * Create the frame.
 	 */
-	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent, Set<String> items, Set<String> blocks) {
-		super(nameNew, parent, items, blocks);
+	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent) {
+		super(nameNew, parent);
 		lblCreateTheShaped.setText("Create the recipe in the desired pattern");
 		this.name = nameNew;
 	}
 
 
-	public ShapedRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe,
-				Set<String> editorItems, Set<String> editorBlocks) {
-		
-			this(value, recipesActivityPanel, editorItems, editorBlocks);
+	public ShapedRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
+			this(value, recipesActivityPanel);
 			ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
 			
 			for(int i = 0; i < 9;i++){
@@ -98,6 +96,7 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 			if (a == "" || a == null) recipe[i/3] += " ";
 			else {
 				for(char b = (char) ('a'); b<='a'+i ; b++){
+					//TODO NullPointerException on next line
 					if (a == recipeMap.get(b).item || a==recipeMap.get(b).block && recipeMap.get(b).container == buttons[i].item.container){
 						recipe[i/3] += b;
 						b+='j';

@@ -7,9 +7,9 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
-public class VanillaElements {
-	public static Map<String, ImageIcon> customItems;
+import twintro.minecraft.modbuilder.editor.Editor;
 
+public class VanillaElements {
 	//TODO add everything, this is just an example
 	public static final String[] vanillaBlocks = new String[]{
 			"stone",
@@ -55,7 +55,7 @@ public class VanillaElements {
 			if (vanillaItemIds[i].equals(material))
 				return true;
 		if (material.startsWith("modbuilder:"))
-			return customItems.containsKey(material.substring(11));
+			return Editor.ItemPanel.elements.containsKey(material.substring(11));
 		return false;
 	}
 }

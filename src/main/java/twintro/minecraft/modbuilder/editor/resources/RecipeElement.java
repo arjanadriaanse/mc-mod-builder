@@ -43,14 +43,18 @@ public class RecipeElement extends Element {
 		String outputName = recipe.output.item;
 		if (outputName == null) {
 			outputName = recipe.output.block;
+			if (outputName.startsWith("modbuilder:"))
+				outputName = outputName.substring(11);
 			try{
 				return BlockElement.getFromName(outputName).getImage();
 			} catch (Exception e){}
 		} else {
+			if (outputName.startsWith("modbuilder:"))
+				outputName = outputName.substring(11);
 			try{
 				return ItemElement.getFromName(outputName).getImage();
 			} catch (Exception e){}
 		}
-		return TextureResources.getImage(outputName);
+		return null;
 	}
 }

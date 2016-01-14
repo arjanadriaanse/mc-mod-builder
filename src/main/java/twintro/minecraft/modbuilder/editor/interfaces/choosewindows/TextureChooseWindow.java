@@ -19,13 +19,14 @@ import javax.swing.ScrollPaneConstants;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
 
 public class TextureChooseWindow extends JFrame {
 	ListPanel listPanel;
 	TextureRunnable main;
 	
-	public TextureChooseWindow(Map<String, ImageIcon> elements, TextureRunnable main){
+	public TextureChooseWindow(TextureRunnable main){
 		this.main = main;
 		
 		setBounds(100, 100, 300, 200);
@@ -34,7 +35,7 @@ public class TextureChooseWindow extends JFrame {
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
-		listPanel.elements = elements;
+		listPanel.elements = Editor.TexturePanel.elements;
 		getContentPane().add(listPanel, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();

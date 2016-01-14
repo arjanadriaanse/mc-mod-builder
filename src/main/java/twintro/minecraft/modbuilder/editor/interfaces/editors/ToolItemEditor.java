@@ -246,7 +246,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	protected void addBlock(){
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, main.main, new MaterialRunnable() {
+			new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
@@ -275,7 +275,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	protected void repairMaterialChoose(){
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main.main, new MaterialRunnable() {
+			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					repairMaterialLabel.setText(material);

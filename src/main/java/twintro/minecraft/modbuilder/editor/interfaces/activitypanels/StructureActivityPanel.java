@@ -32,8 +32,8 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 public class StructureActivityPanel  extends ActivityPanel {
 	public Map<String,StructureEditor> openEditors;
 	
-	public StructureActivityPanel(String header, String button, Editor main) {
-		super(header, button, main);
+	public StructureActivityPanel(String header, String button) {
+		super(header, button);
 		this.openEditors = new HashMap<String, StructureEditor>();
 	}
 
@@ -93,10 +93,12 @@ public class StructureActivityPanel  extends ActivityPanel {
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
 			*/
 			removeElement(value);
-			main.metaFile.resource.modbuilder.blocks.remove(value);
-			main.metaFile.save();
-			main.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
-			main.langFile.save();
+			
+			Editor.metaFile.resource.modbuilder.blocks.remove(value);
+			Editor.metaFile.save();
+			
+			Editor.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
+			Editor.langFile.save();
 		}
 	}
 	

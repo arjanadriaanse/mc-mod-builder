@@ -40,7 +40,6 @@ public class ItemStackChooseWindow extends JFrame {
 	
 	private MaterialChooseWindow materialChooseWindow;
 	private boolean isProduct;
-	private Editor main;
 	private ItemStackRunnable runnable;
 
 	private static final String materialProductTooltip = "The material of the product";
@@ -49,9 +48,8 @@ public class ItemStackChooseWindow extends JFrame {
 			+ "The container is the item or block that will be left behind after crafting</html>";
 	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
 	
-	public ItemStackChooseWindow(boolean isProduct, Editor main, ItemStackRunnable runnable){
+	public ItemStackChooseWindow(boolean isProduct, ItemStackRunnable runnable){
 		this.isProduct = isProduct;
-		this.main = main;
 		this.runnable = runnable;
 		
 		setBounds(100, 100, 300, 130);
@@ -177,8 +175,8 @@ public class ItemStackChooseWindow extends JFrame {
 		setVisible(true);
 	}
 	
-	public ItemStackChooseWindow(boolean isProduct, Editor main, ItemStackRunnable runnable, ItemStackResource item){
-		this(isProduct, main, runnable);
+	public ItemStackChooseWindow(boolean isProduct, ItemStackRunnable runnable, ItemStackResource item){
+		this(isProduct, runnable);
 		
 		if (item.item != null)
 			materialLabel.setText(item.item);
@@ -195,7 +193,7 @@ public class ItemStackChooseWindow extends JFrame {
 	
 	private void chooseMaterial(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					materialLabel.setText(material);
@@ -218,7 +216,7 @@ public class ItemStackChooseWindow extends JFrame {
 	
 	private void chooseContainer(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, main, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					containerLabel.setText(material);

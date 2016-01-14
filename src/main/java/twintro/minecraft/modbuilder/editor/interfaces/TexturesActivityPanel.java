@@ -21,8 +21,8 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 public class TexturesActivityPanel extends ActivityPanel {
 	TextureEditor editor;
 	
-	public TexturesActivityPanel(String header, String button, Editor main) {
-		super(header, button, main);
+	public TexturesActivityPanel(String header, String button) {
+		super(header, button);
 		editor = new TextureEditor(this);
 	}
 	

@@ -34,8 +34,8 @@ import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 public class BlocksActivityPanel extends ActivityPanel {
 	private Map<String,BlockEditor> openEditors;
 	
-	public BlocksActivityPanel(String header, String button, Editor main) {
-		super(header, button, main);
+	public BlocksActivityPanel(String header, String button) {
+		super(header, button);
 		this.openEditors = new HashMap<String, BlockEditor>();
 	}
 
@@ -77,11 +77,11 @@ public class BlocksActivityPanel extends ActivityPanel {
 		createFile(block.block, "assets/modbuilder/blocks/" + block.name + ".json");
 		addElement(block.name, block.getImage());
 		
-		main.metaFile.resource.modbuilder.blocks.add(block.name);
-		main.metaFile.save();
+		Editor.metaFile.resource.modbuilder.blocks.add(block.name);
+		Editor.metaFile.save();
 		
-		main.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
-		main.langFile.save();
+		Editor.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
+		Editor.langFile.save();
 	}
 	
 	public void createFile(Object model, String dir){
@@ -120,10 +120,12 @@ public class BlocksActivityPanel extends ActivityPanel {
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/block/" + value + ".json");
 			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
 			removeElement(value);
-			main.metaFile.resource.modbuilder.blocks.remove(value);
-			main.metaFile.save();
-			main.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
-			main.langFile.save();
+			
+			Editor.metaFile.resource.modbuilder.blocks.remove(value);
+			Editor.metaFile.save();
+			
+			Editor.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
+			Editor.langFile.save();
 		}
 	}
 	
