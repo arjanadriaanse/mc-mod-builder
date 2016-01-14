@@ -135,7 +135,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			interactionPanel.add(maxStackSizeSpinner);
 		}
 		
-		if (!(this instanceof ToolItemEditor || this instanceof FoodItemEditor)){
+		if (true){//TODO remove this
 			labelCreativeTabs = new JLabel("Creative tabs");
 			labelCreativeTabs.setToolTipText(creativeTabsTooltip);
 			labelPanel.add(labelCreativeTabs);
@@ -271,8 +271,6 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		regularSetup(main, item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
-		for (TabResource s : ((ItemResource)item.item).tabs)
-			creativeTabsChoose(s.name());
 	}
 	
 	protected void regularSetup(ItemsActivityPanel main, ItemElement item){
@@ -290,6 +288,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			burntimeCheckbox.setSelected(true);
 			burntimeUse();
 		}
+		if (item.item.tabs != null)
+			for (TabResource s : item.item.tabs)
+				creativeTabsChoose(s.name());
 	}
 
 	protected void cancel() {
@@ -299,10 +300,6 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	protected void save() {
 		if (!textureChooserIsOpen && !materialChooserIsOpen && textureLabel.getText().length() > 0){
 			ItemResource base = new ItemResource();
-			base.tabs = new HashSet<TabResource>();
-			if (creativeTabsLabel.getText().length() > 0)
-				for (String s : creativeTabsLabel.getText().split(","))
-					base.tabs.add(TabResource.valueOf(s));
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
@@ -322,7 +319,11 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		model.textures.put("layer0", textureLabel.getText());
 		model.display = Display.regular();
 		item.itemModel = model;
-		
+
+		base.tabs = new HashSet<TabResource>();
+		if (creativeTabsLabel.getText().length() > 0)
+			for (String s : creativeTabsLabel.getText().split(","))
+				base.tabs.add(TabResource.valueOf(s));
 		base.model = "modbuilder:" + name;
 		if (!(this instanceof ToolItemEditor))
 			base.stacksize = (Integer) maxStackSizeSpinner.getValue();

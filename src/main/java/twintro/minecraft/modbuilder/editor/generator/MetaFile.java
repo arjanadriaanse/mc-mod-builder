@@ -67,23 +67,8 @@ public class MetaFile extends File {
 			e.printStackTrace();
 		}
 	}
-	
+	/*
 	public void rename(String originalName, String newName){
-		if (resource.modbuilder.blocks.contains(originalName)){
-			resource.modbuilder.blocks.remove(originalName);
-			resource.modbuilder.blocks.add(newName);
-		}
-		else if (resource.modbuilder.items.contains(originalName)){
-			resource.modbuilder.items.remove(originalName);
-			resource.modbuilder.items.add(newName);
-		}
-		else if (resource.modbuilder.recipes.contains(originalName)){
-			resource.modbuilder.recipes.remove(originalName);
-			resource.modbuilder.recipes.add(newName);
-		}
-		else if (resource.modbuilder.structures.contains(originalName)){
-			resource.modbuilder.structures.remove(originalName);
-			resource.modbuilder.structures.add(newName);
-		}
-	}
+		
+	}*/
 }

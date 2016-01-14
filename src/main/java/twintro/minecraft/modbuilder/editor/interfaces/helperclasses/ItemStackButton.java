@@ -1,5 +1,6 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
+import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
@@ -8,14 +9,19 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.SwingConstants;
 
 import sun.awt.WindowClosingListener;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ItemStackEditor;
@@ -43,12 +49,17 @@ public class ItemStackButton extends JButton{
 	
 	public ItemStackButton(String s){
 		super(s);
-		this.addActionListener(new ActionListener() {
+		
+		addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				click();
 			}
 		});
+		
+		setVerticalTextPosition(SwingConstants.BOTTOM);
+	    setHorizontalTextPosition(SwingConstants.CENTER);
+	    setMargin(new Insets(1,1,1,1));
 	}
 	
 	public boolean isProduct(){
@@ -62,21 +73,22 @@ public class ItemStackButton extends JButton{
 	public void chooseItem(ItemStackResource item){
 		this.item = item;
 		if (item.block != null && !item.block.isEmpty()){
-			if (item.amount != null && item.amount > 1){
+			if (item.amount != null && item.amount > 1)
 				setText(item.amount + " " + item.block);
-			}
-			else setText(item.block);
-			setIcon(MaterialResources.getImage(item.block));
+			else 
+				setText(item.block);
+			setImage(MaterialResources.getImage(item.block));
 		}
 		else if (item.item != null && !item.item.isEmpty()){
-			if (item.amount != null && item.amount > 1){
+			if (item.amount != null && item.amount > 1)
 				setText(item.amount + " " + item.item);
-			}
-			else setText(item.item);
-			setIcon(MaterialResources.getImage(item.item));
+			else 
+				setText(item.item);
+			setImage(MaterialResources.getImage(item.item));
 		}
 		else{
 			setText("");
+			setIcon(null);
 		}
 	}
 	
@@ -100,5 +112,14 @@ public class ItemStackButton extends JButton{
 		else setToolTipText(null);
 		text = text.replace("modbuilder:", "");
 		super.setText(MaterialResources.getName(text));
+	}
+	
+	private void setImage(ImageIcon icon){
+		if (icon == null) 
+			setIcon(null);
+		else
+			setIcon(ActivityPanel.resizeImage(icon, 
+				getWidth() / 16 * 2 / 3 * 16, 
+				getHeight() / 16 * 2 / 3 * 16));
 	}
 }

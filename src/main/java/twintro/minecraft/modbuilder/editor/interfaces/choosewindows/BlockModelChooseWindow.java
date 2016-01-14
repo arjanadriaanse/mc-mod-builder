@@ -80,6 +80,7 @@ public class BlockModelChooseWindow extends JFrame {
 	};
 
 	public BlockModelChooseWindow(BlockModelRunnable main){
+		//TODO undo lode's accidental change and put shit to the right again
 		this.main = main;
 		load();
 

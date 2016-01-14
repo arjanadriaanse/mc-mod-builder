@@ -68,7 +68,7 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(5, 5));
 		setContentPane(contentPane);
-		this.setTitle("Edit recipe:" + name);
+		this.setTitle("Edit Recipe: " + name);
 		
 		JPanel panel_3 = new JPanel();
 		contentPane.add(panel_3, BorderLayout.CENTER);
@@ -96,7 +96,6 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		label.setFont(new Font("Times New Roman", Font.BOLD, 69));
 		label.setBounds(288, 105, 80, 93);
 		panel_3.add(label);
-		buttons[9].setHorizontalAlignment(SwingConstants.RIGHT);
 		
 		JPanel panel_2 = new JPanel();
 		contentPane.add(panel_2, BorderLayout.SOUTH);
@@ -105,7 +104,7 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 		lblCreateTheShaped = new JLabel("Create the recipe, the shape does not matter");
 		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
 		
-
+		/*
 		JButton btnRename = new JButton("Rename");
 		btnRename.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -114,10 +113,11 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 				main.openEditors.remove(name);
 				name = nameNew2;
 				main.openEditors.put(name, temp);
-				setTitle("Edit structure: " + name);
+				setTitle("Edit Recipe: " + name);
 			}
 		});
 		panel_2.add(btnRename);
+		*/
 		
 		JButton btnSaveItem = new JButton("Save recipe");
 		panel_2.add(btnSaveItem);

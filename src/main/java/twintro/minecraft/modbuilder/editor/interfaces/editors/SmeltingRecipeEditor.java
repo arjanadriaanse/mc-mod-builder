@@ -37,6 +37,8 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 	private ItemStackButton inputSmeltingButton;
 	private ItemStackButton outputSmeltingButton;
 	private JSpinner xpSpinner;
+	
+	private static final String xpTooltip = "";//TODO
 
 	/**
 	 * Create the frame.
@@ -47,6 +49,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowClosingVerifierListener());
+		this.setTitle("Edit Recipe: " + name);
 		
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -73,7 +76,7 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 				cancel();
 			}
 		});
-		
+		/*
 		JButton btnRename = new JButton("Rename");
 		btnRename.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -82,11 +85,11 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 				main.openEditors.remove(name);
 				name = nameNew2;
 				main.openEditors.put(name, temp);
-				setTitle("Edit structure: " + name);
+				setTitle("Edit Recipe: " + name);
 			}
 		});
 		panel_2.add(btnRename);
-		
+		*/
 
 		panel_2.add(saveButton);
 		cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -125,9 +128,11 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 		panel_3.setLayout(new BorderLayout(5, 5));
 		
 		JLabel lblNewLabel_1 = new JLabel("XP gained");
+		lblNewLabel_1.setToolTipText(xpTooltip);
 		panel_3.add(lblNewLabel_1, BorderLayout.WEST);
 		
 		xpSpinner = new JSpinner();
+		xpSpinner.setToolTipText(xpTooltip);
 		xpSpinner.setModel(new SpinnerNumberModel(new Float(0), null, null, new Float(0.1)));
 		panel_3.add(xpSpinner, BorderLayout.CENTER);
 		

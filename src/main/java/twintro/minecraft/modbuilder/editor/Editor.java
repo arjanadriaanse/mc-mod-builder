@@ -78,6 +78,7 @@ public class Editor {
 		frame = new JFrame();
 		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//TODO frame.setTitle("");
 		
 		//Menubar
 		JMenuBar menuBar = new JMenuBar();
@@ -209,12 +210,11 @@ public class Editor {
 		JButton BlocksButton = new ActivityButton("Blocks");
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
-		
-
+		/*
 		JButton structuresButton = new ActivityButton("Structures");
 		structuresButton.addActionListener(buttonListener);
 		buttonPanel.add(structuresButton);
-		
+		*/
 		JButton ItemsButton = new ActivityButton("Items");
 		ItemsButton.addActionListener(buttonListener);
 		buttonPanel.add(ItemsButton);

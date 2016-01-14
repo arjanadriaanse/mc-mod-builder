@@ -30,6 +30,13 @@ public class MaterialChooseWindow extends JFrame {
 	public static final int BLOCKS_ONLY = 1;
 	public static final int ITEMS_AND_BLOCKS = 2;
 	public static final int ITEMS_BLOCKS_NONE = 3;
+
+	private static final String customItemsTooltip = "";//TODO
+	private static final String customBlocksTooltip = "";//TODO
+	private static final String vanillaItemsTooltip = "";//TODO
+	private static final String vanillaBlocksTooltip = "";//TODO
+	private static final String otherTooltip = "";//TODO
+	private static final String noneTooltip = "";//TODO
 	
 	private MaterialRunnable runnable;
 	private ListWindow listWindow = null;
@@ -50,6 +57,7 @@ public class MaterialChooseWindow extends JFrame {
 		
 		if (type != BLOCKS_ONLY){
 			JButton customItemButton = new JButton("Custom item");
+			customItemButton.setToolTipText(customItemsTooltip);
 			panel.add(customItemButton);
 			customItemButton.addActionListener(new ActionListener() {
 				@Override
@@ -59,6 +67,7 @@ public class MaterialChooseWindow extends JFrame {
 			});
 			
 			JButton itemButton = new JButton("Vanilla item");
+			itemButton.setToolTipText(vanillaItemsTooltip);
 			panel.add(itemButton);
 			itemButton.addActionListener(new ActionListener() {
 				@Override
@@ -70,6 +79,7 @@ public class MaterialChooseWindow extends JFrame {
 		
 		if (type != ITEMS_ONLY){
 			JButton customBlockButton = new JButton("Custom block");
+			customBlockButton.setToolTipText(customBlocksTooltip);
 			panel.add(customBlockButton);
 			customBlockButton.addActionListener(new ActionListener() {
 				@Override
@@ -79,6 +89,7 @@ public class MaterialChooseWindow extends JFrame {
 			});
 			
 			JButton blockButton = new JButton("Vanilla block");
+			blockButton.setToolTipText(vanillaBlocksTooltip);
 			panel.add(blockButton);
 			blockButton.addActionListener(new ActionListener() {
 				@Override
@@ -89,6 +100,7 @@ public class MaterialChooseWindow extends JFrame {
 		}
 		
 		JButton otherButton = new JButton("Other");
+		otherButton.setToolTipText(otherTooltip);
 		panel.add(otherButton);
 		otherButton.addActionListener(new ActionListener() {
 			@Override
@@ -99,6 +111,7 @@ public class MaterialChooseWindow extends JFrame {
 		
 		if (type == ITEMS_BLOCKS_NONE){
 			JButton noneButton = new JButton("None");
+			noneButton.setToolTipText(noneTooltip);
 			panel.add(noneButton);
 			noneButton.addActionListener(new ActionListener() {
 				@Override

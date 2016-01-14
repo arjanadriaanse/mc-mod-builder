@@ -70,8 +70,8 @@ public class LanguageFile extends File {
 			e.printStackTrace();
 		}
 	}
-	
+	/*
 	public void rename(String originalName, String newName){
-		//TODO
-	}
+		
+	}*/
 }

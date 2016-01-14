@@ -245,7 +245,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		
+		/*
 		renameButton = new JButton("Rename");
 		renameButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -253,7 +253,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			}
 		});
 		buttonPanel.add(renameButton);
-		
+		*/
 		saveBlockButton = new JButton("Save Block");
 		saveBlockButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -346,14 +346,14 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
 		}
 	}
-	
+	/*
 	protected void rename(){
 		String name = JOptionPane.showInputDialog("Block name:");
 		this.name = name;
 		setTitle("Edit Block: " + this.name);
-		//TODO refractor
+		//refractor
 	}
-	
+	*/
 	protected void chooseModel() {
 		if (!modelChooserIsOpen){
 			new BlockModelChooseWindow(this);

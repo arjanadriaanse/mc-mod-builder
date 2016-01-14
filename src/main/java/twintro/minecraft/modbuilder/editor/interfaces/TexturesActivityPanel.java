@@ -64,7 +64,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void delete() {
 		String value = (String) list.getSelectedValue();
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + ".png", 
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + ".png?\r\n"
+				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
 			ResourcePackGenerator.deleteFile("assets/modbuilder/textures/" + value + ".png");
