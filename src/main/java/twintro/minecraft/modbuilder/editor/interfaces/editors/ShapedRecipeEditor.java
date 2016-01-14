@@ -68,46 +68,40 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 
 
 	protected void saveRecipe() {
-		String[] recipe = {"","",""};
-		
-		Map<Character, ItemStackResource> recipeMap = new HashMap<Character, ItemStackResource>();
-		int t =0;
-		while (buttons[t].item.item == null && buttons[t].item.block == null){
-			recipe[t/3] += " ";
-			t++;
-			if (t == 9){
-				JOptionPane.showMessageDialog(this, "Please give atleast one item to have as input");
-				return;
-			}
-		}
-		if (buttons[9].item == null){
-			JOptionPane.showMessageDialog(this, "Please give an output item");
-			return;
-		}
-		recipeMap.put('a', buttons[t].item);
-		recipe[t/3] += "a";	
-		for (int i = t+1; i < 9; i++){
-			String a = "";
-			if (buttons[i].item.item == "" || buttons[i].item.item == null){
-				a = buttons[i].item.block;
-			}else{
-				a = buttons[i].item.item;
-			}
-			if (a == "" || a == null) recipe[i/3] += " ";
-			else {
-				for(char b = (char) ('a'); b<='a'+i ; b++){
-					//TODO NullPointerException on next line
-					if (a == recipeMap.get(b).item || a==recipeMap.get(b).block && recipeMap.get(b).container == buttons[i].item.container){
-						recipe[i/3] += b;
-						b+='j';
+		String[] pattern = {"", "", ""};
+		Map<Character, ItemStackResource> ingredients = new HashMap<Character, ItemStackResource>();
+		for (int i = 0; i < 9; i++){
+			ItemStackResource item = buttons[i].item;
+			if (item == null || ((item.item == null || item.item == "") && (item.block == null || item.block == "")))
+				pattern[i/3] += " ";
+			else{
+				for (char c = 'a'; true; c++){
+					if (ingredients.containsKey(c)){
+						ItemStackResource ingredient = ingredients.get(c);
+						if (((ingredient.item != null && ingredient.item == item.item) 
+								|| (ingredient.block != null && ingredient.block == item.block)) && ingredient.container == item.container){
+							pattern[i/3] += c;
+							break;
+						}
 					}
-					else if(!recipeMap.containsKey(b)) {
-						recipeMap.put(b, buttons[i].item);
-						recipe[i/3] += b;
+					else{
+						pattern[i/3] += c;
+						ingredients.put(c, item);
+						break;
 					}
 				}
 			}
 		}
+		if (ingredients.isEmpty()){
+			JOptionPane.showMessageDialog(this, "Please give atleast one item to have as input");
+			return;
+		}
+		ItemStackResource item = buttons[9].item;
+		if (item == null || ((item.item == null || item.item == "") && (item.block == null || item.block == ""))){
+			JOptionPane.showMessageDialog(this, "Please give an output item");
+			return;
+		}
+		
 		ItemStackResource outputItem = buttons[9].item;
 		int outputAmount;
 		RecipeElement savable = new RecipeElement();
@@ -115,9 +109,9 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		ShapedRecipe shapedRecipe = new ShapedRecipe();
 		List<String> recipeListForm = new ArrayList<String>();
 		for (int i = 0; i < 3; i++)
-			recipeListForm.add(recipe[i]);
+			recipeListForm.add(pattern[i]);
 		shapedRecipe.shape = recipeListForm;
-		shapedRecipe.input = recipeMap; 
+		shapedRecipe.input = ingredients; 
 		shapedRecipe.output = outputItem;
 		shapedRecipe.type = RecipeType.shaped;
 		savable.recipe = shapedRecipe;

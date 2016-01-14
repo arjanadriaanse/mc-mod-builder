@@ -29,6 +29,7 @@ public class MaterialChooseWindow extends JFrame {
 	public static final int ITEMS_ONLY = 0;
 	public static final int BLOCKS_ONLY = 1;
 	public static final int ITEMS_AND_BLOCKS = 2;
+	public static final int ITEMS_BLOCKS_NONE = 3;
 	
 	private MaterialRunnable runnable;
 	private ListWindow listWindow = null;
@@ -36,7 +37,7 @@ public class MaterialChooseWindow extends JFrame {
 	public MaterialChooseWindow(int type, MaterialRunnable runnable){
 		this.runnable = runnable;
 		
-		if (type == 2)
+		if (type == ITEMS_AND_BLOCKS || type == ITEMS_BLOCKS_NONE)
 			setBounds(100, 100, 300, 120);
 		else
 			setBounds(100, 100, 300, 90);
@@ -47,7 +48,7 @@ public class MaterialChooseWindow extends JFrame {
 		getContentPane().add(panel, BorderLayout.NORTH);
 		panel.setLayout(new GridLayout(0, 2, 5, 5));
 		
-		if (type != 1){
+		if (type != BLOCKS_ONLY){
 			JButton customItemButton = new JButton("Custom item");
 			panel.add(customItemButton);
 			customItemButton.addActionListener(new ActionListener() {
@@ -67,7 +68,7 @@ public class MaterialChooseWindow extends JFrame {
 			});
 		}
 		
-		if (type != 0){
+		if (type != ITEMS_ONLY){
 			JButton customBlockButton = new JButton("Custom block");
 			panel.add(customBlockButton);
 			customBlockButton.addActionListener(new ActionListener() {
@@ -95,6 +96,17 @@ public class MaterialChooseWindow extends JFrame {
 				other();
 			}
 		});
+		
+		if (type == ITEMS_BLOCKS_NONE){
+			JButton noneButton = new JButton("None");
+			panel.add(noneButton);
+			noneButton.addActionListener(new ActionListener() {
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					none();
+				}
+			});
+		}
 		
 		setVisible(true);
 	}
@@ -130,6 +142,10 @@ public class MaterialChooseWindow extends JFrame {
 				choose(material);
 			}
 		}
+	}
+	
+	private void none(){
+		choose("");
 	}
 	
 	public void listWindowDispose(){

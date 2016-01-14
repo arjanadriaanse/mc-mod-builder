@@ -28,7 +28,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	@Override
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
-		JButton importButton = new ActivityButton("Import image");
+		JButton importButton = new ActivityButton("Import Image");
 		importButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				importImage();

@@ -179,7 +179,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 	
 	@Override
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
-		JButton toolButton = new ActivityButton("New tool");
+		JButton toolButton = new ActivityButton("New Tool");
 		toolButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addTool();
@@ -187,7 +187,7 @@ public class ItemsActivityPanel extends ActivityPanel {
 		});
 		buttonPanel.add(toolButton);
 		
-		JButton foodButton = new ActivityButton("New food");
+		JButton foodButton = new ActivityButton("New Food");
 		foodButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addFood();

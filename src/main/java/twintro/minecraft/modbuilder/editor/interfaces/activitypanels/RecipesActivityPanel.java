@@ -40,7 +40,7 @@ public class RecipesActivityPanel extends ActivityPanel {
 	}
 
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
-		JButton ShapedButton = new ActivityButton("New shaped recipe");
+		JButton ShapedButton = new ActivityButton("New Shaped Recipe");
 		ShapedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addShaped();
@@ -48,15 +48,15 @@ public class RecipesActivityPanel extends ActivityPanel {
 		});
 		buttonPanel.add(ShapedButton);
 		
-		JButton shapedButton = new ActivityButton("New smelting recipe");
+		super.createButtonPanel(buttonPanel, button);
+		
+		JButton shapedButton = new ActivityButton("New Smelting Recipe");
 		shapedButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addSmelting();
 			}
 		});
 		buttonPanel.add(shapedButton);
-		
-		super.createButtonPanel(buttonPanel, button);
 	}
 	
 	@Override

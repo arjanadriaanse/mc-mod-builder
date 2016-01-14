@@ -60,16 +60,19 @@ public class ItemStackButton extends JButton{
 	public void chooseItem(ItemStackResource item){
 		this.item = item;
 		if (item.block != null && !item.block.isEmpty()){
-			if (item.amount != null && item.amount != 0){
+			if (item.amount != null && item.amount > 1){
 				setText(item.amount + " " + item.block);
 			}
 			else setText(item.block);
 		}
 		else if (item.item != null && !item.item.isEmpty()){
-			if (item.amount != null && item.amount != 0){
+			if (item.amount != null && item.amount > 1){
 				setText(item.amount + " " + item.item);
 			}
 			else setText(item.item);
+		}
+		else{
+			setText("");
 		}
 	}
 	

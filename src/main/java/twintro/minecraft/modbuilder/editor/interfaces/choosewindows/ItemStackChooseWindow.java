@@ -193,7 +193,7 @@ public class ItemStackChooseWindow extends JFrame {
 	
 	private void chooseMaterial(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					materialLabel.setText(material);
@@ -216,7 +216,7 @@ public class ItemStackChooseWindow extends JFrame {
 	
 	private void chooseContainer(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					containerLabel.setText(material);

@@ -82,7 +82,8 @@ public class BlockModelChooseWindow extends JFrame {
 	public BlockModelChooseWindow(BlockModelRunnable main){
 		this.main = main;
 		load();
-		
+
+		setBounds(100, 100, 600, 500);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Block Model:");
 		
