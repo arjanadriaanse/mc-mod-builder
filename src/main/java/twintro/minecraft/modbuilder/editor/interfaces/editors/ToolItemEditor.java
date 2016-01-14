@@ -230,8 +230,7 @@ public class ToolItemEditor extends RegularItemEditor {
 				for (String s : affectedBlocksLabel.getText().split(","))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
-				if (VanillaElements.isItem(repairMaterialLabel.getText()) || 
-						main.main.ItemPanel.elements.keySet().contains(repairMaterialLabel.getText()))
+				if (VanillaElements.isItem(repairMaterialLabel.getText()))
 					base.repairitem = repairMaterialLabel.getText();
 				else
 					base.repairblock = repairMaterialLabel.getText();

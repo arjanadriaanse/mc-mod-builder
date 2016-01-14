@@ -31,6 +31,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActiv
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
+import twintro.minecraft.modbuilder.editor.resources.VanillaElements;
 
 public class Editor {
 	private boolean interfaceOpened = false;
@@ -250,6 +251,7 @@ public class Editor {
 		
 		ItemPanel = new ItemsActivityPanel("Items", "New Item", this);
 		ActivityPanel.add(ItemPanel, "Items");
+		VanillaElements.customItems = ItemPanel.elements;
 		
 		StructurePanel = new StructureActivityPanel("Structures", "New Structure", this);
 		activityPanel.add(StructurePanel, "Structures");

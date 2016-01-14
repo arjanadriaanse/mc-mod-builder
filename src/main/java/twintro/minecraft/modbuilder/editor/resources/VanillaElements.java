@@ -2,8 +2,14 @@ package twintro.minecraft.modbuilder.editor.resources;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import javax.swing.ImageIcon;
 
 public class VanillaElements {
+	public static Map<String, ImageIcon> customItems;
+
 	//TODO add everything, this is just an example
 	public static final String[] vanillaBlocks = new String[]{
 			"stone",
@@ -48,6 +54,8 @@ public class VanillaElements {
 		for (int i = 0; i < vanillaItemIds.length; i++)
 			if (vanillaItemIds[i].equals(material))
 				return true;
+		if (material.startsWith("modbuilder:"))
+			return customItems.containsKey(material.substring(11));
 		return false;
 	}
 }

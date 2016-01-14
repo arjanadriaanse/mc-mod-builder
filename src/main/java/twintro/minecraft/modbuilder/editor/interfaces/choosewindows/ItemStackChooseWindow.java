@@ -238,7 +238,7 @@ public class ItemStackChooseWindow extends JFrame {
 			ItemStackResource item = new ItemStackResource();
 			
 			//TODO material.split":"[1] also in ToolItemEditor 233
-			if (VanillaElements.isItem(material) || main.ItemPanel.elements.keySet().contains(material))
+			if (VanillaElements.isItem(material))
 				item.item = material;
 			else
 				item.block = material;
