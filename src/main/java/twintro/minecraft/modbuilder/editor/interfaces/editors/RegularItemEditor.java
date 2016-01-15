@@ -24,6 +24,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunn
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 import javax.swing.JCheckBox;
@@ -32,11 +33,13 @@ import javax.swing.DefaultComboBoxModel;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 
-public class RegularItemEditor extends JFrame implements TextureRunnable, MaterialRunnable {
+public class RegularItemEditor extends WindowClosingVerifierUser implements TextureRunnable, MaterialRunnable {
 	protected JPanel mainPanel;
 	protected JPanel buttonPanel;
 	protected JPanel texturePanel;
@@ -131,53 +134,52 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 			
 			maxStackSizeSpinner = new JSpinner();
 			maxStackSizeSpinner.setToolTipText(maxStackSizeTooltip);
+			maxStackSizeSpinner.addChangeListener(changeListener);
 			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
 			interactionPanel.add(maxStackSizeSpinner);
 		}
+
+		labelCreativeTabs = new JLabel("Creative tabs");
+		labelCreativeTabs.setToolTipText(creativeTabsTooltip);
+		labelPanel.add(labelCreativeTabs);
 		
-		if (true){//TODO remove this
-			labelCreativeTabs = new JLabel("Creative tabs");
-			labelCreativeTabs.setToolTipText(creativeTabsTooltip);
-			labelPanel.add(labelCreativeTabs);
-			
-			creativeTabsPanel = new JPanel();
-			interactionPanel.add(creativeTabsPanel);
-			creativeTabsPanel.setLayout(new BorderLayout(0, 0));
-			
-			creativeTabsComboBox = new JComboBox();
-			creativeTabsComboBox.setToolTipText(creativeTabsTooltip);
-			creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
-					"food", "tools", "combat", "brewing", "materials", "inventory"}));
-			creativeTabsComboBox.addItemListener(new ItemListener() {
-				@Override
-				public void itemStateChanged(ItemEvent e) {
-					if (e.getStateChange() == e.SELECTED){
-						if (e.getItem() != "Add"){
-							creativeTabsChoose((String) e.getItem());
-							((JComboBox) e.getSource()).setSelectedIndex(0);
-						}
+		creativeTabsPanel = new JPanel();
+		interactionPanel.add(creativeTabsPanel);
+		creativeTabsPanel.setLayout(new BorderLayout(0, 0));
+		
+		creativeTabsComboBox = new JComboBox();
+		creativeTabsComboBox.setToolTipText(creativeTabsTooltip);
+		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
+				"food", "tools", "combat", "brewing", "materials", "inventory"}));
+		creativeTabsComboBox.addItemListener(new ItemListener() {
+			@Override
+			public void itemStateChanged(ItemEvent e) {
+				if (e.getStateChange() == e.SELECTED){
+					if (e.getItem() != "Add"){
+						creativeTabsChoose((String) e.getItem());
+						((JComboBox) e.getSource()).setSelectedIndex(0);
 					}
 				}
-			});
-			creativeTabsPanel.add(creativeTabsComboBox, BorderLayout.EAST);
-			
-			creativeTabsSubPanel = new JPanel();
-			creativeTabsPanel.add(creativeTabsSubPanel, BorderLayout.CENTER);
-			creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
-			
-			creativeTabsResetButton = new JButton("Reset");
-			creativeTabsResetButton.setToolTipText(creativeTabsTooltip);
-			creativeTabsResetButton.addActionListener(new ActionListener() {
-				public void actionPerformed(ActionEvent e) {
-					creativeTabsReset();
-				}
-			});
-			creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
-			
-			creativeTabsLabel = new JLabel("");
-			creativeTabsLabel.setToolTipText(creativeTabsTooltip);
-			creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
-		}
+			}
+		});
+		creativeTabsPanel.add(creativeTabsComboBox, BorderLayout.EAST);
+		
+		creativeTabsSubPanel = new JPanel();
+		creativeTabsPanel.add(creativeTabsSubPanel, BorderLayout.CENTER);
+		creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
+		
+		creativeTabsResetButton = new JButton("Reset");
+		creativeTabsResetButton.setToolTipText(creativeTabsTooltip);
+		creativeTabsResetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				creativeTabsReset();
+			}
+		});
+		creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
+		
+		creativeTabsLabel = new JLabel("");
+		creativeTabsLabel.setToolTipText(creativeTabsTooltip);
+		creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
 		
 		labelContainer = new JLabel("Container");
 		labelContainer.setToolTipText(containerTooltip);
@@ -190,6 +192,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 		
 		containerCheckbox = new JCheckBox("Use");
 		containerCheckbox.setToolTipText(containerTooltip);
+		containerCheckbox.addActionListener(actionListener);
 		containerCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -294,7 +297,9 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	}
 
 	protected void cancel() {
-		WindowClosingVerifierListener.close(this);
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 	}
 
 	protected void save() {
@@ -357,10 +362,12 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 	}
 
 	protected void creativeTabsReset() {
+		change();
 		creativeTabsLabel.setText("");
 	}
 
 	protected void creativeTabsChoose(String tab) {
+		change();
 		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ",");
 		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab);
 	}
@@ -380,6 +387,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 
 	@Override
 	public void chooseTexture(String texture) {
+		change();
 		textureLabel.setText(texture);
 		setIconImage(Editor.TexturePanel.elements.get(texture.split(":")[1]).getImage());
 	}
@@ -391,6 +399,7 @@ public class RegularItemEditor extends JFrame implements TextureRunnable, Materi
 
 	@Override
 	public void chooseMaterial(String material) {
+		change();
 		containerLabel.setText(material);
 	}
 

@@ -26,6 +26,8 @@ import javax.swing.BoxLayout;
 import javax.swing.SwingConstants;
 import java.awt.Component;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -39,7 +41,7 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 
-public class ShapelessRecipeEditor extends RecipeEditor {
+public class ShapelessRecipeEditor extends JFrame {
 
 	private JPanel contentPane;
 	protected String name;
@@ -159,7 +161,9 @@ public class ShapelessRecipeEditor extends RecipeEditor {
 	}
 
 	protected void cancel() {
-		WindowClosingVerifierListener.close(this);
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 
 	}
 	

@@ -8,64 +8,41 @@ import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 
 public class WindowClosingVerifierListener implements WindowListener{
-
-	public static void close(Window arg0){
+	public static void close(Window window){
 		Object[] options = {"Yes",
         "Cancel"};
-		int selected = JOptionPane.showOptionDialog(arg0, "Are you sure you want to close this window?", 
+		int selected = JOptionPane.showOptionDialog(window, "Are you sure you want to close this window?", 
 		"Confirm", 
 		JOptionPane.YES_NO_OPTION, 
 		JOptionPane.WARNING_MESSAGE, 
 		null, options, options[1]);
-		if (selected == 0) arg0.dispose();
+		if (selected == 0) window.dispose();
+	}
 	
-	}
 	@Override
-	public void windowActivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
+	public void windowClosing(WindowEvent e) {
+		Window window = e.getWindow();
+		if (window instanceof WindowClosingVerifierUser){
+			if (((WindowClosingVerifierUser) window).needsClosingVerification())
+				close(window);
+			else
+				window.dispose();
+		}
+		else{
+			close(window);
+		}	
 	}
-
+	
 	@Override
-	public void windowClosed(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void windowActivated(WindowEvent e) {}
 	@Override
-	public void windowClosing(WindowEvent arg0) {
-
-		Object[] options = {"Yes",
-        "Cancel"};
-		int selected = JOptionPane.showOptionDialog(arg0.getWindow(), "Are you sure you want to close this window?", 
-		"Confirm", 
-		JOptionPane.YES_NO_OPTION, 
-		JOptionPane.WARNING_MESSAGE, 
-		null, options, options[1]);
-		if (selected == 0) arg0.getWindow().dispose();
-		
-	}
-
+	public void windowClosed(WindowEvent e) {}
 	@Override
-	public void windowDeactivated(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void windowDeactivated(WindowEvent e) {}
 	@Override
-	public void windowDeiconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-
-	}
-
+	public void windowDeiconified(WindowEvent e) {}
 	@Override
-	public void windowIconified(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-	}
-
+	public void windowIconified(WindowEvent e) {}
 	@Override
-	public void windowOpened(WindowEvent arg0) {
-		// TODO Auto-generated method stub
-		
-	}
-
+	public void windowOpened(WindowEvent e) {}
 }

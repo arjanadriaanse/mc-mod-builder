@@ -6,6 +6,7 @@ import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -30,7 +31,7 @@ import java.awt.Font;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class SmeltingRecipeEditor extends RecipeEditor {
+public class SmeltingRecipeEditor extends JFrame {
 	private JPanel contentPane;
 	private String name;
 	private RecipesActivityPanel main;
@@ -171,6 +172,8 @@ public class SmeltingRecipeEditor extends RecipeEditor {
 	}
 	
 	private void cancel(){
-		this.getWindowListeners()[0].windowClosing(new WindowEvent(this, 0));
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 	}
 }

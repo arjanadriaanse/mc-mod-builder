@@ -25,8 +25,6 @@ public class FoodItemEditor extends RegularItemEditor {
 	protected JPanel propertiesPanel;
 	protected JPanel feedToWolvesPanel;
 	protected JPanel alwaysEdiblePanel;
-	protected JPanel effectsPanel;
-	protected JPanel effectsLabelPanel;
 	protected JPanel effectsListPanel;
 	protected JPanel effectsListTopPanel;
 	protected JLabel labelHungerRefill;

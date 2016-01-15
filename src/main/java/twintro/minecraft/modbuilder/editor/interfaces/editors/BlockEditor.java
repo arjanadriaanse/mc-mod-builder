@@ -8,6 +8,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.HashMap;
 
 import javax.swing.AbstractButton;
@@ -41,9 +43,10 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActiv
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 
-public class BlockEditor extends JFrame implements BlockModelRunnable {
+public class BlockEditor extends WindowClosingVerifierUser implements BlockModelRunnable {
 	protected JPanel buttonPanel;
 	protected JPanel mainPanel;
 	protected JPanel labelPanel;
@@ -145,6 +148,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		creativeTabComboBox = new JComboBox();
 		creativeTabComboBox.setToolTipText(creativeTabTooltip);
+		creativeTabComboBox.addActionListener(actionListener);
 		creativeTabComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
 				"food", "tools", "combat", "brewing", "materials", "inventory"}));
 		interactionPanel.add(creativeTabComboBox);
@@ -155,6 +159,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		lightnessSpinner = new JSpinner();
 		lightnessSpinner.setToolTipText(lightnessTooltip);
+		lightnessSpinner.addChangeListener(changeListener);
 		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
 		interactionPanel.add(lightnessSpinner);
 		
@@ -164,6 +169,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		opacitySpinner = new JSpinner();
 		opacitySpinner.setToolTipText(opacityTooltip);
+		opacitySpinner.addChangeListener(changeListener);
 		opacitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(255), new Integer(1)));
 		interactionPanel.add(opacitySpinner);
 		
@@ -173,6 +179,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		slipperinessSpinner = new JSpinner();
 		slipperinessSpinner.setToolTipText(slipperinessTooltip);
+		slipperinessSpinner.addChangeListener(changeListener);
 		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
 		interactionPanel.add(slipperinessSpinner);
 		
@@ -182,6 +189,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		hardnessSpinner = new JSpinner();
 		hardnessSpinner.setToolTipText(hardnessTooltip);
+		hardnessSpinner.addChangeListener(changeListener);
 		hardnessSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(hardnessSpinner);
 		
@@ -191,6 +199,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		resistanceSpinner = new JSpinner();
 		resistanceSpinner.setToolTipText(resistanceTooltip);
+		resistanceSpinner.addChangeListener(changeListener);
 		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(resistanceSpinner);
 		
@@ -200,6 +209,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		harvestLevelSpinner = new JSpinner();
 		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
+		harvestLevelSpinner.addChangeListener(changeListener);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(harvestLevelSpinner);
 		
@@ -209,6 +219,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		burntimeSpinner = new JSpinner();
 		burntimeSpinner.setToolTipText(burntimeTooltip);
+		burntimeSpinner.addChangeListener(changeListener);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(burntimeSpinner);
 		
@@ -218,6 +229,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		harvestTypeComboBox = new JComboBox();
 		harvestTypeComboBox.setToolTipText(harvestTypeTooltip);
+		harvestTypeComboBox.addActionListener(actionListener);
 		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
 		interactionPanel.add(harvestTypeComboBox);
 		
@@ -227,6 +239,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		materialComboBox = new JComboBox();
 		materialComboBox.setToolTipText(materialTooltip);
+		materialComboBox.addActionListener(actionListener);
 		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "air", "grass", "ground", "wood", "rock", "iron", "anvil", 
 				"water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", "redstone_light", 
 				"tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", "cake", "web", 
@@ -239,6 +252,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 		
 		unbreakableCheckBox = new JCheckBox("");
 		unbreakableCheckBox.setToolTipText(unbreakableTooltip);
+		unbreakableCheckBox.addActionListener(actionListener);
 		interactionPanel.add(unbreakableCheckBox);
 		unbreakableCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		
@@ -300,10 +314,14 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			harvestLevelSpinner.setValue(block.block.harvestlevel);
 		if (block.block.burntime != null)
 			burntimeSpinner.setValue(block.block.burntime);
+		
+		changed = false;
 	}
 	
 	protected void cancel(){
-		WindowClosingVerifierListener.close(this);
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 	}
 
 	protected void save(){
@@ -341,6 +359,8 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 			block.block = base;
 			
 			main.addBlock(block);
+			
+			changed = false;
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -374,6 +394,7 @@ public class BlockEditor extends JFrame implements BlockModelRunnable {
 
 	@Override
 	public void setModel(BlockModelResource model) {
+		change();
 		this.model = model;
 		if (model.parent == "block/cross") modelLabel.setText("Cross model");
 		else modelLabel.setText("Block model");

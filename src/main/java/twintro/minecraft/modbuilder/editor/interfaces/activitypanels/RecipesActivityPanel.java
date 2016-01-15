@@ -11,6 +11,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -24,7 +25,6 @@ import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.RecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapedRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapelessRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.SmeltingRecipeEditor;
@@ -32,11 +32,11 @@ import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class RecipesActivityPanel extends ActivityPanel {
-	public Map<String, RecipeEditor> openEditors;
+	public Map<String, JFrame> openEditors;
 	
 	public RecipesActivityPanel(String header, String button) {
 		super(header, button);
-		this.openEditors = new HashMap<String, RecipeEditor>();
+		this.openEditors = new HashMap<String, JFrame>();
 	}
 
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
@@ -151,7 +151,7 @@ public class RecipesActivityPanel extends ActivityPanel {
 			if (!openEditors.containsKey(value)){
 				RecipeElement recipe = RecipeElement.getFromName(value);
 				RecipeType type = recipe.recipe.type;
-				RecipeEditor editor;
+				JFrame editor;
 				
 				switch(type){
 				case shaped:
@@ -188,12 +188,9 @@ public class RecipesActivityPanel extends ActivityPanel {
 			Editor.metaFile.save();
 		}
 	}
-
-
+	
 	public void closeEditor(String name) {
-		// TODO Auto-generated method stub
 		openEditors.remove(name);
-		
 	}
 	
 	@Override
