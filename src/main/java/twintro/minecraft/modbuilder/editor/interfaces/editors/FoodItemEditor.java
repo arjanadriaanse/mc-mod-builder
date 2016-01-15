@@ -69,6 +69,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		
 		hungerRefillSpinner = new JSpinner();
 		hungerRefillSpinner.setToolTipText(hungerRefillTooltip);
+		hungerRefillSpinner.addChangeListener(changeListener);
 		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(hungerRefillSpinner);
 		
@@ -78,6 +79,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		
 		saturationSpinner = new JSpinner();
 		saturationSpinner.setToolTipText(saturationTooltip);
+		saturationSpinner.addChangeListener(changeListener);
 		saturationSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
 		interactionPanel.add(saturationSpinner);
 		
@@ -94,6 +96,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		
 		feedToWolvesCheckbox = new JCheckBox("Feed to wolves");
 		feedToWolvesCheckbox.setToolTipText(feedToWolvesTooltip);
+		feedToWolvesCheckbox.addActionListener(actionListener);
 		feedToWolvesPanel.add(feedToWolvesCheckbox);
 		
 		alwaysEdiblePanel = new JPanel();
@@ -102,6 +105,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		
 		alwaysEdibleCheckbox = new JCheckBox("Always edible");
 		alwaysEdibleCheckbox.setToolTipText(alwaysEdibleTooltip);
+		alwaysEdibleCheckbox.addActionListener(actionListener);
 		alwaysEdiblePanel.add(alwaysEdibleCheckbox);
 		
 		effectsListPanel = new JPanel();
@@ -143,6 +147,8 @@ public class FoodItemEditor extends RegularItemEditor {
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
 		foodSetup(item);
+		
+		changed = false;
 	}
 	
 	protected void foodSetup(ItemElement item){
@@ -177,6 +183,8 @@ public class FoodItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+
+			changed = false;
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -184,6 +192,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addEffect(){
+		change();
 		addEffect(new EffectPanel(this));
 	}
 	

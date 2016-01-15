@@ -37,10 +37,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 
 public class ShapedRecipeEditor extends ShapelessRecipeEditor {
-
 	private JPanel contentPane;
-	
-
 
 	/**
 	 * Create the frame.
@@ -51,22 +48,22 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		this.name = nameNew;
 	}
 
-
 	public ShapedRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
-			this(value, recipesActivityPanel);
-			ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
-			
-			for(int i = 0; i < 9;i++){
-				Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
-				if (indexChar != ' ' && indexChar != null)
-					buttons[i].chooseItem(shpdRcpy.input.get(indexChar));
-			}
-			buttons[9].chooseItem(shpdRcpy.output);
-
-			this.name = value;
+		this(value, recipesActivityPanel);
+		ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
+		
+		for(int i = 0; i < 9;i++){
+			Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
+			if (indexChar != ' ' && indexChar != null)
+				buttons[i].chooseItem(shpdRcpy.input.get(indexChar));
 		}
-
-
+		buttons[9].chooseItem(shpdRcpy.output);
+		
+		this.name = value;
+		
+		changed = false;
+	}
+	
 	protected void saveRecipe() {
 		String[] pattern = {"", "", ""};
 		Map<Character, ItemStackResource> ingredients = new HashMap<Character, ItemStackResource>();
@@ -116,5 +113,7 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		shapedRecipe.type = RecipeType.shaped;
 		savable.recipe = shapedRecipe;
 		main.addRecipe(savable);
+		
+		changed = false;
 	}
 }

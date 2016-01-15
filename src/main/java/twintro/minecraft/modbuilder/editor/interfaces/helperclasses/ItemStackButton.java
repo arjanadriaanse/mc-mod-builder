@@ -1,5 +1,6 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
+import java.awt.Container;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -32,6 +33,7 @@ import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 public class ItemStackButton extends JButton{
 	private boolean isProduct = false;
 	private ItemStackChooseWindow itemStackChooser;
+	private WindowClosingVerifierUser main;
 
 	public ItemStackResource item;
 	
@@ -47,12 +49,13 @@ public class ItemStackButton extends JButton{
 		}
 	};
 	
-	public ItemStackButton(String s){
+	public ItemStackButton(String s, WindowClosingVerifierUser main){
 		super(s);
+		this.main = main;
 		
 		addActionListener(new ActionListener() {
 			@Override
-			public void actionPerformed(ActionEvent arg0) {
+			public void actionPerformed(ActionEvent e) {
 				click();
 			}
 		});
@@ -90,6 +93,7 @@ public class ItemStackButton extends JButton{
 			setText("");
 			setIcon(null);
 		}
+		main.change();
 	}
 	
 	public void click(){
