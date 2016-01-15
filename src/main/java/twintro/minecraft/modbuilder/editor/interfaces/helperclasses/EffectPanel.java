@@ -29,6 +29,7 @@ public class EffectPanel extends JPanel {
 		
 		effectComboBox = new JComboBox();
 		effectComboBox.setToolTipText(FoodItemEditor.effectTypeTooltip);
+		effectComboBox.addActionListener(main.actionListener);
 		effectComboBox.setModel(new DefaultComboBoxModel(new String[] {"Effect", "Speed", "Slowness", "Haste", "Mining Fatigue", "Instant Health",
 				"Instant Damage", "Jump Boost", "Nausea", "Regeneration", "Resistance", "Fire Resistance", "Water Breathing", "Invisibility",
 				"Blindness", "Night Vision", "Hunger", "Weakness", "Poison", "Wither", "Health Boost", "Absorption", "Saturation"}));
@@ -36,16 +37,19 @@ public class EffectPanel extends JPanel {
 		
 		durationSpinner = new JSpinner();
 		durationSpinner.setToolTipText(FoodItemEditor.effectDurationTooltip);
+		durationSpinner.addChangeListener(main.changeListener);
 		durationSpinner.setModel(new SpinnerNumberModel(new Integer(20), new Integer(0), null, new Integer(20)));
 		add(durationSpinner);
 		
 		amplifierSpinner = new JSpinner();
 		amplifierSpinner.setToolTipText(FoodItemEditor.effectAmplifierTooltip);
+		amplifierSpinner.addChangeListener(main.changeListener);
 		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		add(amplifierSpinner);
 		
 		removeButton = new JButton("Remove");
 		removeButton.setToolTipText(FoodItemEditor.removeEffectTooltip);
+		removeButton.addActionListener(main.actionListener);
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();

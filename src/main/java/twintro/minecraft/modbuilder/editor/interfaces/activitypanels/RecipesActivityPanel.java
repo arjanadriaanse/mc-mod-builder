@@ -190,7 +190,8 @@ public class RecipesActivityPanel extends ActivityPanel {
 	}
 	
 	public void closeEditor(String name) {
-		openEditors.remove(name);
+		if (openEditors.containsKey(name))
+			openEditors.remove(name);
 	}
 	
 	@Override

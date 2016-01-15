@@ -24,6 +24,7 @@ import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
@@ -31,7 +32,7 @@ import java.awt.Font;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-public class SmeltingRecipeEditor extends JFrame {
+public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
 	private String name;
 	private RecipesActivityPanel main;
@@ -62,14 +63,13 @@ public class SmeltingRecipeEditor extends JFrame {
 		contentPane.add(panel_2, BorderLayout.SOUTH);
 		panel_2.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JButton saveButton = new JButton("Save");
+		JButton saveButton = new JButton("Save Recipe");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				saveRecipe();
 			}
 		});
 		saveButton.setHorizontalAlignment(SwingConstants.RIGHT);
-
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
@@ -77,6 +77,7 @@ public class SmeltingRecipeEditor extends JFrame {
 				cancel();
 			}
 		});
+		
 		/*
 		JButton btnRename = new JButton("Rename");
 		btnRename.addActionListener(new ActionListener() {
@@ -99,8 +100,6 @@ public class SmeltingRecipeEditor extends JFrame {
 		JLabel lblCreateTheShaped = new JLabel("Create the smelting recipe ");
 		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
 		
-
-		
 		JPanel panel = new JPanel();
 		contentPane.add(panel, BorderLayout.CENTER);
 		panel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -109,7 +108,7 @@ public class SmeltingRecipeEditor extends JFrame {
 		panel.add(panel_1);
 		panel_1.setLayout(null);
 		
-		outputSmeltingButton = new ItemStackButton("");
+		outputSmeltingButton = new ItemStackButton("", this);
 		outputSmeltingButton.setProduct();
 		outputSmeltingButton.setBounds(243, 15, 90, 90);
 		panel_1.add(outputSmeltingButton);
@@ -119,7 +118,7 @@ public class SmeltingRecipeEditor extends JFrame {
 		panel_1.add(lblNewLabel);
 		lblNewLabel.setFont(new Font("Times New Roman", Font.BOLD, 69));
 		
-		inputSmeltingButton = new ItemStackButton("");
+		inputSmeltingButton = new ItemStackButton("", this);
 		inputSmeltingButton.setBounds(15, 15, 90, 90);
 		panel_1.add(inputSmeltingButton);
 		
@@ -134,6 +133,7 @@ public class SmeltingRecipeEditor extends JFrame {
 		
 		xpSpinner = new JSpinner();
 		xpSpinner.setToolTipText(xpTooltip);
+		xpSpinner.addChangeListener(changeListener);
 		xpSpinner.setModel(new SpinnerNumberModel(new Float(0), null, null, new Float(0.1)));
 		panel_3.add(xpSpinner, BorderLayout.CENTER);
 		
@@ -146,9 +146,9 @@ public class SmeltingRecipeEditor extends JFrame {
 		outputSmeltingButton.chooseItem(smltngRcpy.output);
 		inputSmeltingButton.chooseItem(smltngRcpy.input);
 		xpSpinner.setValue(smltngRcpy.xp);
+		
+		changed = false;
 	}
-
-	
 	
 	public void itemChanged(String old, String newName){
 		if (inputSmeltingButton.item.item == old) inputSmeltingButton.item.item = newName;
@@ -169,11 +169,19 @@ public class SmeltingRecipeEditor extends JFrame {
 		itemToSave.name = this.name;
 		itemToSave.recipe = recipe;
 		main.addRecipe(itemToSave);
+		
+		changed = false;
 	}
 	
 	private void cancel(){
 		for (WindowListener listener : getWindowListeners()){
 			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
+	}
+	
+	@Override
+	public void dispose() {
+		main.closeEditor(name);
+		super.dispose();
 	}
 }

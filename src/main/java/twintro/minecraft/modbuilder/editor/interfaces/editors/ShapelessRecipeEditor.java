@@ -15,6 +15,7 @@ import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
@@ -41,8 +42,7 @@ import java.awt.Font;
 
 import javax.swing.JFrame;
 
-public class ShapelessRecipeEditor extends JFrame {
-
+public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
 	protected String name;
 	protected RecipesActivityPanel main;
@@ -52,15 +52,15 @@ public class ShapelessRecipeEditor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-		private static List<String> stringSetToList(Set<String> set){
-			List<String> output = new ArrayList<String>();
-			for (String s : set){
-				output.add(s);
-			}
-			return output;
+	private static List<String> stringSetToList(Set<String> set){
+		List<String> output = new ArrayList<String>();
+		for (String s : set){
+			output.add(s);
 		}
+		return output;
+	}
 	
-		public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent) {
+	public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent) {
 		this.name = nameNew;
 		this.main = parent;
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -83,12 +83,12 @@ public class ShapelessRecipeEditor extends JFrame {
 		
 		buttons = new ItemStackButton[10];
 		for (int i = 0; i<9; i++){
-			buttons[i] = new ItemStackButton("");
+			buttons[i] = new ItemStackButton("", this);
 			panel.add(buttons[i]);
 			buttons[i].item = new ItemStackResource();
 		}
 		
-		buttons[9] = new ItemStackButton("");
+		buttons[9] = new ItemStackButton("", this);
 		buttons[9].setProduct();
 		buttons[9].setBounds(365, 115, 80, 80);
 		
@@ -121,7 +121,7 @@ public class ShapelessRecipeEditor extends JFrame {
 		panel_2.add(btnRename);
 		*/
 		
-		JButton btnSaveItem = new JButton("Save recipe");
+		JButton btnSaveItem = new JButton("Save Recipe");
 		panel_2.add(btnSaveItem);
 		btnSaveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -140,15 +140,17 @@ public class ShapelessRecipeEditor extends JFrame {
 	}
 		
 	public ShapelessRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
-			this(value, recipesActivityPanel);
-			ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
-			
-			for(int i = 0; i < shplsRcpy.input.size();i++)
-				buttons[i].chooseItem(shplsRcpy.input.get(i));
-			buttons[9].chooseItem(shplsRcpy.output);
-
-			this.name = value;
-		}
+		this(value, recipesActivityPanel);
+		ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
+		
+		for(int i = 0; i < shplsRcpy.input.size();i++)
+			buttons[i].chooseItem(shplsRcpy.input.get(i));
+		buttons[9].chooseItem(shplsRcpy.output);
+		
+		this.name = value;
+		
+		changed = false;
+	}
 
 	public void itemChanged(String old, String newName){
 		for(int i=0; i <10; i++)
@@ -164,7 +166,6 @@ public class ShapelessRecipeEditor extends JFrame {
 		for (WindowListener listener : getWindowListeners()){
 			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
-
 	}
 	
 	@Override
@@ -190,6 +191,7 @@ public class ShapelessRecipeEditor extends JFrame {
 		recipeElement.recipe = recipe;
 		recipeElement.name = this.name;
 		main.addRecipe(recipeElement);
-
+		
+		changed = false;
 	}
 }

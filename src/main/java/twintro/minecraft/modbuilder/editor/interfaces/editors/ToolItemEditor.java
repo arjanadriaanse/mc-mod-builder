@@ -68,6 +68,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		durabilitySpinner = new JSpinner();
 		durabilitySpinner.setToolTipText(durabilityTooltip);
+		durabilitySpinner.addChangeListener(changeListener);
 		durabilitySpinner.setModel(new SpinnerNumberModel(new Integer(128), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(durabilitySpinner);
 		
@@ -77,6 +78,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		efficiencySpinner = new JSpinner();
 		efficiencySpinner.setToolTipText(efficiencyTooltip);
+		efficiencySpinner.addChangeListener(changeListener);
 		efficiencySpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(2), null, new Float(2)));
 		interactionPanel.add(efficiencySpinner);
 		
@@ -86,6 +88,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		damageSpinner = new JSpinner();
 		damageSpinner.setToolTipText(damageTooltip);
+		damageSpinner.addChangeListener(changeListener);
 		damageSpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(1), null, new Float(1)));
 		interactionPanel.add(damageSpinner);
 		
@@ -95,6 +98,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		harvestLevelSpinner = new JSpinner();
 		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
+		harvestLevelSpinner.addChangeListener(changeListener);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		interactionPanel.add(harvestLevelSpinner);
 		
@@ -104,6 +108,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		enchantibilitySpinner = new JSpinner();
 		enchantibilitySpinner.setToolTipText(enchantibilityTooltip);
+		enchantibilitySpinner.addChangeListener(changeListener);
 		enchantibilitySpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(1), null, new Integer(1)));
 		interactionPanel.add(enchantibilitySpinner);
 		
@@ -152,6 +157,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		
 		repairMaterialCheckbox = new JCheckBox("Use");
 		repairMaterialCheckbox.setToolTipText(repairMaterialTooltip);
+		repairMaterialCheckbox.addActionListener(actionListener);
 		repairMaterialCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -184,6 +190,8 @@ public class ToolItemEditor extends RegularItemEditor {
 		this(item.name, main);
 		regularSetup(main, item);
 		toolSetup(item);
+
+		changed = false;
 	}
 	
 	protected void toolSetup(ItemElement item){
@@ -238,6 +246,8 @@ public class ToolItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+
+			changed = false;
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
@@ -249,6 +259,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
+					change();
 					if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
 					affectedBlocksLabel.setText(affectedBlocksLabel.getText() + material);
 				}
@@ -263,6 +274,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void resetBlocks(){
+		change();
 		affectedBlocksLabel.setText("");
 	}
 	
@@ -278,6 +290,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
+					change();
 					repairMaterialLabel.setText(material);
 				}
 

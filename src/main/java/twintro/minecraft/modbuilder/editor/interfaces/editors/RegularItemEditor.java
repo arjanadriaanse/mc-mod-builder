@@ -232,6 +232,7 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		
 		burntimeCheckbox = new JCheckBox("Use");
 		burntimeCheckbox.setToolTipText(burntimeTooltip);
+		burntimeCheckbox.addActionListener(actionListener);
 		burntimeCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -242,6 +243,7 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		
 		burntimeSpinner = new JSpinner();
 		burntimeSpinner.setToolTipText(burntimeTooltip);
+		burntimeSpinner.addChangeListener(changeListener);
 		burntimeSpinner.setEnabled(false);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		burntimePanel.add(burntimeSpinner, BorderLayout.CENTER);
@@ -274,6 +276,7 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		regularSetup(main, item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
+		changed = false;
 	}
 	
 	protected void regularSetup(ItemsActivityPanel main, ItemElement item){
@@ -308,6 +311,8 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
+
+			changed = false;
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
