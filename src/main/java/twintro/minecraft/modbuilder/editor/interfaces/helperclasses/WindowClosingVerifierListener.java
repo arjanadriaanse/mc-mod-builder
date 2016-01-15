@@ -17,7 +17,8 @@ public class WindowClosingVerifierListener implements WindowListener{
 		JOptionPane.WARNING_MESSAGE, 
 		null, options, options[0]);
 		if (selected == 0 && window instanceof WindowClosingVerifierUser) 
-			((WindowClosingVerifierUser) window).save(); 
+			if (!((WindowClosingVerifierUser) window).save())
+				return;
 		if (selected != 2) window.dispose();
 	}
 	

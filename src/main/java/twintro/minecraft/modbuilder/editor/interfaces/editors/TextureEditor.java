@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.Color;
 import java.awt.FlowLayout;
@@ -39,8 +39,10 @@ import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 
-public class TextureEditor extends JFrame {
+public class TextureEditor extends IconFrame {
 	//TODO undo
 	
 	String name;
@@ -99,7 +101,7 @@ public class TextureEditor extends JFrame {
 	}
 	
 	public JFrame buildFrame(){
-		JFrame f = new JFrame();
+		JFrame f = new IconFrame();
 		f.setSize(384, 368);
 		f.setVisible(false);
 		panel = new JPanel() {

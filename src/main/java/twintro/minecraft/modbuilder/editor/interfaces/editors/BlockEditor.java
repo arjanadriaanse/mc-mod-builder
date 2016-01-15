@@ -324,7 +324,7 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 		}
 	}
 
-	public void save(){
+	public boolean save(){
 		if (!modelChooserIsOpen && !(model == null) && materialComboBox.getSelectedIndex() != 0){
 			BlockElement block = new BlockElement();
 			block.name = name;
@@ -363,8 +363,12 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 			dispose();
 		}
 		else{
-			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
+			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
 		}
+		return true;
 	}
 	/*
 	protected void rename(){

@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor.interfaces;
+package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
 import java.awt.BorderLayout;
 import java.awt.Image;
@@ -17,6 +17,7 @@ import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.TextureEditor;
 
 public class TexturesActivityPanel extends ActivityPanel {
 	TextureEditor editor;

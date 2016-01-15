@@ -305,7 +305,7 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		}
 	}
 
-	public void save() {
+	public boolean save() {
 		if (!textureChooserIsOpen && !materialChooserIsOpen && textureLabel.getText().length() > 0){
 			ItemResource base = new ItemResource();
 			
@@ -315,8 +315,12 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 			dispose();
 		}
 		else{
-			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
+			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
 		}
+		return true;
 	}
 	
 	protected ItemElement writeItem(BaseItemResource base){

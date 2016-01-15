@@ -5,6 +5,7 @@ import java.awt.CardLayout;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,6 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -26,11 +28,12 @@ import javax.swing.UIManager;
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
-import twintro.minecraft.modbuilder.editor.interfaces.TexturesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class Editor {
@@ -75,10 +78,10 @@ public class Editor {
 	 */
 	private static void initialize() {
 		//Window
-		frame = new JFrame();
+		frame = new IconFrame();
 		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		//TODO frame.setTitle("");
+		frame.setTitle("Mod Builder");
 		
 		//Menubar
 		JMenuBar menuBar = new JMenuBar();
@@ -157,12 +160,21 @@ public class Editor {
 		else result = menu.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
+			boolean newIsActuallyOpen = false;
+			if (file.exists() && newMod)
+				newIsActuallyOpen = true;
 			if (!file.exists())
 				file.mkdirs();
 			String dir = file.getAbsolutePath().replace("\\", "/") + "/";
 			ResourcePackGenerator.resourcePackFolderDir = dir;
 			if (!interfaceOpened) createInterface();
 			updateInterface();
+			if (newIsActuallyOpen){
+				metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
+				langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
+						"assets/modbuilder/lang/en_US.lang");
+				return false;
+			}
 			return true;
 		}
 		return false;

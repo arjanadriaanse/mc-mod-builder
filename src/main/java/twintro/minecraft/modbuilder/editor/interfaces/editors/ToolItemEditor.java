@@ -224,8 +224,9 @@ public class ToolItemEditor extends RegularItemEditor {
 			repairMaterialUse();
 		}
 	}
-
-	public void save() {
+	
+	@Override
+	public boolean save() {
 		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
 			ToolItemResource base = new ToolItemResource();
 			base.durability = (Integer) durabilitySpinner.getValue();
@@ -250,8 +251,12 @@ public class ToolItemEditor extends RegularItemEditor {
 			dispose();
 		}
 		else{
-			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);
+			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
 		}
+		return true;
 	}
 	
 	protected void addBlock(){

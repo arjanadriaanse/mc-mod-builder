@@ -21,8 +21,9 @@ import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 
-public class TextureChooseWindow extends JFrame {
+public class TextureChooseWindow extends IconFrame {
 	ListPanel listPanel;
 	TextureRunnable main;
 	

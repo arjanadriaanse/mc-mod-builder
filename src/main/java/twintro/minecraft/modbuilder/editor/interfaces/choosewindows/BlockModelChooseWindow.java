@@ -49,8 +49,9 @@ import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.ListPanel;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 
-public class BlockModelChooseWindow extends JFrame {
+public class BlockModelChooseWindow extends IconFrame {
 	ListPanel listPanel;
 	BlockModelRunnable main;
 	int modelType = 1;

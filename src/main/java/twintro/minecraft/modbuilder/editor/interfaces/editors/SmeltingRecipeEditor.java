@@ -160,10 +160,29 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		if (outputSmeltingButton.item.block == old) outputSmeltingButton.item.block = newName;
 	}
 	
-	public void save(){
+	public boolean save(){
 		SmeltingRecipe recipe = new SmeltingRecipe();
-		recipe.output = outputSmeltingButton.item;
-		recipe.input = inputSmeltingButton.item;
+		
+		ItemStackResource inItem = inputSmeltingButton.item;
+		if (inItem == null || ((inItem.item == null || inItem.item == "") && (inItem.block == null || inItem.block == ""))){
+			int selected = JOptionPane.showConfirmDialog(this, "Please give an input item", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
+		}
+		recipe.input = inItem;
+		
+		ItemStackResource outItem = outputSmeltingButton.item;
+		if (outItem == null || ((outItem.item == null || outItem.item == "") && (outItem.block == null || outItem.block == ""))){
+			int selected = JOptionPane.showConfirmDialog(this, "Please give an output item", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
+		}
+		recipe.output = outItem;
+		
 		recipe.xp = (Float)xpSpinner.getValue();
 		RecipeElement itemToSave = new RecipeElement();
 		itemToSave.name = this.name;
@@ -171,6 +190,8 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		main.addRecipe(itemToSave);
 		
 		dispose();
+		
+		return true;
 	}
 	
 	private void cancel(){

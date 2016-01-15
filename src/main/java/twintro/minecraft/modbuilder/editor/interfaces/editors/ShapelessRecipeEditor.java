@@ -174,15 +174,30 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		super.dispose();
 	}
 
-	public void save() {
+	public boolean save() {
 		List<ItemStackResource> savableInput = new ArrayList<ItemStackResource>();
 		ItemStackResource savableOutput = new ItemStackResource();
 		for (int i = 0; i < 9; i++){
-			if (buttons[i].getText() != ""){
-				savableInput.add(buttons[i].item);
-			}
+			ItemStackResource item = buttons[i].item;
+			if (!(item == null || ((item.item == null || item.item == "") && (item.block == null || item.block == ""))))
+				savableInput.add(item);
 		}
-		savableOutput = buttons[9].item;
+		if (savableInput.size() == 0){
+			int selected = JOptionPane.showConfirmDialog(this, "Please give atleast one item to have as input", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
+		}
+		ItemStackResource item = buttons[9].item;
+		if (item == null || ((item.item == null || item.item == "") && (item.block == null || item.block == ""))){
+			int selected = JOptionPane.showConfirmDialog(this, "Please give an output item", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
+		}
+		savableOutput = item;
 		ShapelessRecipe recipe = new ShapelessRecipe();
 		recipe.type = RecipeType.shapeless;
 		recipe.input = savableInput;
@@ -193,5 +208,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		main.addRecipe(recipeElement);
 		
 		dispose();
+		
+		return true;
 	}
 }

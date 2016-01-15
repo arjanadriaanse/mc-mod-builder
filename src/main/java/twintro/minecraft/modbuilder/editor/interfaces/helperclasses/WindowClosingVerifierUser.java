@@ -7,7 +7,7 @@ import javax.swing.JFrame;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-public abstract class WindowClosingVerifierUser extends JFrame {
+public abstract class WindowClosingVerifierUser extends IconFrame {
 	public boolean changed = true;
 	public final ActionListener actionListener = new ActionListener(){
 		@Override
@@ -27,5 +27,5 @@ public abstract class WindowClosingVerifierUser extends JFrame {
 	public boolean needsClosingVerification(){
 		return changed;
 	}
-	public void save(){}
+	public abstract boolean save();
 }

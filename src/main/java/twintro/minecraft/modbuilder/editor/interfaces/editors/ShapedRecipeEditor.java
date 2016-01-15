@@ -64,7 +64,8 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		changed = false;
 	}
 	
-	public void save() {
+	@Override
+	public boolean save() {
 		String[] pattern = {"", "", ""};
 		Map<Character, ItemStackResource> ingredients = new HashMap<Character, ItemStackResource>();
 		for (int i = 0; i < 9; i++){
@@ -90,13 +91,19 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 			}
 		}
 		if (ingredients.isEmpty()){
-			JOptionPane.showMessageDialog(this, "Please give atleast one item to have as input");
-			return;
+			int selected = JOptionPane.showConfirmDialog(this, "Please give atleast one item to have as input", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
 		}
 		ItemStackResource item = buttons[9].item;
 		if (item == null || ((item.item == null || item.item == "") && (item.block == null || item.block == ""))){
-			JOptionPane.showMessageDialog(this, "Please give an output item");
-			return;
+			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+			return true;
 		}
 		
 		ItemStackResource outputItem = buttons[9].item;
@@ -115,5 +122,7 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		main.addRecipe(savable);
 		
 		dispose();
+		
+		return true;
 	}
 }

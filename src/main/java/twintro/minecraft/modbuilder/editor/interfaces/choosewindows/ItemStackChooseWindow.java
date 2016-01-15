@@ -16,9 +16,10 @@ import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class ItemStackChooseWindow extends JFrame {
+public class ItemStackChooseWindow extends IconFrame {
 	private JPanel mainPanel;
 	private JPanel buttonPanel;
 	private JPanel labelPanel;
