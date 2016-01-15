@@ -1,7 +1,8 @@
 {
-   "material": "ground",
+   "material": "rock",
    "model": "minecraft:dirt",
    "tab": "block",
    "harvesttype": "shovel",
-   "harvestlevel": 0
+   "harvestlevel": 0,
+   "drops": [{"item": "modbuilder:notdirt"}]
 }

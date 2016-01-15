@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
 import java.util.LinkedHashSet;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -45,7 +46,7 @@ public class ResourceConverter {
 	}
 
 	public static BuilderBlock toBlock(BlockResource resource) {
-		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material));
+		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material), resource.drops);
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)

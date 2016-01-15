@@ -1,7 +1,10 @@
 package twintro.minecraft.modbuilder.data.resources.blocks;
 
+import java.util.List;
+
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 
 /**
  * Contains all basic properties for blocks.
@@ -23,6 +26,10 @@ public abstract class BaseBlockResource {
 	 * The name of the creative tab the item is in.
 	 */
 	public TabResource tab;
+	/**
+	 * The items that will be dropped by the block.
+	 */
+	public List<ItemStackResource> drops;
 	/**
 	 * How much light the block will omit. This is a value from 0 to 15. Most blocks are lightfree and have lightlevel 0.
 	 * Torches or other lightsources have lightlevel 15.

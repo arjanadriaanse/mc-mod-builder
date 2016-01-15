@@ -3,5 +3,6 @@
    "model": "minecraft:cobblestone",
    "tab": "block",
    "harvesttype": "pickaxe",
-   "harvestlevel": 2
+   "harvestlevel": 2,
+   "drops": [{"item": "minecraft:cobblestone","amount": 2,"amountincrease": 4},{"item": "minecraft:stone","amount": 2,"amountincrease": 4}]
 }

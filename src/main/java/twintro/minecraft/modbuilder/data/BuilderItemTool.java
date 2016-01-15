@@ -2,8 +2,13 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Set;
 
+import net.minecraft.block.Block;
 import net.minecraft.creativetab.CreativeTabs;
+import net.minecraft.entity.EntityLivingBase;
+import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
+import net.minecraft.util.BlockPos;
+import net.minecraft.world.World;
 
 /**
  * Base class for new {@link ItemTool}s.

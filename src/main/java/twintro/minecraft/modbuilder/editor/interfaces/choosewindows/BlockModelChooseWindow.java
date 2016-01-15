@@ -65,18 +65,18 @@ public class BlockModelChooseWindow extends JFrame {
 	boolean rotating = false;
 	Point mousecoords;
 	Point[] loc1 = new Point[]{
-			new Point( 64,  0),
-			new Point(  0, 64),
-			new Point( 64, 64),
-			new Point(128, 64),
-			new Point(192, 64),
-			new Point( 64,128),
-			new Point(208,192)
+			new Point( 96,  0),
+			new Point( 32, 64),
+			new Point( 96, 64),
+			new Point(160, 64),
+			new Point(224, 64),
+			new Point( 96,128),
+			new Point(240,192)
 	};
 	Point[] loc2 = new Point[]{
-			new Point( 64,0),
-			new Point(192,0),
-	        new Point(160,160)
+			new Point( 96,0),
+			new Point(224,0),
+	        new Point(192,160)
 	};
 
 	public BlockModelChooseWindow(BlockModelRunnable main){
@@ -84,7 +84,7 @@ public class BlockModelChooseWindow extends JFrame {
 		this.main = main;
 		load();
 
-		setBounds(100, 100, 600, 500);
+		setBounds(100, 100, 500, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Block Model:");
 		
@@ -120,13 +120,13 @@ public class BlockModelChooseWindow extends JFrame {
 		
 		JPanel mainPanel = new JPanel();
 		listPanel.add(mainPanel, BorderLayout.LINE_START);
-		mainPanel.setPreferredSize(new Dimension(600, 800));
+		mainPanel.setPreferredSize(new Dimension(350, 400));
 		mainPanel.setLayout(new BorderLayout(0,0));
 		mainPanel.setVisible(true);
 		
 		JPanel topButtonPanel = new JPanel();
 		mainPanel.add(topButtonPanel, BorderLayout.PAGE_START);
-		topButtonPanel.setPreferredSize(new Dimension(300, 64));
+		topButtonPanel.setPreferredSize(new Dimension(350, 64));
 		topButtonPanel.setLayout(new FlowLayout());
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
@@ -153,7 +153,7 @@ public class BlockModelChooseWindow extends JFrame {
 
 		JPanel botButtonPanel = new JPanel();
 		mainPanel.add(botButtonPanel, BorderLayout.PAGE_END);
-		botButtonPanel.setPreferredSize(new Dimension(300, 32));
+		botButtonPanel.setPreferredSize(new Dimension(350, 32));
 		botButtonPanel.setLayout(new FlowLayout());
 		
 		JButton buttonOK = new JButton("Use this model");

@@ -1,9 +1,10 @@
 {
-   "type": "tool",
-   "model": "modbuilder:sandshovel",
-   "damage": 1,
-   "durability": 256,
-   "efficiency":  12.0,
-   "repairblock": "minecraft:sandstone",
-   "blocks": ["minecraft:sand","modbuilder:notdirt","minecraft:sandstone","minecraft:red_sand","minecraft:red_sandstone"]
+  "type": "tool",
+  "model": "modbuilder:sandshovel",
+  "damage": 1,
+  "durability": 2,
+  "efficiency": 12.0,
+  "repairblock": "minecraft:sandstone",
+  "blocks": [ "minecraft:sand", "modbuilder:notdirt", "minecraft:sandstone", "minecraft:red_sand", "minecraft:red_sandstone" ],
+  "container": "minecraft:stick"
 }

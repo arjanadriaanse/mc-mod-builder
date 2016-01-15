@@ -27,6 +27,10 @@ public class ItemStackResource {
 	 */
 	public Integer amount;
 	/**
+	 * A random increase of the amount of blocks or items in this stack. Only used to define the randomness in block drops.
+	 */
+	public Integer amountincrease;
+	/**
 	 * The metadata of the block or item in this stack.
 	 * For example, white wool is the wool block with metadata 0, whilst orange wool is the wool block with metadata 1.
 	 */
