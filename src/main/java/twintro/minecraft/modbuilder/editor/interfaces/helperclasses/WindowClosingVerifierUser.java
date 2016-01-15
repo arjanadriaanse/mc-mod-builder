@@ -27,4 +27,5 @@ public abstract class WindowClosingVerifierUser extends JFrame {
 	public boolean needsClosingVerification(){
 		return changed;
 	}
+	public void save(){}
 }

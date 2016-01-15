@@ -324,7 +324,7 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 		}
 	}
 
-	protected void save(){
+	public void save(){
 		if (!modelChooserIsOpen && !(model == null) && materialComboBox.getSelectedIndex() != 0){
 			BlockElement block = new BlockElement();
 			block.name = name;
@@ -360,7 +360,7 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 			
 			main.addBlock(block);
 			
-			changed = false;
+			dispose();
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);

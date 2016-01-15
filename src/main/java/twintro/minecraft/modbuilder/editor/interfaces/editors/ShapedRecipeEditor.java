@@ -64,7 +64,7 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		changed = false;
 	}
 	
-	protected void saveRecipe() {
+	public void save() {
 		String[] pattern = {"", "", ""};
 		Map<Character, ItemStackResource> ingredients = new HashMap<Character, ItemStackResource>();
 		for (int i = 0; i < 9; i++){
@@ -114,6 +114,6 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		savable.recipe = shapedRecipe;
 		main.addRecipe(savable);
 		
-		changed = false;
+		dispose();
 	}
 }

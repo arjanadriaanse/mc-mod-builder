@@ -246,6 +246,8 @@ public class ItemStackChooseWindow extends JFrame {
 				item.container = containerLabel.getText();
 			
 			runnable.chooseItemStack(item);
+			
+			dispose();
 		}
 	}
 	

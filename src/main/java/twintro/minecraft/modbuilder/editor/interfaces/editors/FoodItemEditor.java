@@ -166,7 +166,7 @@ public class FoodItemEditor extends RegularItemEditor {
 				addEffect(new EffectPanel(this, effect));
 	}
 
-	protected void save() {
+	public void save() {
 		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
 			FoodItemResource base = new FoodItemResource();
 			base.amount = (Integer) hungerRefillSpinner.getValue();
@@ -183,8 +183,8 @@ public class FoodItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
-
-			changed = false;
+			
+			dispose();
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);

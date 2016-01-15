@@ -125,7 +125,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		panel_2.add(btnSaveItem);
 		btnSaveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				saveRecipe();
+				save();
 			}
 		});
 		
@@ -174,7 +174,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		super.dispose();
 	}
 
-	protected void saveRecipe() {
+	public void save() {
 		List<ItemStackResource> savableInput = new ArrayList<ItemStackResource>();
 		ItemStackResource savableOutput = new ItemStackResource();
 		for (int i = 0; i < 9; i++){
@@ -192,6 +192,6 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		recipeElement.name = this.name;
 		main.addRecipe(recipeElement);
 		
-		changed = false;
+		dispose();
 	}
 }

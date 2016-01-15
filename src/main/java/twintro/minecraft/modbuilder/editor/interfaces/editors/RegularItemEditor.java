@@ -305,14 +305,14 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		}
 	}
 
-	protected void save() {
+	public void save() {
 		if (!textureChooserIsOpen && !materialChooserIsOpen && textureLabel.getText().length() > 0){
 			ItemResource base = new ItemResource();
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
-
-			changed = false;
+			
+			dispose();
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);

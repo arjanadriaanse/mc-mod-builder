@@ -66,7 +66,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		JButton saveButton = new JButton("Save Recipe");
 		saveButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				saveRecipe();
+				save();
 			}
 		});
 		saveButton.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -160,7 +160,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		if (outputSmeltingButton.item.block == old) outputSmeltingButton.item.block = newName;
 	}
 	
-	private void saveRecipe(){
+	public void save(){
 		SmeltingRecipe recipe = new SmeltingRecipe();
 		recipe.output = outputSmeltingButton.item;
 		recipe.input = inputSmeltingButton.item;
@@ -170,7 +170,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		itemToSave.recipe = recipe;
 		main.addRecipe(itemToSave);
 		
-		changed = false;
+		dispose();
 	}
 	
 	private void cancel(){

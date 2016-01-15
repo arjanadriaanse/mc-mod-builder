@@ -225,7 +225,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		}
 	}
 
-	protected void save() {
+	public void save() {
 		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
 			ToolItemResource base = new ToolItemResource();
 			base.durability = (Integer) durabilitySpinner.getValue();
@@ -246,8 +246,8 @@ public class ToolItemEditor extends RegularItemEditor {
 			
 			ItemElement item = writeItem(base);
 			main.addItem(item);
-
-			changed = false;
+			
+			dispose();
 		}
 		else{
 			JOptionPane.showMessageDialog(this, "Not all required properties are given a value yet.", "Error", JOptionPane.ERROR_MESSAGE);

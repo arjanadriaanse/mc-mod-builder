@@ -9,14 +9,16 @@ import javax.swing.JOptionPane;
 
 public class WindowClosingVerifierListener implements WindowListener{
 	public static void close(Window window){
-		Object[] options = {"Yes",
-        "Cancel"};
-		int selected = JOptionPane.showOptionDialog(window, "Are you sure you want to close this window?", 
+		Object[] options = {"Yes", "No", "Cancel"};
+		int selected = JOptionPane.showOptionDialog(window, "There are unsaved changes.\r\n" + 
+				"Would you like to save first?", 
 		"Confirm", 
-		JOptionPane.YES_NO_OPTION, 
+		JOptionPane.YES_NO_CANCEL_OPTION,
 		JOptionPane.WARNING_MESSAGE, 
-		null, options, options[1]);
-		if (selected == 0) window.dispose();
+		null, options, options[0]);
+		if (selected == 0 && window instanceof WindowClosingVerifierUser) 
+			((WindowClosingVerifierUser) window).save(); 
+		if (selected != 2) window.dispose();
 	}
 	
 	@Override
