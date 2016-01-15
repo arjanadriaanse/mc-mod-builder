@@ -358,7 +358,7 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 
 	protected void containerChoose() {
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, this);
+			new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_AND_BLOCKS, this);
 			materialChooserIsOpen = true;
 		}
 	}

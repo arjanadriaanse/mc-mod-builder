@@ -2,12 +2,15 @@ package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
+import java.awt.Frame;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -19,7 +22,7 @@ import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class ItemStackChooseWindow extends IconFrame {
+public class ItemStackChooseWindow extends JDialog {
 	private JPanel mainPanel;
 	private JPanel buttonPanel;
 	private JPanel labelPanel;
@@ -49,7 +52,10 @@ public class ItemStackChooseWindow extends IconFrame {
 			+ "The container is the item or block that will be left behind after crafting</html>";
 	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
 	
-	public ItemStackChooseWindow(boolean isProduct, ItemStackRunnable runnable){
+	public ItemStackChooseWindow(Window parent, boolean isProduct, ItemStackRunnable runnable){
+		super(parent);
+		setModal(true);
+		
 		this.isProduct = isProduct;
 		this.runnable = runnable;
 		
@@ -176,8 +182,8 @@ public class ItemStackChooseWindow extends IconFrame {
 		setVisible(true);
 	}
 	
-	public ItemStackChooseWindow(boolean isProduct, ItemStackRunnable runnable, ItemStackResource item){
-		this(isProduct, runnable);
+	public ItemStackChooseWindow(Window parent, boolean isProduct, ItemStackRunnable runnable, ItemStackResource item){
+		this(parent, isProduct, runnable);
 		
 		if (item.item != null)
 			materialLabel.setText(item.item);
@@ -194,7 +200,7 @@ public class ItemStackChooseWindow extends IconFrame {
 	
 	private void chooseMaterial(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					materialLabel.setText(material);
@@ -217,7 +223,7 @@ public class ItemStackChooseWindow extends IconFrame {
 	
 	private void chooseContainer(){
 		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
+			materialChooseWindow = new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					containerLabel.setText(material);

@@ -261,7 +261,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	protected void addBlock(){
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new MaterialRunnable() {
+			new MaterialChooseWindow(this, MaterialChooseWindow.BLOCKS_ONLY, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					change();
@@ -292,7 +292,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	protected void repairMaterialChoose(){
 		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
+			new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
 				@Override
 				public void chooseMaterial(String material) {
 					change();

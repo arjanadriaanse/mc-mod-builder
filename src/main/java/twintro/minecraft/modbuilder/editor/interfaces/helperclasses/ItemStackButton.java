@@ -99,9 +99,9 @@ public class ItemStackButton extends JButton{
 	public void click(){
 		if (itemStackChooser == null){
 			if (item == null)
-				itemStackChooser = new ItemStackChooseWindow(isProduct, runnable);
+				itemStackChooser = new ItemStackChooseWindow(main, isProduct, runnable);
 			else
-				itemStackChooser = new ItemStackChooseWindow(isProduct, runnable, item);
+				itemStackChooser = new ItemStackChooseWindow(main, isProduct, runnable, item);
 		}
 	}
 	

@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -12,6 +13,7 @@ import java.util.Set;
 import javax.swing.AbstractListModel;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
@@ -26,7 +28,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class MaterialChooseWindow extends IconFrame {
+public class MaterialChooseWindow extends JDialog {
 	public static final int ITEMS_ONLY = 0;
 	public static final int BLOCKS_ONLY = 1;
 	public static final int ITEMS_AND_BLOCKS = 2;
@@ -42,7 +44,10 @@ public class MaterialChooseWindow extends IconFrame {
 	private MaterialRunnable runnable;
 	private ListWindow listWindow = null;
 	
-	public MaterialChooseWindow(int type, MaterialRunnable runnable){
+	public MaterialChooseWindow(Window parent, int type, MaterialRunnable runnable){
+		super(parent);
+		setModal(true);
+		
 		this.runnable = runnable;
 		
 		if (type == ITEMS_AND_BLOCKS || type == ITEMS_BLOCKS_NONE)
