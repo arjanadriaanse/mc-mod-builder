@@ -13,6 +13,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 import java.awt.GridLayout;
@@ -37,19 +38,14 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 
 public class ShapedRecipeEditor extends ShapelessRecipeEditor {
-	private JPanel contentPane;
-
-	/**
-	 * Create the frame.
-	 */
-	public ShapedRecipeEditor(String nameNew, RecipesActivityPanel parent) {
-		super(nameNew, parent);
+	public ShapedRecipeEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		super(name, runnable, closeHandler);
 		lblCreateTheShaped.setText("Create the recipe in the desired pattern");
-		this.name = nameNew;
+		this.name = name;
 	}
 
-	public ShapedRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
-		this(value, recipesActivityPanel);
+	public ShapedRecipeEditor(RecipeElement recipe, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(recipe.name, runnable, closeHandler);
 		ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
 		
 		for(int i = 0; i < 9;i++){
@@ -58,8 +54,6 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 				buttons[i].chooseItem(shpdRcpy.input.get(indexChar));
 		}
 		buttons[9].chooseItem(shpdRcpy.output);
-		
-		this.name = value;
 		
 		changed = false;
 	}
@@ -108,8 +102,8 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		
 		ItemStackResource outputItem = buttons[9].item;
 		int outputAmount;
-		RecipeElement savable = new RecipeElement();
-		savable.name = this.name;
+		RecipeElement recipe = new RecipeElement();
+		recipe.name = this.name;
 		ShapedRecipe shapedRecipe = new ShapedRecipe();
 		List<String> recipeListForm = new ArrayList<String>();
 		for (int i = 0; i < 3; i++)
@@ -118,9 +112,9 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		shapedRecipe.input = ingredients; 
 		shapedRecipe.output = outputItem;
 		shapedRecipe.type = RecipeType.shaped;
-		savable.recipe = shapedRecipe;
-		main.addRecipe(savable);
+		recipe.recipe = shapedRecipe;
 		
+		runnable.run(recipe);
 		dispose();
 		
 		return true;

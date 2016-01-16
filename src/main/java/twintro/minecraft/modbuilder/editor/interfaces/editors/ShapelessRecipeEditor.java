@@ -13,6 +13,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
@@ -44,28 +45,22 @@ import javax.swing.JFrame;
 
 public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
-	protected String name;
-	protected RecipesActivityPanel main;
-	protected ItemStackButton[] buttons;
 	protected JLabel lblCreateTheShaped;
+	protected ItemStackButton[] buttons;
 	
-	/**
-	 * Launch the application.
-	 */
-	private static List<String> stringSetToList(Set<String> set){
-		List<String> output = new ArrayList<String>();
-		for (String s : set){
-			output.add(s);
-		}
-		return output;
-	}
+	protected String name;
+	protected ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
 	
-	public ShapelessRecipeEditor(String nameNew, RecipesActivityPanel parent) {
+	public ShapelessRecipeEditor(String nameNew, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = nameNew;
-		this.main = parent;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowClosingVerifierListener());
 		setBounds(100, 100, 506, 412);
+		
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(5, 5));
@@ -106,21 +101,6 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		lblCreateTheShaped = new JLabel("Create the recipe, the shape does not matter");
 		contentPane.add(lblCreateTheShaped, BorderLayout.NORTH);
 		
-		/*
-		JButton btnRename = new JButton("Rename");
-		btnRename.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String nameNew2 = JOptionPane.showInputDialog("Item name:");
-				RecipeEditor temp = main.openEditors.get(name);
-				main.openEditors.remove(name);
-				name = nameNew2;
-				main.openEditors.put(name, temp);
-				setTitle("Edit Recipe: " + name);
-			}
-		});
-		panel_2.add(btnRename);
-		*/
-		
 		JButton btnSaveItem = new JButton("Save Recipe");
 		panel_2.add(btnSaveItem);
 		btnSaveItem.addActionListener(new ActionListener() {
@@ -139,41 +119,18 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		setVisible(true);
 	}
 		
-	public ShapelessRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
-		this(value, recipesActivityPanel);
+	public ShapelessRecipeEditor(RecipeElement recipe, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(recipe.name, runnable, closeHandler);
 		ShapelessRecipe shplsRcpy = (ShapelessRecipe)recipe.recipe;
 		
 		for(int i = 0; i < shplsRcpy.input.size();i++)
 			buttons[i].chooseItem(shplsRcpy.input.get(i));
 		buttons[9].chooseItem(shplsRcpy.output);
 		
-		this.name = value;
-		
 		changed = false;
 	}
 
-	public void itemChanged(String old, String newName){
-		for(int i=0; i <10; i++)
-			if (buttons[i].item.item == old) buttons[i].item.item = newName;
-	}
-	
-	public void blockChanged(String old, String newName){
-		for (int i=0; 9<10; i++)
-			if (buttons[i].item.block == old) buttons[i].item.block = newName;
-	}
-
-	protected void cancel() {
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
-	}
-	
 	@Override
-	public void dispose() {
-		main.closeEditor(name);
-		super.dispose();
-	}
-
 	public boolean save() {
 		List<ItemStackResource> savableInput = new ArrayList<ItemStackResource>();
 		ItemStackResource savableOutput = new ItemStackResource();
@@ -205,10 +162,22 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		RecipeElement recipeElement = new RecipeElement();
 		recipeElement.recipe = recipe;
 		recipeElement.name = this.name;
-		main.addRecipe(recipeElement);
 		
+		runnable.run(recipeElement);
 		dispose();
 		
 		return true;
+	}
+
+	private void cancel() {
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		closeHandler.run(name);
+		super.dispose();
 	}
 }

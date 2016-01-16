@@ -42,9 +42,8 @@ public class ItemStackChooseWindow extends JDialog {
 	private JSpinner stackSizeSpinner;
 	private JCheckBox containerCheckBox;
 	
-	private MaterialChooseWindow materialChooseWindow;
 	private boolean isProduct;
-	private ItemStackRunnable runnable;
+	private ObjectRunnable runnable;
 
 	private static final String materialProductTooltip = "The material of the product";
 	private static final String materialIngredientTooltip = "The material of the ingredient";
@@ -52,13 +51,11 @@ public class ItemStackChooseWindow extends JDialog {
 			+ "The container is the item or block that will be left behind after crafting</html>";
 	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
 	
-	public ItemStackChooseWindow(Window parent, boolean isProduct, ItemStackRunnable runnable){
-		super(parent);
-		setModal(true);
-		
+	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable){
 		this.isProduct = isProduct;
 		this.runnable = runnable;
-		
+
+		setModal(true);
 		setBounds(100, 100, 300, 130);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		if (isProduct)
@@ -182,8 +179,8 @@ public class ItemStackChooseWindow extends JDialog {
 		setVisible(true);
 	}
 	
-	public ItemStackChooseWindow(Window parent, boolean isProduct, ItemStackRunnable runnable, ItemStackResource item){
-		this(parent, isProduct, runnable);
+	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable, ItemStackResource item){
+		this(isProduct, runnable);
 		
 		if (item.item != null)
 			materialLabel.setText(item.item);
@@ -199,19 +196,12 @@ public class ItemStackChooseWindow extends JDialog {
 	}
 	
 	private void chooseMaterial(){
-		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
-				@Override
-				public void chooseMaterial(String material) {
-					materialLabel.setText(material);
-				}
-
-				@Override
-				public void materialChooserDispose() {
-					materialChooseWindow = null;
-				}
-			});
-		}
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				materialLabel.setText((String) obj);
+			}
+		});
 	}
 	
 	private void useContainer(){
@@ -222,19 +212,12 @@ public class ItemStackChooseWindow extends JDialog {
 	}
 	
 	private void chooseContainer(){
-		if (materialChooseWindow == null){
-			materialChooseWindow = new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_BLOCKS_NONE, new MaterialRunnable() {
-				@Override
-				public void chooseMaterial(String material) {
-					containerLabel.setText(material);
-				}
-
-				@Override
-				public void materialChooserDispose() {
-					materialChooseWindow = null;
-				}
-			});
-		}
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				containerLabel.setText((String) obj);
+			}
+		});
 	}
 	
 	private void save(){
@@ -242,7 +225,6 @@ public class ItemStackChooseWindow extends JDialog {
 		if (material != null){
 			ItemStackResource item = new ItemStackResource();
 			
-			//TODO material.split":"[1] also in ToolItemEditor 233
 			if (MaterialResources.isItem(material))
 				item.item = material;
 			else
@@ -252,20 +234,12 @@ public class ItemStackChooseWindow extends JDialog {
 			else if (containerCheckBox.isSelected())
 				item.container = containerLabel.getText();
 			
-			runnable.chooseItemStack(item);
-			
+			runnable.run(item);
 			dispose();
 		}
 	}
 	
 	private void cancel(){
-		if (materialChooseWindow != null) materialChooseWindow.dispose();
 		dispose();
-	}
-	
-	@Override
-	public void dispose() {
-		runnable.itemStackChooserDispose();
-		super.dispose();
 	}
 }

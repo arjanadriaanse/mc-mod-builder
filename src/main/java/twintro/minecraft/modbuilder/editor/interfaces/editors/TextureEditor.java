@@ -37,17 +37,17 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
 public class TextureEditor extends IconFrame {
-	//TODO undo
-	
 	String name;
 	BufferedImage image;
-	TexturesActivityPanel parent;
+	ObjectRunnable runnable;
 	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
@@ -86,8 +86,8 @@ public class TextureEditor extends IconFrame {
 		return bi;
 	}
 	
-	public TextureEditor(TexturesActivityPanel parent){
-		this.parent = parent;
+	public TextureEditor(ObjectRunnable runnable){
+		this.runnable = runnable;
 		frame = buildFrame();
 	}
 	
@@ -232,7 +232,11 @@ public class TextureEditor extends IconFrame {
 	public void saveImage() {
 		saved=true;
 		frame.setIconImage(image);
-		parent.addImage(new ImageIcon(image), name);
+		
+		TextureObject texture = new TextureObject();
+		texture.name = name;
+		texture.image = new ImageIcon(image);
+		runnable.run(texture);
 	}
 	
 	public void loadImage() {
@@ -242,8 +246,8 @@ public class TextureEditor extends IconFrame {
 			File file = menu.getSelectedFile();
 			if (file.exists()){
 				if (file.getAbsolutePath().endsWith(".png")){
-					ImageIcon icon = ActivityPanel.resizeImage(new ImageIcon(file.getAbsolutePath()), 16, 16);
-					BufferedImage img = ActivityPanel.toBufferedImage(icon.getImage());
+					ImageIcon icon = ResourcePackIO.resizeImage(new ImageIcon(file.getAbsolutePath()), 16, 16);
+					BufferedImage img = ResourcePackIO.toBufferedImage(icon.getImage());
 					String name = file.getName().substring(0, file.getName().length() - 4);
 					open(name, img);
 					panel.repaint();

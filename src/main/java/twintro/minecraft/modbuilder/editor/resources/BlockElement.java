@@ -20,7 +20,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 
 public class BlockElement extends InventoryElement {
 	public BaseBlockResource block;
@@ -30,7 +30,7 @@ public class BlockElement extends InventoryElement {
 	public static BlockElement getFromName(String name) throws Exception {
 		BlockElement output = null;
 		
-		File blockFile = new File(ResourcePackGenerator.getURL(
+		File blockFile = new File(ResourcePackIO.getURL(
 				"assets/modbuilder/blocks/" + name + ".json"));
 		if (blockFile.exists()){
 			ResourceDeserializer deserializer = new ResourceDeserializer();
@@ -41,7 +41,7 @@ public class BlockElement extends InventoryElement {
 			BlockResource block = (BlockResource) 
 					gson.fromJson(new FileReader(blockFile), BaseBlockResource.class);
 			
-			File blockstateFile = new File(ResourcePackGenerator.getURL(
+			File blockstateFile = new File(ResourcePackIO.getURL(
 					"assets/modbuilder/blockstates/" + name + ".json"));
 			if (blockstateFile.exists()){
 				BlockstateResource blockstate = 
@@ -54,7 +54,7 @@ public class BlockElement extends InventoryElement {
 				
 				if (block.model.startsWith("modbuilder:")){
 					String itemModelName = block.model.substring(11);
-					File itemModelFile = new File(ResourcePackGenerator.getURL(
+					File itemModelFile = new File(ResourcePackIO.getURL(
 							"assets/modbuilder/models/item/" + itemModelName + ".json"));
 					if (itemModelFile.exists()){
 						ItemModelResource itemModel = 
@@ -74,7 +74,7 @@ public class BlockElement extends InventoryElement {
 				
 				if (blockModelName != null){
 					if (blockModelName.startsWith("modbuilder:")){
-						File blockModelFile = new File(ResourcePackGenerator.getURL(
+						File blockModelFile = new File(ResourcePackIO.getURL(
 								"assets/modbuilder/models/block/" + blockModelName.substring(11) + ".json"));
 						if (blockModelFile.exists()){
 							BlockModelResource blockModel = 

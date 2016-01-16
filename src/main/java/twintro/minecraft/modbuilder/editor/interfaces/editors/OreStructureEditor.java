@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
@@ -19,13 +21,12 @@ import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 
-public class OreStructureEditor extends StructureEditor {
-
+public class OreStructureEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
-	private String name;
-	private StructureActivityPanel main;
 	private JSpinner maxYspinner;
 	private JSpinner minYspinner;
 	private JSpinner veinSizeSpinner;
@@ -33,36 +34,25 @@ public class OreStructureEditor extends StructureEditor {
 	private JButton coverBlockButton;
 	private JLabel coverBlockLabel;
 
+	private String name;
+	private ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
 
-	public OreStructureEditor(String nameNew, StructureActivityPanel parent, Set<String> blocks) {
-		super(nameNew, parent, blocks);
-		
-		this.main = parent;
+	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this.name = name;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
 		
 		setBounds(100, 100, 390, 400);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		this.addWindowListener(new WindowClosingVerifierListener());
-		setTitle("Edit structure: " + name);
-	
+		addWindowListener(new WindowClosingVerifierListener());
+		setTitle("Edit structure: " + this.name);
 		
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		
-		JButton btnRename = new JButton("Rename");
-		btnRename.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String nameNew2 = JOptionPane.showInputDialog("Item name:");
-				OreStructureEditor temp = (OreStructureEditor) main.openEditors.get(name);
-				main.openEditors.remove(name);
-				name = nameNew2;
-				main.openEditors.put(name, temp);
-				setTitle("Edit structure: " + name);
-			}
-		});
-		panel.add(btnRename);
-		
-		JButton btnSaveItem = new JButton("Save Item");
+		JButton btnSaveItem = new JButton("Save");
 		panel.add(btnSaveItem);
 		btnSaveItem.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -170,22 +160,30 @@ public class OreStructureEditor extends StructureEditor {
 		
 		maxYspinner = new JSpinner();
 		panel_9.add(maxYspinner, BorderLayout.NORTH);
+	}
+
+	private void chooseBlocks() {
 		
 	}
 
-	protected void chooseBlocks() {
-		// TODO Auto-generated method stub
+	private void saveStructure() {
 		
 	}
 
-	protected void saveStructure() {
-		// TODO Auto-generated method stub
-		
+	@Override
+	public boolean save() {
+		return false;
 	}
-
-	protected void cancel() {
-		// TODO Auto-generated method stub
-		
+	
+	private void cancel(){
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
 	}
-
+	
+	@Override
+	public void dispose() {
+		closeHandler.run(name);
+		super.dispose();
+	}
 }

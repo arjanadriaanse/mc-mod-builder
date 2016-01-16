@@ -22,6 +22,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
@@ -34,24 +35,24 @@ import javax.swing.SpinnerNumberModel;
 
 public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
-	private String name;
-	private RecipesActivityPanel main;
 	private ItemStackButton inputSmeltingButton;
 	private ItemStackButton outputSmeltingButton;
 	private JSpinner xpSpinner;
 	
-	private static final String xpTooltip = "";//TODO
-
-	/**
-	 * Create the frame.
-	 * @wbp.parser.constructor
-	 */
-	public SmeltingRecipeEditor(String newName, RecipesActivityPanel parent) {
-		this.name = newName;
-		this.main = parent;
+	private String name;
+	private ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
+	
+	private static final String xpTooltip = ""; //TODO
+	
+	public SmeltingRecipeEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this.name = name;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
+		
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowClosingVerifierListener());
-		this.setTitle("Edit Recipe: " + name);
+		this.setTitle("Edit Recipe: " + this.name);
 		
 		setBounds(100, 100, 450, 300);
 		contentPane = new JPanel();
@@ -78,21 +79,6 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 			}
 		});
 		
-		/*
-		JButton btnRename = new JButton("Rename");
-		btnRename.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String nameNew2 = JOptionPane.showInputDialog("Item name:");
-				RecipeEditor temp = main.openEditors.get(name);
-				main.openEditors.remove(name);
-				name = nameNew2;
-				main.openEditors.put(name, temp);
-				setTitle("Edit Recipe: " + name);
-			}
-		});
-		panel_2.add(btnRename);
-		*/
-
 		panel_2.add(saveButton);
 		cancelButton.setHorizontalAlignment(SwingConstants.RIGHT);
 		panel_2.add(cancelButton);
@@ -140,8 +126,8 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		setVisible(true);
 	}
 	
-	public SmeltingRecipeEditor(String value, RecipesActivityPanel recipesActivityPanel, RecipeElement recipe) {
-		this(value, recipesActivityPanel);
+	public SmeltingRecipeEditor(RecipeElement recipe, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(recipe.name, runnable, closeHandler);
 		SmeltingRecipe smltngRcpy = (SmeltingRecipe)recipe.recipe;
 		outputSmeltingButton.chooseItem(smltngRcpy.output);
 		inputSmeltingButton.chooseItem(smltngRcpy.input);
@@ -150,16 +136,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		changed = false;
 	}
 	
-	public void itemChanged(String old, String newName){
-		if (inputSmeltingButton.item.item == old) inputSmeltingButton.item.item = newName;
-		if (outputSmeltingButton.item.item == old) outputSmeltingButton.item.item = newName;
-	}
-	
-	public void blockChanged(String old, String newName){
-		if (inputSmeltingButton.item.block == old) inputSmeltingButton.item.block = newName;
-		if (outputSmeltingButton.item.block == old) outputSmeltingButton.item.block = newName;
-	}
-	
+	@Override
 	public boolean save(){
 		SmeltingRecipe recipe = new SmeltingRecipe();
 		
@@ -187,8 +164,8 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		RecipeElement itemToSave = new RecipeElement();
 		itemToSave.name = this.name;
 		itemToSave.recipe = recipe;
-		main.addRecipe(itemToSave);
 		
+		runnable.run(itemToSave);
 		dispose();
 		
 		return true;
@@ -202,7 +179,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 	
 	@Override
 	public void dispose() {
-		main.closeEditor(name);
+		closeHandler.run(name);
 		super.dispose();
 	}
 }

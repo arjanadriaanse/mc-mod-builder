@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor;
+package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
 import java.awt.BorderLayout;
 import java.awt.Component;
@@ -32,50 +32,18 @@ import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.ActivityButton;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
 public abstract class ActivityPanel extends ListPanel {
-	public JList list;
+	protected JList list;
 	
 	public ActivityPanel(String header, String button) {
-		this.setLayout(new BorderLayout(0, 0));
+		setLayout(new BorderLayout(0, 0));
 		elements = new HashMap<String, ImageIcon>();
-		addElements(header, button);
-	}
-	
-	protected void addElement(String name, ImageIcon img){
-		elements.put(name, resizeImage(img, 64, 64));
-		list.updateUI();
-	}
-	
-	protected void removeElement(String name){
-		elements.remove(name);
-		list.updateUI();
-	}
-	
-	protected static ImageIcon getImage(String name){
-		return resizeImage(new ImageIcon(ResourcePackGenerator.getURL(
-				"assets/modbuilder/textures/" + name + ".png")), 64, 64);
-	}
-	
-	public static ImageIcon resizeImage(ImageIcon icon, int width, int height){
-		Image img = icon.getImage();
-		BufferedImage bi = toBufferedImage(img, width, height);
-		return new ImageIcon(bi);
-	}
-	
-	public static BufferedImage toBufferedImage(Image img){
-		return toBufferedImage(img, img.getWidth(null), img.getHeight(null));
-	}
-	
-	public static BufferedImage toBufferedImage(Image img, int width, int height){
-		BufferedImage bi = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-		Graphics g = bi.createGraphics();
-		g.drawImage(img, 0, 0, width, height, null);
-		return bi;
-	}
-	
-	private void addElements(String header, String button){
+		
 		JPanel mainPanel = new JPanel();
 		this.add(mainPanel, BorderLayout.NORTH);
 		mainPanel.setLayout(new BorderLayout(0, 0));
@@ -110,34 +78,19 @@ public abstract class ActivityPanel extends ListPanel {
 		});
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
-				if (e.getClickCount() == 2){
-					edit();
-				}
-				if (e.getButton() == e.BUTTON3 && list.getSelectedIndex() != -1){
-					JPopupMenu menu = new JPopupMenu();
-					
-					JMenuItem deleteItem = new JMenuItem("Delete");
-					deleteItem.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							delete();
-						}
-					});
-					menu.add(deleteItem);
-					
-					JMenuItem editItem = new JMenuItem("Edit");
-					editItem.addActionListener(new ActionListener(){
-						@Override
-						public void actionPerformed(ActionEvent arg0) {
-							edit();
-						}
-					});
-					menu.add(editItem);
-					
-					menu.show(ActivityPanel.this, e.getX(), e.getY());
-				}
+				clickElement(e);
 			}
 		});
+	}
+	
+	protected void addElement(String name, ImageIcon img){
+		elements.put(name, ResourcePackIO.resizeImage(img, 64, 64));
+		list.updateUI();
+	}
+	
+	protected void removeElement(String name){
+		elements.remove(name);
+		list.updateUI();
 	}
 	
 	protected void createButtonPanel(JPanel buttonPanel, String button){
@@ -150,9 +103,33 @@ public abstract class ActivityPanel extends ListPanel {
 		buttonPanel.add(addButton);
 	}
 	
-	public Set<String> getAllElements(){
-		Set<String> output = elements.keySet();
-		return output;
+	private void clickElement(MouseEvent e){
+		if (e.getClickCount() == 2){
+			edit();
+		}
+		if (e.getButton() == e.BUTTON3 && list.getSelectedIndex() != -1){
+			JPopupMenu menu = new JPopupMenu();
+			
+			JMenuItem deleteItem = new JMenuItem("Delete");
+			deleteItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					delete();
+				}
+			});
+			menu.add(deleteItem);
+			
+			JMenuItem editItem = new JMenuItem("Edit");
+			editItem.addActionListener(new ActionListener(){
+				@Override
+				public void actionPerformed(ActionEvent arg0) {
+					edit();
+				}
+			});
+			menu.add(editItem);
+			
+			menu.show(ActivityPanel.this, e.getX(), e.getY());
+		}
 	}
 	
 	protected abstract void add();

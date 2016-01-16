@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor;
+package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.Component;
 import java.awt.Font;
@@ -12,7 +12,7 @@ import javax.swing.JList;
 import scala.collection.immutable.List;
 
 public class CustomListCellRenderer extends DefaultListCellRenderer {
-	private Font font = new Font("Tahoma", Font.PLAIN, 15);
+	private static final Font font = new Font("Tahoma", Font.PLAIN, 15);
 	private ListPanel panel;
 	
 	public CustomListCellRenderer(ListPanel panel){
@@ -21,11 +21,8 @@ public class CustomListCellRenderer extends DefaultListCellRenderer {
 	}
 	
 	@Override
-	public Component getListCellRendererComponent(
-			JList list, Object value, int index,
-            boolean isSelected, boolean cellHasFocus){
-		JLabel label = (JLabel) super.getListCellRendererComponent(
-                list, value, index, isSelected, cellHasFocus);
+	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
+		JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
         label.setIcon(panel.elements.get((String) value));
         label.setHorizontalAlignment(JLabel.CENTER);
         label.setHorizontalTextPosition(JLabel.CENTER);

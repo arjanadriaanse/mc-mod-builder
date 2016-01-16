@@ -20,32 +20,25 @@ import javax.swing.SwingConstants;
 import sun.awt.WindowClosingListener;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.ItemStackEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class ItemStackButton extends JButton{
+public class ItemStackButton extends JButton {
 	private boolean isProduct = false;
-	private ItemStackChooseWindow itemStackChooser;
 	private WindowClosingVerifierUser main;
 
 	public ItemStackResource item;
 	
-	private ItemStackRunnable runnable = new ItemStackRunnable() {
+	private ObjectRunnable runnable = new ObjectRunnable() {
 		@Override
-		public void chooseItemStack(ItemStackResource item) {
-			chooseItem(item);
-		}
-
-		@Override
-		public void itemStackChooserDispose() {
-			itemStackChooser = null;
+		public void run(Object obj) {
+			chooseItem((ItemStackResource) obj);
 		}
 	};
 	
@@ -96,13 +89,11 @@ public class ItemStackButton extends JButton{
 		main.change();
 	}
 	
-	public void click(){
-		if (itemStackChooser == null){
-			if (item == null)
-				itemStackChooser = new ItemStackChooseWindow(main, isProduct, runnable);
-			else
-				itemStackChooser = new ItemStackChooseWindow(main, isProduct, runnable, item);
-		}
+	private void click(){
+		if (item == null)
+			new ItemStackChooseWindow(isProduct, runnable);
+		else
+			new ItemStackChooseWindow(isProduct, runnable, item);
 	}
 	
 	@Override
@@ -122,8 +113,6 @@ public class ItemStackButton extends JButton{
 		if (icon == null) 
 			setIcon(null);
 		else
-			setIcon(ActivityPanel.resizeImage(icon, 
-				getWidth() / 16 * 2 / 3 * 16, 
-				getHeight() / 16 * 2 / 3 * 16));
+			setIcon(ResourcePackIO.resizeImage(icon, getWidth() / 16 * 2 / 3 * 16, getHeight() / 16 * 2 / 3 * 16));
 	}
 }

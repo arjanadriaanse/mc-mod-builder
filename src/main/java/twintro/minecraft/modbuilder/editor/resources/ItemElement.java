@@ -18,7 +18,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 
 public class ItemElement extends InventoryElement {
 	public BaseItemResource item;
@@ -26,7 +26,7 @@ public class ItemElement extends InventoryElement {
 	public static ItemElement getFromName(String name) throws Exception {
 		ItemElement output = null;
 		
-		File itemFile = new File(ResourcePackGenerator.getURL(
+		File itemFile = new File(ResourcePackIO.getURL(
 				"assets/modbuilder/items/" + name + ".json"));
 		
 		if (itemFile.exists()){
@@ -43,7 +43,7 @@ public class ItemElement extends InventoryElement {
 
 			if (item.model.startsWith("modbuilder:")){
 				String itemModelName = item.model.substring(11);
-				File itemModelFile = new File(ResourcePackGenerator.getURL(
+				File itemModelFile = new File(ResourcePackIO.getURL(
 						"assets/modbuilder/models/item/" + itemModelName + ".json"));
 				if (itemModelFile.exists()){
 					ItemModelResource itemModel = 

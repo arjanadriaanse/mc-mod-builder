@@ -65,7 +65,7 @@ public class MaterialResources {
 		if (material.startsWith("modbuilder:")){
 			material = material.substring(11);
 			try{
-				if (Editor.ItemPanel.elements.containsKey(material)){
+				if (Editor.getItemList().containsKey(material)){
 					return ItemElement.getFromName(material).getImage();
 				}
 				else{
@@ -87,7 +87,7 @@ public class MaterialResources {
 			if (vanillaItemIds[i].equals(material))
 				return true;
 		if (material.startsWith("modbuilder:"))
-			return Editor.ItemPanel.elements.containsKey(material.substring(11));
+			return Editor.getItemList().containsKey(material.substring(11));
 		return false;
 	}
 }

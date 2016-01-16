@@ -21,11 +21,11 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.ListPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class MaterialChooseWindow extends JDialog {
@@ -41,15 +41,12 @@ public class MaterialChooseWindow extends JDialog {
 	private static final String otherTooltip = "";//TODO
 	private static final String noneTooltip = "";//TODO
 	
-	private MaterialRunnable runnable;
-	private ListWindow listWindow = null;
+	private ObjectRunnable runnable;
 	
-	public MaterialChooseWindow(Window parent, int type, MaterialRunnable runnable){
-		super(parent);
-		setModal(true);
-		
+	public MaterialChooseWindow(int type, ObjectRunnable runnable){
 		this.runnable = runnable;
-		
+
+		setModal(true);
 		if (type == ITEMS_AND_BLOCKS || type == ITEMS_BLOCKS_NONE)
 			setBounds(100, 100, 300, 120);
 		else
@@ -131,35 +128,45 @@ public class MaterialChooseWindow extends JDialog {
 	}
 	
 	private void customItem(){
-		if (listWindow == null){
-			listWindow = new ListWindow(Editor.ItemPanel.elements, this);
-		}
+		new ListWindow(Editor.getItemList(), new ObjectRunnable(){
+			@Override
+			public void run(Object obj){
+				choose((String) obj);
+			}
+		});
 	}
 	
 	private void customBlock(){
-		if (listWindow == null){
-			listWindow = new ListWindow(Editor.BlockPanel.elements, this);
-		}
+		new ListWindow(Editor.getBlockList(), new ObjectRunnable(){
+			@Override
+			public void run(Object obj){
+				choose((String) obj);
+			}
+		});
 	}
 	
 	private void vanillaItem(){
-		if (listWindow == null){
-			listWindow = new ListWindow(MaterialResources.vanillaItems, this);
-		}
+		new ListWindow(MaterialResources.vanillaItems, new ObjectRunnable(){
+			@Override
+			public void run(Object obj){
+				choose((String) obj);
+			}
+		});
 	}
 	
 	private void vanillaBlock(){
-		if (listWindow == null){
-			listWindow = new ListWindow(MaterialResources.vanillaBlocks, this);
-		}
+		new ListWindow(MaterialResources.vanillaBlocks, new ObjectRunnable(){
+			@Override
+			public void run(Object obj){
+				choose((String) obj);
+			}
+		});
 	}
 	
 	private void other(){
-		if (listWindow == null){
-			String material = JOptionPane.showInputDialog("Material name:");
-			if (material != null){
-				choose(material);
-			}
+		String material = JOptionPane.showInputDialog("Material name:");
+		if (material != null){
+			choose(material);
 		}
 	}
 	
@@ -167,109 +174,8 @@ public class MaterialChooseWindow extends JDialog {
 		choose("");
 	}
 	
-	public void listWindowDispose(){
-		listWindow = null;
-	}
-	
-	public void choose(String value){
-		runnable.chooseMaterial(value);
+	private void choose(String value){
+		runnable.run(value);
 		dispose();
-	}
-	
-	@Override
-	public void dispose() {
-		if (listWindow != null) listWindow.dispose();
-		runnable.materialChooserDispose();
-		super.dispose();
-	}
-	
-	public static class ListWindow extends IconFrame {
-		JPanel panel;
-		JList list;
-		String[] values;
-		MaterialChooseWindow main;
-		
-		private ListWindow(JPanel startPanel, MaterialChooseWindow main){
-			panel = startPanel;
-			this.main = main;
-			
-			setBounds(100, 100, 300, 200);
-			setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-			setTitle("Choose Material");
-			
-			panel = new ListPanel();
-			panel.setLayout(new BorderLayout(0, 0));
-			getContentPane().add(panel, BorderLayout.CENTER);
-			
-			JScrollPane scrollPane = new JScrollPane();
-			scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-			panel.add(scrollPane, BorderLayout.CENTER);
-			
-			list = new JList();
-			scrollPane.setViewportView(list);
-			list.setVisibleRowCount(0);
-			list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-			
-			setVisible(true);
-		}
-		
-		public ListWindow(Map<String, ImageIcon> elements, MaterialChooseWindow main){
-			this(new ListPanel(), main);
-			
-			((ListPanel)panel).elements = elements;
-			
-			list.setFixedCellWidth(128);
-			list.setCellRenderer(new CustomListCellRenderer((ListPanel)panel));
-			list.setModel(new AbstractListModel() {
-				public int getSize() {
-					return ((ListPanel)panel).elements.size();
-				}
-				public Object getElementAt(int index) {
-					return ((ListPanel)panel).elements.keySet().toArray()[index];
-				}
-			});
-			list.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e){
-					if (e.getClickCount() == 2){
-						String value = (String) ((JList) e.getSource()).getSelectedValue();
-						choose("modbuilder:" + value);
-					}
-				}
-			});
-		}
-		
-		public ListWindow(String[] elements, MaterialChooseWindow main){
-			this(new JPanel(), main);
-			
-			values = elements;
-
-			list.setFixedCellWidth(128);
-			list.setModel(new AbstractListModel() {
-				public int getSize() {
-					return values.length;
-				}
-				public Object getElementAt(int index) {
-					return values[index];
-				}
-			});
-			list.addMouseListener(new MouseAdapter() {
-				public void mouseClicked(MouseEvent e){
-					if (e.getClickCount() == 2){
-						String value = (String) ((JList) e.getSource()).getSelectedValue();
-						choose(MaterialResources.getId(value));
-					}
-				}
-			});
-		}
-		
-		private void choose(String value){
-			main.choose(value);
-		}
-		
-		@Override
-		public void dispose() {
-			main.listWindowDispose();
-			super.dispose();
-		}
 	}
 }

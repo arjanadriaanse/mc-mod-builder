@@ -14,17 +14,69 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.ActivityButton;
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.TextureEditor;
+import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
 public class TexturesActivityPanel extends ActivityPanel {
 	TextureEditor editor;
 	
+	private final ObjectRunnable runnable = new ObjectRunnable() {
+		@Override
+		public void run(Object obj) {
+			saveImage((TextureObject) obj);
+		}
+	};
+	
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
-		editor = new TextureEditor(this);
+		editor = new TextureEditor(runnable);
+	}
+
+	@Override
+	protected void add() {
+		String name = JOptionPane.showInputDialog("Texture name:");
+		if (name != null)
+			if (name.replaceAll(" ", "").length() > 0)
+				editor.open(name, ResourcePackIO.toBufferedImage(new ImageIcon().getImage(), 16, 16));
+	}
+	
+	private void importImage(){
+		editor.loadImage();
+	}
+	
+	@Override
+	protected void edit() {
+		String value = (String) list.getSelectedValue();
+		editor.open(value, ResourcePackIO.toBufferedImage(ResourcePackIO.resizeImage(elements.get(value), 16, 16).getImage()));
+	}
+	
+	@Override
+	protected void delete() {
+		String value = (String) list.getSelectedValue();
+		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + ".png?\r\n"
+				+ "References to this object will not be updated, which might cause problems.", 
+				"Warning", JOptionPane.YES_NO_OPTION);
+		if (result == JOptionPane.YES_OPTION){
+			ResourcePackIO.deleteFile("assets/modbuilder/textures/" + value + ".png");
+			removeElement(value);
+		}
+	}
+	
+	@Override
+	public void updateList() {
+		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/textures/"));
+		if (folder.exists()){
+			for (File file : folder.listFiles()){
+				if (file.getAbsolutePath().endsWith(".png")){
+					ImageIcon img = new ImageIcon(file.getAbsolutePath());
+					String name = file.getName().substring(0, file.getName().length() - 4);
+					addElement(name, img);
+				}
+			}
+		}
 	}
 	
 	@Override
@@ -39,52 +91,9 @@ public class TexturesActivityPanel extends ActivityPanel {
 		super.createButtonPanel(buttonPanel, button);
 	}
 	
-	private void importImage(){
-		editor.loadImage();
-	}
-
-	@Override
-	protected void add() {
-		String name = JOptionPane.showInputDialog("Texture name:");
-		if (name != null)
-			if (name.replaceAll(" ", "").length() > 0)
-				editor.open(name, toBufferedImage(new ImageIcon().getImage(), 16, 16));
-	}
-	
-	public void addImage(ImageIcon img, String name){
-		ResourcePackGenerator.addTexture(toBufferedImage(img.getImage()), "assets/modbuilder/textures/" + name + ".png");
-		addElement(name, img);
-	}
-	
-	@Override
-	protected void edit() {
-		String value = (String) list.getSelectedValue();
-		editor.open(value, toBufferedImage(resizeImage(elements.get(value), 16, 16).getImage()));
-	}
-	
-	@Override
-	protected void delete() {
-		String value = (String) list.getSelectedValue();
-		int result = JOptionPane.showConfirmDialog(this, "Are you sure you want to delete " + value + ".png?\r\n"
-				+ "References to this object will not be updated, which might cause problems.", 
-				"Warning", JOptionPane.YES_NO_OPTION);
-		if (result == JOptionPane.YES_OPTION){
-			ResourcePackGenerator.deleteFile("assets/modbuilder/textures/" + value + ".png");
-			removeElement(value);
-		}
-	}
-	
-	@Override
-	public void updateList() {
-		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/textures/"));
-		if (folder.exists()){
-			for (File file : folder.listFiles()){
-				if (file.getAbsolutePath().endsWith(".png")){
-					ImageIcon img = new ImageIcon(file.getAbsolutePath());
-					String name = file.getName().substring(0, file.getName().length() - 4);
-					addElement(name, img);
-				}
-			}
-		}
+	private void saveImage(TextureObject texture){
+		ResourcePackIO.addTexture(ResourcePackIO.toBufferedImage(texture.image.getImage()), 
+				"assets/modbuilder/textures/" + texture.name + ".png");
+		addElement(texture.name, texture.image);
 	}
 }

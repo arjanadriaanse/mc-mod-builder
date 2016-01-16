@@ -18,33 +18,33 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ToolItemEditor extends RegularItemEditor {
-	protected JPanel affectedBlocksPanel;
-	protected JPanel affectedBlocksSubPanel;
-	protected JPanel repairMaterialPanel;
-	protected JPanel repairMaterialSubPanel;
-	protected JLabel labelDurability;
-	protected JLabel labelEfficiency;
-	protected JLabel labelDamage;
-	protected JLabel labelHarvestLevel;
-	protected JLabel labelEnchantibility;
-	protected JLabel labelAffectedBlocks;
-	protected JLabel labelRepairMaterial;
-	protected JLabel affectedBlocksLabel;
-	protected JLabel repairMaterialLabel;
-	protected JButton affectedBlocksButton;
-	protected JButton affectedBlocksResetButton;
-	protected JButton repairMaterialChooseButton;
-	protected JSpinner durabilitySpinner;
-	protected JSpinner efficiencySpinner;
-	protected JSpinner damageSpinner;
-	protected JSpinner harvestLevelSpinner;
-	protected JSpinner enchantibilitySpinner;
-	protected JCheckBox repairMaterialCheckbox;
+	private JPanel affectedBlocksPanel;
+	private JPanel affectedBlocksSubPanel;
+	private JPanel repairMaterialPanel;
+	private JPanel repairMaterialSubPanel;
+	private JLabel labelDurability;
+	private JLabel labelEfficiency;
+	private JLabel labelDamage;
+	private JLabel labelHarvestLevel;
+	private JLabel labelEnchantibility;
+	private JLabel labelAffectedBlocks;
+	private JLabel labelRepairMaterial;
+	private JLabel affectedBlocksLabel;
+	private JLabel repairMaterialLabel;
+	private JButton affectedBlocksButton;
+	private JButton affectedBlocksResetButton;
+	private JButton repairMaterialChooseButton;
+	private JSpinner durabilitySpinner;
+	private JSpinner efficiencySpinner;
+	private JSpinner damageSpinner;
+	private JSpinner harvestLevelSpinner;
+	private JSpinner enchantibilitySpinner;
+	private JCheckBox repairMaterialCheckbox;
 
 	private static final String durabilityTooltip = "The amount of blocks that the tool can mine until the tool breaks";
 	private static final String efficiencyTooltip = "<html>The speed at which the tool mines<br>"
@@ -56,8 +56,8 @@ public class ToolItemEditor extends RegularItemEditor {
 	private static final String affectedBlocksTooltip = "The blocks that are mined faster with the tool";
 	private static final String repairMaterialTooltip = "The material that is required to repair the tool in an anvil";
 
-	public ToolItemEditor(String name, ItemsActivityPanel main) {
-		super(name, main);
+	public ToolItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		super(name, runnable, closeHandler);
 		setTitle("Edit Tool: " + this.name);
 		
 		saveButton.setText("Save Tool");
@@ -186,15 +186,15 @@ public class ToolItemEditor extends RegularItemEditor {
 		repairMaterialSubPanel.add(repairMaterialLabel, BorderLayout.CENTER);
 	}
 	
-	public ToolItemEditor(ItemsActivityPanel main, ItemElement item) {
-		this(item.name, main);
-		regularSetup(main, item);
+	public ToolItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(item.name, runnable, closeHandler);
+		regularSetup(item);
 		toolSetup(item);
 
 		changed = false;
 	}
 	
-	protected void toolSetup(ItemElement item){
+	private void toolSetup(ItemElement item){
 		ToolItemResource resource = (ToolItemResource) item.item;
 		
 		if (resource.durability != null)
@@ -227,7 +227,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	@Override
 	public boolean save() {
-		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
+		if (textureLabel.getText().length() > 0){
 			ToolItemResource base = new ToolItemResource();
 			base.durability = (Integer) durabilitySpinner.getValue();
 			base.efficiency = (Float) efficiencySpinner.getValue();
@@ -246,12 +246,11 @@ public class ToolItemEditor extends RegularItemEditor {
 			}
 			
 			ItemElement item = writeItem(base);
-			main.addItem(item);
-			
+			runnable.run(item);
 			dispose();
 		}
 		else{
-			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't given the item a texture yet.", 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected == JOptionPane.OK_OPTION)
 				return false;
@@ -260,22 +259,14 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addBlock(){
-		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(this, MaterialChooseWindow.BLOCKS_ONLY, new MaterialRunnable() {
-				@Override
-				public void chooseMaterial(String material) {
-					change();
-					if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
-					affectedBlocksLabel.setText(affectedBlocksLabel.getText() + material);
-				}
-
-				@Override
-				public void materialChooserDispose() {
-					materialChooserIsOpen = false;
-				}
-			});
-			materialChooserIsOpen = true;
-		}
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+				affectedBlocksLabel.setText(affectedBlocksLabel.getText() + (String) obj);
+			}
+		});
 	}
 	
 	protected void resetBlocks(){
@@ -291,20 +282,12 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void repairMaterialChoose(){
-		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_AND_BLOCKS, new MaterialRunnable() {
-				@Override
-				public void chooseMaterial(String material) {
-					change();
-					repairMaterialLabel.setText(material);
-				}
-
-				@Override
-				public void materialChooserDispose() {
-					materialChooserIsOpen = false;
-				}
-			});
-			materialChooserIsOpen = true;
-		}
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				repairMaterialLabel.setText((String) obj);
+			}
+		});
 	}
 }

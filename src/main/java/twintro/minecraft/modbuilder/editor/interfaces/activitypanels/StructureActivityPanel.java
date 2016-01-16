@@ -1,5 +1,7 @@
 package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -9,7 +11,10 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.swing.ImageIcon;
+import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -20,21 +25,26 @@ import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.ActivityButton;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.StructureEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
-
-public class StructureActivityPanel  extends ActivityPanel {
-	public Map<String,StructureEditor> openEditors;
+public class StructureActivityPanel extends ObjectActivityPanel {
+	private final ObjectRunnable runnable = new ObjectRunnable() {
+		@Override
+		public void run(Object obj) {
+			saveStructure();
+		}
+	};
 	
 	public StructureActivityPanel(String header, String button) {
 		super(header, button);
-		this.openEditors = new HashMap<String, StructureEditor>();
+		this.openEditors = new HashMap<String, JFrame>();
 	}
 
 	@Override
@@ -42,42 +52,15 @@ public class StructureActivityPanel  extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Structure name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				StructureEditor editor = new StructureEditor(name, this, null);
-				openEditors.put(name, editor);
+				//TODO
 			}
-		}
-		
-	}
-	
-	public void addStructure(){
-		/*
-		if (block.itemModel != null)
-			createFile(block.itemModel, "assets/modbuilder/models/item/" + block.name + ".json");
-		if (block.blockModel != null)
-			createFile(block.blockModel, "assets/modbuilder/models/block/" + block.name + ".json");
-		createFile(block.blockstate, "assets/modbuilder/blockstates/" + block.name + ".json");
-		createFile(block.block, "assets/modbuilder/blocks/" + block.name + ".json");
-		addElement(block.name, block.getImage());
-		
-		main.metaFile.resource.modbuilder.blocks.add(block.name);
-		main.metaFile.save();
-		
-		main.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
-		main.langFile.save();
-		*/
-	}
-	
-	public void createFile(Object model, String dir){
-		try {
-			ResourcePackGenerator.createFile(model, dir);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
 	@Override
 	protected void edit() {
 		String value = (String) list.getSelectedValue();
+		//TODO
 	}
 	
 	@Override
@@ -87,24 +70,13 @@ public class StructureActivityPanel  extends ActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
-		/*	ResourcePackGenerator.deleteFile("assets/modbuilder/blocks/" + value + ".json");
-			ResourcePackGenerator.deleteFile("assets/modbuilder/blockstates/" + value + ".json");
-			ResourcePackGenerator.deleteFile("assets/modbuilder/models/block/" + value + ".json");
-			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
-			*/
-			removeElement(value);
-			
-			Editor.metaFile.resource.modbuilder.blocks.remove(value);
-			Editor.metaFile.save();
-			
-			Editor.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
-			Editor.langFile.save();
+			//TODO
 		}
 	}
 	
 	@Override
 	public void updateList() {
-		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/structures/"));
+		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/structures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
 				if (file.getAbsolutePath().endsWith(".json")){
@@ -117,5 +89,15 @@ public class StructureActivityPanel  extends ActivityPanel {
 				}
 			}
 		}
+	}
+
+	@Override
+	protected void createButtonPanel(JPanel buttonPanel, String button) {
+		super.createButtonPanel(buttonPanel, button);
+		//TODO
+	}
+	
+	private void saveStructure(){
+		//TODO
 	}
 }

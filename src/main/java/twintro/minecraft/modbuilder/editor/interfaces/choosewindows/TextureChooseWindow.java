@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
+import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
@@ -17,26 +18,27 @@ import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.ListPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
-public class TextureChooseWindow extends IconFrame {
-	ListPanel listPanel;
-	TextureRunnable main;
+public class TextureChooseWindow extends JDialog {
+	private ListPanel listPanel;
+	private ObjectRunnable runnable;
 	
-	public TextureChooseWindow(TextureRunnable main){
-		this.main = main;
-		
+	public TextureChooseWindow(ObjectRunnable runnable){
+		this.runnable = runnable;
+
+		setModal(true);
 		setBounds(100, 100, 300, 200);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Texture");
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
-		listPanel.elements = Editor.TexturePanel.elements;
+		listPanel.elements = Editor.getTextureList();
 		getContentPane().add(listPanel, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -70,13 +72,7 @@ public class TextureChooseWindow extends IconFrame {
 	}
 	
 	public void choose(String texture){
-		main.chooseTexture(texture);
-		this.dispose();
-	}
-	
-	@Override
-	public void dispose() {
-		main.textureChooserDispose();
-		super.dispose();
+		runnable.run(texture);
+		dispose();
 	}
 }

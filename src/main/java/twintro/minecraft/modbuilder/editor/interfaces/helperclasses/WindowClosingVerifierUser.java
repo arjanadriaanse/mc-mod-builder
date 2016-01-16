@@ -8,7 +8,7 @@ import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
 public abstract class WindowClosingVerifierUser extends IconFrame {
-	public boolean changed = true;
+	protected boolean changed = true;
 	public final ActionListener actionListener = new ActionListener(){
 		@Override
 		public void actionPerformed(ActionEvent e) {

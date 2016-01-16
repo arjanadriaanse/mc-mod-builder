@@ -6,6 +6,8 @@ import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Set;
 
 import javax.swing.JButton;
@@ -20,7 +22,9 @@ import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResour
 import twintro.minecraft.modbuilder.data.resources.structures.StructureType;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 
 import javax.swing.JToggleButton;
@@ -29,12 +33,8 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JSpinner;
 import javax.swing.SwingConstants;
 
-public class GroundStructureEditor extends StructureEditor
-{
-
+public class GroundStructureEditor extends WindowClosingVerifierUser {
 	private JPanel contentPane;
-	private String name;
-	private StructureActivityPanel main;
 	private JComboBox dimensionComboBox;
 	private JSpinner veinSizeSpinner;
 	private JSpinner minYspinner;
@@ -45,10 +45,14 @@ public class GroundStructureEditor extends StructureEditor
 	private JButton onBlocksButton;
 	private JSpinner amountperchunkSpinner;
 
-	public GroundStructureEditor(String nameNew, StructureActivityPanel parent, Set<String> blocks) {
-		super(nameNew, parent, blocks);
-		this.name = nameNew;
-		this.main = parent;
+	private String name;
+	private ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
+
+	public GroundStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this.name = name;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
 		
 		setBounds(100, 100, 390, 400);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -58,19 +62,6 @@ public class GroundStructureEditor extends StructureEditor
 		JPanel panel = new JPanel();
 		getContentPane().add(panel, BorderLayout.SOUTH);
 		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		
-		JButton btnRename = new JButton("Rename");
-		btnRename.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				String nameNew2 = JOptionPane.showInputDialog("Item name:");
-				GroundStructureEditor temp = (GroundStructureEditor) main.openEditors.get(name);
-				main.openEditors.remove(name);
-				name = nameNew2;
-				main.openEditors.put(name, temp);
-				setTitle("Edit structure: " + name);
-			}
-		});
-		panel.add(btnRename);
 		
 		JButton btnSaveItem = new JButton("Save Item");
 		panel.add(btnSaveItem);
@@ -171,31 +162,15 @@ public class GroundStructureEditor extends StructureEditor
 			
 		setVisible(true);
 	}
-
-
 	
-
 	protected void chooseBlocksToCover() {
-		// TODO Auto-generated method stub
 		
 	}
-
-
-
-
+	
 	protected void chooseBlock() {
-		//Map<String, ImageIcon> elements = main.main.blocks
-		//BlockElement.getFromName(block)
+		
 	}
-
-
-
-
-	private void cancel(){
-		WindowClosingVerifierListener.close(this);
-	}
-
-
+	
 	protected void saveStructure() {
 			GroundStructureResource savable = new GroundStructureResource();
 			
@@ -206,6 +181,22 @@ public class GroundStructureEditor extends StructureEditor
 			}
 			savable.amountperchunk = (Integer) amountperchunkSpinner.getValue();
 			savable.type = StructureType.ground;
-			
+	}
+
+	@Override
+	public boolean save() {
+		return false;
+	}
+	
+	private void cancel(){
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
+	}
+	
+	@Override
+	public void dispose() {
+		closeHandler.run(name);
+		super.dispose();
 	}
 }

@@ -44,16 +44,16 @@ import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.ListPanel;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
-public class BlockModelChooseWindow extends IconFrame {
+public class BlockModelChooseWindow extends JDialog {
+	ObjectRunnable runnable;
 	ListPanel listPanel;
-	BlockModelRunnable main;
 	int modelType = 1;
 	ImageIcon selectedImage;
 	String selectedImageName;
@@ -80,18 +80,28 @@ public class BlockModelChooseWindow extends IconFrame {
 	        new Point(192,160)
 	};
 
-	public BlockModelChooseWindow(BlockModelRunnable main){
-		//TODO undo lode's accidental change and put shit to the right again
-		this.main = main;
-		load();
+	public BlockModelChooseWindow(ObjectRunnable runnable){
+		this.runnable = runnable;
+		initialize();
+		setVisible(true);
+	}
 
+	public BlockModelChooseWindow(ObjectRunnable runnable, BlockModelResource model){
+		this.runnable = runnable;
+		initialize();
+		load(model);
+		setVisible(true);
+	}
+	
+	private void initialize(){
+		setModal(true);
 		setBounds(100, 100, 500, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Block Model:");
 		
 		listPanel = new ListPanel();
 		listPanel.setLayout(new BorderLayout(0, 0));
-		listPanel.elements = Editor.TexturePanel.elements;
+		listPanel.elements = Editor.getTextureList();
 		getContentPane().add(listPanel, BorderLayout.LINE_END);
 		
 		JScrollPane scrollPane = new JScrollPane();
@@ -196,8 +206,6 @@ public class BlockModelChooseWindow extends IconFrame {
 				mousemove(me);
 			}
 		});
-		
-		setVisible(true);
 	}
 	
 	public void paint1(Graphics g){
@@ -384,18 +392,17 @@ public class BlockModelChooseWindow extends IconFrame {
 			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
 			model.textures.put("particle", "modbuilder:"+textureNames2[0]);
 		}
-		main.setModel(model);
+		runnable.run(model);
 		this.dispose();
 	}
 	
-	public void load(){
-		BlockModelResource model = main.getModel();
-		if(model==null) return;
+	public void load(BlockModelResource model){
 		if(model.parent.equals("block/cube")) {
 			String[] name = new String[]{"up","west","south","east","north","down"};
 			for(int i=0;i<6;i++){
 				if (model.textures.get(name[i]).split(":")[0].equals("modbuilder")) {
-					String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get(name[i]).split(":")[1] + ".png";
+					String loc=ResourcePackIO.getURL("assets/modbuilder/textures/" + 
+							model.textures.get(name[i]).split(":")[1] + ".png");
 					try{
 						Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 						BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -413,7 +420,8 @@ public class BlockModelChooseWindow extends IconFrame {
 		}
 		if(model.parent.equals("block/cross")) {
 			if (model.textures.get("cross").split(":")[0].equals("modbuilder")) {
-				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get("cross").split(":")[1] + ".png";
+				String loc=ResourcePackIO.getURL("assets/modbuilder/textures/" 
+			+ model.textures.get("cross").split(":")[1] + ".png");
 				try{
 					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -432,7 +440,8 @@ public class BlockModelChooseWindow extends IconFrame {
 		}
 		if(model.parent.equals("block/cube_all")) {
 			if (model.textures.get("all").split(":")[0].equals("modbuilder")) {
-				String loc=ResourcePackGenerator.resourcePackFolderDir + "assets/modbuilder/textures/" + model.textures.get("all").split(":")[1] + ".png";
+				String loc=ResourcePackIO.getURL("assets/modbuilder/textures/" 
+			+ model.textures.get("all").split(":")[1] + ".png");
 				try{
 					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
@@ -457,11 +466,5 @@ public class BlockModelChooseWindow extends IconFrame {
 			modelType=1;
 			return;
 		}
-	}
-	
-	@Override
-	public void dispose() {
-		main.blockModelChooserDispose();
-		super.dispose();
 	}
 }

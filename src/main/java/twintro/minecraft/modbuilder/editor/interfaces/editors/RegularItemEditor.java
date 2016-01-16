@@ -20,9 +20,8 @@ import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Disp
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
@@ -39,7 +38,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 
-public class RegularItemEditor extends WindowClosingVerifierUser implements TextureRunnable, MaterialRunnable {
+public class RegularItemEditor extends WindowClosingVerifierUser {
 	protected JPanel mainPanel;
 	protected JPanel buttonPanel;
 	protected JPanel texturePanel;
@@ -68,11 +67,10 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 	protected JComboBox creativeTabsComboBox;
 	protected JCheckBox containerCheckbox;
 	protected JCheckBox burntimeCheckbox;
-
-	protected boolean textureChooserIsOpen = false;
-	protected boolean materialChooserIsOpen = false;
+	
 	protected String name;
-	protected ItemsActivityPanel main;
+	protected ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
 
 	private static final String textureTooltip = "The texture of the item";
 	private static final String maxStackSizeTooltip = "The maximum amount of the item there can be in a stack";
@@ -82,12 +80,10 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 				+ "and when you grab the cake, you will get your buckets back</html>";
 	private static final String burntimeTooltip = "The amount of items that will get cooked when you use this item as a fuel source in a furnace";
 	
-	/**
-	 * @wbp.parser.constructor
-	 */
-	public RegularItemEditor(String name, ItemsActivityPanel main) {
+	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;
-		this.main = main;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
 
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -271,18 +267,18 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		setVisible(true);
 	}
 
-	public RegularItemEditor(ItemsActivityPanel main, ItemElement item) {
-		this(item.name, main);
-		regularSetup(main, item);
+	public RegularItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(item.name, runnable, closeHandler);
+		regularSetup(item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
 		changed = false;
 	}
 	
-	protected void regularSetup(ItemsActivityPanel main, ItemElement item){
+	protected void regularSetup(ItemElement item){
 		if (item.itemModel.textures.containsKey("layer0")) {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
-			setIconImage(Editor.TexturePanel.elements.get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
+			setIconImage(Editor.getTextureList().get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
 		}
 		if (item.item.container != null){
 			containerLabel.setText(item.item.container);
@@ -299,23 +295,17 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 				creativeTabsChoose(s.name());
 	}
 
-	protected void cancel() {
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
-	}
-
+	@Override
 	public boolean save() {
-		if (!textureChooserIsOpen && !materialChooserIsOpen && textureLabel.getText().length() > 0){
+		if (textureLabel.getText().length() > 0){
 			ItemResource base = new ItemResource();
 			
 			ItemElement item = writeItem(base);
-			main.addItem(item);
-			
+			runnable.run(item);
 			dispose();
 		}
 		else{
-			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't given the item a texture yet.", 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected == JOptionPane.OK_OPTION)
 				return false;
@@ -350,70 +340,61 @@ public class RegularItemEditor extends WindowClosingVerifierUser implements Text
 		return item;
 	}
 
-	protected void burntimeUse() {
+	private void burntimeUse() {
 		boolean use = burntimeCheckbox.isSelected();
 		burntimeSpinner.setEnabled(use);
 		labelBurnTime.setEnabled(use);
 	}
 
-	protected void containerChoose() {
-		if (!materialChooserIsOpen){
-			new MaterialChooseWindow(this, MaterialChooseWindow.ITEMS_AND_BLOCKS, this);
-			materialChooserIsOpen = true;
-		}
+	private void containerChoose() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				containerLabel.setText((String) obj);
+			}
+		});
 	}
 
-	protected void containerUse() {
+	private void containerUse() {
 		boolean use = containerCheckbox.isSelected();
 		containerChooseButton.setEnabled(use);
 		containerLabel.setEnabled(use);
 		labelContainer.setEnabled(use);
 	}
 
-	protected void creativeTabsReset() {
+	private void creativeTabsReset() {
 		change();
 		creativeTabsLabel.setText("");
 	}
 
-	protected void creativeTabsChoose(String tab) {
+	private void creativeTabsChoose(String tab) {
 		change();
 		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ",");
 		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab);
 	}
 
-	protected void textureChoose() {
-		if (!textureChooserIsOpen){
-			new TextureChooseWindow(this);
-			textureChooserIsOpen = true;
+	private void textureChoose() {
+		new TextureChooseWindow(new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				String texture = (String) obj;
+				textureLabel.setText(texture);
+				setIconImage(Editor.getTextureList().get(texture.split(":")[1]).getImage());
+			}
+		});
+	}
+
+	private void cancel() {
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
 		}
 	}
 	
 	@Override
 	public void dispose() {
-		main.closeEditor(name);
+		closeHandler.run(name);
 		super.dispose();
-	}
-
-	@Override
-	public void chooseTexture(String texture) {
-		change();
-		textureLabel.setText(texture);
-		setIconImage(Editor.TexturePanel.elements.get(texture.split(":")[1]).getImage());
-	}
-	
-	@Override
-	public void textureChooserDispose(){
-		textureChooserIsOpen = false;
-	}
-
-	@Override
-	public void chooseMaterial(String material) {
-		change();
-		containerLabel.setText(material);
-	}
-
-	@Override
-	public void materialChooserDispose() {
-		materialChooserIsOpen = false;
 	}
 }

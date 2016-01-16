@@ -17,29 +17,38 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
+import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
 public class FoodItemEditor extends RegularItemEditor {
-	protected JPanel propertiesPanel;
-	protected JPanel feedToWolvesPanel;
-	protected JPanel alwaysEdiblePanel;
-	protected JPanel effectsListPanel;
-	protected JPanel effectsListTopPanel;
-	protected JLabel labelHungerRefill;
-	protected JLabel labelSaturation;
-	protected JLabel labelProperties;
-	protected JLabel labelEffects;
-	protected JLabel labelEffect;
-	protected JLabel labelDuration;
-	protected JLabel labelAmplifier;
-	protected JSpinner hungerRefillSpinner;
-	protected JSpinner saturationSpinner;
-	protected JCheckBox feedToWolvesCheckbox;
-	protected JCheckBox alwaysEdibleCheckbox;
-	protected JButton addEffectButton;
-	protected EffectPanel[] effectPanels;
+	private JPanel propertiesPanel;
+	private JPanel feedToWolvesPanel;
+	private JPanel alwaysEdiblePanel;
+	private JPanel effectsListPanel;
+	private JPanel effectsListTopPanel;
+	private JLabel labelHungerRefill;
+	private JLabel labelSaturation;
+	private JLabel labelProperties;
+	private JLabel labelEffects;
+	private JLabel labelEffect;
+	private JLabel labelDuration;
+	private JLabel labelAmplifier;
+	private JSpinner hungerRefillSpinner;
+	private JSpinner saturationSpinner;
+	private JCheckBox feedToWolvesCheckbox;
+	private JCheckBox alwaysEdibleCheckbox;
+	private JButton addEffectButton;
+	private EffectPanel[] effectPanels;
+	
+	private final ObjectRunnable closeHandler = new ObjectRunnable(){
+		@Override
+		public void run(Object obj){
+			removeEffect((Integer) obj);
+		}
+	};
 
 	private static final String hungerRefillTooltip = "<html>The amount of hunger points that will be refilled when the user eats the food<br>"
 			+ "Two hunger points refill one chicken wing</html>";
@@ -57,8 +66,8 @@ public class FoodItemEditor extends RegularItemEditor {
 	public static final String removeEffectTooltip = "Remove this effect";
 	private static final String addEffectTooltip = "Add potion effects that will occur to the user when he eats the food";
 	
-	public FoodItemEditor(String name, ItemsActivityPanel itemsActivityPanel) {
-		super(name, itemsActivityPanel);
+	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		super(name, runnable, closeHandler);
 		setTitle("Edit Food: " + this.name);
 		
 		saveButton.setText("Save Food");
@@ -141,9 +150,9 @@ public class FoodItemEditor extends RegularItemEditor {
 		effectPanels = new EffectPanel[0];
 	}
 	
-	public FoodItemEditor(ItemsActivityPanel main, ItemElement item) {
-		this(item.name, main);
-		regularSetup(main, item);
+	public FoodItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
+		this(item.name, runnable, closeHandler);
+		regularSetup(item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
 		foodSetup(item);
@@ -151,7 +160,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		changed = false;
 	}
 	
-	protected void foodSetup(ItemElement item){
+	private void foodSetup(ItemElement item){
 		FoodItemResource resource = (FoodItemResource) item.item;
 		
 		hungerRefillSpinner.setValue(resource.amount);
@@ -163,12 +172,12 @@ public class FoodItemEditor extends RegularItemEditor {
 			alwaysEdibleCheckbox.setSelected(resource.alwaysedible);
 		if (resource.effects != null)
 			for (Integer[] effect : resource.effects)
-				addEffect(new EffectPanel(this, effect));
+				addEffect(new EffectPanel(closeHandler, this, effect));
 	}
 	
 	@Override
 	public boolean save() {
-		if (!textureChooserIsOpen && textureLabel.getText().length() > 0){
+		if (textureLabel.getText().length() > 0){
 			FoodItemResource base = new FoodItemResource();
 			base.amount = (Integer) hungerRefillSpinner.getValue();
 			base.saturation = (Float) saturationSpinner.getValue();
@@ -177,18 +186,16 @@ public class FoodItemEditor extends RegularItemEditor {
 			
 			Set<Integer[]> effects = new HashSet<Integer[]>();
 			for (EffectPanel effect : effectPanels)
-				if (effect.effectComboBox.getSelectedIndex() > 0)
-					effects.add(new Integer[]{effect.effectComboBox.getSelectedIndex(), 
-							(Integer) effect.durationSpinner.getValue(), (Integer) effect.amplifierSpinner.getValue()});
+				if (effect.isProperEffect())
+					effects.add(effect.getEffect());
 			base.effects = effects;
 			
 			ItemElement item = writeItem(base);
-			main.addItem(item);
-			
+			runnable.run(item);
 			dispose();
 		}
 		else{
-			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't given the item a texture yet.", 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected == JOptionPane.OK_OPTION)
 				return false;
@@ -196,24 +203,24 @@ public class FoodItemEditor extends RegularItemEditor {
 		return true;
 	}
 	
-	protected void addEffect(){
+	private void addEffect(){
 		change();
-		addEffect(new EffectPanel(this));
+		addEffect(new EffectPanel(closeHandler, this));
 	}
 	
-	protected void addEffect(EffectPanel effect){
+	private void addEffect(EffectPanel effect){
 		EffectPanel[] newEffectPanels = new EffectPanel[effectPanels.length + 1];
 		for (int i = 0; i < effectPanels.length; i++)
 			newEffectPanels[i] = effectPanels[i];
 		newEffectPanels[effectPanels.length] = effect;
-		effect.id = effectPanels.length;
+		effect.setId(effectPanels.length);
 		effectPanels = newEffectPanels;
 		
 		effectsListPanel.add(effect);
 		paintAll(getGraphics());
 	}
 	
-	public void removeEffect(int id){
+	private void removeEffect(int id){
 		effectsListPanel.remove(effectPanels[id]);
 
 		EffectPanel[] newEffectPanels = new EffectPanel[effectPanels.length - 1];
@@ -221,7 +228,7 @@ public class FoodItemEditor extends RegularItemEditor {
 			newEffectPanels[i] = effectPanels[i];
 		for (int i = id + 1; i < effectPanels.length; i++){
 			newEffectPanels[i - 1] = effectPanels[i];
-			effectPanels[i].id = i - 1;
+			effectPanels[i].setId(i - 1);
 		}
 		effectPanels = newEffectPanels;
 

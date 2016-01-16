@@ -11,6 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
 import java.util.Set;
 
 import javax.swing.ImageIcon;
@@ -27,7 +28,8 @@ import javax.swing.UIManager;
 
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.MetaFile;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
@@ -42,18 +44,25 @@ public class Editor {
 	private static JPanel activityPanel;
 	private static JMenuItem mntmExport;
 	
-	public static ActivityPanel TexturePanel;
-	public static ActivityPanel RecipePanel;
-	public static ActivityPanel BlockPanel;
-	public static ActivityPanel ItemPanel;
-	public static ActivityPanel StructurePanel;
+	private static ActivityPanel TexturePanel;
+	private static ActivityPanel RecipePanel;
+	private static ActivityPanel BlockPanel;
+	private static ActivityPanel ItemPanel;
+	private static ActivityPanel StructurePanel;
 	
 	public static MetaFile metaFile;
 	public static LanguageFile langFile;
+
+	public static Map<String, ImageIcon> getTextureList(){
+		return TexturePanel.elements;
+	}
+	public static Map<String, ImageIcon> getItemList(){
+		return ItemPanel.elements;
+	}
+	public static Map<String, ImageIcon> getBlockList(){
+		return BlockPanel.elements;
+	}
 	
-	/**
-	 * Launch the application.
-	 */
 	public static void main(String[] args) {
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
@@ -73,17 +82,12 @@ public class Editor {
 		});
 	}
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
 	private static void initialize() {
-		//Window
 		frame = new IconFrame();
 		frame.setBounds(100, 100, 900, 600);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setTitle("Mod Builder");
 		
-		//Menubar
 		JMenuBar menuBar = new JMenuBar();
 		menuBar.setBackground(SystemColor.inactiveCaption);
 		frame.setJMenuBar(menuBar);
@@ -136,17 +140,15 @@ public class Editor {
 	
 	private static void newMod(){
 		if (chooseFolder(true)){
-			metaFile = MetaFile.create(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
-			langFile = LanguageFile.create(ResourcePackGenerator.resourcePackFolderDir + 
-					"assets/modbuilder/lang/en_US.lang");
+			metaFile = MetaFile.create(ResourcePackIO.getURL("pack.mcmeta"));
+			langFile = LanguageFile.create(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
 		}
 	}
 	
 	private static void openMod(){
 		if (chooseFolder(false)){
-			metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
-			langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
-					"assets/modbuilder/lang/en_US.lang");
+			metaFile = MetaFile.open(ResourcePackIO.getURL("pack.mcmeta"));
+			langFile = LanguageFile.open(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
 		}
 	}
 	
@@ -166,13 +168,12 @@ public class Editor {
 			if (!file.exists())
 				file.mkdirs();
 			String dir = file.getAbsolutePath().replace("\\", "/") + "/";
-			ResourcePackGenerator.resourcePackFolderDir = dir;
+			ResourcePackIO.setResourcePackFolder(dir);
 			if (!interfaceOpened) createInterface();
 			updateInterface();
 			if (newIsActuallyOpen){
-				metaFile = MetaFile.open(ResourcePackGenerator.resourcePackFolderDir + "pack.mcmeta");
-				langFile = LanguageFile.open(ResourcePackGenerator.resourcePackFolderDir + 
-						"assets/modbuilder/lang/en_US.lang");
+				metaFile = MetaFile.open(ResourcePackIO.getURL("pack.mcmeta"));
+				langFile = LanguageFile.open(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
 				return false;
 			}
 			return true;
@@ -186,21 +187,15 @@ public class Editor {
 		if (menu.showSaveDialog(frame) == JFileChooser.APPROVE_OPTION){
 			String dir = menu.getSelectedFile().getAbsolutePath();
 			if (!dir.endsWith(".zip")) dir += ".zip";
-			try {
-				ResourcePackGenerator.export(dir);
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			ResourcePackIO.export(dir);
 		}
 	}
 	
 	private static void createInterface(){
-		//Main panel
 		JSplitPane splitPane = new JSplitPane();
 		splitPane.setBackground(SystemColor.control);
 		frame.getContentPane().add(splitPane, BorderLayout.CENTER);
 		
-		//Button panel
 		JPanel buttonPanel = new JPanel();
 		splitPane.setLeftComponent(buttonPanel);
 		buttonPanel.setLayout(new GridLayout(0, 1, 0, 0));
@@ -231,8 +226,6 @@ public class Editor {
 		ItemsButton.addActionListener(buttonListener);
 		buttonPanel.add(ItemsButton);
 		
-		
-		//Activity panel
 		JPanel ActivityPanel = new JPanel();
 		splitPane.setRightComponent(ActivityPanel);
 		
@@ -250,13 +243,15 @@ public class Editor {
 		
 		ItemPanel = new ItemsActivityPanel("Items", "New Item");
 		ActivityPanel.add(ItemPanel, "Items");
-		
+		/*
 		StructurePanel = new StructureActivityPanel("Structures", "New Structure");
 		activityPanel.add(StructurePanel, "Structures");
 		SwingUtilities.updateComponentTreeUI(frame);
-
+		*/
 		interfaceOpened = true;
 		mntmExport.setEnabled(true);
+
+		frame.setVisible(true);
 	}
 	
 	private static void changePanel(String panel){
@@ -269,7 +264,7 @@ public class Editor {
 		RecipePanel.updateList();
 		BlockPanel.updateList();
 		ItemPanel.updateList();
-		StructurePanel.updateList();
+		//StructurePanel.updateList();
 	}
 	
 	private static void about(){

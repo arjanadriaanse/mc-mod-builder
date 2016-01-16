@@ -41,50 +41,50 @@ import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 
-public class BlockEditor extends WindowClosingVerifierUser implements BlockModelRunnable {
-	protected JPanel buttonPanel;
-	protected JPanel mainPanel;
-	protected JPanel labelPanel;
-	protected JPanel interactionPanel;
-	protected JPanel modelPanel;
-	protected JLabel labelCreativeTab;
-	protected JLabel labelModel;
-	protected JLabel labelLightness;
-	protected JLabel labelOpacity;
-	protected JLabel labelSlipperiness;
-	protected JLabel labelHardness;
-	protected JLabel labelResistance;
-	protected JLabel labelHarvestLevel;
-	protected JLabel labelBurntime;
-	protected JLabel labelHarvestType;
-	protected JLabel labelMaterial;
-	protected JLabel labelUnbreakable;
-	protected JLabel modelLabel;
-	protected JButton renameButton;
-	protected JButton saveBlockButton;
-	protected JButton cancelButton;
-	protected JButton modelChooseButton;
-	protected JSpinner lightnessSpinner;
-	protected JSpinner opacitySpinner;
-	protected JSpinner slipperinessSpinner;
-	protected JSpinner hardnessSpinner;
-	protected JSpinner resistanceSpinner;
-	protected JSpinner harvestLevelSpinner;
-	protected JSpinner burntimeSpinner;
-	protected JComboBox creativeTabComboBox;
-	protected JComboBox harvestTypeComboBox;
-	protected JComboBox materialComboBox;
-	protected JCheckBox unbreakableCheckBox;
+public class BlockEditor extends WindowClosingVerifierUser {
+	private JPanel buttonPanel;
+	private JPanel mainPanel;
+	private JPanel labelPanel;
+	private JPanel interactionPanel;
+	private JPanel modelPanel;
+	private JLabel labelCreativeTab;
+	private JLabel labelModel;
+	private JLabel labelLightness;
+	private JLabel labelOpacity;
+	private JLabel labelSlipperiness;
+	private JLabel labelHardness;
+	private JLabel labelResistance;
+	private JLabel labelHarvestLevel;
+	private JLabel labelBurntime;
+	private JLabel labelHarvestType;
+	private JLabel labelMaterial;
+	private JLabel labelUnbreakable;
+	private JLabel modelLabel;
+	private JButton renameButton;
+	private JButton saveBlockButton;
+	private JButton cancelButton;
+	private JButton modelChooseButton;
+	private JSpinner lightnessSpinner;
+	private JSpinner opacitySpinner;
+	private JSpinner slipperinessSpinner;
+	private JSpinner hardnessSpinner;
+	private JSpinner resistanceSpinner;
+	private JSpinner harvestLevelSpinner;
+	private JSpinner burntimeSpinner;
+	private JComboBox creativeTabComboBox;
+	private JComboBox harvestTypeComboBox;
+	private JComboBox materialComboBox;
+	private JCheckBox unbreakableCheckBox;
 	
-	protected boolean modelChooserIsOpen = false;
-	protected String name;
-	protected BlocksActivityPanel main;
-	protected BlockModelResource model;
+	private String name;
+	private BlockModelResource model;
+	private ObjectRunnable runnable;
+	private ObjectRunnable closeHandler;
 
 	private static final String modelTooltip = "The model determines what the block looks like in the game";
 	private static final String creativeTabTooltip = ""; //TODO
@@ -99,9 +99,17 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 	private static final String materialTooltip = ""; //TODO
 	private static final String unbreakableTooltip = ""; //TODO
 	
-	public BlockEditor(String name, BlocksActivityPanel main) {
+	private final ObjectRunnable modelChooser = new ObjectRunnable(){
+		@Override
+		public void run(Object obj){
+			setModel((BlockModelResource) obj);
+		}
+	};
+	
+	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;
-		this.main = main;
+		this.runnable = runnable;
+		this.closeHandler = closeHandler;
 
 		setBounds(100, 100, 500, 500);
 		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -259,15 +267,7 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		/*
-		renameButton = new JButton("Rename");
-		renameButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				rename();
-			}
-		});
-		buttonPanel.add(renameButton);
-		*/
+		
 		saveBlockButton = new JButton("Save Block");
 		saveBlockButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -287,8 +287,8 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 		setVisible(true);
 	}
 	
-	public BlockEditor(BlocksActivityPanel main, BlockElement block){
-		this(block.name, main);
+	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
+		this(block.name, runnable, closeHandler);
 		
 		if (block.blockModel != null)
 			setModel(block.blockModel);
@@ -317,15 +317,10 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 		
 		changed = false;
 	}
-	
-	protected void cancel(){
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
-	}
 
+	@Override
 	public boolean save(){
-		if (!modelChooserIsOpen && !(model == null) && materialComboBox.getSelectedIndex() != 0){
+		if (model != null && materialComboBox.getSelectedIndex() != 0){
 			BlockElement block = new BlockElement();
 			block.name = name;
 			block.blockModel = model;
@@ -358,55 +353,44 @@ public class BlockEditor extends WindowClosingVerifierUser implements BlockModel
 			base.burntime = (Integer) burntimeSpinner.getValue();
 			block.block = base;
 			
-			main.addBlock(block);
-			
+			runnable.run(block);
 			dispose();
 		}
 		else{
-			int selected = JOptionPane.showConfirmDialog(this, "Not all required properties have been given a value yet.", 
+			String errorMessage = "You haven't given the block a model yet.";
+			if (model != null) errorMessage = "You haven't given the block a material yet.";
+			int selected = JOptionPane.showConfirmDialog(this, errorMessage, 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected == JOptionPane.OK_OPTION)
 				return false;
 		}
 		return true;
 	}
-	/*
-	protected void rename(){
-		String name = JOptionPane.showInputDialog("Block name:");
-		this.name = name;
-		setTitle("Edit Block: " + this.name);
-		//refractor
-	}
-	*/
-	protected void chooseModel() {
-		if (!modelChooserIsOpen){
-			new BlockModelChooseWindow(this);
-			modelChooserIsOpen = true;
-		}
-	}
 	
-	@Override
-	public void dispose() {
-		main.closeEditor(name);
-		super.dispose();
+	private void chooseModel() {
+		if (model == null)
+			new BlockModelChooseWindow(modelChooser);
+		else
+			new BlockModelChooseWindow(modelChooser, model);
 	}
 
-	@Override
-	public BlockModelResource getModel() {
-		return model;
-	}
-
-	@Override
-	public void setModel(BlockModelResource model) {
+	private void setModel(BlockModelResource model) {
 		change();
 		this.model = model;
 		if (model.parent == "block/cross") modelLabel.setText("Cross model");
 		else modelLabel.setText("Block model");
 	}
-
+	
+	private void cancel(){
+		for (WindowListener listener : getWindowListeners()){
+			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
+		}
+	}
+	
 	@Override
-	public void blockModelChooserDispose() {
-		modelChooserIsOpen = false;
+	public void dispose() {
+		closeHandler.run(name);
+		super.dispose();
 	}
 }
 

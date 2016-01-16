@@ -12,7 +12,7 @@ import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
 import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 
 public class RecipeElement extends Element {
 	public BaseRecipe recipe;
@@ -20,7 +20,7 @@ public class RecipeElement extends Element {
 	public static RecipeElement getFromName(String name) throws Exception {
 		RecipeElement output = null;
 		
-		File itemFile = new File(ResourcePackGenerator.getURL(
+		File itemFile = new File(ResourcePackIO.getURL(
 				"assets/modbuilder/recipes/" + name + ".json"));
 		
 		if (itemFile.exists()){

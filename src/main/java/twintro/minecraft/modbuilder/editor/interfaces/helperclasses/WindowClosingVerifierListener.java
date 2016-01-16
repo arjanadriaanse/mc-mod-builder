@@ -8,7 +8,7 @@ import java.awt.event.WindowListener;
 import javax.swing.JOptionPane;
 
 public class WindowClosingVerifierListener implements WindowListener{
-	public static void close(Window window){
+	private static void close(Window window){
 		Object[] options = {"Yes", "No", "Cancel"};
 		int selected = JOptionPane.showOptionDialog(window, "There are unsaved changes.\r\n" + 
 				"Would you like to save first?", 

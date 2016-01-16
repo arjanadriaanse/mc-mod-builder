@@ -11,19 +11,20 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
 
 public class EffectPanel extends JPanel {
-	public JComboBox effectComboBox;
-	public JSpinner durationSpinner;
-	public JSpinner amplifierSpinner;
-	public JButton removeButton;
+	private JComboBox effectComboBox;
+	private JSpinner durationSpinner;
+	private JSpinner amplifierSpinner;
+	private JButton removeButton;
 	
-	public FoodItemEditor main;
-	public int id;
+	private ObjectRunnable runnable;
+	private int id;
 	
-	public EffectPanel(FoodItemEditor main){
-		this.main = main;
+	public EffectPanel(ObjectRunnable runnable, WindowClosingVerifierUser main){
+		this.runnable = runnable;
 		
 		setLayout(new GridLayout(0, 4, 5, 0));
 		
@@ -58,8 +59,8 @@ public class EffectPanel extends JPanel {
 		add(removeButton);
 	}
 	
-	public EffectPanel(FoodItemEditor main, Integer[] effect){
-		this(main);
+	public EffectPanel(ObjectRunnable runnable, WindowClosingVerifierUser main, Integer[] effect){
+		this(runnable, main);
 		
 		if (effect.length == 3){
 			effectComboBox.setSelectedIndex(effect[0]);
@@ -68,7 +69,19 @@ public class EffectPanel extends JPanel {
 		}
 	}
 	
-	protected void dispose(){
-		main.removeEffect(id);
+	public boolean isProperEffect(){
+		return effectComboBox.getSelectedIndex() > 0;
+	}
+	
+	public Integer[] getEffect(){
+		return new Integer[]{effectComboBox.getSelectedIndex(), (Integer) durationSpinner.getValue(), (Integer) amplifierSpinner.getValue()};
+	}
+	
+	public void setId(int id){
+		this.id = id;
+	}
+	
+	private void dispose(){
+		runnable.run(id);
 	}
 }

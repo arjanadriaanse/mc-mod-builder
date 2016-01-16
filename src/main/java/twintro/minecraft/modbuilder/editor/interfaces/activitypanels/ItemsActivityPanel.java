@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.swing.JButton;
+import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
@@ -21,29 +22,26 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.ActivityButton;
-import twintro.minecraft.modbuilder.editor.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackGenerator;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ToolItemEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 
-public class ItemsActivityPanel extends ActivityPanel {
-	private List<String> models;
-	private Map<String,RegularItemEditor> openEditors;
+public class ItemsActivityPanel extends ObjectActivityPanel {
+	private final ObjectRunnable runnable = new ObjectRunnable() {
+		@Override
+		public void run(Object obj) {
+			saveItem((ItemElement) obj);
+		}
+	};
 	
 	public ItemsActivityPanel(String header, String button) {
 		super(header, button);
-		this.models = new ArrayList<String>();
-		this.openEditors = new HashMap<String,RegularItemEditor>();
-	}
-	
-	public ItemsActivityPanel(String header, String button, ArrayList<String> models) {
-		super(header, button);
-		this.models = models;
-		this.openEditors = new HashMap<String,RegularItemEditor>();
+		openEditors = new HashMap<String, JFrame>();
 	}
 	
 	@Override
@@ -51,49 +49,29 @@ public class ItemsActivityPanel extends ActivityPanel {
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				RegularItemEditor editor = new RegularItemEditor(name, this);
+				RegularItemEditor editor = new RegularItemEditor(name, runnable, closeHandler);
 				openEditors.put(name, editor);
 			}
 		}
 	}
 	
-	protected void addFood(){
+	private void addFood(){
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				FoodItemEditor editor = new FoodItemEditor(name, this);
+				FoodItemEditor editor = new FoodItemEditor(name, runnable, closeHandler);
 				openEditors.put(name, editor);
 			}
 		}
 	}
 	
-	protected void addTool(){
+	private void addTool(){
 		String name = JOptionPane.showInputDialog("Item name:");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				RegularItemEditor editor = new ToolItemEditor(name, this);
+				RegularItemEditor editor = new ToolItemEditor(name, runnable, closeHandler);
 				openEditors.put(name, editor);
 			}
-		}
-	}
-	
-	public void addItem(ItemElement item){
-		createFile(item.itemModel, "assets/modbuilder/models/item/" + item.name + ".json");
-		createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
-		addElement(item.name, item.getImage());
-		
-		Editor.metaFile.resource.modbuilder.items.add(item.name);
-		Editor.metaFile.save();
-		
-		Editor.langFile.list.add("item.modbuilder_" + item.name + ".name=" + item.name);
-		Editor.langFile.save();
-	}
-	
-	public void createFile(Object model, String dir){
-		try {
-			ResourcePackGenerator.createFile(model, dir);
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 	}
 	
@@ -105,9 +83,9 @@ public class ItemsActivityPanel extends ActivityPanel {
 				ItemElement item = ItemElement.getFromName(value);
 				ItemType type = item.item.type;
 				RegularItemEditor editor;
-				if (type == ItemType.food) editor = new FoodItemEditor(this, item);
-				else if (type == ItemType.tool) editor = new ToolItemEditor(this, item);
-				else editor = new RegularItemEditor(this, item);
+				if (type == ItemType.food) editor = new FoodItemEditor(item, runnable, closeHandler);
+				else if (type == ItemType.tool) editor = new ToolItemEditor(item, runnable, closeHandler);
+				else editor = new RegularItemEditor(item, runnable, closeHandler);
 				openEditors.put(value,editor);
 			}
 			else {
@@ -125,8 +103,8 @@ public class ItemsActivityPanel extends ActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
-			ResourcePackGenerator.deleteFile("assets/modbuilder/models/item/" + value + ".json");
-			ResourcePackGenerator.deleteFile("assets/modbuilder/items/" + value + ".json");
+			ResourcePackIO.deleteFile("assets/modbuilder/models/item/" + value + ".json");
+			ResourcePackIO.deleteFile("assets/modbuilder/items/" + value + ".json");
 			removeElement(value);
 			
 			Editor.metaFile.resource.modbuilder.items.remove(value);
@@ -136,27 +114,10 @@ public class ItemsActivityPanel extends ActivityPanel {
 			Editor.langFile.save();
 		}
 	}
-	public void updateTextureReferences(String old, String newName){
-		try	{
-			Set<String> names = this.getAllElements();
-			for (String nameOfElement : names){
-				ItemElement elementToReReference = ItemElement.getFromName(nameOfElement);
-				boolean isChanged = false;
-				if (elementToReReference.item.type == ItemType.regular){
-					ItemModelResource elementClassed = (ItemModelResource)elementToReReference.itemModel;
-					for (String texture : elementClassed.textures.values()){
-						if (texture == old){isChanged = true; texture = newName;}
-					}
-					if(isChanged)this.addItem(elementToReReference);
-				}
-				
-			}
-		}catch(Exception e){}
-	}
 	
 	@Override
 	public void updateList() {
-		File folder = new File(ResourcePackGenerator.getURL("assets/modbuilder/items/"));
+		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/items/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
 				if (file.getAbsolutePath().endsWith(".json")){
@@ -170,11 +131,6 @@ public class ItemsActivityPanel extends ActivityPanel {
 				}
 			}
 		}
-	}
-	
-	public void closeEditor(String name){
-		if (openEditors.containsKey(name))
-			openEditors.remove(name);
 	}
 	
 	@Override
@@ -196,5 +152,17 @@ public class ItemsActivityPanel extends ActivityPanel {
 		buttonPanel.add(foodButton);
 		
 		super.createButtonPanel(buttonPanel, button);
+	}
+	
+	private void saveItem(ItemElement item){
+		ResourcePackIO.createFile(item.itemModel, "assets/modbuilder/models/item/" + item.name + ".json");
+		ResourcePackIO.createFile(item.item, "assets/modbuilder/items/" + item.name + ".json");
+		addElement(item.name, item.getImage());
+		
+		Editor.metaFile.resource.modbuilder.items.add(item.name);
+		Editor.metaFile.save();
+		
+		Editor.langFile.list.add("item.modbuilder_" + item.name + ".name=" + item.name);
+		Editor.langFile.save();
 	}
 }
