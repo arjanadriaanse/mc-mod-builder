@@ -18,6 +18,13 @@ public abstract class BaseBlockResource {
 	 * The blockmaterial. This contains properties such as sound when breaking a block or flammability.
 	 */
 	public MaterialResource material;
+	public Boolean flammable;
+	public Boolean replaceable;
+	public Boolean requirestool;
+	public Integer mobility;
+	public Boolean solid;
+	public Boolean opaque;
+	public Integer mapcolor;
 	/**
 	 * The name of the itemmodel that the item will use.
 	 */

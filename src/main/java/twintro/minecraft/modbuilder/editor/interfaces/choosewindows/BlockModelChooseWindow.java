@@ -55,13 +55,14 @@ public class BlockModelChooseWindow extends JDialog {
 	ObjectRunnable runnable;
 	ListPanel listPanel;
 	int modelType = 1;
+	JRadioButton[] modelbuttons = new JRadioButton[2];
 	ImageIcon selectedImage;
 	String selectedImageName;
 	Image[] textures1 = new BufferedImage[6];
-	Image[] textures2 = new BufferedImage[2];
+	Image textures2;
 	String[] textureNames1 = new String[6];
-	String[] textureNames2 = new String[2];
-	double[] rotation1 = new double[]{Math.PI/6,Math.PI/6};
+	String textureNames2;
+	double[] rotation1 = new double[]{Math.PI/6,Math.PI/4};
 	double[] rotation2 = new double[]{Math.PI/4,Math.PI/6};
 	boolean rotating = false;
 	Point mousecoords;
@@ -75,8 +76,7 @@ public class BlockModelChooseWindow extends JDialog {
 			new Point(240,192)
 	};
 	Point[] loc2 = new Point[]{
-			new Point( 96,0),
-			new Point(224,0),
+			new Point(160,0),
 	        new Point(192,160)
 	};
 
@@ -141,26 +141,25 @@ public class BlockModelChooseWindow extends JDialog {
 		topButtonPanel.setLayout(new FlowLayout());
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		JRadioButton button1 = new JRadioButton("full block model");
-		JRadioButton button2 = new JRadioButton("cross model");
-		if(modelType==1) button1.setSelected(true);
-		if(modelType==2) button2.setSelected(true);
-		button1.addActionListener(new ActionListener(){
+		modelbuttons[0] = new JRadioButton("full block model");
+		modelbuttons[1] = new JRadioButton("cross model");
+		modelbuttons[0].setSelected(true);
+		modelbuttons[0].addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent ae){
 				buttonPressed1(ae);
 			}
 		});
-		button2.addActionListener(new ActionListener(){
+		modelbuttons[1].addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent ae){
 				buttonPressed2(ae);
 			}
 		});
-		buttonGroup.add(button1);
-		buttonGroup.add(button2);
-		topButtonPanel.add(button1);
-		topButtonPanel.add(button2);
+		buttonGroup.add(modelbuttons[0]);
+		buttonGroup.add(modelbuttons[1]);
+		topButtonPanel.add(modelbuttons[0]);
+		topButtonPanel.add(modelbuttons[1]);
 
 		JPanel botButtonPanel = new JPanel();
 		mainPanel.add(botButtonPanel, BorderLayout.PAGE_END);
@@ -245,32 +244,30 @@ public class BlockModelChooseWindow extends JDialog {
 	}
 	
 	public void paint2(Graphics g){
-		for(int i=0;i<2;i++){
-			g.drawRect(loc2[i].x,loc2[i].y, 64, 64);
-			g.drawImage(textures2[i],loc2[i].x,loc2[i].y,null);
-		}
-		if (textures2[0]!=null && textures2[1]!=null) {
+		g.drawRect(loc2[0].x,loc2[0].y, 64, 64);
+		g.drawImage(textures2,loc2[0].x,loc2[0].y,null);
+		if (textures2!=null) {
 			double sh = Math.sin(rotation2[0]);
 			double ch = Math.cos(rotation2[0]);
 			double sv = Math.sin(rotation2[1]);
 			double cv = Math.cos(rotation2[1]);
-	        BufferedImage img0 = transformImage(textures2[0], 2*ch,-2*sh*sv, 0, 2*cv, 2*Math.max(0,-ch), 2*(Math.max(0, sh*sv)+Math.max(0,-cv)));
-	        BufferedImage img1 = transformImage(textures2[1], 2*sh, 2*ch*sv, 0, 2*cv, 2*Math.max(0,-sh), 2*(Math.max(0,-ch*sv)+Math.max(0,-cv)));
+	        BufferedImage img0 = transformImage(textures2, 2*ch,-2*sh*sv, 0, 2*cv, 2*Math.max(0,-ch), 2*(Math.max(0, sh*sv)+Math.max(0,-cv)));
+	        BufferedImage img1 = transformImage(textures2, 2*sh, 2*ch*sv, 0, 2*cv, 2*Math.max(0,-sh), 2*(Math.max(0,-ch*sv)+Math.max(0,-cv)));
 	        
 	        if (ch*sh>=0 ^ cv<=0)
-	        	g.clipRect(loc2[2].x-128,loc2[2].y-128,128,256);
+	        	g.clipRect(loc2[1].x-128,loc2[1].y-128,128,256);
 	        else
-		        g.clipRect(loc2[2].x,loc2[2].y-128,128,256);
-	        g.drawImage(img1, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
+		        g.clipRect(loc2[1].x,loc2[1].y-128,128,256);
+	        g.drawImage(img1, loc2[1].x-(int) Math.round(Math.abs(64*sh)), loc2[1].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
 	        g.setClip(null);
-	        g.clipRect(loc2[2].x-128,loc2[2].y-128,256,256);
-	        g.drawImage(img0, loc2[2].x-(int) Math.round(Math.abs(64*ch)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(sh*sv))), null);
+	        g.clipRect(loc2[1].x-128,loc2[1].y-128,256,256);
+	        g.drawImage(img0, loc2[1].x-(int) Math.round(Math.abs(64*ch)), loc2[1].y-(int)(64*(Math.abs(cv)+Math.abs(sh*sv))), null);
 	        g.setClip(null);
 	        if (ch*sh>=0 ^ cv<=0)
-		        g.clipRect(loc2[2].x,loc2[2].y-128,128,256);
+		        g.clipRect(loc2[1].x,loc2[1].y-128,128,256);
 	        else
-	        	g.clipRect(loc2[2].x-128,loc2[2].y-128,128,256);
-	        g.drawImage(img1, loc2[2].x-(int) Math.round(Math.abs(64*sh)), loc2[2].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
+	        	g.clipRect(loc2[1].x-128,loc2[1].y-128,128,256);
+	        g.drawImage(img1, loc2[1].x-(int) Math.round(Math.abs(64*sh)), loc2[1].y-(int)(64*(Math.abs(cv)+Math.abs(ch*sv))), null);
 	        g.setClip(null);
 		}
 	}
@@ -314,14 +311,11 @@ public class BlockModelChooseWindow extends JDialog {
 	}
 	
 	public void mouseclick2(MouseEvent me){
-		for(int i=0;i<2;i++){
-			if (selectedImage!=null && new Rectangle(loc2[i].x,loc2[i].y, 64, 64).contains(me.getPoint())) {
-				textures2[i] = selectedImage.getImage();
-				textureNames2[i] = selectedImageName;
-				break;
-			};
-		}
-		if (new Rectangle(loc2[2].x-64,loc2[2].y-96,128,192).contains(me.getPoint())) {
+		if (selectedImage!=null && new Rectangle(loc2[0].x,loc2[0].y, 64, 64).contains(me.getPoint())) {
+			textures2 = selectedImage.getImage();
+			textureNames2 = selectedImageName;
+		};
+		if (new Rectangle(loc2[1].x-64,loc2[1].y-96,128,192).contains(me.getPoint())) {
 			rotating=true;
 			mousecoords=me.getPoint();
 		}
@@ -386,11 +380,11 @@ public class BlockModelChooseWindow extends JDialog {
 			}
 		}
 		if(modelType==2){
-			if (textures2[0]==null || textures2[1]==null) return;
+			if (textures2==null) return;
 			model.parent="block/cross";
 			model.textures=new HashMap<String,String>();
-			model.textures.put("cross", "modbuilder:"+textureNames2[0]);
-			model.textures.put("particle", "modbuilder:"+textureNames2[0]);
+			model.textures.put("cross", "modbuilder:"+textureNames2);
+			model.textures.put("particle", "modbuilder:"+textureNames2);
 		}
 		runnable.run(model);
 		this.dispose();
@@ -416,26 +410,26 @@ public class BlockModelChooseWindow extends JDialog {
 				}
 			}
 			modelType=1;
+			modelbuttons[0].setSelected(true);
 			return;
 		}
 		if(model.parent.equals("block/cross")) {
 			if (model.textures.get("cross").split(":")[0].equals("modbuilder")) {
 				String loc=ResourcePackIO.getURL("assets/modbuilder/textures/" 
-			+ model.textures.get("cross").split(":")[1] + ".png");
+					+ model.textures.get("cross").split(":")[1] + ".png");
 				try{
 					Image img = ImageIO.read(new File(loc)).getScaledInstance(64, 64, 0);
 					BufferedImage bi = new BufferedImage(64,64,BufferedImage.TYPE_INT_ARGB);
 					bi.createGraphics().drawImage(img,0,0,null);
-					textures2[0]=bi;
+					textures2=bi;
 				} 
 				catch (IOException e){
 				    e.printStackTrace();
 				}
-				textureNames2[0]=model.textures.get("cross").split(":")[1];
-				textures2[1]=textures2[0];
-				textureNames2[1]=textureNames2[0];
+				textureNames2=model.textures.get("cross").split(":")[1];
 			}
 			modelType=2;
+			modelbuttons[1].setSelected(true);
 			return;
 		}
 		if(model.parent.equals("block/cube_all")) {
@@ -464,6 +458,7 @@ public class BlockModelChooseWindow extends JDialog {
 				textureNames1[5]=textureNames1[4];
 			}
 			modelType=1;
+			modelbuttons[0].setSelected(true);
 			return;
 		}
 	}
