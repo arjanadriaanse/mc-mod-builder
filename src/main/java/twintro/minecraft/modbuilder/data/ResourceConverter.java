@@ -46,7 +46,7 @@ public class ResourceConverter {
 	}
 
 	public static BuilderBlock toBlock(BlockResource resource) {
-		BuilderBlock block = new BuilderBlock(ResourceHelper.materials.get(resource.material), resource.drops);
+		BuilderBlock block = new BuilderBlock(new BuilderBlockMaterial(resource), resource.drops);
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)
