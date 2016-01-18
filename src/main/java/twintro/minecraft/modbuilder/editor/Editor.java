@@ -9,13 +9,16 @@ import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.util.Map;
 import java.util.Set;
 
+import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
+import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
@@ -23,6 +26,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
@@ -132,6 +136,29 @@ public class Editor {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				about();
+			}
+		});
+		
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',KeyEvent.CTRL_DOWN_MASK), "open");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',KeyEvent.CTRL_DOWN_MASK), "export");
+		menuBar.getActionMap().put("new", new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				newMod();
+			}
+		});
+		menuBar.getActionMap().put("open", new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				openMod();
+			}
+		});
+		menuBar.getActionMap().put("export", new AbstractAction(){
+			@Override
+			public void actionPerformed(ActionEvent ae){
+				if (mntmExport.isEnabled())
+					exportMod();
 			}
 		});
 		
