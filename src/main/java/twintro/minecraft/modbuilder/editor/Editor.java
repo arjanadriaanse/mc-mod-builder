@@ -217,11 +217,11 @@ public class Editor {
 		JButton BlocksButton = new ActivityButton("Blocks");
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
-		/*
+		
 		JButton structuresButton = new ActivityButton("Structures");
 		structuresButton.addActionListener(buttonListener);
 		buttonPanel.add(structuresButton);
-		*/
+		
 		JButton ItemsButton = new ActivityButton("Items");
 		ItemsButton.addActionListener(buttonListener);
 		buttonPanel.add(ItemsButton);
@@ -243,11 +243,10 @@ public class Editor {
 		
 		ItemPanel = new ItemsActivityPanel("Items", "New Item");
 		ActivityPanel.add(ItemPanel, "Items");
-		/*
-		StructurePanel = new StructureActivityPanel("Structures", "New Structure");
-		activityPanel.add(StructurePanel, "Structures");
-		SwingUtilities.updateComponentTreeUI(frame);
-		*/
+		
+		StructurePanel = new StructureActivityPanel("Structures", "New Ore");
+		ActivityPanel.add(StructurePanel, "Structures");
+		
 		interfaceOpened = true;
 		mntmExport.setEnabled(true);
 
@@ -264,7 +263,7 @@ public class Editor {
 		RecipePanel.updateList();
 		BlockPanel.updateList();
 		ItemPanel.updateList();
-		//StructurePanel.updateList();
+		StructurePanel.updateList();
 	}
 	
 	private static void about(){

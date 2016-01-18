@@ -7,17 +7,9 @@ import net.minecraft.block.Block;
  */
 public class OreStructureResource extends BaseStructureResource {
 	/**
-	 * The block that needs to be generated as an ore.
-	 */
-	public String block;
-	/**
 	 * The block that the ore will replace. If set to null, it will default to stone in the overworld, netherrack in the nether and endstone in the end.
 	 */
 	public String replaceblock;
-	/**
-	 * The dimension the ore needs to generate in. Use -1 for nether, 0 for overworld or 1 for the end.
-	 */
-	public Integer dimension;
 	/**
 	 * The maximum amount of ore blocks the generator will place in one vein. Not all veins will be this size, as some might be cut off by a cave or other ores.
 	 */

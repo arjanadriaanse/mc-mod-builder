@@ -8,6 +8,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
@@ -19,25 +20,60 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.border.EmptyBorder;
+import javax.swing.event.ChangeEvent;
+import javax.swing.event.ChangeListener;
 
+import twintro.minecraft.modbuilder.data.resources.structures.GroundStructureResource;
+import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
+import twintro.minecraft.modbuilder.editor.resources.StructureElement;
+import javax.swing.SpinnerNumberModel;
 
 public class OreStructureEditor extends WindowClosingVerifierUser {
-	private JPanel contentPane;
-	private JSpinner maxYspinner;
-	private JSpinner minYspinner;
-	private JSpinner veinSizeSpinner;
+	private JPanel buttonPanel;
+	private JPanel mainPanel;
+	private JPanel labelPanel;
+	private JPanel interactionPanel;
+	private JPanel materialPanel;
+	private JPanel replacingPanel;
+	private JPanel regionPanel;
+	private JPanel minYPanel;
+	private JPanel maxYPanel;
+	private JLabel labelMaterial;
+	private JLabel labelReplacing;
+	private JLabel labelDimension;
+	private JLabel labelMaxVeinSize;
+	private JLabel labelAmount;
+	private JLabel labelRegion;
+	private JLabel labelMinY;
+	private JLabel labelMaxY;
+	private JLabel materialLabel;
+	private JLabel replacingLabel;
+	private JButton saveStructureButton;
+	private JButton cancelButton;
+	private JButton materialChooseButton;
+	private JButton replacingChooseButton;
+	private JSpinner maxVeinSizeSpinner;
+	private JSpinner amountSpinner;
+	private JSpinner minYSpinner;
+	private JSpinner maxYSpinner;
 	private JComboBox dimensionComboBox;
-	private JButton coverBlockButton;
-	private JLabel coverBlockLabel;
 
 	private String name;
 	private ObjectRunnable runnable;
 	private ObjectRunnable closeHandler;
 
+	private static final String materialTooltip = "";//TODO
+	private static final String replacingTooltip = "";//TODO
+	private static final String dimensionTooltip = "";//TODO
+	private static final String maxVeinSizeTooltip = "";//TODO
+	private static final String amountTooltip = "";//TODO
+	private static final String regionTooltip = "";//TODO
+	
 	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;
 		this.runnable = runnable;
@@ -48,131 +84,250 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 		addWindowListener(new WindowClosingVerifierListener());
 		setTitle("Edit structure: " + this.name);
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.SOUTH);
-		panel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		mainPanel = new JPanel();
+		mainPanel.setLayout(new BorderLayout(5, 0));
+		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		
-		JButton btnSaveItem = new JButton("Save");
-		panel.add(btnSaveItem);
-		btnSaveItem.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				saveStructure();
+		labelPanel = new JPanel();
+		labelPanel.setLayout(new GridLayout(0, 1, 0, 5));
+		mainPanel.add(labelPanel, BorderLayout.WEST);
+		
+		interactionPanel = new JPanel();
+		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
+		mainPanel.add(interactionPanel, BorderLayout.CENTER);
+		
+		labelMaterial = new JLabel("Material");
+		labelMaterial.setToolTipText(materialTooltip);
+		labelPanel.add(labelMaterial);
+		
+		materialPanel = new JPanel();
+		materialPanel.setLayout(new BorderLayout(0, 0));
+		interactionPanel.add(materialPanel);
+		
+		materialChooseButton = new JButton("Choose");
+		materialChooseButton.setToolTipText(materialTooltip);
+		materialChooseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chooseMaterial();
 			}
 		});
+		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		JButton btnCancel = new JButton("Cancel");
-		panel.add(btnCancel);
-		btnCancel.addActionListener(new ActionListener() {
+		materialLabel = new JLabel("");
+		materialLabel.setToolTipText(materialTooltip);
+		materialPanel.add(materialLabel, BorderLayout.CENTER);
+		
+		labelReplacing = new JLabel("Replacing");
+		labelReplacing.setToolTipText(replacingTooltip);
+		labelPanel.add(labelReplacing);
+		
+		replacingPanel = new JPanel();
+		replacingPanel.setLayout(new BorderLayout(0, 0));
+		interactionPanel.add(replacingPanel);
+		
+		replacingChooseButton = new JButton("Choose");
+		replacingChooseButton.setToolTipText(replacingTooltip);
+		replacingChooseButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				chooseReplacing();
+			}
+		});
+		replacingPanel.add(replacingChooseButton, BorderLayout.EAST);
+		
+		replacingLabel = new JLabel("");
+		replacingLabel.setToolTipText(replacingTooltip);
+		replacingPanel.add(replacingLabel, BorderLayout.CENTER);
+		
+		labelDimension = new JLabel("Dimension");
+		labelDimension.setToolTipText(dimensionTooltip);
+		labelPanel.add(labelDimension);
+		
+		dimensionComboBox = new JComboBox();
+		dimensionComboBox.setToolTipText(dimensionTooltip);
+		dimensionComboBox.addActionListener(actionListener);
+		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
+		interactionPanel.add(dimensionComboBox);
+		
+		labelMaxVeinSize = new JLabel("Max vein size");
+		labelMaxVeinSize.setToolTipText(maxVeinSizeTooltip);
+		labelPanel.add(labelMaxVeinSize);
+		
+		maxVeinSizeSpinner = new JSpinner();
+		maxVeinSizeSpinner.setToolTipText(maxVeinSizeTooltip);
+		maxVeinSizeSpinner.addChangeListener(changeListener);
+		maxVeinSizeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		interactionPanel.add(maxVeinSizeSpinner);
+		
+		labelAmount = new JLabel("Veins per chunk");
+		labelAmount.setToolTipText(amountTooltip);
+		labelPanel.add(labelAmount);
+		
+		amountSpinner = new JSpinner();
+		amountSpinner.setToolTipText(amountTooltip);
+		amountSpinner.addChangeListener(changeListener);
+		amountSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		interactionPanel.add(amountSpinner);
+		
+		labelRegion = new JLabel("Spawn region");
+		labelRegion.setToolTipText(regionTooltip);
+		labelPanel.add(labelRegion);
+		
+		regionPanel = new JPanel();
+		regionPanel.setLayout(new GridLayout(0, 2, 5, 0));
+		interactionPanel.add(regionPanel);
+		
+		minYPanel = new JPanel();
+		minYPanel.setLayout(new BorderLayout(5, 0));
+		regionPanel.add(minYPanel);
+		
+		labelMinY = new JLabel("From");
+		labelMinY.setToolTipText(regionTooltip);
+		minYPanel.add(labelMinY, BorderLayout.WEST);
+		
+		minYSpinner = new JSpinner();
+		minYSpinner.setToolTipText(regionTooltip);
+		minYSpinner.addChangeListener(changeListener);
+		minYSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				maxYSpinner.setModel(new SpinnerNumberModel((Integer) maxYSpinner.getValue(), 
+						(Integer) minYSpinner.getValue(), null, new Integer(1)));
+			}
+		});
+		minYSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(64), new Integer(1)));
+		minYPanel.add(minYSpinner, BorderLayout.CENTER);
+		
+		maxYPanel = new JPanel();
+		maxYPanel.setLayout(new BorderLayout(5, 0));
+		regionPanel.add(maxYPanel);
+		
+		labelMaxY = new JLabel("To");
+		labelMaxY.setToolTipText(regionTooltip);
+		maxYPanel.add(labelMaxY, BorderLayout.WEST);
+		
+		maxYSpinner = new JSpinner();
+		maxYSpinner.setToolTipText(regionTooltip);
+		maxYSpinner.addChangeListener(changeListener);
+		maxYSpinner.addChangeListener(new ChangeListener() {
+			@Override
+			public void stateChanged(ChangeEvent e) {
+				minYSpinner.setModel(new SpinnerNumberModel((Integer) minYSpinner.getValue(), 
+						new Integer(0), (Integer) maxYSpinner.getValue(), new Integer(1)));
+			}
+		});
+		maxYSpinner.setModel(new SpinnerNumberModel(new Integer(64), new Integer(0), null, new Integer(1)));
+		maxYPanel.add(maxYSpinner, BorderLayout.CENTER);
+		
+		buttonPanel = new JPanel();
+		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
+		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		
+		saveStructureButton = new JButton("Save Structure");
+		saveStructureButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				save();
+			}
+		});
+		buttonPanel.add(saveStructureButton);
+		
+		cancelButton = new JButton("Cancel");
+		cancelButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				cancel();
 			}
 		});
+		buttonPanel.add(cancelButton);
 		
-		JPanel panel_6 = new JPanel();
-		getContentPane().add(panel_6, BorderLayout.NORTH);
-		panel_6.setLayout(new BorderLayout(0, 0));
+		setVisible(true);
+	}
+	
+	public OreStructureEditor(StructureElement structure, ObjectRunnable runnable, ObjectRunnable closeHandler){
+		this(structure.name, runnable, closeHandler);
 		
-		JPanel panel_1 = new JPanel();
-		panel_6.add(panel_1);
-		panel_1.setLayout(new BorderLayout(5, 0));
+		OreStructureResource ore = (OreStructureResource) structure.structure;
+		if (ore.block != null)
+			materialLabel.setText(ore.block);
+		if (ore.replaceblock != null)
+			replacingLabel.setText(ore.replaceblock);
+		if (ore.dimension != null){
+			switch (ore.dimension){
+			case -1:
+				dimensionComboBox.setSelectedItem("Nether");
+				break;
+			case 0:
+				dimensionComboBox.setSelectedItem("Overworld");
+				break;
+			case 1:
+				dimensionComboBox.setSelectedItem("End");
+			}
+		}
+		if (ore.maxveinsize != null)
+			maxVeinSizeSpinner.setValue(ore.maxveinsize);
+		if (ore.chancestospawn != null)
+			amountSpinner.setValue(ore.chancestospawn);
+		if (ore.minY != null && ore.maxY != null){
+			minYSpinner.setModel(new SpinnerNumberModel(ore.minY, new Integer(0), ore.maxY, new Integer(1)));
+			maxYSpinner.setModel(new SpinnerNumberModel(ore.maxY, ore.minY, null, new Integer(1)));
+		}
 		
-		JPanel panel_2 = new JPanel();
-		panel_1.add(panel_2, BorderLayout.WEST);
-		panel_2.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		JLabel lblNewLabel_16 = new JLabel("");
-		panel_2.add(lblNewLabel_16);
-		
-		JLabel lblAsdasdasd = new JLabel("Blocks to generate");
-		panel_2.add(lblAsdasdasd);
-		
-		JLabel lblNewLabel = new JLabel("Dimension");
-		panel_2.add(lblNewLabel);
-		
-		JLabel lblNewLabel_1 = new JLabel("Max vein size");
-		panel_2.add(lblNewLabel_1);
-		
-		JLabel lblChanceToSpawn = new JLabel("Chance to spawn");
-		panel_2.add(lblChanceToSpawn);
-		
-		JLabel lblMinimumHeight = new JLabel("Minimum height ");
-		lblMinimumHeight.setToolTipText("Height from the bottom of the world the vein can be generated at");
-		panel_2.add(lblMinimumHeight);
-		
-		JLabel lblMaximumHeight = new JLabel("Maximum height");
-		lblMaximumHeight.setToolTipText("Highest the vein can spawn from the bottom of the world");
-		panel_2.add(lblMaximumHeight);
-		
-		JPanel panel_3 = new JPanel();
-		panel_1.add(panel_3, BorderLayout.CENTER);
-		panel_3.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		JLabel lblNewLabel_15 = new JLabel("Ore generation options:");
-		panel_3.add(lblNewLabel_15);
-		
-		JPanel panel_7 = new JPanel();
-		panel_3.add(panel_7);
-		panel_7.setLayout(new BorderLayout(0, 0));
-		
-		coverBlockLabel = new JLabel("");
-		panel_7.add(coverBlockLabel, BorderLayout.CENTER);
-		
-		coverBlockButton = new JButton("Choose");
-		coverBlockButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				chooseBlocks();
+		changed = false;
+	}
+
+	private void chooseMaterial() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				materialLabel.setText((String) obj);
 			}
 		});
-		panel_7.add(coverBlockButton, BorderLayout.EAST);
-		
-		JPanel panel_5 = new JPanel();
-		panel_3.add(panel_5);
-		panel_5.setLayout(new BorderLayout(0, 0));
-		
-		dimensionComboBox = new JComboBox();
-		panel_5.add(dimensionComboBox, BorderLayout.NORTH);
-		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
-		
-		JPanel panel1 = new JPanel();
-		panel_3.add(panel1);
-		panel1.setLayout(new BorderLayout(0, 0));
-		
-		veinSizeSpinner = new JSpinner();
-		panel1.add(veinSizeSpinner, BorderLayout.CENTER);
-		
-		JPanel panel_4 = new JPanel();
-		panel_3.add(panel_4);
-		panel_4.setLayout(new BorderLayout(0, 0));
-		
-		JSpinner spinner = new JSpinner();
-		panel_4.add(spinner, BorderLayout.CENTER);
-		
-		JPanel panelbleh_8 = new JPanel();
-		panel_3.add(panelbleh_8);
-		panelbleh_8.setLayout(new BorderLayout(0, 0));
-		
-		minYspinner = new JSpinner();
-		panelbleh_8.add(minYspinner, BorderLayout.CENTER);
-		
-		JPanel panel_9 = new JPanel();
-		panel_3.add(panel_9);
-		panel_9.setLayout(new BorderLayout(0, 0));
-		
-		maxYspinner = new JSpinner();
-		panel_9.add(maxYspinner, BorderLayout.NORTH);
 	}
 
-	private void chooseBlocks() {
-		
-	}
-
-	private void saveStructure() {
-		
+	private void chooseReplacing() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+			@Override
+			public void run(Object obj) {
+				change();
+				replacingLabel.setText((String) obj);
+			}
+		});
 	}
 
 	@Override
 	public boolean save() {
-		return false;
+		if (materialLabel.getText().length() > 0){
+			StructureElement structure = new StructureElement();
+			structure.name = name;
+			
+			OreStructureResource base = new OreStructureResource();
+			base.block = materialLabel.getText();
+			base.replaceblock = replacingLabel.getText();
+			switch (dimensionComboBox.getSelectedIndex()){
+			case 0:
+				base.dimension = 0;
+				break;
+			case 1:
+				base.dimension = -1;
+				break;
+			case 2:
+				base.dimension = 1;
+			}
+			base.maxveinsize = (Integer) maxVeinSizeSpinner.getValue();
+			base.chancestospawn = (Integer) amountSpinner.getValue();
+			base.minY = (Integer) minYSpinner.getValue();
+			base.maxY = (Integer) maxYSpinner.getValue();
+			structure.structure = base;
+			
+			runnable.run(structure);
+			dispose();
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't chosen a material yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				return false;
+		}
+		return true;
 	}
 	
 	private void cancel(){

@@ -33,20 +33,17 @@ public class ListWindow extends JDialog {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
-		panel = new ListPanel();
-		panel.setLayout(new BorderLayout(0, 0));
-		getContentPane().add(panel, BorderLayout.CENTER);
+		this.panel.setLayout(new BorderLayout(0, 0));
+		getContentPane().add(this.panel, BorderLayout.CENTER);
 		
 		JScrollPane scrollPane = new JScrollPane();
 		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		panel.add(scrollPane, BorderLayout.CENTER);
+		this.panel.add(scrollPane, BorderLayout.CENTER);
 		
 		list = new JList();
 		scrollPane.setViewportView(list);
 		list.setVisibleRowCount(0);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
-		
-		setVisible(true);
 	}
 	
 	public ListWindow(Map<String, ImageIcon> elements, ObjectRunnable runnable){
@@ -71,6 +68,8 @@ public class ListWindow extends JDialog {
 				}
 			}
 		});
+		
+		setVisible(true);
 	}
 	
 	public ListWindow(String[] elements, ObjectRunnable runnable){
@@ -94,6 +93,8 @@ public class ListWindow extends JDialog {
 				}
 			}
 		});
+		
+		setVisible(true);
 	}
 	
 	private void choose(String value){
