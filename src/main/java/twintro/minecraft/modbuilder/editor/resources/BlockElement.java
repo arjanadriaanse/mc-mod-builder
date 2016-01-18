@@ -1,10 +1,17 @@
 package twintro.minecraft.modbuilder.editor.resources;
 
+import java.awt.Graphics2D;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.Map;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 import com.google.gson.Gson;
@@ -90,6 +97,66 @@ public class BlockElement extends InventoryElement {
 	
 	@Override
 	public ImageIcon getImage() {
-		return getImage(blockModel.textures, "all");
+		try{
+			String loc=ResourcePackIO.getURL("assets/modbuilder/textures/");
+			if (blockModel.parent.equals("block/cross")) {
+				return new ImageIcon(scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("cross").split(":")[1] + ".png")),64,64));
+			}
+			else if (blockModel.parent.equals("block/cube_all")){
+				BufferedImage img = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("all").split(":")[1] + ".png")),64,64);
+				return new ImageIcon(scaleImage(get3DImage(img,img,img,img,img,img),64,64));
+			}
+			else if (blockModel.parent.equals("block/cube")){
+				BufferedImage img1 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("up").split(":")[1] + ".png")),64,64);
+				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("west").split(":")[1] + ".png")),64,64);
+				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("south").split(":")[1] + ".png")),64,64);
+				BufferedImage img4 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("east").split(":")[1] + ".png")),64,64);
+				BufferedImage img5 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("north").split(":")[1] + ".png")),64,64);
+				BufferedImage img6 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("down").split(":")[1] + ".png")),64,64);
+				return new ImageIcon(scaleImage(get3DImage(img1,img2,img3,img4,img5,img6),64,64));
+			}
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
+		return null;
+	}
+	
+	private BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
+		double w2 = Math.sqrt(2)/2;
+		double w3 = Math.sqrt(3)/2;
+		double sh = 0;
+		double ch = 1;
+		double sv = 1/(2*w3);
+		double cv = w2/w3;
+        BufferedImage img1t = transformImage(img1, w2*(ch+sh), w2*sv*(ch-sh), w2*(sh-ch),w2*sv*(ch+sh), w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
+        BufferedImage img2t = transformImage(img2, w2*(-ch+sh), w2*sv*(ch+sh), 0,cv, w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
+        BufferedImage img3t = transformImage(img3, w2*(sh+ch), w2*sv*(-sh+ch), 0,cv, w2/w3-w2*ch, w2/w3-cv/2+w2*sv*sh);
+        BufferedImage img4t = transformImage(img4, w2*(ch-sh), w2*sv*(-ch-sh), 0,cv, w2/w3+w2*sh, w2/w3-cv/2+w2*sv*ch);
+        BufferedImage img5t = transformImage(img5, w2*(-sh-ch), w2*sv*(sh-ch), 0,cv, w2/w3+w2*ch, w2/w3-cv/2-w2*sv*sh);
+        BufferedImage img6t = transformImage(img6, w2*(ch+sh), w2*sv*(ch-sh), w2*(ch-sh),w2*sv*(-ch-sh), w2/w3-w2*ch, w2/w3+cv/2+w2*sv*sh);
+        
+        BufferedImage bi = new BufferedImage((int)(w2/w3*128),(int)(w2/w3*128),BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+	    g.drawImage(img2t, 0, 0, null);
+	    g.drawImage(img5t, 0, 0, null);
+	    g.drawImage(img6t, 0, 0, null);
+	    g.drawImage(img1t, 0, 0, null);
+	    g.drawImage(img3t, 0, 0, null);
+	    g.drawImage(img4t, 0, 0, null);
+		return bi;
+	}
+	
+	private BufferedImage transformImage(BufferedImage img, double m00, double m10, double m01, double m11, double m02, double m12){
+        AffineTransform at = new AffineTransform(m00, m10, m01, m11, 64*m02, 64*m12);
+        AffineTransformOp op = new AffineTransformOp(at, new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
+        return op.filter(img, null);
+	}
+	
+	private BufferedImage scaleImage(BufferedImage img, int width, int height){
+		BufferedImage bi = new BufferedImage(width,height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = bi.createGraphics();
+		g.drawImage(img, 0, 0, width, height, null);
+		return bi;
 	}
 }

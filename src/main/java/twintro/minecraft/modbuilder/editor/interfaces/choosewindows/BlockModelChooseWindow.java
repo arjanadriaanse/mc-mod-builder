@@ -240,9 +240,6 @@ public class BlockModelChooseWindow extends JDialog {
 	        for(BufferedImage img : front) {
 		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
 	        }
-	        
-	        g.drawString(String.valueOf(Math.pow(Math.sin(rotation1[1]),2)), loc1[6].x-160, loc1[6].y+16);
-	        g.drawString(String.valueOf(Math.pow(Math.cos(rotation1[1]),2)), loc1[6].x-160, loc1[6].y+48);
 		}
 	}
 	
