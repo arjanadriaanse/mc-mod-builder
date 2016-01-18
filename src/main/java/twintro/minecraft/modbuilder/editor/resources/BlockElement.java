@@ -123,20 +123,16 @@ public class BlockElement extends InventoryElement {
 	}
 	
 	private BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
-		double w2 = Math.sqrt(2)/2;
-		double w3 = Math.sqrt(3)/2;
-		double sh = 0;
-		double ch = 1;
-		double sv = 1/(2*w3);
-		double cv = w2/w3;
-        BufferedImage img1t = transformImage(img1, w2*(ch+sh), w2*sv*(ch-sh), w2*(sh-ch),w2*sv*(ch+sh), w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
-        BufferedImage img2t = transformImage(img2, w2*(-ch+sh), w2*sv*(ch+sh), 0,cv, w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
-        BufferedImage img3t = transformImage(img3, w2*(sh+ch), w2*sv*(-sh+ch), 0,cv, w2/w3-w2*ch, w2/w3-cv/2+w2*sv*sh);
-        BufferedImage img4t = transformImage(img4, w2*(ch-sh), w2*sv*(-ch-sh), 0,cv, w2/w3+w2*sh, w2/w3-cv/2+w2*sv*ch);
-        BufferedImage img5t = transformImage(img5, w2*(-sh-ch), w2*sv*(sh-ch), 0,cv, w2/w3+w2*ch, w2/w3-cv/2-w2*sv*sh);
-        BufferedImage img6t = transformImage(img6, w2*(ch+sh), w2*sv*(ch-sh), w2*(ch-sh),w2*sv*(-ch-sh), w2/w3-w2*ch, w2/w3+cv/2+w2*sv*sh);
+		double a = Math.sqrt(2)/2;
+		double b = a/Math.sqrt(3);
+        BufferedImage img1t = transformImage(img1, a, b,-a,  b, 2*b  ,   0);
+        BufferedImage img2t = transformImage(img2,-a, b, 0,2*b, 2*b  ,   0);
+        BufferedImage img3t = transformImage(img3, a, b, 0,2*b, 2*b-a,   b);
+        BufferedImage img4t = transformImage(img4, a,-b, 0,2*b, 2*b  , 2*b);
+        BufferedImage img5t = transformImage(img5,-a,-b, 0,2*b, 2*b+a,   b);
+        BufferedImage img6t = transformImage(img6, a, b, a, -b, 2*b-a, 3*b);
         
-        BufferedImage bi = new BufferedImage((int)(w2/w3*128),(int)(w2/w3*128),BufferedImage.TYPE_INT_ARGB);
+        BufferedImage bi = new BufferedImage((int)(b*256),(int)(b*256),BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
 	    g.drawImage(img2t, 0, 0, null);
 	    g.drawImage(img5t, 0, 0, null);
