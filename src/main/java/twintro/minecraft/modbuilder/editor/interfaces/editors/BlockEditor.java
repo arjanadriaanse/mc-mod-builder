@@ -3,15 +3,25 @@ package twintro.minecraft.modbuilder.editor.interfaces.editors;
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
 import java.awt.GridLayout;
+import java.awt.Image;
+import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
+import java.awt.image.AffineTransformOp;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 
+import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
@@ -39,6 +49,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
@@ -85,6 +96,7 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private BlockModelResource model;
 	private ObjectRunnable runnable;
 	private ObjectRunnable closeHandler;
+	private BufferedImage image3D;
 
 	private static final String modelTooltip = "The model determines what the block looks like in game";
 	private static final String creativeTabTooltip = "The creative tab the block will be in";
@@ -116,7 +128,13 @@ public class BlockEditor extends WindowClosingVerifierUser {
 		setTitle("Edit Block: " + this.name);
 		addWindowListener(new WindowClosingVerifierListener());
 		
-		mainPanel = new JPanel();
+		mainPanel = new JPanel() {
+			@Override
+			public void paintComponent(Graphics g){
+				super.paintComponent(g);
+				Paint(g);
+			}
+		};
 		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		mainPanel.setLayout(new BorderLayout(5, 5));
 		
@@ -377,8 +395,33 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private void setModel(BlockModelResource model) {
 		change();
 		this.model = model;
-		if (model.parent == "block/cross") modelLabel.setText("Cross model");
-		else modelLabel.setText("Block model");
+		try{
+			String loc=ResourcePackIO.getURL("assets/modbuilder/textures/");
+			if (model.parent == "block/cross") {
+				modelLabel.setText("Cross model");
+				image3D = scaleImage(ImageIO.read(new File(loc+model.textures.get("cross").split(":")[1] + ".png")),64,64);
+			}
+			else if (model.parent == "block/cube_all"){
+				modelLabel.setText("Block model");
+				BufferedImage img = scaleImage(ImageIO.read(new File(loc+model.textures.get("all").split(":")[1] + ".png")),64,64);
+				image3D = scaleImage(get3DImage(img,img,img,img,img,img),64,64);
+			}
+			else if (model.parent == "block/cube"){
+				modelLabel.setText("Block model");
+				BufferedImage img1 = scaleImage(ImageIO.read(new File(loc+model.textures.get("up").split(":")[1] + ".png")),64,64);
+				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+model.textures.get("west").split(":")[1] + ".png")),64,64);
+				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+model.textures.get("south").split(":")[1] + ".png")),64,64);
+				BufferedImage img4 = scaleImage(ImageIO.read(new File(loc+model.textures.get("east").split(":")[1] + ".png")),64,64);
+				BufferedImage img5 = scaleImage(ImageIO.read(new File(loc+model.textures.get("north").split(":")[1] + ".png")),64,64);
+				BufferedImage img6 = scaleImage(ImageIO.read(new File(loc+model.textures.get("down").split(":")[1] + ".png")),64,64);
+				image3D = scaleImage(get3DImage(img1,img2,img3,img4,img5,img6),64,64);
+			}
+			setIconImage(image3D);
+			mainPanel.repaint();
+		}
+		catch (IOException e){
+			e.printStackTrace();
+		}
 	}
 	
 	private void cancel(){
@@ -391,6 +434,48 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	public void dispose() {
 		closeHandler.run(name);
 		super.dispose();
+	}
+	
+	public BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
+		double w2 = Math.sqrt(2)/2;
+		double w3 = Math.sqrt(3)/2;
+		double sh = 0;
+		double ch = 1;
+		double sv = 1/(2*w3);
+		double cv = w2/w3;
+        BufferedImage img1t = transformImage(img1, w2*(ch+sh), w2*sv*(ch-sh), w2*(sh-ch),w2*sv*(ch+sh), w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
+        BufferedImage img2t = transformImage(img2, w2*(-ch+sh), w2*sv*(ch+sh), 0,cv, w2/w3-w2*sh, w2/w3-cv/2-w2*sv*ch);
+        BufferedImage img3t = transformImage(img3, w2*(sh+ch), w2*sv*(-sh+ch), 0,cv, w2/w3-w2*ch, w2/w3-cv/2+w2*sv*sh);
+        BufferedImage img4t = transformImage(img4, w2*(ch-sh), w2*sv*(-ch-sh), 0,cv, w2/w3+w2*sh, w2/w3-cv/2+w2*sv*ch);
+        BufferedImage img5t = transformImage(img5, w2*(-sh-ch), w2*sv*(sh-ch), 0,cv, w2/w3+w2*ch, w2/w3-cv/2-w2*sv*sh);
+        BufferedImage img6t = transformImage(img6, w2*(ch+sh), w2*sv*(ch-sh), w2*(ch-sh),w2*sv*(-ch-sh), w2/w3-w2*ch, w2/w3+cv/2+w2*sv*sh);
+        
+        BufferedImage bi = new BufferedImage((int)(w2/w3*128),(int)(w2/w3*128),BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = bi.createGraphics();
+	    g.drawImage(img2t, 0, 0, null);
+	    g.drawImage(img5t, 0, 0, null);
+	    g.drawImage(img6t, 0, 0, null);
+	    g.drawImage(img1t, 0, 0, null);
+	    g.drawImage(img3t, 0, 0, null);
+	    g.drawImage(img4t, 0, 0, null);
+		return bi;
+	}
+	
+	public BufferedImage transformImage(BufferedImage img, double m00, double m10, double m01, double m11, double m02, double m12){
+        AffineTransform at = new AffineTransform(m00, m10, m01, m11, 64*m02, 64*m12);
+        AffineTransformOp op = new AffineTransformOp(at, new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
+        return op.filter(img, null);
+	}
+	
+	public BufferedImage scaleImage(BufferedImage img, int width, int height){
+		BufferedImage bi = new BufferedImage(width,height, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D g = bi.createGraphics();
+		g.drawImage(img, 0, 0, width, height, null);
+		return bi;
+	}
+	
+	public void Paint(Graphics g){
+		g.drawImage(image3D, 100, 100, null);
 	}
 }
 

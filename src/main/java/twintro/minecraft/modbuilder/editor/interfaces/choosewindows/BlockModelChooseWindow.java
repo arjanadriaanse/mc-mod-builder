@@ -179,7 +179,7 @@ public class BlockModelChooseWindow extends JDialog {
 		JPanel paintPanel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
-				super.paintComponents(g);
+				super.paintComponent(g);
 				if (modelType==1)
 					paint1(g);
 				else if (modelType==2)
@@ -240,6 +240,9 @@ public class BlockModelChooseWindow extends JDialog {
 	        for(BufferedImage img : front) {
 		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
 	        }
+	        
+	        g.drawString(String.valueOf(Math.pow(Math.sin(rotation1[1]),2)), loc1[6].x-160, loc1[6].y+16);
+	        g.drawString(String.valueOf(Math.pow(Math.cos(rotation1[1]),2)), loc1[6].x-160, loc1[6].y+48);
 		}
 	}
 	
@@ -325,14 +328,14 @@ public class BlockModelChooseWindow extends JDialog {
 	public void mousemove(MouseEvent me){
 		if (rotating) {
 			Point coords = me.getPoint();
-			int s = 32;
+			int s = 32; //Turn rate of the 3d model, higher number means slower turn rate
 			if (modelType==1) {
 				rotation1[0]+=((double)(coords.x-mousecoords.x))/s;
 				rotation1[1]+=((double)(coords.y-mousecoords.y))/s;
 				if (rotation1[0]>2*Math.PI) rotation1[0]-=2*Math.PI;
 				if (rotation1[1]>2*Math.PI) rotation1[1]-=2*Math.PI;
 				if (rotation1[0]<0) rotation1[0]+=2*Math.PI;
-				if (rotation1[0]<0) rotation1[1]+=2*Math.PI;
+				if (rotation1[1]<0) rotation1[1]+=2*Math.PI;
 			}
 			if (modelType==2) {
 				rotation2[0]+=((double)(coords.x-mousecoords.x))/s;
@@ -340,7 +343,7 @@ public class BlockModelChooseWindow extends JDialog {
 				if (rotation2[0]>2*Math.PI) rotation2[0]-=2*Math.PI;
 				if (rotation2[1]>2*Math.PI) rotation2[1]-=2*Math.PI;
 				if (rotation2[0]<0) rotation2[0]+=2*Math.PI;
-				if (rotation2[0]<0) rotation2[1]+=2*Math.PI;
+				if (rotation2[1]<0) rotation2[1]+=2*Math.PI;
 			}
 			mousecoords=coords;
 			listPanel.repaint();
