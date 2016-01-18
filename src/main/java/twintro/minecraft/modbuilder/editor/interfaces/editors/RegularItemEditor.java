@@ -73,11 +73,11 @@ public class RegularItemEditor extends WindowClosingVerifierUser {
 	private ObjectRunnable closeHandler;
 
 	private static final String textureTooltip = "The texture of the item";
-	private static final String maxStackSizeTooltip = "The maximum amount of the item there can be in a stack";
+	private static final String maxStackSizeTooltip = "The maximum amount of items in one stack";
 	private static final String creativeTabsTooltip = "The tabs in the creative menu where the item can be found";
 	private static final String containerTooltip = "<html>The item that will be left behind when you use this item in a crafing recipe<br>"
 				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
-				+ "and when you grab the cake, you will get your buckets back</html>";
+				+ "and when you grab the cake, you will get empty buckets back</html>";
 	private static final String burntimeTooltip = "The amount of items that will get cooked when you use this item as a fuel source in a furnace";
 	
 	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {

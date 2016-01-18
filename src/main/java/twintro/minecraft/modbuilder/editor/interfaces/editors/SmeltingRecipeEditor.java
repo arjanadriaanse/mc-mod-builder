@@ -43,7 +43,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 	private ObjectRunnable runnable;
 	private ObjectRunnable closeHandler;
 	
-	private static final String xpTooltip = ""; //TODO
+	private static final String xpTooltip = "The amount of experience point you get when using this recipe";
 	
 	public SmeltingRecipeEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;

@@ -67,12 +67,13 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 	private ObjectRunnable runnable;
 	private ObjectRunnable closeHandler;
 
-	private static final String materialTooltip = "";//TODO
-	private static final String replacingTooltip = "";//TODO
-	private static final String dimensionTooltip = "";//TODO
-	private static final String maxVeinSizeTooltip = "";//TODO
-	private static final String amountTooltip = "";//TODO
-	private static final String regionTooltip = "";//TODO
+	private static final String materialTooltip = "The block that will be generated as an ore.";
+	private static final String replacingTooltip = "<html>The block that the ore must replace.<br>" + 
+								"If left empty, this will default to stone, netherrack or end stone, depending on the dimension.";
+	private static final String dimensionTooltip = "The dimension the ore will generate in";
+	private static final String maxVeinSizeTooltip = "The maximum amount of ore blocks in one vein";
+	private static final String amountTooltip = "The amount of ore veins that will be generated in one chunk";
+	private static final String regionTooltip = "The height levels between which the ore will generate";
 	
 	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;

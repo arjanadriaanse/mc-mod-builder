@@ -73,10 +73,12 @@ public class GroundStructureEditor extends WindowClosingVerifierUser {
 	private ObjectRunnable runnable;
 	private ObjectRunnable closeHandler;
 
-	private static final String materialTooltip = "";//TODO
-	private static final String coverTooltip = "";//TODO
-	private static final String dimensionTooltip = "";//TODO
-	private static final String amountTooltip = "";//TODO
+	private static final String materialTooltip = "The block that will be generated in the world";
+	private static final String coverTooltip = "<html>The block where the ground cover needs to stand on.<br>" + 
+								"If empty, the ground cover will generate on every block";
+	private static final String dimensionTooltip = "<html>The dimension the ground cover will generate in.<br>" + 
+								"Note that the ground in the nether means above the bedrock layer!";
+	private static final String amountTooltip = "The amount of blocks the generator will try to place in one chunk";
 	
 	public GroundStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this.name = name;

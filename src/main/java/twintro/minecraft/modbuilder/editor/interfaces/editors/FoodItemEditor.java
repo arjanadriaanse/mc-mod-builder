@@ -57,7 +57,7 @@ public class FoodItemEditor extends RegularItemEditor {
 				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>";
 	private static final String feedToWolvesTooltip = "Determine whether or not the food can be fed to a wolf";
 	private static final String alwaysEdibleTooltip = "<html>Determine whether or not the food can be eaten, even with a full hunger bar<br>"
-				+ "This may be useful, because the user will still gain saturation</html>";
+				+ "This may be useful, because the user will still gain saturation and potion effects</html>";
 	public static final String effectTypeTooltip = "The effect type";
 	public static final String effectDurationTooltip = "<html>The duration of the effect in ticks<br>"
 				+ "One second is equal to twenty ticks</html>";

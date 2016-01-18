@@ -100,12 +100,15 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private static final String modelTooltip = "The model determines what the block looks like in game";
 	private static final String creativeTabTooltip = "The creative tab the block will be in";
 	private static final String lightnessTooltip = "The amount of light the block emits";
-	private static final String opacityTooltip = "The number indicating how much the light level will decrease when passing through this block. For most blocks this is 15 (the maximum value), but for some blocks, like water or glass, it is less.";
+	private static final String opacityTooltip = "<html>The number indicating how much the light level will decrease when passing through this block.<br>" + 
+								"For most blocks this is 15 (the maximum value), but for some blocks, like water or glass, it is less.</html>";
 	private static final String slipperinessTooltip = "How slippery the block is. For example, ice has a high slipperiness value";
 	private static final String hardnessTooltip = "How long it takes you to break the block";
 	private static final String resistanceTooltip = "How resistant the block is to explosions";
-	private static final String harvestLevelTooltip = "How good the tool needs to be to harvest the block. A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond";
-	private static final String burntimeTooltip = "Burn time is the amount of ticks the block will burn if used as a fuel. A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt";
+	private static final String harvestLevelTooltip = "<html> How good the tool needs to be to harvest the block.<br>"+
+								"A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond</html>";
+	private static final String burntimeTooltip = "<html>Burn time is the amount of ticks the block will burn if used as a fuel.<br>" + 
+								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
 	private static final String materialTooltip = "OUTDATED AND DOES NOT WORK ANYMORE MIKE CHANGE PLS"; //TODO this will change
 	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
