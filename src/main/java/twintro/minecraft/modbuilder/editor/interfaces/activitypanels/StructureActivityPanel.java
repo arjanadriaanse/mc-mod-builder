@@ -34,6 +34,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.OreStructureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapelessRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ToolItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
@@ -56,23 +57,17 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Structure name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				OreStructureEditor editor = new OreStructureEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
-		}
+		String name = nameDialog("Structure");
+		if (name == null) return;
+		OreStructureEditor editor = new OreStructureEditor(name, runnable, closeHandler);
+		openEditors.put(name, editor);
 	}
 	
 	private void addGroundCover(){
-		String name = JOptionPane.showInputDialog("Structure name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				GroundStructureEditor editor = new GroundStructureEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
-		}
+		String name = nameDialog("Structure");
+		if (name == null) return;
+		GroundStructureEditor editor = new GroundStructureEditor(name, runnable, closeHandler);
+		openEditors.put(name, editor);
 	}
 	
 	@Override

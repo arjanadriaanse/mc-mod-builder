@@ -47,12 +47,17 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Block name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				BlockEditor editor = new BlockEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
+		String name = nameDialog("Block");
+		if (name == null) return;
+		if (!Editor.getItemList().containsKey(name)){
+			BlockEditor editor = new BlockEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another item.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				add();
 		}
 	}
 	

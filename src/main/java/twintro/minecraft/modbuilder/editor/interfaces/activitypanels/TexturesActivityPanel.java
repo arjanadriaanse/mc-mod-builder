@@ -37,10 +37,9 @@ public class TexturesActivityPanel extends ActivityPanel {
 
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Texture name:");
-		if (name != null)
-			if (name.replaceAll(" ", "").length() > 0)
-				editor.open(name, ResourcePackIO.toBufferedImage(new ImageIcon().getImage(), 16, 16));
+		String name = nameDialog("Texture");
+		if (name == null) return;
+		editor.open(name, ResourcePackIO.toBufferedImage(new ImageIcon().getImage(), 16, 16));
 	}
 	
 	private void importImage(){

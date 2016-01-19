@@ -76,7 +76,6 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private JLabel labelMaterial;
 	private JLabel labelUnbreakable;
 	private JLabel modelLabel;
-	private JButton renameButton;
 	private JButton saveBlockButton;
 	private JButton cancelButton;
 	private JButton modelChooseButton;

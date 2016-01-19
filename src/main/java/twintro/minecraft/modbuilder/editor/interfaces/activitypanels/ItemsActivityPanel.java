@@ -24,6 +24,7 @@ import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ToolItemEditor;
@@ -46,32 +47,47 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 	
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Item name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				RegularItemEditor editor = new RegularItemEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
+		String name = nameDialog("Item");
+		if (name == null) return;
+		if (!Editor.getBlockList().containsKey(name)){
+			RegularItemEditor editor = new RegularItemEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				add();
 		}
 	}
 	
 	private void addFood(){
-		String name = JOptionPane.showInputDialog("Item name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				FoodItemEditor editor = new FoodItemEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
+		String name = nameDialog("Item");
+		if (name == null) return;
+		if (!Editor.getBlockList().containsKey(name)){
+			FoodItemEditor editor = new FoodItemEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				addFood();
 		}
 	}
 	
 	private void addTool(){
-		String name = JOptionPane.showInputDialog("Item name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				RegularItemEditor editor = new ToolItemEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
+		String name = nameDialog("Item");
+		if (name == null) return;
+		if (!Editor.getBlockList().containsKey(name)){
+			RegularItemEditor editor = new ToolItemEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected == JOptionPane.OK_OPTION)
+				addTool();
 		}
 	}
 	

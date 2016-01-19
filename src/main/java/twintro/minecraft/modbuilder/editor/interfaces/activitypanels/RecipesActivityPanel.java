@@ -46,33 +46,24 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	
 	@Override
 	protected void add() {
-		String name = JOptionPane.showInputDialog("Recipe name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
-		}
+		String name = nameDialog("Recipe");
+		if (name == null) return;
+		ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, runnable, closeHandler);
+		openEditors.put(name, editor);
 	}
 	
 	private void addSmelting(){
-		String name = JOptionPane.showInputDialog("Recipe name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
-		}
+		String name = nameDialog("Recipe");
+		if (name == null) return;
+		SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, runnable, closeHandler);
+		openEditors.put(name, editor);
 	}
 	
 	private void addShaped(){
-		String name = JOptionPane.showInputDialog("Recipe name:");
-		if (name != null){
-			if (name.replaceAll(" ", "").length() > 0 && !openEditors.containsKey(name)){
-				ShapedRecipeEditor editor = new ShapedRecipeEditor(name, runnable, closeHandler);
-				openEditors.put(name, editor);
-			}
-		}
+		String name = nameDialog("Recipe");
+		if (name == null) return;
+		ShapedRecipeEditor editor = new ShapedRecipeEditor(name, runnable, closeHandler);
+		openEditors.put(name, editor);
 	}
 	
 	@Override

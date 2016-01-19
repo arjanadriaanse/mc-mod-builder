@@ -26,13 +26,16 @@ import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
+import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
@@ -130,6 +133,30 @@ public abstract class ActivityPanel extends ListPanel {
 			
 			menu.show(ActivityPanel.this, e.getX(), e.getY());
 		}
+	}
+	
+	protected String nameDialog(String kind){
+		String name = JOptionPane.showInputDialog(kind + " name:");
+		if (name != null){
+			if (name.replaceAll(" ", "").length() > 0){
+				if (!elements.containsKey(name)){
+					return name;
+				}
+				else{
+					int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another " + kind.toLowerCase() + ".", 
+							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+					if (selected == JOptionPane.OK_OPTION)
+						return nameDialog(kind);
+				}
+			}
+			else{
+				int selected = JOptionPane.showConfirmDialog(this, "The name is invalid.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+				if (selected == JOptionPane.OK_OPTION)
+					return nameDialog(kind);
+			}
+		}
+		return null;
 	}
 	
 	protected abstract void add();
