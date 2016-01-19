@@ -107,11 +107,11 @@ public class BlockEditor extends PropertiesEditor {
 	private JSpinner resistanceSpinner;
 	private JSpinner harvestLevelSpinner;
 	private JSpinner burntimeSpinner;
-	private JSpinner mobilitySpinner;
 	private JComboBox creativeTabComboBox;
 	private JComboBox harvestTypeComboBox;
 	private JComboBox materialComboBox;
 	private JComboBox mapColorComboBox;
+	private JComboBox mobilityCombobox;
 	private JCheckBox dropsCheckBox;
 	private JCheckBox unbreakableCheckBox;
 	private JCheckBox flammableCheckBox;
@@ -271,8 +271,9 @@ public class BlockEditor extends PropertiesEditor {
 		mapColorComboBox.setRenderer(new ColorListCellRenderer());
 		
 		labelMobility = label("Mobility", mobilityTooltip, labelPanel);
-		mobilitySpinner = spinner(mobilityTooltip, interactionPanel);
-		mobilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		mobilityCombobox = combobox(mobilityTooltip, interactionPanel);
+		mobilityCombobox.setModel(new DefaultComboBoxModel(new String[]{
+				"Normal piston push behaviour", "Break when pushed by piston", "Not pushable by pistons"}));
 		
 		labelProperties = new JLabel("Properties");
 		labelPanel.add(labelProperties);
@@ -336,7 +337,7 @@ public class BlockEditor extends PropertiesEditor {
 			if (base.mapcolor != null)
 				mapColorComboBox.setSelectedIndex(base.mapcolor);
 			if (base.mobility != null)
-				mobilitySpinner.setValue(base.mobility);
+				mobilityCombobox.setSelectedIndex(base.mobility);
 			if (base.flammable != null)
 				flammableCheckBox.setSelected(base.flammable);
 			if (base.replaceable != null)
@@ -395,7 +396,7 @@ public class BlockEditor extends PropertiesEditor {
 			BaseBlockResource base = new BlockResource();
 			if (materialComboBox.getSelectedItem() == "custom"){
 				base.mapcolor = mapColorComboBox.getSelectedIndex();
-				base.mobility = (Integer) mobilitySpinner.getValue();
+				base.mobility = mobilityCombobox.getSelectedIndex();
 				base.flammable = flammableCheckBox.isSelected();
 				base.replaceable = replacableCheckBox.isSelected();
 				base.requirestool = requiresToolCheckBox.isSelected();
@@ -499,7 +500,7 @@ public class BlockEditor extends PropertiesEditor {
 		labelProperties.setVisible(use);
 		labelEmpty.setVisible(use);
 		mapColorComboBox.setVisible(use);
-		mobilitySpinner.setVisible(use);
+		mobilityCombobox.setVisible(use);
 		propertiesPanelA.setVisible(use);
 		propertiesPanelB.setVisible(use);
 	}
