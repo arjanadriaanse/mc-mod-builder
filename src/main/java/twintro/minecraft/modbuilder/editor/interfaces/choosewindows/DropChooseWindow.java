@@ -52,7 +52,7 @@ public class DropChooseWindow extends IconDialog {
 		this.runnable = runnable;
 		
 		setModal(true);
-		setBounds(100, 100, 300, 130);
+		setBounds(100, 100, 300, 135);
 		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Drop");

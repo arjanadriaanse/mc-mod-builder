@@ -72,7 +72,7 @@ public class RegularItemEditor extends PropertiesEditor {
 	
 	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 500, 500);
+		setBounds(100, 100, 400, 220);
 		setTitle("Edit Item: " + this.name);
 		saveButton.setText("Save Item");
 		

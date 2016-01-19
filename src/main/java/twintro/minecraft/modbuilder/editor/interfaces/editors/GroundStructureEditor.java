@@ -72,7 +72,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 	
 	public GroundStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 390, 400);
+		setBounds(100, 100, 400, 195);
 		setTitle("Edit Structure: " + name);
 		saveButton.setText("Save Structure");
 		

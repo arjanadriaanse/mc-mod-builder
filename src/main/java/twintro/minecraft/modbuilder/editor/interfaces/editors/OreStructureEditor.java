@@ -67,7 +67,7 @@ public class OreStructureEditor extends PropertiesEditor {
 	
 	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 390, 400);
+		setBounds(100, 100, 400, 255);
 		setTitle("Edit Structure: " + name);
 		saveButton.setText("Save Structure");
 		
@@ -84,7 +84,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		labelReplacing = label("Replacing", replacingTooltip, labelPanel);
 		replacingChooseButton = button("Choose", replacingTooltip);
 		replacingLabel = label("", replacingTooltip);
-		replacingPanel = panel(replacingLabel, replacingChooseButton);
+		replacingPanel = panel(replacingLabel, replacingChooseButton, interactionPanel);
 		replacingChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chooseReplacing();

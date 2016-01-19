@@ -68,6 +68,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
+		setBounds(100, 100, 500, 440);
 		setTitle("Edit Food: " + this.name);
 		saveButton.setText("Save Food");
 		

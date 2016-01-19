@@ -164,7 +164,7 @@ public class BlockEditor extends PropertiesEditor {
 	
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 500, 600);
+		setBounds(100, 100, 500, 570);
 		setTitle("Edit Block: " + this.name);
 		saveButton.setText("Save Block");
 		

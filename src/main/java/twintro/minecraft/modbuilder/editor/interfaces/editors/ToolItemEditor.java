@@ -61,6 +61,7 @@ public class ToolItemEditor extends RegularItemEditor {
 
 	public ToolItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
+		setBounds(100, 100, 400, 390);
 		setTitle("Edit Tool: " + this.name);
 		saveButton.setText("Save Tool");
 		
@@ -76,7 +77,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		damageSpinner = spinner(damageTooltip, interactionPanel);
 		damageSpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(1), null, new Float(1)));
 		
-		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip);
+		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip, labelPanel);
 		harvestLevelSpinner = spinner(harvestLevelTooltip, interactionPanel);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		
