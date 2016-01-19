@@ -8,9 +8,11 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JComponent;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -83,6 +85,7 @@ public class ItemStackChooseWindow extends IconDialog {
 
 		setModal(true);
 		setBounds(100, 100, 300, 130);
+		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		if (isProduct)
 			setTitle("Choose Product");
