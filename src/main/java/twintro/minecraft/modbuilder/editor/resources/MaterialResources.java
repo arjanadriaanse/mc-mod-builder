@@ -46,7 +46,8 @@ public class MaterialResources {
 		return null;
 	}
 	
-	public static String getName(String material){
+	public static String simplifyMaterial(String material){
+		material = material.replace("modbuilder:", "");
 		String prefix = "";
 		if (!material.startsWith("minecraft:") && material.contains("minecraft:")){
 			prefix = material.split(" ")[0] + " ";

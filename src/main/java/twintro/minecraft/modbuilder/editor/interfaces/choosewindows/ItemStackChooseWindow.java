@@ -8,6 +8,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JDialog;
@@ -19,10 +20,11 @@ import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class ItemStackChooseWindow extends JDialog {
+public class ItemStackChooseWindow extends IconDialog {
 	private JPanel mainPanel;
 	private JPanel buttonPanel;
 	private JPanel labelPanel;
@@ -52,6 +54,29 @@ public class ItemStackChooseWindow extends JDialog {
 	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
 	
 	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable){
+		initialize(isProduct, runnable);
+		setVisible(true);
+	}
+	
+	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable, ItemStackResource item){
+		initialize(isProduct, runnable);
+		
+		if (item.item != null)
+			chooseMaterial(item.item);
+		else if (item.block != null)
+			chooseMaterial(item.block);
+		if (isProduct && item.amount != null)
+			stackSizeSpinner.setValue(item.amount);
+		if (!isProduct && item.container != null){
+			containerLabel.setText(item.container);
+			containerCheckBox.setSelected(true);
+			useContainer();
+		}
+		
+		setVisible(true);
+	}
+	
+	private void initialize(boolean isProduct, ObjectRunnable runnable){
 		this.isProduct = isProduct;
 		this.runnable = runnable;
 
@@ -175,33 +200,20 @@ public class ItemStackChooseWindow extends JDialog {
 			}
 		});
 		buttonPanel.add(cancelButton);
-		
-		setVisible(true);
-	}
-	
-	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable, ItemStackResource item){
-		this(isProduct, runnable);
-		
-		if (item.item != null)
-			materialLabel.setText(item.item);
-		else if (item.block != null)
-			materialLabel.setText(item.block);
-		if (isProduct && item.amount != null)
-			stackSizeSpinner.setValue(item.amount);
-		if (!isProduct && item.container != null){
-			containerLabel.setText(item.container);
-			containerCheckBox.setSelected(true);
-			useContainer();
-		}
 	}
 	
 	private void chooseMaterial(){
 		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
-				materialLabel.setText((String) obj);
+				chooseMaterial((String) obj);
 			}
 		});
+	}
+	
+	private void chooseMaterial(String material){
+		materialLabel.setText(material);
+		setIcon(material);
 	}
 	
 	private void useContainer(){

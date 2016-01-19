@@ -1,4 +1,4 @@
-package twintro.minecraft.modbuilder.editor;
+package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.Color;
 import java.awt.Font;

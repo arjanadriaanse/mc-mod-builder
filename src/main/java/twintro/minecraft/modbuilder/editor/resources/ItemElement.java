@@ -57,6 +57,16 @@ public class ItemElement extends InventoryElement {
 	
 	@Override
 	public ImageIcon getImage() {
-		return getImage(itemModel.textures, "layer0");
+		String texture = null;
+		if (itemModel.textures.containsKey("layer0"))
+			texture = itemModel.textures.get("layer0");
+		else{
+			Object[] textureNames = itemModel.textures.values().toArray();
+			if (textureNames.length > 0) texture = (String) textureNames[0];
+		}
+		if (texture != null){
+			return TextureResources.getImage(texture);
+		}
+		return null;
 	}
 }

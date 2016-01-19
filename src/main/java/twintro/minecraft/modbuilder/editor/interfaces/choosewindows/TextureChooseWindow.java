@@ -21,10 +21,11 @@ import javax.swing.ScrollPaneConstants;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
-public class TextureChooseWindow extends JDialog {
+public class TextureChooseWindow extends IconDialog {
 	private ListPanel listPanel;
 	private ObjectRunnable runnable;
 	

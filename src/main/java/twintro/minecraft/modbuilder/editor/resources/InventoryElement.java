@@ -9,18 +9,4 @@ import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 
 public abstract class InventoryElement extends Element {
 	public ItemModelResource itemModel;
-	
-	protected ImageIcon getImage(Map<String, String> textures, String defaultTexture){
-		String texture = null;
-		if (textures.containsKey(defaultTexture))
-			texture = textures.get(defaultTexture);
-		else{
-			Object[] textureNames = textures.values().toArray();
-			if (textureNames.length > 0) texture = (String) textureNames[0];
-		}
-		if (texture != null){
-			return TextureResources.getImage(texture);
-		}
-		return null;
-	}
 }

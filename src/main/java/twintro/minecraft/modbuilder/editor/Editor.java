@@ -39,6 +39,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivi
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -190,8 +191,17 @@ public class Editor {
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
 			boolean newIsActuallyOpen = false;
-			if (file.exists() && newMod)
-				newIsActuallyOpen = true;
+			if (file.exists() && file.isDirectory() && newMod){
+				boolean hasAssets = false;
+				boolean hasMeta = false;
+				for (File nestedFile : file.listFiles()){
+					if (nestedFile.getName().equals("assets"))
+						hasAssets = true;
+					if (nestedFile.getName().equals("pack.mcmeta"))
+						hasMeta = true;
+				}
+				newIsActuallyOpen = hasAssets && hasMeta;
+			}
 			if (!file.exists())
 				file.mkdirs();
 			String dir = file.getAbsolutePath().replace("\\", "/") + "/";

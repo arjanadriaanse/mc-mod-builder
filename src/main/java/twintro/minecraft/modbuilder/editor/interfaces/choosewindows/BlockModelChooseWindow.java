@@ -48,10 +48,11 @@ import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
-public class BlockModelChooseWindow extends JDialog {
+public class BlockModelChooseWindow extends IconDialog {
 	ObjectRunnable runnable;
 	ListPanel listPanel;
 	int modelType = 1;

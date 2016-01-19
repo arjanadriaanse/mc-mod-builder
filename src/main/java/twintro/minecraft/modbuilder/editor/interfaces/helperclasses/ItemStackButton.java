@@ -84,7 +84,7 @@ public class ItemStackButton extends JButton {
 		}
 		else{
 			setText("");
-			setIcon(null);
+			setImage(null);
 		}
 		main.change();
 	}
@@ -105,14 +105,17 @@ public class ItemStackButton extends JButton {
 				setToolTipText(text);
 		}
 		else setToolTipText(null);
-		text = text.replace("modbuilder:", "");
-		super.setText(MaterialResources.getName(text));
+		super.setText(MaterialResources.simplifyMaterial(text));
 	}
 	
 	private void setImage(ImageIcon icon){
-		if (icon == null) 
+		if (icon == null){
 			setIcon(null);
-		else
+			if (isProduct) main.setIconImage(new ImageIcon("src/main/resources/icon.png").getImage());
+		}
+		else{
 			setIcon(ResourcePackIO.resizeImage(icon, getWidth() / 16 * 2 / 3 * 16, getHeight() / 16 * 2 / 3 * 16));
+			if (isProduct) main.setIconImage(icon.getImage());
+		}
 	}
 }

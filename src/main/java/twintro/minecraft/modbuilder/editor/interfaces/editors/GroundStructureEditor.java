@@ -205,7 +205,7 @@ public class GroundStructureEditor extends WindowClosingVerifierUser {
 		
 		GroundStructureResource ground = (GroundStructureResource) structure.structure;
 		if (ground.block != null)
-			materialLabel.setText(ground.block);
+			chooseMaterial(ground.block);
 		if (ground.onlyonblocks != null)
 			for (String block : ground.onlyonblocks)
 				addBlockToCover(block);
@@ -232,9 +232,14 @@ public class GroundStructureEditor extends WindowClosingVerifierUser {
 			@Override
 			public void run(Object obj) {
 				change();
-				materialLabel.setText((String) obj);
+				chooseMaterial((String) obj);
 			}
 		});
+	}
+	
+	private void chooseMaterial(String material){
+		materialLabel.setText(material);
+		setIcon(material);
 	}
 	
 	private void addBlockToCover() {

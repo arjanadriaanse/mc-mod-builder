@@ -24,11 +24,12 @@ import javax.swing.ScrollPaneConstants;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class MaterialChooseWindow extends JDialog {
+public class MaterialChooseWindow extends IconDialog {
 	public static final int ITEMS_ONLY = 0;
 	public static final int BLOCKS_ONLY = 1;
 	public static final int ITEMS_AND_BLOCKS = 2;

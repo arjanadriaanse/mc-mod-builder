@@ -247,7 +247,7 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 		
 		OreStructureResource ore = (OreStructureResource) structure.structure;
 		if (ore.block != null)
-			materialLabel.setText(ore.block);
+			chooseMaterial(ore.block);
 		if (ore.replaceblock != null)
 			replacingLabel.setText(ore.replaceblock);
 		if (ore.dimension != null){
@@ -279,9 +279,14 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 			@Override
 			public void run(Object obj) {
 				change();
-				materialLabel.setText((String) obj);
+				chooseMaterial((String) obj);
 			}
 		});
+	}
+	
+	private void chooseMaterial(String material){
+		materialLabel.setText(material);
+		setIcon(material);
 	}
 
 	private void chooseReplacing() {
