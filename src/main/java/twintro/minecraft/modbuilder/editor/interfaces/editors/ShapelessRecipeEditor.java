@@ -44,7 +44,6 @@ import java.awt.Font;
 import javax.swing.JFrame;
 
 public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
-	private JPanel contentPane;
 	protected JLabel lblCreateTheShaped;
 	protected ItemStackButton[] buttons;
 	
@@ -61,7 +60,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		this.addWindowListener(new WindowClosingVerifierListener());
 		setBounds(100, 100, 506, 412);
 		
-		contentPane = new JPanel();
+		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(5, 5));
 		setContentPane(contentPane);

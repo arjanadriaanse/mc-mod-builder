@@ -105,7 +105,7 @@ public class ItemStackButton extends JButton {
 				setToolTipText(text);
 		}
 		else setToolTipText(null);
-		super.setText(MaterialResources.simplifyMaterial(text));
+		super.setText(MaterialResources.simplifyItemStackName(text));
 	}
 	
 	private void setImage(ImageIcon icon){

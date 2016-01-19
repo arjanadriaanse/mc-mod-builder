@@ -11,11 +11,11 @@ import javax.swing.JList;
 
 import scala.collection.immutable.List;
 
-public class CustomListCellRenderer extends DefaultListCellRenderer {
+public class ImageListCellRenderer extends DefaultListCellRenderer {
 	private static final Font font = new Font("Tahoma", Font.PLAIN, 15);
 	private ListPanel panel;
 	
-	public CustomListCellRenderer(ListPanel panel){
+	public ImageListCellRenderer(ListPanel panel){
 		super();
 		this.panel = panel;
 	}

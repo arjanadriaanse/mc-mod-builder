@@ -1,6 +1,8 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
@@ -19,7 +21,10 @@ import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractButton;
@@ -49,22 +54,33 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
 import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.DropChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ColorListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
-public class BlockEditor extends WindowClosingVerifierUser {
-	private JPanel buttonPanel;
-	private JPanel mainPanel;
-	private JPanel labelPanel;
-	private JPanel interactionPanel;
+public class BlockEditor extends PropertiesEditor {
 	private JPanel modelPanel;
+	private JPanel dropsPanel;
+	private JPanel dropsSubPanel;
+	private JPanel dropsSubSubPanel;
+	private JPanel propertiesPanelA;
+	private JPanel propertiesPanelB;
+	private JPanel flammablePanel;
+	private JPanel replacablePanel;
+	private JPanel requiresToolPanel;
+	private JPanel solidPanel;
+	private JPanel opaquePanel;
 	private JLabel labelCreativeTab;
 	private JLabel labelModel;
+	private JLabel labelDrops;
 	private JLabel labelLightness;
 	private JLabel labelOpacity;
 	private JLabel labelSlipperiness;
@@ -75,10 +91,15 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private JLabel labelHarvestType;
 	private JLabel labelMaterial;
 	private JLabel labelUnbreakable;
+	private JLabel labelMapColor;
+	private JLabel labelMobility;
+	private JLabel labelProperties;
+	private JLabel labelEmpty;
 	private JLabel modelLabel;
-	private JButton saveBlockButton;
-	private JButton cancelButton;
+	private JLabel dropsLabel;
 	private JButton modelChooseButton;
+	private JButton addDropButton;
+	private JButton resetDropsButton;
 	private JSpinner lightnessSpinner;
 	private JSpinner opacitySpinner;
 	private JSpinner slipperinessSpinner;
@@ -86,17 +107,26 @@ public class BlockEditor extends WindowClosingVerifierUser {
 	private JSpinner resistanceSpinner;
 	private JSpinner harvestLevelSpinner;
 	private JSpinner burntimeSpinner;
+	private JSpinner mobilitySpinner;
 	private JComboBox creativeTabComboBox;
 	private JComboBox harvestTypeComboBox;
 	private JComboBox materialComboBox;
+	private JComboBox mapColorComboBox;
+	private JCheckBox dropsCheckBox;
 	private JCheckBox unbreakableCheckBox;
+	private JCheckBox flammableCheckBox;
+	private JCheckBox replacableCheckBox;
+	private JCheckBox requiresToolCheckBox;
+	private JCheckBox solidCheckBox;
+	private JCheckBox opaqueCheckBox;
 	
-	private String name;
 	private BlockModelResource model;
-	private ObjectRunnable runnable;
-	private ObjectRunnable closeHandler;
-	
+	private List<ItemStackResource> drops;
+	private ItemStackResource thisDrop;
+	private List<ItemStackResource> thisDrops;
+
 	private static final String modelTooltip = "The model determines what the block looks like in game";
+	private static final String dropsTooltip = ""; //TODO
 	private static final String creativeTabTooltip = "The creative tab the block will be in";
 	private static final String lightnessTooltip = "The amount of light the block emits";
 	private static final String opacityTooltip = "<html>The number indicating how much the light level will decrease when passing through this block.<br>" + 
@@ -108,225 +138,236 @@ public class BlockEditor extends WindowClosingVerifierUser {
 								"A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond</html>";
 	private static final String burntimeTooltip = "<html>Burn time is the amount of ticks the block will burn if used as a fuel.<br>" + 
 								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
+	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
 	private static final String materialTooltip = "OUTDATED AND DOES NOT WORK ANYMORE MIKE CHANGE PLS"; //TODO this will change
-	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
-	
+	private static final String mapColorTooltip = ""; //TODO
+	private static final String mobilityTooltip = ""; //TODO
+	private static final String flammableTooltip = ""; //TODO
+	private static final String replacableTooltip = ""; //TODO
+	private static final String requiresToolTooltip = ""; //TODO
+	private static final String solidTooltip = ""; //TODO
+	private static final String opaqueTooltip = ""; //TODO
+
 	private final ObjectRunnable modelChooser = new ObjectRunnable(){
 		@Override
 		public void run(Object obj){
 			setModel((BlockModelResource) obj);
 		}
 	};
+	private final ObjectRunnable dropChooser = new ObjectRunnable(){
+		@Override
+		public void run(Object obj){
+			addDrop((ItemStackResource) obj);
+		}
+	};
 	
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
-		this.name = name;
-		this.runnable = runnable;
-		this.closeHandler = closeHandler;
-
-		setBounds(100, 100, 500, 500);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		super(name, runnable, closeHandler);
+		setBounds(100, 100, 500, 600);
 		setTitle("Edit Block: " + this.name);
-		addWindowListener(new WindowClosingVerifierListener());
+		saveButton.setText("Save Block");
 		
-		mainPanel = new JPanel();
-		getContentPane().add(mainPanel, BorderLayout.NORTH);
-		mainPanel.setLayout(new BorderLayout(5, 5));
+		thisDrop = new ItemStackResource();
+		thisDrop.block = "modbuilder:" + name;
+		thisDrop.amount = 1;
+		thisDrop.amountincrease = 0;
+		thisDrops = new ArrayList<ItemStackResource>();
+		thisDrops.add(thisDrop);
 		
-		labelPanel = new JPanel();
-		mainPanel.add(labelPanel, BorderLayout.WEST);
-		labelPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		interactionPanel = new JPanel();
-		mainPanel.add(interactionPanel, BorderLayout.CENTER);
-		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		labelModel = new JLabel("Model");
-		labelModel.setToolTipText(modelTooltip);
-		labelPanel.add(labelModel);
-		
-		modelPanel = new JPanel();
-		interactionPanel.add(modelPanel);
-		modelPanel.setLayout(new BorderLayout(0, 0));
-		
-		modelChooseButton = new JButton("Choose");
-		modelChooseButton.setToolTipText(modelTooltip);
-		modelPanel.add(modelChooseButton, BorderLayout.EAST);
+		labelModel = label("Model", modelTooltip, labelPanel);
+		modelChooseButton = button("Choose", modelTooltip);
+		modelLabel = label("No Model", modelTooltip);
+		modelPanel = panel(modelLabel, modelChooseButton, interactionPanel);
 		modelChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chooseModel();
 			}
 		});
 		
-		modelLabel = new JLabel("No Model");
-		modelLabel.setToolTipText(modelTooltip);
-		modelLabel.setHorizontalAlignment(SwingConstants.RIGHT);
-		modelPanel.add(modelLabel, BorderLayout.CENTER);
+		labelDrops = label("Drops", dropsTooltip, labelPanel);
+		dropsCheckBox = checkbox("Use", dropsTooltip);
+		addDropButton = button("Add", dropsTooltip);
+		resetDropsButton = button("Reset", dropsTooltip);
+		dropsLabel = label("", dropsTooltip);
+		dropsSubSubPanel = panel(dropsLabel, resetDropsButton);
+		dropsSubPanel = panel(dropsSubSubPanel, addDropButton);
+		dropsPanel = panel(dropsSubPanel, dropsCheckBox, interactionPanel);
+		dropsCheckBox.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				useDrops();
+			}
+		});
+		addDropButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addDrop();
+			}
+		});
+		resetDropsButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetDrops();
+			}
+		});
+		drops = new ArrayList<ItemStackResource>();
+		useDrops();
 		
-		labelCreativeTab = new JLabel("Creative tab");
-		labelCreativeTab.setToolTipText(creativeTabTooltip);
-		labelPanel.add(labelCreativeTab);
-		
-		creativeTabComboBox = new JComboBox();
-		creativeTabComboBox.setToolTipText(creativeTabTooltip);
-		creativeTabComboBox.addActionListener(actionListener);
+		labelCreativeTab = label("Creative tab", creativeTabTooltip, labelPanel);
+		creativeTabComboBox = combobox(creativeTabTooltip, interactionPanel);
 		creativeTabComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
 				"food", "tools", "combat", "brewing", "materials", "inventory"}));
-		interactionPanel.add(creativeTabComboBox);
 		
-		labelLightness = new JLabel("Lightness");
-		labelLightness.setToolTipText(lightnessTooltip);
-		labelPanel.add(labelLightness);
-		
-		lightnessSpinner = new JSpinner();
-		lightnessSpinner.setToolTipText(lightnessTooltip);
-		lightnessSpinner.addChangeListener(changeListener);
+		labelLightness = label("Lightness", lightnessTooltip, labelPanel);
+		lightnessSpinner = spinner(lightnessTooltip, interactionPanel);
 		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
-		interactionPanel.add(lightnessSpinner);
 		
-		labelOpacity = new JLabel("Opacity");
-		labelOpacity.setToolTipText(opacityTooltip);
-		labelPanel.add(labelOpacity);
-		
-		opacitySpinner = new JSpinner();
-		opacitySpinner.setToolTipText(opacityTooltip);
-		opacitySpinner.addChangeListener(changeListener);
+		labelOpacity = label("Opacity", opacityTooltip, labelPanel);
+		opacitySpinner = spinner(opacityTooltip, interactionPanel);
 		opacitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(255), new Integer(1)));
-		interactionPanel.add(opacitySpinner);
 		
-		labelSlipperiness = new JLabel("Slipperiness");
-		labelSlipperiness.setToolTipText(slipperinessTooltip);
-		labelPanel.add(labelSlipperiness);
-		
-		slipperinessSpinner = new JSpinner();
-		slipperinessSpinner.setToolTipText(slipperinessTooltip);
-		slipperinessSpinner.addChangeListener(changeListener);
+		labelSlipperiness = label("Slipperiness", slipperinessTooltip, labelPanel);
+		slipperinessSpinner = spinner(slipperinessTooltip, interactionPanel);
 		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
-		interactionPanel.add(slipperinessSpinner);
 		
-		labelHardness = new JLabel("Hardness");
-		labelHardness.setToolTipText(hardnessTooltip);
-		labelPanel.add(labelHardness);
-		
-		hardnessSpinner = new JSpinner();
-		hardnessSpinner.setToolTipText(hardnessTooltip);
-		hardnessSpinner.addChangeListener(changeListener);
+		labelHardness = label("Hardness", hardnessTooltip, labelPanel);
+		hardnessSpinner = spinner(hardnessTooltip, interactionPanel);
 		hardnessSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		interactionPanel.add(hardnessSpinner);
 		
-		labelResistance = new JLabel("Resistance");
-		labelResistance.setToolTipText(resistanceTooltip);
-		labelPanel.add(labelResistance);
-		
-		resistanceSpinner = new JSpinner();
-		resistanceSpinner.setToolTipText(resistanceTooltip);
-		resistanceSpinner.addChangeListener(changeListener);
+		labelResistance = label("Resistance", resistanceTooltip, labelPanel);
+		resistanceSpinner = spinner(resistanceTooltip, interactionPanel);
 		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		interactionPanel.add(resistanceSpinner);
 		
-		labelHarvestLevel = new JLabel("Harvest level");
-		labelHarvestLevel.setToolTipText(harvestLevelTooltip);
-		labelPanel.add(labelHarvestLevel);
-		
-		harvestLevelSpinner = new JSpinner();
-		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
-		harvestLevelSpinner.addChangeListener(changeListener);
+		labelHarvestLevel = label("Harvest level", harvestLevelTooltip, labelPanel);
+		harvestLevelSpinner = spinner(harvestLevelTooltip, interactionPanel);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		interactionPanel.add(harvestLevelSpinner);
 		
-		labelBurntime = new JLabel("Burn time");
-		labelBurntime.setToolTipText(burntimeTooltip);
-		labelPanel.add(labelBurntime);
-		
-		burntimeSpinner = new JSpinner();
-		burntimeSpinner.setToolTipText(burntimeTooltip);
-		burntimeSpinner.addChangeListener(changeListener);
+		labelBurntime = label("Burn time", burntimeTooltip, labelPanel);
+		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		interactionPanel.add(burntimeSpinner);
 		
-		labelHarvestType = new JLabel("Harvest type");
-		labelHarvestType.setToolTipText(harvestTypeTooltip);
-		labelPanel.add(labelHarvestType);
-		
-		harvestTypeComboBox = new JComboBox();
-		harvestTypeComboBox.setToolTipText(harvestTypeTooltip);
-		harvestTypeComboBox.addActionListener(actionListener);
-		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
-		interactionPanel.add(harvestTypeComboBox);
-		
-		labelMaterial = new JLabel("Material");
-		labelMaterial.setToolTipText(materialTooltip);
-		labelPanel.add(labelMaterial);
-		
-		materialComboBox = new JComboBox();
-		materialComboBox.setToolTipText(materialTooltip);
-		materialComboBox.addActionListener(actionListener);
-		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "air", "grass", "ground", "wood", "rock", "iron", "anvil", 
-				"water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", "redstone_light", 
-				"tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", "cake", "web", 
-				"piston", "barrier"}));
-		interactionPanel.add(materialComboBox);
-		
-		labelUnbreakable = new JLabel("Unbreakable");
-		labelUnbreakable.setToolTipText(unbreakableTooltip);
-		labelPanel.add(labelUnbreakable);
-		
-		unbreakableCheckBox = new JCheckBox("");
-		unbreakableCheckBox.setToolTipText(unbreakableTooltip);
-		unbreakableCheckBox.addActionListener(actionListener);
-		interactionPanel.add(unbreakableCheckBox);
+		labelUnbreakable = label("Unbreakable", unbreakableTooltip, labelPanel);
+		unbreakableCheckBox = checkbox("", unbreakableTooltip, interactionPanel);
 		unbreakableCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
 		
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
+		labelHarvestType = label("Harvest type", harvestTypeTooltip, labelPanel);
+		harvestTypeComboBox = combobox(harvestTypeTooltip, interactionPanel);
+		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
 		
-		saveBlockButton = new JButton("Save Block");
-		saveBlockButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				save();
+		labelMaterial = label("Material", materialTooltip, labelPanel);
+		materialComboBox = combobox(materialTooltip, interactionPanel);
+		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "custom", "air", "grass", "ground", "wood", "rock", "iron", 
+				"anvil", "water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", 
+				"redstone_light", "tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", 
+				"cake", "web", "piston", "barrier"}));
+		materialComboBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				customMaterial();
 			}
 		});
-		buttonPanel.add(saveBlockButton);
 		
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cancel();
-			}
-		});
-		buttonPanel.add(cancelButton);
+		labelMapColor =  label("Map color", mapColorTooltip, labelPanel);
+		mapColorComboBox = combobox(mapColorTooltip, interactionPanel);
+		mapColorComboBox.setModel(new DefaultComboBoxModel(ColorListCellRenderer.mapColors));
+		mapColorComboBox.setRenderer(new ColorListCellRenderer());
 		
-		setVisible(true);
+		labelMobility = label("Mobility", mobilityTooltip, labelPanel);
+		mobilitySpinner = spinner(mobilityTooltip, interactionPanel);
+		mobilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		
+		labelProperties = new JLabel("Properties");
+		labelPanel.add(labelProperties);
+
+		labelEmpty = new JLabel("");
+		labelPanel.add(labelEmpty);
+		
+		propertiesPanelA = new JPanel();
+		propertiesPanelA.setLayout(new GridLayout(0, 3, 0, 0));
+		interactionPanel.add(propertiesPanelA);
+		
+		flammableCheckBox = checkbox("Flammable", flammableTooltip);
+		flammablePanel = panel(flammableCheckBox);
+		propertiesPanelA.add(flammablePanel);
+		
+		replacableCheckBox = checkbox("Replacable", replacableTooltip);
+		replacablePanel = panel(replacableCheckBox);
+		propertiesPanelA.add(replacablePanel);
+		
+		requiresToolCheckBox = checkbox("Requires tool", requiresToolTooltip);
+		requiresToolPanel = panel(requiresToolCheckBox);
+		propertiesPanelA.add(requiresToolPanel);
+		
+		propertiesPanelB = new JPanel();
+		propertiesPanelB.setLayout(new GridLayout(0, 3, 0, 0));
+		interactionPanel.add(propertiesPanelB);
+		
+		solidCheckBox = checkbox("Solid", solidTooltip);
+		solidPanel = panel(solidCheckBox);
+		propertiesPanelB.add(solidPanel);
+		
+		opaqueCheckBox = checkbox("Opaque", opaqueTooltip);
+		opaquePanel = panel(opaqueCheckBox);
+		propertiesPanelB.add(opaquePanel);
+		
+		customMaterial();
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
 		this(block.name, runnable, closeHandler);
 		
+		BaseBlockResource base = block.block;
+		
 		if (block.blockModel != null)
 			setModel(block.blockModel);
-		if (block.block.material != null)
-			materialComboBox.setSelectedItem(block.block.material.name());
-		if (block.block.tab != null)
-			creativeTabComboBox.setSelectedItem(block.block.tab.name());
-		if (block.block.light != null)
-			lightnessSpinner.setValue(block.block.light);
-		if (block.block.opacity != null)
-			opacitySpinner.setValue(block.block.opacity);
-		if (block.block.slipperiness != null)
-			slipperinessSpinner.setValue(block.block.slipperiness);
-		if (block.block.hardness != null)
-			hardnessSpinner.setValue(block.block.hardness);
-		if (block.block.resistance != null)
-			resistanceSpinner.setValue(block.block.resistance);
-		if (block.block.unbreakable != null)
-			unbreakableCheckBox.setSelected(block.block.unbreakable);
-		if (block.block.harvesttype != null)
-			harvestTypeComboBox.setSelectedItem(block.block.harvesttype);
-		if (block.block.harvestlevel != null)
-			harvestLevelSpinner.setValue(block.block.harvestlevel);
-		if (block.block.burntime != null)
-			burntimeSpinner.setValue(block.block.burntime);
+		if (base.drops != null){
+			if (!(base.drops.size() == 1 && base.drops.get(0).block.equals(thisDrop.block) 
+					&& base.drops.get(0).amount == thisDrop.amount && base.drops.get(0).amountincrease == thisDrop.amountincrease)){
+				dropsCheckBox.setSelected(true);
+				useDrops();
+				for (ItemStackResource drop : base.drops)
+					addDrop(drop);
+			}
+		}
+		if (base.material != null)
+			materialComboBox.setSelectedItem(base.material.name());
+		else if (base.flammable != null || base.replaceable != null || base.requirestool != null || base.solid != null || base.opaque != null 
+				|| base.mapcolor != null || base.mobility != null){
+			materialComboBox.setSelectedItem("custom");
+			customMaterial();
+			if (base.mapcolor != null)
+				mapColorComboBox.setSelectedIndex(base.mapcolor);
+			if (base.mobility != null)
+				mobilitySpinner.setValue(base.mobility);
+			if (base.flammable != null)
+				flammableCheckBox.setSelected(base.flammable);
+			if (base.replaceable != null)
+				replacableCheckBox.setSelected(base.replaceable);
+			if (base.requirestool != null)
+				requiresToolCheckBox.setSelected(base.requirestool);
+			if (base.solid != null)
+				solidCheckBox.setSelected(base.solid);
+			if (base.opaque != null)
+				opaqueCheckBox.setSelected(base.opaque);
+		}
+		if (base.tab != null)
+			creativeTabComboBox.setSelectedItem(base.tab.name());
+		if (base.light != null)
+			lightnessSpinner.setValue(base.light);
+		if (base.opacity != null)
+			opacitySpinner.setValue(base.opacity);
+		if (base.slipperiness != null)
+			slipperinessSpinner.setValue(base.slipperiness);
+		if (base.hardness != null)
+			hardnessSpinner.setValue(base.hardness);
+		if (base.resistance != null)
+			resistanceSpinner.setValue(base.resistance);
+		if (base.unbreakable != null)
+			unbreakableCheckBox.setSelected(base.unbreakable);
+		if (base.harvesttype != null)
+			harvestTypeComboBox.setSelectedItem(base.harvesttype);
+		if (base.harvestlevel != null)
+			harvestLevelSpinner.setValue(base.harvestlevel);
+		if (base.burntime != null)
+			burntimeSpinner.setValue(base.burntime);
 		setIconImage(block.getImage().getImage());
 		
 		changed = false;
@@ -352,7 +393,21 @@ public class BlockEditor extends WindowClosingVerifierUser {
 			block.blockstate = blockstate;
 			
 			BaseBlockResource base = new BlockResource();
-			base.material = MaterialResource.valueOf((String) materialComboBox.getSelectedItem());
+			if (materialComboBox.getSelectedItem() == "custom"){
+				base.mapcolor = mapColorComboBox.getSelectedIndex();
+				base.mobility = (Integer) mobilitySpinner.getValue();
+				base.flammable = flammableCheckBox.isSelected();
+				base.replaceable = replacableCheckBox.isSelected();
+				base.requirestool = requiresToolCheckBox.isSelected();
+				base.solid = solidCheckBox.isSelected();
+				base.opaque = opaqueCheckBox.isSelected();
+			}
+			else
+				base.material = MaterialResource.valueOf((String) materialComboBox.getSelectedItem());
+			if (dropsCheckBox.isSelected())
+				base.drops = drops;
+			else
+				base.drops = thisDrops;
 			base.model = "modbuilder:" + name;
 			base.tab = TabResource.valueOf((String) creativeTabComboBox.getSelectedItem());
 			base.light = (Integer) lightnessSpinner.getValue();
@@ -398,16 +453,55 @@ public class BlockEditor extends WindowClosingVerifierUser {
 		setIconImage(block.getImage().getImage());
 	}
 	
-	private void cancel(){
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
+	private void useDrops(){
+		boolean use = dropsCheckBox.isSelected();
+		labelDrops.setEnabled(use);
+		dropsLabel.setEnabled(use);
+		addDropButton.setEnabled(use);
+		resetDropsButton.setEnabled(use);
 	}
 	
-	@Override
-	public void dispose() {
-		closeHandler.run(name);
-		super.dispose();
+	private void addDrop(){
+		new DropChooseWindow(dropChooser);
+	}
+	
+	private void addDrop(ItemStackResource item){
+		change();
+		
+		drops.add(item);
+		
+		String material;
+		if (item.item != null)
+			material = MaterialResources.simplifyItemStackName(item.item);
+		else
+			material = MaterialResources.simplifyItemStackName(item.block);
+		
+		String amount;
+		if (item.amountincrease == 0)
+			amount = item.amount + "";
+		else
+			amount = item.amount + "-" + (item.amountincrease + item.amount);
+		
+		if (dropsLabel.getText().length() > 0) dropsLabel.setText(dropsLabel.getText() + ",");
+		dropsLabel.setText(dropsLabel.getText() + amount + " " + material);
+	}
+	
+	private void resetDrops(){
+		change();
+		drops.clear();
+		dropsLabel.setText("");
+	}
+	
+	private void customMaterial(){
+		boolean use = materialComboBox.getSelectedItem() == "custom";
+		labelMapColor.setVisible(use);
+		labelMobility.setVisible(use);
+		labelProperties.setVisible(use);
+		labelEmpty.setVisible(use);
+		mapColorComboBox.setVisible(use);
+		mobilitySpinner.setVisible(use);
+		propertiesPanelA.setVisible(use);
+		propertiesPanelB.setVisible(use);
 	}
 }
 

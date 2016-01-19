@@ -23,7 +23,7 @@ import javax.swing.ScrollPaneConstants;
 
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;

@@ -37,7 +37,7 @@ import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
 public abstract class ActivityPanel extends ListPanel {
@@ -70,7 +70,7 @@ public abstract class ActivityPanel extends ListPanel {
 		list.setVisibleRowCount(0);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setFixedCellWidth(128);
-		list.setCellRenderer(new CustomListCellRenderer(this));
+		list.setCellRenderer(new ImageListCellRenderer(this));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
 				return elements.size();

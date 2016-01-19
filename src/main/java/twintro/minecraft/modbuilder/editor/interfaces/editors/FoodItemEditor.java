@@ -69,28 +69,15 @@ public class FoodItemEditor extends RegularItemEditor {
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		setTitle("Edit Food: " + this.name);
-		
 		saveButton.setText("Save Food");
 		
-		labelHungerRefill = new JLabel("Hunger Refill");
-		labelHungerRefill.setToolTipText(hungerRefillTooltip);
-		labelPanel.add(labelHungerRefill);
-		
-		hungerRefillSpinner = new JSpinner();
-		hungerRefillSpinner.setToolTipText(hungerRefillTooltip);
-		hungerRefillSpinner.addChangeListener(changeListener);
+		labelHungerRefill = label("Hunger Refill", hungerRefillTooltip, labelPanel);
+		hungerRefillSpinner = spinner(hungerRefillTooltip, interactionPanel);
 		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
-		interactionPanel.add(hungerRefillSpinner);
 		
-		labelSaturation = new JLabel("Saturation");
-		labelSaturation.setToolTipText(saturationTooltip);
-		labelPanel.add(labelSaturation);
-		
-		saturationSpinner = new JSpinner();
-		saturationSpinner.setToolTipText(saturationTooltip);
-		saturationSpinner.addChangeListener(changeListener);
+		labelSaturation = label("Saturation", saturationTooltip, labelPanel);
+		saturationSpinner = spinner(saturationTooltip, interactionPanel);
 		saturationSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		interactionPanel.add(saturationSpinner);
 		
 		labelProperties = new JLabel("Properties");
 		labelPanel.add(labelProperties);
@@ -99,23 +86,13 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		interactionPanel.add(propertiesPanel);
 		
-		feedToWolvesPanel = new JPanel();
-		feedToWolvesPanel.setLayout(new BorderLayout(0, 0));
+		feedToWolvesCheckbox = checkbox("Feed to wolves", feedToWolvesTooltip);
+		feedToWolvesPanel = panel(feedToWolvesCheckbox);
 		propertiesPanel.add(feedToWolvesPanel);
 		
-		feedToWolvesCheckbox = new JCheckBox("Feed to wolves");
-		feedToWolvesCheckbox.setToolTipText(feedToWolvesTooltip);
-		feedToWolvesCheckbox.addActionListener(actionListener);
-		feedToWolvesPanel.add(feedToWolvesCheckbox);
-		
-		alwaysEdiblePanel = new JPanel();
-		alwaysEdiblePanel.setLayout(new BorderLayout(0, 0));
+		alwaysEdibleCheckbox = checkbox("Always edible", alwaysEdibleTooltip);
+		alwaysEdiblePanel = panel(alwaysEdibleCheckbox);
 		propertiesPanel.add(alwaysEdiblePanel);
-		
-		alwaysEdibleCheckbox = new JCheckBox("Always edible");
-		alwaysEdibleCheckbox.setToolTipText(alwaysEdibleTooltip);
-		alwaysEdibleCheckbox.addActionListener(actionListener);
-		alwaysEdiblePanel.add(alwaysEdibleCheckbox);
 		
 		effectsListPanel = new JPanel();
 		effectsListPanel.setLayout(new GridLayout(0, 1, 0, 5));
@@ -125,27 +102,16 @@ public class FoodItemEditor extends RegularItemEditor {
 		effectsListTopPanel = new JPanel();
 		effectsListTopPanel.setLayout(new GridLayout(0, 4, 0, 5));
 		effectsListPanel.add(effectsListTopPanel);
-		
-		labelEffect = new JLabel("Effect");
-		labelEffect.setToolTipText(effectTypeTooltip);
-		effectsListTopPanel.add(labelEffect);
-		
-		labelDuration = new JLabel("Duration");
-		labelDuration.setToolTipText(effectDurationTooltip);
-		effectsListTopPanel.add(labelDuration);
-		
-		labelAmplifier = new JLabel("Amplifier");
-		labelAmplifier.setToolTipText(effectAmplifierTooltip);
-		effectsListTopPanel.add(labelAmplifier);
-		
-		addEffectButton = new JButton("Add Effect");
-		addEffectButton.setToolTipText(addEffectTooltip);
+
+		labelEffect = label("Effect", effectTypeTooltip, effectsListTopPanel);
+		labelDuration = label("Duration", effectTypeTooltip, effectsListTopPanel);
+		labelAmplifier = label("Amplifier", effectTypeTooltip, effectsListTopPanel);
+		addEffectButton = button("Add Effect", addEffectTooltip, effectsListTopPanel);
 		addEffectButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addEffect();
 			}
 		});
-		effectsListTopPanel.add(addEffectButton);
 		
 		effectPanels = new EffectPanel[0];
 	}

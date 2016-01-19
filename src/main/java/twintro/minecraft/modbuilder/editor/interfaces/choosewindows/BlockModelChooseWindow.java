@@ -47,7 +47,7 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
@@ -114,7 +114,7 @@ public class BlockModelChooseWindow extends IconDialog {
 		list.setVisibleRowCount(0);
 		list.setLayoutOrientation(JList.HORIZONTAL_WRAP);
 		list.setFixedCellWidth(128);
-		list.setCellRenderer(new CustomListCellRenderer(listPanel));
+		list.setCellRenderer(new ImageListCellRenderer(listPanel));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
 				return listPanel.elements.size();

@@ -14,6 +14,7 @@ import javax.swing.JCheckBox;
 import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
@@ -234,7 +235,7 @@ public class ItemStackChooseWindow extends IconDialog {
 	
 	private void save(){
 		String material = materialLabel.getText();
-		if (material != null){
+		if (material != null && material != ""){
 			ItemStackResource item = new ItemStackResource();
 			
 			if (MaterialResources.isItem(material))
@@ -248,6 +249,12 @@ public class ItemStackChooseWindow extends IconDialog {
 			
 			runnable.run(item);
 			dispose();
+		}
+		else{
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't chosen a material yet.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			if (selected != JOptionPane.OK_OPTION)
+				dispose();
 		}
 	}
 	

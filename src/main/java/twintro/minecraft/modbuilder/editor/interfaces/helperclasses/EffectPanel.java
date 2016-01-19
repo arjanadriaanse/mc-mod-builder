@@ -13,6 +13,7 @@ import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.PropertiesEditor;
 
 public class EffectPanel extends JPanel {
 	private JComboBox effectComboBox;
@@ -23,43 +24,30 @@ public class EffectPanel extends JPanel {
 	private ObjectRunnable runnable;
 	private int id;
 	
-	public EffectPanel(ObjectRunnable runnable, WindowClosingVerifierUser main){
+	public EffectPanel(ObjectRunnable runnable, PropertiesEditor main){
 		this.runnable = runnable;
-		
 		setLayout(new GridLayout(0, 4, 5, 0));
 		
-		effectComboBox = new JComboBox();
-		effectComboBox.setToolTipText(FoodItemEditor.effectTypeTooltip);
-		effectComboBox.addActionListener(main.actionListener);
+		effectComboBox = main.combobox(FoodItemEditor.effectTypeTooltip, this);
 		effectComboBox.setModel(new DefaultComboBoxModel(new String[] {"Effect", "Speed", "Slowness", "Haste", "Mining Fatigue", "Instant Health",
 				"Instant Damage", "Jump Boost", "Nausea", "Regeneration", "Resistance", "Fire Resistance", "Water Breathing", "Invisibility",
 				"Blindness", "Night Vision", "Hunger", "Weakness", "Poison", "Wither", "Health Boost", "Absorption", "Saturation"}));
-		add(effectComboBox);
 		
-		durationSpinner = new JSpinner();
-		durationSpinner.setToolTipText(FoodItemEditor.effectDurationTooltip);
-		durationSpinner.addChangeListener(main.changeListener);
+		durationSpinner = main.spinner(FoodItemEditor.effectDurationTooltip, this);
 		durationSpinner.setModel(new SpinnerNumberModel(new Integer(20), new Integer(0), null, new Integer(20)));
-		add(durationSpinner);
 		
-		amplifierSpinner = new JSpinner();
-		amplifierSpinner.setToolTipText(FoodItemEditor.effectAmplifierTooltip);
-		amplifierSpinner.addChangeListener(main.changeListener);
+		amplifierSpinner = main.spinner(FoodItemEditor.effectAmplifierTooltip, this);
 		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		add(amplifierSpinner);
 		
-		removeButton = new JButton("Remove");
-		removeButton.setToolTipText(FoodItemEditor.removeEffectTooltip);
-		removeButton.addActionListener(main.actionListener);
+		removeButton = main.button("Remove", FoodItemEditor.removeEffectTooltip, this);
 		removeButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
 		});
-		add(removeButton);
 	}
 	
-	public EffectPanel(ObjectRunnable runnable, WindowClosingVerifierUser main, Integer[] effect){
+	public EffectPanel(ObjectRunnable runnable, PropertiesEditor main, Integer[] effect){
 		this(runnable, main);
 		
 		if (effect.length == 3){

@@ -14,7 +14,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
 
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.CustomListCellRenderer;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
@@ -52,7 +52,7 @@ public class ListWindow extends IconDialog {
 		((ListPanel)panel).elements = elements;
 		
 		list.setFixedCellWidth(128);
-		list.setCellRenderer(new CustomListCellRenderer((ListPanel)panel));
+		list.setCellRenderer(new ImageListCellRenderer((ListPanel)panel));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
 				return ((ListPanel)panel).elements.size();

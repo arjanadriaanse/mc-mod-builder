@@ -33,11 +33,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosin
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
 import javax.swing.SpinnerNumberModel;
 
-public class OreStructureEditor extends WindowClosingVerifierUser {
-	private JPanel buttonPanel;
-	private JPanel mainPanel;
-	private JPanel labelPanel;
-	private JPanel interactionPanel;
+public class OreStructureEditor extends PropertiesEditor {
 	private JPanel materialPanel;
 	private JPanel replacingPanel;
 	private JPanel regionPanel;
@@ -53,8 +49,6 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 	private JLabel labelMaxY;
 	private JLabel materialLabel;
 	private JLabel replacingLabel;
-	private JButton saveStructureButton;
-	private JButton cancelButton;
 	private JButton materialChooseButton;
 	private JButton replacingChooseButton;
 	private JSpinner maxVeinSizeSpinner;
@@ -62,10 +56,6 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 	private JSpinner minYSpinner;
 	private JSpinner maxYSpinner;
 	private JComboBox dimensionComboBox;
-
-	private String name;
-	private ObjectRunnable runnable;
-	private ObjectRunnable closeHandler;
 
 	private static final String materialTooltip = "The block that will be generated as an ore.";
 	private static final String replacingTooltip = "<html>The block that the ore must replace.<br>" + 
@@ -76,98 +66,42 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 	private static final String regionTooltip = "The height levels between which the ore will generate";
 	
 	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
-		this.name = name;
-		this.runnable = runnable;
-		this.closeHandler = closeHandler;
-		
+		super(name, runnable, closeHandler);
 		setBounds(100, 100, 390, 400);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		addWindowListener(new WindowClosingVerifierListener());
-		setTitle("Edit structure: " + this.name);
+		setTitle("Edit Structure: " + name);
+		saveButton.setText("Save Structure");
 		
-		mainPanel = new JPanel();
-		mainPanel.setLayout(new BorderLayout(5, 0));
-		getContentPane().add(mainPanel, BorderLayout.NORTH);
-		
-		labelPanel = new JPanel();
-		labelPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		mainPanel.add(labelPanel, BorderLayout.WEST);
-		
-		interactionPanel = new JPanel();
-		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		mainPanel.add(interactionPanel, BorderLayout.CENTER);
-		
-		labelMaterial = new JLabel("Material");
-		labelMaterial.setToolTipText(materialTooltip);
-		labelPanel.add(labelMaterial);
-		
-		materialPanel = new JPanel();
-		materialPanel.setLayout(new BorderLayout(0, 0));
-		interactionPanel.add(materialPanel);
-		
-		materialChooseButton = new JButton("Choose");
-		materialChooseButton.setToolTipText(materialTooltip);
+		labelMaterial = label("Material", materialTooltip, labelPanel);
+		materialChooseButton = button("Choose", materialTooltip);
+		materialLabel = label("", materialTooltip);
+		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chooseMaterial();
 			}
 		});
-		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		materialLabel = new JLabel("");
-		materialLabel.setToolTipText(materialTooltip);
-		materialPanel.add(materialLabel, BorderLayout.CENTER);
-		
-		labelReplacing = new JLabel("Replacing");
-		labelReplacing.setToolTipText(replacingTooltip);
-		labelPanel.add(labelReplacing);
-		
-		replacingPanel = new JPanel();
-		replacingPanel.setLayout(new BorderLayout(0, 0));
-		interactionPanel.add(replacingPanel);
-		
-		replacingChooseButton = new JButton("Choose");
-		replacingChooseButton.setToolTipText(replacingTooltip);
+		labelReplacing = label("Replacing", replacingTooltip, labelPanel);
+		replacingChooseButton = button("Choose", replacingTooltip);
+		replacingLabel = label("", replacingTooltip);
+		replacingPanel = panel(replacingLabel, replacingChooseButton);
 		replacingChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				chooseReplacing();
 			}
 		});
-		replacingPanel.add(replacingChooseButton, BorderLayout.EAST);
 		
-		replacingLabel = new JLabel("");
-		replacingLabel.setToolTipText(replacingTooltip);
-		replacingPanel.add(replacingLabel, BorderLayout.CENTER);
-		
-		labelDimension = new JLabel("Dimension");
-		labelDimension.setToolTipText(dimensionTooltip);
-		labelPanel.add(labelDimension);
-		
-		dimensionComboBox = new JComboBox();
-		dimensionComboBox.setToolTipText(dimensionTooltip);
-		dimensionComboBox.addActionListener(actionListener);
+		labelDimension = label("Dimension", dimensionTooltip, labelPanel);
+		dimensionComboBox = combobox(dimensionTooltip, interactionPanel);
 		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
-		interactionPanel.add(dimensionComboBox);
 		
-		labelMaxVeinSize = new JLabel("Max vein size");
-		labelMaxVeinSize.setToolTipText(maxVeinSizeTooltip);
-		labelPanel.add(labelMaxVeinSize);
-		
-		maxVeinSizeSpinner = new JSpinner();
-		maxVeinSizeSpinner.setToolTipText(maxVeinSizeTooltip);
-		maxVeinSizeSpinner.addChangeListener(changeListener);
+		labelMaxVeinSize = label("Max vein size", maxVeinSizeTooltip, labelPanel);
+		maxVeinSizeSpinner = spinner(maxVeinSizeTooltip, interactionPanel);
 		maxVeinSizeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		interactionPanel.add(maxVeinSizeSpinner);
 		
-		labelAmount = new JLabel("Veins per chunk");
-		labelAmount.setToolTipText(amountTooltip);
-		labelPanel.add(labelAmount);
-		
-		amountSpinner = new JSpinner();
-		amountSpinner.setToolTipText(amountTooltip);
-		amountSpinner.addChangeListener(changeListener);
+		labelAmount = label("Veins per chunk", amountTooltip, labelPanel);
+		amountSpinner = spinner(amountTooltip, interactionPanel);
 		amountSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		interactionPanel.add(amountSpinner);
 		
 		labelRegion = new JLabel("Spawn region");
 		labelRegion.setToolTipText(regionTooltip);
@@ -181,13 +115,10 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 		minYPanel.setLayout(new BorderLayout(5, 0));
 		regionPanel.add(minYPanel);
 		
-		labelMinY = new JLabel("From");
-		labelMinY.setToolTipText(regionTooltip);
+		labelMinY = label("From", regionTooltip);
 		minYPanel.add(labelMinY, BorderLayout.WEST);
 		
-		minYSpinner = new JSpinner();
-		minYSpinner.setToolTipText(regionTooltip);
-		minYSpinner.addChangeListener(changeListener);
+		minYSpinner = spinner(regionTooltip);
 		minYSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -202,13 +133,10 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 		maxYPanel.setLayout(new BorderLayout(5, 0));
 		regionPanel.add(maxYPanel);
 		
-		labelMaxY = new JLabel("To");
-		labelMaxY.setToolTipText(regionTooltip);
+		labelMaxY = label("To", regionTooltip);
 		maxYPanel.add(labelMaxY, BorderLayout.WEST);
 		
-		maxYSpinner = new JSpinner();
-		maxYSpinner.setToolTipText(regionTooltip);
-		maxYSpinner.addChangeListener(changeListener);
+		maxYSpinner = spinner(regionTooltip);
 		maxYSpinner.addChangeListener(new ChangeListener() {
 			@Override
 			public void stateChanged(ChangeEvent e) {
@@ -218,28 +146,6 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 		});
 		maxYSpinner.setModel(new SpinnerNumberModel(new Integer(64), new Integer(0), null, new Integer(1)));
 		maxYPanel.add(maxYSpinner, BorderLayout.CENTER);
-		
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		
-		saveStructureButton = new JButton("Save Structure");
-		saveStructureButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				save();
-			}
-		});
-		buttonPanel.add(saveStructureButton);
-		
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent arg0) {
-				cancel();
-			}
-		});
-		buttonPanel.add(cancelButton);
-		
-		setVisible(true);
 	}
 	
 	public OreStructureEditor(StructureElement structure, ObjectRunnable runnable, ObjectRunnable closeHandler){
@@ -334,17 +240,5 @@ public class OreStructureEditor extends WindowClosingVerifierUser {
 				return false;
 		}
 		return true;
-	}
-	
-	private void cancel(){
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
-	}
-	
-	@Override
-	public void dispose() {
-		closeHandler.run(name);
-		super.dispose();
 	}
 }

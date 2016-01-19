@@ -38,12 +38,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.awt.event.ActionEvent;
 
-public class RegularItemEditor extends WindowClosingVerifierUser {
-	protected JPanel mainPanel;
-	protected JPanel buttonPanel;
+public class RegularItemEditor extends PropertiesEditor {
 	protected JPanel texturePanel;
-	protected JPanel labelPanel;
-	protected JPanel interactionPanel;
 	protected JPanel containerPanel;
 	protected JPanel containerSubPanel;
 	protected JPanel burntimePanel;
@@ -60,17 +56,11 @@ public class RegularItemEditor extends WindowClosingVerifierUser {
 	protected JButton textureChooseButton;
 	protected JButton creativeTabsResetButton;
 	protected JButton containerChooseButton;
-	protected JButton saveButton;
-	protected JButton cancelButton;
 	protected JSpinner maxStackSizeSpinner;
 	protected JSpinner burntimeSpinner;
 	protected JComboBox creativeTabsComboBox;
 	protected JCheckBox containerCheckbox;
 	protected JCheckBox burntimeCheckbox;
-	
-	protected String name;
-	protected ObjectRunnable runnable;
-	private ObjectRunnable closeHandler;
 
 	private static final String textureTooltip = "The texture of the item";
 	private static final String maxStackSizeTooltip = "The maximum amount of items in one stack";
@@ -81,70 +71,33 @@ public class RegularItemEditor extends WindowClosingVerifierUser {
 	private static final String burntimeTooltip = "The amount of items that will get cooked when you use this item as a fuel source in a furnace";
 	
 	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
-		this.name = name;
-		this.runnable = runnable;
-		this.closeHandler = closeHandler;
-
+		super(name, runnable, closeHandler);
 		setBounds(100, 100, 500, 500);
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		setTitle("Edit Item: " + this.name);
-		addWindowListener(new WindowClosingVerifierListener());
+		saveButton.setText("Save Item");
 		
-		mainPanel = new JPanel();
-		getContentPane().add(mainPanel, BorderLayout.NORTH);
-		mainPanel.setLayout(new BorderLayout(5, 0));
-		
-		labelPanel = new JPanel();
-		mainPanel.add(labelPanel, BorderLayout.WEST);
-		labelPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		interactionPanel = new JPanel();
-		mainPanel.add(interactionPanel, BorderLayout.CENTER);
-		interactionPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		
-		labelTexture = new JLabel("Texture");
-		labelTexture.setToolTipText(textureTooltip);
-		labelPanel.add(labelTexture);
-		
-		texturePanel = new JPanel();
-		interactionPanel.add(texturePanel);
-		texturePanel.setLayout(new BorderLayout(0, 0));
-		
-		textureChooseButton = new JButton("Choose");
-		textureChooseButton.setToolTipText(textureTooltip);
+		labelTexture = label("Texture", textureTooltip, labelPanel);
+		textureChooseButton = button("Choose", textureTooltip);
+		textureLabel = label("", textureTooltip);
+		texturePanel = panel(textureLabel, textureChooseButton, interactionPanel);
 		textureChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				textureChoose();
 			}
 		});
-		texturePanel.add(textureChooseButton, BorderLayout.EAST);
-		
-		textureLabel = new JLabel("");
-		textureLabel.setToolTipText(textureTooltip);
-		texturePanel.add(textureLabel, BorderLayout.CENTER);
 		
 		if (!(this instanceof ToolItemEditor)){
-			labelMaxStackSize = new JLabel("Maximum stack size");
-			labelMaxStackSize.setToolTipText(maxStackSizeTooltip);
-			labelPanel.add(labelMaxStackSize);
-			
-			maxStackSizeSpinner = new JSpinner();
-			maxStackSizeSpinner.setToolTipText(maxStackSizeTooltip);
-			maxStackSizeSpinner.addChangeListener(changeListener);
+			labelMaxStackSize = label("Maximum stack size", maxStackSizeTooltip, labelPanel);
+			maxStackSizeSpinner = spinner(maxStackSizeTooltip, interactionPanel);
 			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
-			interactionPanel.add(maxStackSizeSpinner);
 		}
-
-		labelCreativeTabs = new JLabel("Creative tabs");
-		labelCreativeTabs.setToolTipText(creativeTabsTooltip);
-		labelPanel.add(labelCreativeTabs);
 		
-		creativeTabsPanel = new JPanel();
-		interactionPanel.add(creativeTabsPanel);
-		creativeTabsPanel.setLayout(new BorderLayout(0, 0));
-		
-		creativeTabsComboBox = new JComboBox();
-		creativeTabsComboBox.setToolTipText(creativeTabsTooltip);
+		labelCreativeTabs = label("Creative tabs", creativeTabsTooltip, labelPanel);
+		creativeTabsComboBox = combobox(creativeTabsTooltip);
+		creativeTabsResetButton = button("Reset", creativeTabsTooltip);
+		creativeTabsLabel = label("", creativeTabsTooltip);
+		creativeTabsSubPanel = panel(creativeTabsLabel, creativeTabsResetButton);
+		creativeTabsPanel = panel(creativeTabsSubPanel, creativeTabsComboBox, interactionPanel);
 		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
 				"food", "tools", "combat", "brewing", "materials", "inventory"}));
 		creativeTabsComboBox.addItemListener(new ItemListener() {
@@ -158,113 +111,43 @@ public class RegularItemEditor extends WindowClosingVerifierUser {
 				}
 			}
 		});
-		creativeTabsPanel.add(creativeTabsComboBox, BorderLayout.EAST);
-		
-		creativeTabsSubPanel = new JPanel();
-		creativeTabsPanel.add(creativeTabsSubPanel, BorderLayout.CENTER);
-		creativeTabsSubPanel.setLayout(new BorderLayout(0, 0));
-		
-		creativeTabsResetButton = new JButton("Reset");
-		creativeTabsResetButton.setToolTipText(creativeTabsTooltip);
 		creativeTabsResetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				creativeTabsReset();
 			}
 		});
-		creativeTabsSubPanel.add(creativeTabsResetButton, BorderLayout.EAST);
 		
-		creativeTabsLabel = new JLabel("");
-		creativeTabsLabel.setToolTipText(creativeTabsTooltip);
-		creativeTabsSubPanel.add(creativeTabsLabel, BorderLayout.CENTER);
-		
-		labelContainer = new JLabel("Container");
-		labelContainer.setToolTipText(containerTooltip);
-		labelContainer.setEnabled(false);
-		labelPanel.add(labelContainer);
-		
-		containerPanel = new JPanel();
-		interactionPanel.add(containerPanel);
-		containerPanel.setLayout(new BorderLayout(0, 0));
-		
-		containerCheckbox = new JCheckBox("Use");
-		containerCheckbox.setToolTipText(containerTooltip);
-		containerCheckbox.addActionListener(actionListener);
+		labelContainer = label("Container", containerTooltip, labelPanel);
+		containerCheckbox = checkbox("Use", containerTooltip);
+		containerChooseButton = button("Choose", containerTooltip);
+		containerLabel = label("", containerTooltip);
+		containerSubPanel = panel(containerLabel, containerChooseButton);
+		containerPanel = panel(containerSubPanel, containerCheckbox, interactionPanel);
 		containerCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				containerUse();
 			}
 		});
-		containerPanel.add(containerCheckbox, BorderLayout.EAST);
-		
-		containerSubPanel = new JPanel();
-		containerPanel.add(containerSubPanel, BorderLayout.CENTER);
-		containerSubPanel.setLayout(new BorderLayout(0, 0));
-		
-		containerChooseButton = new JButton("Choose");
-		containerChooseButton.setToolTipText(containerTooltip);
 		containerChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				containerChoose();
 			}
 		});
-		containerChooseButton.setEnabled(false);
-		containerSubPanel.add(containerChooseButton, BorderLayout.EAST);
+		containerUse();
 		
-		containerLabel = new JLabel("");
-		containerLabel.setToolTipText(containerTooltip);
-		containerLabel.setEnabled(false);
-		containerSubPanel.add(containerLabel, BorderLayout.CENTER);
-		
-		labelBurnTime = new JLabel("Burn time");
-		labelBurnTime.setToolTipText(burntimeTooltip);
-		labelBurnTime.setEnabled(false);
-		labelPanel.add(labelBurnTime);
-		
-		burntimePanel = new JPanel();
-		burntimePanel.setToolTipText(burntimeTooltip);
-		interactionPanel.add(burntimePanel);
-		burntimePanel.setLayout(new BorderLayout(0, 0));
-		
-		burntimeCheckbox = new JCheckBox("Use");
-		burntimeCheckbox.setToolTipText(burntimeTooltip);
-		burntimeCheckbox.addActionListener(actionListener);
+		labelBurnTime = label("Burn time", burntimeTooltip, labelPanel);
+		burntimeCheckbox = checkbox("Use", burntimeTooltip);
+		burntimeSpinner = spinner(burntimeTooltip);
+		burntimePanel = panel(burntimeSpinner, burntimeCheckbox, interactionPanel);
 		burntimeCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				burntimeUse();
 			}
 		});
-		burntimePanel.add(burntimeCheckbox, BorderLayout.EAST);
-		
-		burntimeSpinner = new JSpinner();
-		burntimeSpinner.setToolTipText(burntimeTooltip);
-		burntimeSpinner.addChangeListener(changeListener);
-		burntimeSpinner.setEnabled(false);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		burntimePanel.add(burntimeSpinner, BorderLayout.CENTER);
-		
-		buttonPanel = new JPanel();
-		buttonPanel.setLayout(new FlowLayout(FlowLayout.RIGHT, 5, 5));
-		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
-		
-		saveButton = new JButton("Save Item");
-		saveButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				save();
-			}
-		});
-		buttonPanel.add(saveButton);
-		
-		cancelButton = new JButton("Cancel");
-		cancelButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				cancel();
-			}
-		});
-		buttonPanel.add(cancelButton);
-		
-		setVisible(true);
+		burntimeUse();
 	}
 
 	public RegularItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
@@ -384,17 +267,5 @@ public class RegularItemEditor extends WindowClosingVerifierUser {
 				setIconImage(Editor.getTextureList().get(texture.split(":")[1]).getImage());
 			}
 		});
-	}
-
-	private void cancel() {
-		for (WindowListener listener : getWindowListeners()){
-			listener.windowClosing(new WindowEvent(this, WindowEvent.WINDOW_CLOSING));
-		}
-	}
-	
-	@Override
-	public void dispose() {
-		closeHandler.run(name);
-		super.dispose();
 	}
 }

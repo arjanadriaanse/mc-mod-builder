@@ -13,6 +13,8 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import com.sun.media.sound.FFT;
+
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
@@ -60,131 +62,63 @@ public class ToolItemEditor extends RegularItemEditor {
 	public ToolItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		setTitle("Edit Tool: " + this.name);
-		
 		saveButton.setText("Save Tool");
 		
-		labelDurability = new JLabel("Durability");
-		labelDurability.setToolTipText(durabilityTooltip);
-		labelPanel.add(labelDurability);
-		
-		durabilitySpinner = new JSpinner();
-		durabilitySpinner.setToolTipText(durabilityTooltip);
-		durabilitySpinner.addChangeListener(changeListener);
+		labelDurability = label("Durability", durabilityTooltip, labelPanel);
+		durabilitySpinner = spinner(durabilityTooltip, interactionPanel);
 		durabilitySpinner.setModel(new SpinnerNumberModel(new Integer(128), new Integer(1), null, new Integer(1)));
-		interactionPanel.add(durabilitySpinner);
 		
-		labelEfficiency = new JLabel("Efficiency");
-		labelEfficiency.setToolTipText(efficiencyTooltip);
-		labelPanel.add(labelEfficiency);
-		
-		efficiencySpinner = new JSpinner();
-		efficiencySpinner.setToolTipText(efficiencyTooltip);
-		efficiencySpinner.addChangeListener(changeListener);
+		labelEfficiency = label("Efficiency", efficiencyTooltip, labelPanel);
+		efficiencySpinner = spinner(efficiencyTooltip, interactionPanel);
 		efficiencySpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(2), null, new Float(2)));
-		interactionPanel.add(efficiencySpinner);
 		
-		labelDamage = new JLabel("Damage");
-		labelDamage.setToolTipText(damageTooltip);
-		labelPanel.add(labelDamage);
-		
-		damageSpinner = new JSpinner();
-		damageSpinner.setToolTipText(damageTooltip);
-		damageSpinner.addChangeListener(changeListener);
+		labelDamage = label("Damage", damageTooltip, labelPanel);
+		damageSpinner = spinner(damageTooltip, interactionPanel);
 		damageSpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(1), null, new Float(1)));
-		interactionPanel.add(damageSpinner);
 		
-		labelHarvestLevel = new JLabel("Harvest Level");
-		labelHarvestLevel.setToolTipText(harvestLevelTooltip);
-		labelPanel.add(labelHarvestLevel);
-		
-		harvestLevelSpinner = new JSpinner();
-		harvestLevelSpinner.setToolTipText(harvestLevelTooltip);
-		harvestLevelSpinner.addChangeListener(changeListener);
+		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip);
+		harvestLevelSpinner = spinner(harvestLevelTooltip, interactionPanel);
 		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		interactionPanel.add(harvestLevelSpinner);
 		
-		labelEnchantibility = new JLabel("Enchantibility");
-		labelEnchantibility.setToolTipText(enchantibilityTooltip);
-		labelPanel.add(labelEnchantibility);
-		
-		enchantibilitySpinner = new JSpinner();
-		enchantibilitySpinner.setToolTipText(enchantibilityTooltip);
-		enchantibilitySpinner.addChangeListener(changeListener);
+		labelEnchantibility = label("Enchantibility", enchantibilityTooltip, labelPanel);
+		enchantibilitySpinner = spinner(enchantibilityTooltip, interactionPanel);
 		enchantibilitySpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(1), null, new Integer(1)));
-		interactionPanel.add(enchantibilitySpinner);
 		
-		labelAffectedBlocks = new JLabel("Affected Blocks");
-		labelAffectedBlocks.setToolTipText(affectedBlocksTooltip);
-		labelPanel.add(labelAffectedBlocks);
-		
-		affectedBlocksPanel = new JPanel();
-		interactionPanel.add(affectedBlocksPanel);
-		affectedBlocksPanel.setLayout(new BorderLayout(0, 0));
-		
-		affectedBlocksButton = new JButton("Add Block");
-		affectedBlocksButton.setToolTipText(affectedBlocksTooltip);
+		labelAffectedBlocks = label("Affected Blocks", affectedBlocksTooltip, labelPanel);
+		affectedBlocksButton = button("Add Block", affectedBlocksTooltip);
+		affectedBlocksResetButton = button("Reset", affectedBlocksTooltip);
+		affectedBlocksLabel = label("", affectedBlocksTooltip);
+		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
+		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
 		affectedBlocksButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addBlock();
 			}
 		});
-		affectedBlocksPanel.add(affectedBlocksButton, BorderLayout.EAST);
-		
-		affectedBlocksSubPanel = new JPanel();
-		affectedBlocksPanel.add(affectedBlocksSubPanel, BorderLayout.CENTER);
-		affectedBlocksSubPanel.setLayout(new BorderLayout(0, 0));
-		
-		affectedBlocksResetButton = new JButton("Reset");
-		affectedBlocksResetButton.setToolTipText(affectedBlocksTooltip);
 		affectedBlocksResetButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				resetBlocks();
 			}
 		});
-		affectedBlocksSubPanel.add(affectedBlocksResetButton, BorderLayout.EAST);
 		
-		affectedBlocksLabel = new JLabel("");
-		affectedBlocksLabel.setToolTipText(affectedBlocksTooltip);
-		affectedBlocksSubPanel.add(affectedBlocksLabel, BorderLayout.CENTER);
-		
-		labelRepairMaterial = new JLabel("Repair Material");
-		labelRepairMaterial.setToolTipText(repairMaterialTooltip);
-		labelRepairMaterial.setEnabled(false);
-		labelPanel.add(labelRepairMaterial);
-		
-		repairMaterialPanel = new JPanel();
-		interactionPanel.add(repairMaterialPanel);
-		repairMaterialPanel.setLayout(new BorderLayout(0, 0));
-		
-		repairMaterialCheckbox = new JCheckBox("Use");
-		repairMaterialCheckbox.setToolTipText(repairMaterialTooltip);
-		repairMaterialCheckbox.addActionListener(actionListener);
+		labelRepairMaterial = label("Repair Material", repairMaterialTooltip, labelPanel);
+		repairMaterialCheckbox = checkbox("Use", repairMaterialTooltip);
+		repairMaterialChooseButton = button("Choose", repairMaterialTooltip);
+		repairMaterialLabel = label("", repairMaterialTooltip);
+		repairMaterialSubPanel = panel(repairMaterialLabel, repairMaterialChooseButton);
+		repairMaterialPanel = panel(repairMaterialSubPanel, repairMaterialCheckbox, interactionPanel);
 		repairMaterialCheckbox.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				repairMaterialUse();
 			}
 		});
-		repairMaterialPanel.add(repairMaterialCheckbox, BorderLayout.EAST);
-		
-		repairMaterialSubPanel = new JPanel();
-		repairMaterialPanel.add(repairMaterialSubPanel, BorderLayout.CENTER);
-		repairMaterialSubPanel.setLayout(new BorderLayout(0, 0));
-		
-		repairMaterialChooseButton = new JButton("Choose");
-		repairMaterialChooseButton.setToolTipText(repairMaterialTooltip);
 		repairMaterialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				repairMaterialChoose();
 			}
 		});
-		repairMaterialChooseButton.setEnabled(false);
-		repairMaterialSubPanel.add(repairMaterialChooseButton, BorderLayout.EAST);
-		
-		repairMaterialLabel = new JLabel("");
-		repairMaterialLabel.setToolTipText(repairMaterialTooltip);
-		repairMaterialLabel.setEnabled(false);
-		repairMaterialSubPanel.add(repairMaterialLabel, BorderLayout.CENTER);
+		repairMaterialUse();
 	}
 	
 	public ToolItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
