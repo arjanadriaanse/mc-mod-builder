@@ -172,6 +172,9 @@ public class BlockEditor extends PropertiesEditor {
 		setTitle("Edit Block: " + this.name);
 		saveButton.setText("Save Block");
 		
+		setVisible(true);
+		setBounds(100, 100, 500, 570 + 531 - (int) getContentPane().getSize().getHeight());
+		
 		thisDrop = new ItemStackResource();
 		thisDrop.block = "modbuilder:" + name;
 		thisDrop.amount = 1;
@@ -314,11 +317,6 @@ public class BlockEditor extends PropertiesEditor {
 		propertiesPanelB.add(opaquePanel);
 		
 		customMaterial();
-		
-		setVisible(true);
-		
-		System.out.println(this.getSize().getHeight() + " : " + getContentPane().getSize().getHeight());
-		Point pt = SwingUtilities.convertPoint(getContentPane(), getContentPane().getLocation(), this);
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
