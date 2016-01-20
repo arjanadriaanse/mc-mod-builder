@@ -3,10 +3,13 @@ package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 import java.util.Map;
 import java.util.Set;
 
@@ -43,26 +46,22 @@ public class MaterialChooseWindow extends IconDialog {
 	private static final String noneTooltip = "";//TODO
 	
 	private ObjectRunnable runnable;
+	private JPanel mainPanel;
 	
 	public MaterialChooseWindow(int type, ObjectRunnable runnable){
 		this.runnable = runnable;
-
-		setModal(true);
-		if (type == ITEMS_AND_BLOCKS || type == ITEMS_BLOCKS_NONE)
-			setBounds(100, 100, 300, 120);
-		else
-			setBounds(100, 100, 300, 90);
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
-		JPanel panel = new JPanel();
-		getContentPane().add(panel, BorderLayout.NORTH);
-		panel.setLayout(new GridLayout(0, 2, 5, 5));
+		mainPanel = new JPanel();
+		getContentPane().add(mainPanel, BorderLayout.NORTH);
+		mainPanel.setLayout(new GridLayout(0, 2, 5, 5));
 		
 		if (type != BLOCKS_ONLY){
 			JButton customItemButton = new JButton("Custom item");
 			customItemButton.setToolTipText(customItemsTooltip);
-			panel.add(customItemButton);
+			mainPanel.add(customItemButton);
 			customItemButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -72,7 +71,7 @@ public class MaterialChooseWindow extends IconDialog {
 			
 			JButton itemButton = new JButton("Vanilla item");
 			itemButton.setToolTipText(vanillaItemsTooltip);
-			panel.add(itemButton);
+			mainPanel.add(itemButton);
 			itemButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -84,7 +83,7 @@ public class MaterialChooseWindow extends IconDialog {
 		if (type != ITEMS_ONLY){
 			JButton customBlockButton = new JButton("Custom block");
 			customBlockButton.setToolTipText(customBlocksTooltip);
-			panel.add(customBlockButton);
+			mainPanel.add(customBlockButton);
 			customBlockButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -94,7 +93,7 @@ public class MaterialChooseWindow extends IconDialog {
 			
 			JButton blockButton = new JButton("Vanilla block");
 			blockButton.setToolTipText(vanillaBlocksTooltip);
-			panel.add(blockButton);
+			mainPanel.add(blockButton);
 			blockButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -105,7 +104,7 @@ public class MaterialChooseWindow extends IconDialog {
 		
 		JButton otherButton = new JButton("Other");
 		otherButton.setToolTipText(otherTooltip);
-		panel.add(otherButton);
+		mainPanel.add(otherButton);
 		otherButton.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,7 +115,7 @@ public class MaterialChooseWindow extends IconDialog {
 		if (type == ITEMS_BLOCKS_NONE){
 			JButton noneButton = new JButton("None");
 			noneButton.setToolTipText(noneTooltip);
-			panel.add(noneButton);
+			mainPanel.add(noneButton);
 			noneButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -125,6 +124,26 @@ public class MaterialChooseWindow extends IconDialog {
 			});
 		}
 		
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {}
+			@Override
+			public void windowClosed(WindowEvent arg0) {}
+			@Override
+			public void windowClosing(WindowEvent arg0) {}
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {}
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {}
+			@Override
+			public void windowIconified(WindowEvent arg0) {}
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + getSize().getHeight() - getContentPane().getSize().getHeight()));
+			}
+		});
+		
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
 	}
 	

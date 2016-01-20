@@ -61,7 +61,7 @@ public class ToolItemEditor extends RegularItemEditor {
 
 	public ToolItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 400, 390);
+		
 		setTitle("Edit Tool: " + this.name);
 		saveButton.setText("Save Tool");
 		
@@ -120,6 +120,8 @@ public class ToolItemEditor extends RegularItemEditor {
 			}
 		});
 		repairMaterialUse();
+		
+		setSize(400);
 	}
 	
 	public ToolItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {

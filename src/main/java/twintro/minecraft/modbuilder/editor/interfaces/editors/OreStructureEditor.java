@@ -67,7 +67,7 @@ public class OreStructureEditor extends PropertiesEditor {
 	
 	public OreStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 400, 255);
+		
 		setTitle("Edit Structure: " + name);
 		saveButton.setText("Save Structure");
 		
@@ -146,6 +146,8 @@ public class OreStructureEditor extends PropertiesEditor {
 		});
 		maxYSpinner.setModel(new SpinnerNumberModel(new Integer(64), new Integer(0), null, new Integer(1)));
 		maxYPanel.add(maxYSpinner, BorderLayout.CENTER);
+		
+		setSize(400);
 	}
 	
 	public OreStructureEditor(StructureElement structure, ObjectRunnable runnable, ObjectRunnable closeHandler){

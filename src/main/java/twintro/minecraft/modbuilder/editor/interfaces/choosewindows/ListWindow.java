@@ -1,6 +1,7 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
@@ -29,8 +30,8 @@ public class ListWindow extends IconDialog {
 		this.panel = panel;
 		this.runnable = runnable;
 
-		setModal(true);
-		setBounds(100, 100, 300, 200);
+		setModalityType(ModalityType.APPLICATION_MODAL);
+		setBounds(100, 100, 530, 300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		

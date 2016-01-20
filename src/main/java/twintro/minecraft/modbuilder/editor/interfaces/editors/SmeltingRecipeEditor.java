@@ -53,7 +53,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		this.addWindowListener(new WindowClosingVerifierListener());
 		this.setTitle("Edit Recipe: " + this.name);
 		
-		setBounds(100, 100, 450, 300);
+		setBounds(100, 100, 380, 300);
 		JPanel contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		contentPane.setLayout(new BorderLayout(0, 0));

@@ -1,10 +1,14 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
+import java.awt.Point;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -52,8 +56,6 @@ public class DropChooseWindow extends IconDialog {
 	public DropChooseWindow(ObjectRunnable runnable){
 		this.runnable = runnable;
 		
-		setModal(true);
-		setBounds(100, 100, 300, 135);
 		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Drop");
@@ -161,6 +163,27 @@ public class DropChooseWindow extends IconDialog {
 		});
 		buttonPanel.add(cancelButton);
 		
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {}
+			@Override
+			public void windowClosed(WindowEvent arg0) {}
+			@Override
+			public void windowClosing(WindowEvent arg0) {}
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {}
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {}
+			@Override
+			public void windowIconified(WindowEvent arg0) {}
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
+						+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
+			}
+		});
+		
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
 	}
 	

@@ -72,7 +72,7 @@ public class RegularItemEditor extends PropertiesEditor {
 	
 	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 400, 220);
+		
 		setTitle("Edit Item: " + this.name);
 		saveButton.setText("Save Item");
 		
@@ -148,6 +148,8 @@ public class RegularItemEditor extends PropertiesEditor {
 		});
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		burntimeUse();
+		
+		setSize(400);
 	}
 
 	public RegularItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {

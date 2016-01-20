@@ -5,8 +5,11 @@ import java.awt.FlowLayout;
 import java.awt.Frame;
 import java.awt.GridLayout;
 import java.awt.Window;
+import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -59,6 +62,28 @@ public class ItemStackChooseWindow extends IconDialog {
 	
 	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable){
 		initialize(isProduct, runnable);
+
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {}
+			@Override
+			public void windowClosed(WindowEvent arg0) {}
+			@Override
+			public void windowClosing(WindowEvent arg0) {}
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {}
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {}
+			@Override
+			public void windowIconified(WindowEvent arg0) {}
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
+						+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
+			}
+		});
+		
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
 	}
 	
@@ -77,15 +102,34 @@ public class ItemStackChooseWindow extends IconDialog {
 			useContainer();
 		}
 		
+		addWindowListener(new WindowListener() {
+			@Override
+			public void windowActivated(WindowEvent arg0) {}
+			@Override
+			public void windowClosed(WindowEvent arg0) {}
+			@Override
+			public void windowClosing(WindowEvent arg0) {}
+			@Override
+			public void windowDeactivated(WindowEvent arg0) {}
+			@Override
+			public void windowDeiconified(WindowEvent arg0) {}
+			@Override
+			public void windowIconified(WindowEvent arg0) {}
+			@Override
+			public void windowOpened(WindowEvent arg0) {
+				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
+						+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
+			}
+		});
+		
+		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
 	}
 	
 	private void initialize(boolean isProduct, ObjectRunnable runnable){
 		this.isProduct = isProduct;
 		this.runnable = runnable;
-
-		setModal(true);
-		setBounds(100, 100, 300, 135);
+		
 		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		if (isProduct)

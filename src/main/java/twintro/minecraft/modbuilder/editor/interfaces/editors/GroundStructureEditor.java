@@ -72,7 +72,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 	
 	public GroundStructureEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 400, 195);
+		
 		setTitle("Edit Structure: " + name);
 		saveButton.setText("Save Structure");
 		
@@ -137,6 +137,8 @@ public class GroundStructureEditor extends PropertiesEditor {
 			amountSpinner.setValue(ground.amountperchunk);
 		
 		changed = false;
+		
+		setSize(400);
 	}
 	
 	private void chooseMaterial() {

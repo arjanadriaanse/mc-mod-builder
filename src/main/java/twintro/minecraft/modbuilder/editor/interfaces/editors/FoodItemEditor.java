@@ -68,7 +68,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
-		setBounds(100, 100, 500, 440);
+		
 		setTitle("Edit Food: " + this.name);
 		saveButton.setText("Save Food");
 		
@@ -115,6 +115,8 @@ public class FoodItemEditor extends RegularItemEditor {
 		});
 		
 		effectPanels = new EffectPanel[0];
+		
+		setSize(500);
 	}
 	
 	public FoodItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
@@ -185,6 +187,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		
 		effectsListPanel.add(effect);
 		paintAll(getGraphics());
+		updateSize();
 	}
 	
 	private void removeEffect(int id){
@@ -200,5 +203,6 @@ public class FoodItemEditor extends RegularItemEditor {
 		effectPanels = newEffectPanels;
 
 		paintAll(getGraphics());
+		updateSize();
 	}
 }

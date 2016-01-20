@@ -33,7 +33,7 @@ public class TextureChooseWindow extends IconDialog {
 		this.runnable = runnable;
 
 		setModal(true);
-		setBounds(100, 100, 300, 200);
+		setBounds(100, 100, 530, 400);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Texture");
 		
