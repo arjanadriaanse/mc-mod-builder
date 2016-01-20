@@ -13,6 +13,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.init.Blocks;
 import net.minecraft.item.Item;
 import net.minecraft.item.Item.ToolMaterial;
 import net.minecraftforge.common.util.EnumHelper;
@@ -46,7 +47,14 @@ public class ResourceConverter {
 	}
 
 	public static BuilderBlock toBlock(BlockResource resource) {
-		BuilderBlock block = new BuilderBlock(new BuilderBlockMaterial(resource), resource.drops);
+		BuilderBlock block = new BuilderBlock(new BuilderBlockMaterial(resource), resource.drops,
+				resource.solid!=null ? resource.solid : true,
+				resource.opaque!=null ? resource.opaque : false,
+				resource.cutout!=null ? resource.cutout : false);
+		if (resource.flammability != null || resource.firespreadspeed != null)
+			Blocks.fire.setFireInfo(block,
+						resource.flammability != null ? resource.flammability : 0,
+						resource.firespreadspeed != null ? resource.firespreadspeed : 0);
 		if (resource.tab != null)
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)

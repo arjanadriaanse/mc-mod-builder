@@ -3,6 +3,7 @@ package twintro.minecraft.modbuilder.data;
 import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.util.EnumFacing;
 import net.minecraft.world.IBlockAccess;
@@ -17,11 +18,6 @@ public class BuilderBlockMaterial extends Material{
 	public BuilderBlockMaterial(BaseBlockResource resource){
 		super(MapColor.mapColorArray[resource.mapcolor!=null ? resource.mapcolor : 0]);
 		this.resource=resource;
-		if (resource.flammable!=null ? resource.flammable : false){
-			setBurning();
-			boolean a = getCanBurn();
-			boolean b = isSolid();
-		}
 		if (resource.replaceable!=null ? resource.replaceable : false)
 			setReplaceable();
 		if (resource.requirestool!=null ? resource.requirestool : false)
@@ -35,25 +31,16 @@ public class BuilderBlockMaterial extends Material{
 			}
 		}
 	}
-	
-	@Override
-	public boolean isSolid(){
-		return resource.solid!=null ? resource.solid : true;
-	}
+		
 	
 	@Override
 	public boolean blocksMovement(){
-		return resource.solid!=null ? resource.solid : true;
+		return resource.solid!=null ? resource.solid : super.blocksMovement();
 	}
 	
 	@Override
 	public boolean isOpaque(){
-		return resource.opaque!=null ? resource.opaque : false;
-	}
-	
-	@Override
-	public boolean getCanBurn(){
-		return resource.flammable!=null ? resource.flammable : false;
+		return resource.opaque!=null ? resource.opaque : super.isOpaque();
 	}
 }
 

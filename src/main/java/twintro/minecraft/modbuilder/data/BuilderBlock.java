@@ -9,8 +9,13 @@ import net.minecraft.block.material.Material;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
+import net.minecraft.util.AxisAlignedBB;
 import net.minecraft.util.BlockPos;
+import net.minecraft.util.EnumWorldBlockLayer;
 import net.minecraft.world.IBlockAccess;
+import net.minecraft.world.World;
+import net.minecraftforge.fml.relauncher.Side;
+import net.minecraftforge.fml.relauncher.SideOnly;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 
 /**
@@ -21,10 +26,16 @@ public class BuilderBlock extends Block {
 	 * The items the block will drop. The amount is just a minimal value and will be increased by dropincrease.
 	 */
 	List<ItemStackResource> items;
+	boolean solid;
+	boolean opaque;
+	boolean cutout;
 
-	public BuilderBlock(Material material, List<ItemStackResource> drops) {
+	public BuilderBlock(Material material, List<ItemStackResource> drops, boolean solid, boolean opaque, boolean cutout) {
 		super(material);
 		this.items=drops;
+		this.solid=solid;
+		this.opaque=opaque;
+		this.cutout=cutout;
 	}
 	
 	@Override
@@ -41,5 +52,24 @@ public class BuilderBlock extends Block {
 			rtn.add(new ItemStack(item,amount !=null ? amount : 1+fortune,meta!=null ? meta : getMetaFromState(state)));
 		}
 		return rtn;
+	}
+	
+	@Override
+    public AxisAlignedBB getCollisionBoundingBox(World world, BlockPos pos, IBlockState state) {
+        return solid ? super.getCollisionBoundingBox(world, pos, state) : null;
+    }
+	
+	@SideOnly(Side.CLIENT)
+	@Override
+	public boolean isOpaqueCube(){
+		return opaque;
+	}
+	
+	@Override
+	public EnumWorldBlockLayer getBlockLayer(){
+		if (cutout)
+			return EnumWorldBlockLayer.CUTOUT;
+		else
+			return super.getBlockLayer();
 	}
 }

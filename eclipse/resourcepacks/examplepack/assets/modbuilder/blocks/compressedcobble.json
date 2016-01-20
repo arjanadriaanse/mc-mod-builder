@@ -1,4 +1,7 @@
 {
+   "solid": false,
+   "requirestool": true,
+   "mapcolor": 11,
    "material": "rock",
    "model": "minecraft:cobblestone",
    "tab": "block",
