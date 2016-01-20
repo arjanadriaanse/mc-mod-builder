@@ -168,10 +168,8 @@ public class BlockEditor extends PropertiesEditor {
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		
-		Container c = this.getContentPane();
-		Point pt = c.getLocation();
-		pt = SwingUtilities.convertPoint(c, pt, this);
-		System.out.println(pt.y);
+		System.out.println(this.getLocation().getY() + " : " + getContentPane().getLocation().getY());
+		Point pt = SwingUtilities.convertPoint(getContentPane(), getContentPane().getLocation(), this);
 		
 		setBounds(100, 100, 500, 570);
 		setTitle("Edit Block: " + this.name);
