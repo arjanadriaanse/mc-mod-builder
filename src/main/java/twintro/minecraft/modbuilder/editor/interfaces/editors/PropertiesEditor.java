@@ -20,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 
@@ -96,6 +97,11 @@ public abstract class PropertiesEditor extends WindowClosingVerifierUser {
 		JPanel panel = panel(center, east);
 		superPanel.add(panel);
 		return panel;
+	}
+	
+	public JLabel tooltipLabel(String name, String tooltip){
+		JLabel label = new TooltipLabel(name, tooltip);
+		return label;
 	}
 	
 	public JLabel label(String name, String tooltip){

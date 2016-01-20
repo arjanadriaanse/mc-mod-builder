@@ -189,7 +189,7 @@ public class BlockEditor extends PropertiesEditor {
 		dropsCheckBox = checkbox("Use", dropsTooltip);
 		addDropButton = button("Add", dropsTooltip);
 		resetDropsButton = button("Reset", dropsTooltip);
-		dropsLabel = label("", dropsTooltip);
+		dropsLabel = tooltipLabel("", dropsTooltip);
 		dropsSubSubPanel = panel(dropsLabel, resetDropsButton);
 		dropsSubPanel = panel(dropsSubSubPanel, addDropButton);
 		dropsPanel = panel(dropsSubPanel, dropsCheckBox, interactionPanel);

@@ -58,7 +58,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 	private JLabel materialLabel;
 	private JLabel coverLabel;
 	private JButton materialChooseButton;
-	private JButton coverChooseButton;
+	private JButton addCoverButton;
 	private JButton coverResetButton;
 	private JSpinner amountSpinner;
 	private JComboBox dimensionComboBox;
@@ -78,7 +78,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 		
 		labelMaterial = label("Material", materialTooltip, labelPanel);
 		materialChooseButton = button("Choose", materialTooltip);
-		materialLabel = label("", materialTooltip);
+		materialLabel = tooltipLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -87,12 +87,12 @@ public class GroundStructureEditor extends PropertiesEditor {
 		});
 		
 		labelCover = label("Blocks to cover", coverTooltip, labelPanel);
-		coverChooseButton = button("Choose", coverTooltip);
+		addCoverButton = button("Add", coverTooltip);
 		coverResetButton = button("Reset", coverTooltip);
-		coverLabel = label("", coverTooltip);
+		coverLabel = tooltipLabel("", coverTooltip);
 		coverSubPanel = panel(coverLabel, coverResetButton);
-		coverPanel = panel(coverSubPanel, coverChooseButton, interactionPanel);
-		coverChooseButton.addActionListener(new ActionListener() {
+		coverPanel = panel(coverSubPanel, addCoverButton, interactionPanel);
+		addCoverButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				addBlockToCover();
 			}

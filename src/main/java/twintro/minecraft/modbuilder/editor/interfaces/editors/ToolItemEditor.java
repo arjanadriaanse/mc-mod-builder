@@ -88,7 +88,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		labelAffectedBlocks = label("Affected Blocks", affectedBlocksTooltip, labelPanel);
 		affectedBlocksButton = button("Add Block", affectedBlocksTooltip);
 		affectedBlocksResetButton = button("Reset", affectedBlocksTooltip);
-		affectedBlocksLabel = label("", affectedBlocksTooltip);
+		affectedBlocksLabel = tooltipLabel("", affectedBlocksTooltip);
 		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
 		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
 		affectedBlocksButton.addActionListener(new ActionListener() {
@@ -105,7 +105,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		labelRepairMaterial = label("Repair Material", repairMaterialTooltip, labelPanel);
 		repairMaterialCheckbox = checkbox("Use", repairMaterialTooltip);
 		repairMaterialChooseButton = button("Choose", repairMaterialTooltip);
-		repairMaterialLabel = label("", repairMaterialTooltip);
+		repairMaterialLabel = tooltipLabel("", repairMaterialTooltip);
 		repairMaterialSubPanel = panel(repairMaterialLabel, repairMaterialChooseButton);
 		repairMaterialPanel = panel(repairMaterialSubPanel, repairMaterialCheckbox, interactionPanel);
 		repairMaterialCheckbox.addActionListener(new ActionListener() {

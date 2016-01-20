@@ -21,6 +21,7 @@ import javax.swing.event.ChangeListener;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class DropChooseWindow extends IconDialog {
@@ -87,8 +88,7 @@ public class DropChooseWindow extends IconDialog {
 		});
 		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		materialLabel = new JLabel("");
-		materialLabel.setToolTipText(materialTooltip);
+		materialLabel = new TooltipLabel("", materialTooltip);
 		materialPanel.add(materialLabel, BorderLayout.CENTER);
 		
 		labelAmount = new JLabel("Amount");

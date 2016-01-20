@@ -73,7 +73,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		
 		labelMaterial = label("Material", materialTooltip, labelPanel);
 		materialChooseButton = button("Choose", materialTooltip);
-		materialLabel = label("", materialTooltip);
+		materialLabel = tooltipLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,7 +83,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		
 		labelReplacing = label("Replacing", replacingTooltip, labelPanel);
 		replacingChooseButton = button("Choose", replacingTooltip);
-		replacingLabel = label("", replacingTooltip);
+		replacingLabel = tooltipLabel("", replacingTooltip);
 		replacingPanel = panel(replacingLabel, replacingChooseButton, interactionPanel);
 		replacingChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {

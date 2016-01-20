@@ -78,7 +78,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		
 		labelTexture = label("Texture", textureTooltip, labelPanel);
 		textureChooseButton = button("Choose", textureTooltip);
-		textureLabel = label("", textureTooltip);
+		textureLabel = tooltipLabel("", textureTooltip);
 		texturePanel = panel(textureLabel, textureChooseButton, interactionPanel);
 		textureChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -95,7 +95,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		labelCreativeTabs = label("Creative tabs", creativeTabsTooltip, labelPanel);
 		creativeTabsComboBox = combobox(creativeTabsTooltip);
 		creativeTabsResetButton = button("Reset", creativeTabsTooltip);
-		creativeTabsLabel = label("", creativeTabsTooltip);
+		creativeTabsLabel = tooltipLabel("", creativeTabsTooltip);
 		creativeTabsSubPanel = panel(creativeTabsLabel, creativeTabsResetButton);
 		creativeTabsPanel = panel(creativeTabsSubPanel, creativeTabsComboBox, interactionPanel);
 		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
@@ -120,7 +120,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		labelContainer = label("Container", containerTooltip, labelPanel);
 		containerCheckbox = checkbox("Use", containerTooltip);
 		containerChooseButton = button("Choose", containerTooltip);
-		containerLabel = label("", containerTooltip);
+		containerLabel = tooltipLabel("", containerTooltip);
 		containerSubPanel = panel(containerLabel, containerChooseButton);
 		containerPanel = panel(containerSubPanel, containerCheckbox, interactionPanel);
 		containerCheckbox.addActionListener(new ActionListener() {

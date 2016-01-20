@@ -25,6 +25,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ItemStackChooseWindow extends IconDialog {
@@ -128,8 +129,7 @@ public class ItemStackChooseWindow extends IconDialog {
 		});
 		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		materialLabel = new JLabel("");
-		materialLabel.setToolTipText(materialTooltip);
+		materialLabel = new TooltipLabel("", materialTooltip);
 		materialPanel.add(materialLabel, BorderLayout.CENTER);
 		
 		if (this.isProduct){
@@ -145,7 +145,6 @@ public class ItemStackChooseWindow extends IconDialog {
 		else{
 			labelContainer = new JLabel("Container");
 			labelContainer.setToolTipText(containerTooltip);
-			labelContainer.setEnabled(false);
 			labelPanel.add(labelContainer);
 			
 			containerPanel = new JPanel();
@@ -168,7 +167,6 @@ public class ItemStackChooseWindow extends IconDialog {
 			
 			containerChooseButton = new JButton("Choose");
 			containerChooseButton.setToolTipText(containerTooltip);
-			containerChooseButton.setEnabled(false);
 			containerChooseButton.addActionListener(new ActionListener() {
 				@Override
 				public void actionPerformed(ActionEvent e) {
@@ -177,10 +175,10 @@ public class ItemStackChooseWindow extends IconDialog {
 			});
 			containerSubPanel.add(containerChooseButton, BorderLayout.EAST);
 			
-			containerLabel = new JLabel("");
-			containerLabel.setToolTipText(containerTooltip);
-			containerLabel.setEnabled(false);
+			containerLabel = new TooltipLabel("", containerTooltip);
 			containerSubPanel.add(containerLabel, BorderLayout.CENTER);
+			
+			useContainer();
 		}
 		
 		buttonPanel = new JPanel();
