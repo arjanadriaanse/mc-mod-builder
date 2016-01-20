@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Container;
 import java.awt.Dimension;
 import java.awt.EventQueue;
 import java.awt.FlowLayout;
@@ -9,6 +10,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -41,6 +43,7 @@ import javax.swing.JSpinner;
 import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
 import javax.swing.border.EmptyBorder;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -164,6 +167,12 @@ public class BlockEditor extends PropertiesEditor {
 	
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
+		
+		Container c = this.getContentPane();
+		Point pt = c.getLocation();
+		pt = SwingUtilities.convertPoint(c, pt, this);
+		System.out.println(pt.y);
+		
 		setBounds(100, 100, 500, 570);
 		setTitle("Edit Block: " + this.name);
 		saveButton.setText("Save Block");
