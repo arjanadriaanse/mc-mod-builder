@@ -168,9 +168,6 @@ public class BlockEditor extends PropertiesEditor {
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		
-		System.out.println(this.getLocation().getY() + " : " + getContentPane().getLocation().getY());
-		Point pt = SwingUtilities.convertPoint(getContentPane(), getContentPane().getLocation(), this);
-		
 		setBounds(100, 100, 500, 570);
 		setTitle("Edit Block: " + this.name);
 		saveButton.setText("Save Block");
@@ -317,6 +314,11 @@ public class BlockEditor extends PropertiesEditor {
 		propertiesPanelB.add(opaquePanel);
 		
 		customMaterial();
+		
+		setVisible(true);
+		
+		System.out.println(this.getSize().getHeight() + " : " + getContentPane().getSize().getHeight());
+		Point pt = SwingUtilities.convertPoint(getContentPane(), getContentPane().getLocation(), this);
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
