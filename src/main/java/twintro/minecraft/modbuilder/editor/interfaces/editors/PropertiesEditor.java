@@ -80,6 +80,11 @@ public abstract class PropertiesEditor extends WindowClosingVerifierUser {
 		setVisible(true);
 	}
 	
+	protected void setSize(int width){
+		setVisible(true);
+		setBounds(100, 100, width, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() + this.getSize().getHeight()) + 15);
+	}
+	
 	public JPanel panel(Component center){
 		JPanel panel = new JPanel();
 		panel.setLayout(new BorderLayout(0, 0));

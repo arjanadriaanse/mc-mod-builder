@@ -314,8 +314,7 @@ public class BlockEditor extends PropertiesEditor {
 		
 		customMaterial();
 		
-		setVisible(true);
-		System.out.println(mainPanel.getSize().getHeight() + " : " + buttonPanel.getSize().getHeight() + " : " + this.getSize().getHeight());
+		setSize(500);
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
