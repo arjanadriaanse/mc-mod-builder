@@ -168,12 +168,8 @@ public class BlockEditor extends PropertiesEditor {
 	public BlockEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		
-		setBounds(100, 100, 500, 570);
 		setTitle("Edit Block: " + this.name);
 		saveButton.setText("Save Block");
-		
-		setVisible(true);
-		setBounds(100, 100, 500, 570 + 531 - (int) getContentPane().getSize().getHeight());
 		
 		thisDrop = new ItemStackResource();
 		thisDrop.block = "modbuilder:" + name;
@@ -317,6 +313,9 @@ public class BlockEditor extends PropertiesEditor {
 		propertiesPanelB.add(opaquePanel);
 		
 		customMaterial();
+		
+		setVisible(true);
+		System.out.println(mainPanel.getSize().getHeight() + " : " + buttonPanel.getSize().getHeight() + " : " + this.getSize().getHeight());
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
