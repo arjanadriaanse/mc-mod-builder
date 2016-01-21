@@ -99,7 +99,7 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 	}
 	
 	@Override
-	public void updateList() {
+	public String updateList(){
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/blocks/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
@@ -108,11 +108,13 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 						String name = file.getName().substring(0, file.getName().length() - 5);
 						addElement(name, BlockElement.getFromName(name).getImage());
 					} catch (Exception e) {
-						System.out.println("Could not find all block element objects for " + file.getName());
+						e.printStackTrace();
+						return "Could not find all block element objects for the block " + file.getName();
 					}
 				}
 			}
 		}
+		return null;
 	}
 	
 	private void saveBlock(BlockElement block){

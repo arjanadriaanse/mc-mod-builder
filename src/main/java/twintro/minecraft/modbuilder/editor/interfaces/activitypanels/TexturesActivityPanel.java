@@ -65,7 +65,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	}
 	
 	@Override
-	public void updateList() {
+	public String updateList(){
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/textures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
@@ -76,6 +76,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 				}
 			}
 		}
+		return null;
 	}
 	
 	@Override

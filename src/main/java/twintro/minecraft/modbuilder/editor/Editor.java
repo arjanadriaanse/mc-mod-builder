@@ -24,6 +24,7 @@ import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
@@ -167,20 +168,14 @@ public class Editor {
 	}
 	
 	private static void newMod(){
-		if (chooseFolder(true)){
-			metaFile = MetaFile.create(ResourcePackIO.getURL("pack.mcmeta"));
-			langFile = LanguageFile.create(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
-		}
+		chooseFolder(true);
 	}
 	
 	private static void openMod(){
-		if (chooseFolder(false)){
-			metaFile = MetaFile.open(ResourcePackIO.getURL("pack.mcmeta"));
-			langFile = LanguageFile.open(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
-		}
+		chooseFolder(false);
 	}
 	
-	private static boolean chooseFolder(boolean newMod){
+	private static void chooseFolder(boolean newMod){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
 		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
@@ -190,32 +185,34 @@ public class Editor {
 		else result = menu.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
-			boolean newIsActuallyOpen = false;
-			if (file.exists() && file.isDirectory() && newMod){
-				boolean hasAssets = false;
-				boolean hasMeta = false;
-				for (File nestedFile : file.listFiles()){
-					if (nestedFile.getName().equals("assets"))
-						hasAssets = true;
-					if (nestedFile.getName().equals("pack.mcmeta"))
-						hasMeta = true;
-				}
-				newIsActuallyOpen = hasAssets && hasMeta;
+			if (file.exists() && newMod){
+				int selected = JOptionPane.showConfirmDialog(frame, "The file already exists. Do you want to try to open it?", 
+						"Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
+				if (selected == JOptionPane.OK_OPTION)
+					newMod = false;
+				else
+					return;
 			}
-			if (!file.exists())
-				file.mkdirs();
 			String dir = file.getAbsolutePath().replace("\\", "/") + "/";
 			ResourcePackIO.setResourcePackFolder(dir);
 			if (!interfaceOpened) createInterface();
-			updateInterface();
-			if (newIsActuallyOpen){
-				metaFile = MetaFile.open(ResourcePackIO.getURL("pack.mcmeta"));
-				langFile = LanguageFile.open(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
-				return false;
+			mntmExport.setEnabled(true);
+			frame.getContentPane().setVisible(true);
+			if (!newMod){
+				String errorMessage = updateInterface();
+				if (errorMessage != null){
+					closeInterface();
+					mntmExport.setEnabled(false);
+					JOptionPane.showConfirmDialog(frame, "The file could not be opened.\n" + errorMessage, 
+							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+				}
 			}
-			return true;
+			else{
+				metaFile = MetaFile.create(ResourcePackIO.getURL("pack.mcmeta"));
+				langFile = LanguageFile.create(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"));
+				updateInterface();
+			}
 		}
-		return false;
 	}
 	
 	private static void exportMod(){
@@ -255,9 +252,9 @@ public class Editor {
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
 		
-		JButton structuresButton = new ActivityButton("Structures");
-		structuresButton.addActionListener(buttonListener);
-		buttonPanel.add(structuresButton);
+		JButton StructuresButton = new ActivityButton("Structures");
+		StructuresButton.addActionListener(buttonListener);
+		buttonPanel.add(StructuresButton);
 		
 		JButton ItemsButton = new ActivityButton("Items");
 		ItemsButton.addActionListener(buttonListener);
@@ -285,8 +282,7 @@ public class Editor {
 		ActivityPanel.add(StructurePanel, "Structures");
 		
 		interfaceOpened = true;
-		mntmExport.setEnabled(true);
-
+		
 		frame.setVisible(true);
 	}
 	
@@ -295,12 +291,27 @@ public class Editor {
 		cl.show(activityPanel, panel);
 	}
 	
-	private static void updateInterface(){
-		TexturePanel.updateList();
-		RecipePanel.updateList();
-		BlockPanel.updateList();
-		ItemPanel.updateList();
-		StructurePanel.updateList();
+	private static String updateInterface(){
+		if ((metaFile = MetaFile.open(ResourcePackIO.getURL("pack.mcmeta"))) == null) 
+			return "Could not succesfully open mc.mcmeta.";
+		if ((langFile = LanguageFile.open(ResourcePackIO.getURL("assets/modbuilder/lang/en_US.lang"))) == null) 
+			return "Could not succesfully open en_US.lang";
+		String errorMessage;
+		if ((errorMessage = TexturePanel.updateList()) != null) 
+			return errorMessage;
+		if ((errorMessage = RecipePanel.updateList()) != null) 
+			return errorMessage;
+		if ((errorMessage = BlockPanel.updateList()) != null) 
+			return errorMessage;
+		if ((errorMessage = ItemPanel.updateList()) != null) 
+			return errorMessage;
+		if ((errorMessage = StructurePanel.updateList()) != null) 
+			return errorMessage;
+		return null;
+	}
+	
+	private static void closeInterface(){
+		frame.getContentPane().setVisible(false);
 	}
 	
 	private static void about(){

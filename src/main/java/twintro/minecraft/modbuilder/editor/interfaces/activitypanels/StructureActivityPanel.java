@@ -103,7 +103,7 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 	}
 	
 	@Override
-	public void updateList() {
+	public String updateList(){
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/structures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
@@ -112,11 +112,13 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 						String name = file.getName().substring(0, file.getName().length() - 5);
 						addElement(name, StructureElement.getFromName(name).getImage());
 					} catch (Exception e) {
-						System.out.println("Could not find all structure element objects for " + file.getName());
+						e.printStackTrace();
+						return "Could not find all structure element objects for the structure " + file.getName();
 					}
 				}
 			}
 		}
+		return null;
 	}
 
 	@Override
@@ -135,5 +137,8 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 	private void saveStructure(StructureElement structure){
 		ResourcePackIO.createFile(structure.structure, "assets/modbuilder/structures/" + structure.name + ".json");
 		addElement(structure.name, structure.getImage());
+		
+		Editor.metaFile.resource.modbuilder.recipes.add(structure.name);
+		Editor.metaFile.save();
 	}
 }

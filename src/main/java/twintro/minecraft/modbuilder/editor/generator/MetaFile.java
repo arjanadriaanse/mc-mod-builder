@@ -21,21 +21,24 @@ import twintro.minecraft.modbuilder.data.resources.meta.PackResource;
 public class MetaFile extends File {
 	public MetadataResource resource;
 	
-	private MetaFile(String dir, boolean newMod){
+	private MetaFile(String dir){
 		super(dir);
-		if (newMod) create();
-		else open();
 	}
 	
 	public static MetaFile create(String dir){
-		return new MetaFile(dir, true);
+		return new MetaFile(dir).create();
 	}
 	
 	public static MetaFile open(String dir){
-		return new MetaFile(dir, false);
+		try {
+			return new MetaFile(dir).open();
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
-	private void create(){
+	public MetaFile create(){
 		resource = new MetadataResource();
 		resource.pack = new PackResource();
 		resource.pack.pack_format = 1;
@@ -46,17 +49,14 @@ public class MetaFile extends File {
 		resource.modbuilder.recipes = new HashSet<String>();
 		resource.modbuilder.structures = new HashSet<String>();
 		save();
+		return this;
 	}
 	
-	private void open(){
-		try{
-			GsonBuilder builder = new GsonBuilder();
-			Gson gson = builder.create();
-			resource = gson.fromJson(new FileReader(this), MetadataResource.class);
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+	public MetaFile open() throws Exception{
+		GsonBuilder builder = new GsonBuilder();
+		Gson gson = builder.create();
+		resource = gson.fromJson(new FileReader(this), MetadataResource.class);
+		return this;
 	}
 	
 	public void save(){

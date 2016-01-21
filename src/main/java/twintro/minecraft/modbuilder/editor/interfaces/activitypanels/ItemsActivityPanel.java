@@ -132,7 +132,7 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 	}
 	
 	@Override
-	public void updateList() {
+	public String updateList(){
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/items/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
@@ -142,11 +142,12 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 						addElement(name, ItemElement.getFromName(name).getImage());
 					} catch (Exception e) {
 						e.printStackTrace();
-						System.out.println("Could not find all item element objects for " + file.getName());
+						return "Could not find all item element objects for the item " + file.getName();
 					}
 				}
 			}
 		}
+		return null;
 	}
 	
 	@Override

@@ -16,45 +16,45 @@ import java.util.Set;
 public class LanguageFile extends File {
 	public Set<String> list;
 	
-	private LanguageFile(String dir, boolean newMod){
+	private LanguageFile(String dir){
 		super(dir);
-		if (newMod) create();
-		else open();
 	}
 	
 	public static LanguageFile create(String dir){
-		return new LanguageFile(dir, true);
+		return new LanguageFile(dir).create();
 	}
 	
 	public static LanguageFile open(String dir){
-		return new LanguageFile(dir, false);
+		try {
+			return new LanguageFile(dir).open();
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 	
-	private void create(){
+	public LanguageFile create(){
 		list = new HashSet<String>();
 		if (!getParentFile().exists()) getParentFile().mkdirs();
 		save();
+		return this;
 	}
 	
-	private void open(){
+	public LanguageFile open() throws IOException{
 		list = new HashSet<String>();
-		try{
-			InputStream inStream = new FileInputStream(this);
-		    InputStreamReader inReader = new InputStreamReader(inStream, Charset.forName("UTF-8"));
-		    BufferedReader reader = null;
-		    try{
-			    reader = new BufferedReader(inReader);
-			    String line;
-			    while ((line = reader.readLine()) != null){
-			    	list.add(line);
-			    }
-		    } finally {
-		    	if (reader != null) reader.close();
+		InputStream inStream = new FileInputStream(this);
+	    InputStreamReader inReader = new InputStreamReader(inStream, Charset.forName("UTF-8"));
+	    BufferedReader reader = null;
+	    try{
+		    reader = new BufferedReader(inReader);
+		    String line;
+		    while ((line = reader.readLine()) != null){
+		    	list.add(line);
 		    }
-		}
-		catch (Exception e){
-			e.printStackTrace();
-		}
+	    } finally {
+	    	if (reader != null) reader.close();
+	    }
+	    return this;
 	}
 	
 	public void save(){

@@ -112,7 +112,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	}
 	
 	@Override
-	public void updateList() {
+	public String updateList(){
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/recipes/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
@@ -123,11 +123,13 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 						if (img == null) img = new ImageIcon();
 						addElement(name, img);
 					} catch (Exception e) {
-						System.out.println("Could not find all recipe element objects for " + file.getName());
+						e.printStackTrace();
+						return "Could not find all recipe element objects for the recipe " + file.getName();
 					}
 				}
 			}
 		}
+		return null;
 	}
 	
 	@Override
@@ -153,9 +155,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	
 	private void saveRecipe(RecipeElement recipe){
 		ResourcePackIO.createFile(recipe.recipe, "assets/modbuilder/recipes/" + recipe.name + ".json");
-		ImageIcon img = recipe.getImage();
-		if (img == null) img = new ImageIcon();
-		addElement(recipe.name, img);
+		addElement(recipe.name, recipe.getImage());
 		
 		Editor.metaFile.resource.modbuilder.recipes.add(recipe.name);
 		Editor.metaFile.save();
