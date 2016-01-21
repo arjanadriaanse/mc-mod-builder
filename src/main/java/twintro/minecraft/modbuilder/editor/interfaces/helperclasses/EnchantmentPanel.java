@@ -67,7 +67,8 @@ public class EnchantmentPanel extends JPanel {
 	}
 	
 	public SimpleEntry<String, Integer> getEnchantment(){
-		return new SimpleEntry((String) enchantmentComboBox.getSelectedItem(), (Integer) amplifierSpinner.getValue());
+		return new SimpleEntry(((String) enchantmentComboBox.getSelectedItem()).toLowerCase().replaceAll(" ", "_"), 
+				(Integer) amplifierSpinner.getValue());
 	}
 	
 	public void setId(int id){
