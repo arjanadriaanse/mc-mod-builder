@@ -2,9 +2,12 @@ package twintro.minecraft.modbuilder;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -20,6 +23,7 @@ import net.minecraft.client.resources.IResource;
 import net.minecraft.client.resources.IResourceManager;
 import net.minecraft.client.resources.ResourcePackRepository;
 import net.minecraft.client.resources.model.ModelResourceLocation;
+import net.minecraft.init.Items;
 import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ResourceLocation;
@@ -98,6 +102,33 @@ public class BuilderMod {
 
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		syncConfig();
+		
+		for (Field f : Items.class.getFields()) {
+			if (f.getType() == Item.class && Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers())) {
+				List<String> s1= new LinkedList<String>();
+				List<String> s2= new LinkedList<String>();
+				for(int i=0;i<16;i++){
+					try{
+						Item item = (Item)f.get(new Item());
+						String t = new ItemStack(item,1,i).getDisplayName();
+						if (s1.contains(t))
+							break;
+						s1.add(t);
+						s2.add("minecraft:"+f.getName()+"#"+new Integer(i).toString());
+					}
+					catch (Exception e){
+						break;
+					}
+				}
+				try {
+					for(int i=0;i<s1.size();i++){
+						System.out.println(s2.get(i));
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		}
 	}
 
 	@EventHandler

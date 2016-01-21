@@ -1,11 +1,13 @@
 package twintro.minecraft.modbuilder.editor.resources;
 
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.ColorModel;
 import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -107,29 +109,24 @@ public class BlockElement extends InventoryElement {
 				break;
 			}
 		}
-		if (blockModel.parent.equals("cross")){
+		if (blockModel.parent.equals("cross") || !block.solid){
 			block.opaque = true;
 		}
 	}
 	
 	private boolean hasTransparency(String textureName){
-		Image img = new ImageIcon(ResourcePackIO.getURL("assets/modbuilder/textures/" + textureName.substring(11) + ".png")).getImage();
-		if (img instanceof BufferedImage){
-			return ((BufferedImage) img).getColorModel().hasAlpha();
-		}
-		else{
-			PixelGrabber pg = new PixelGrabber(img, 0, 0, 1, 1, false);
-			try {
-				pg.grabPixels();
-			} catch (InterruptedException e) {
-				e.printStackTrace();
+		try {
+			BufferedImage img = ImageIO.read(new File(ResourcePackIO.getURL("assets/modbuilder/textures/" + textureName.substring(11) + ".png")));
+			for(int x=0;x<img.getWidth();x++)
+				for(int y=0;y<img.getHeight();y++)
+					if (new Color(img.getRGB(x, y),true).getAlpha()==0)
+						return true;
+			
 			}
-			return pg.getColorModel().hasAlpha();
+		catch (IOException e){
+			e.printStackTrace();
 		}
-	}
-	
-	private boolean hasTransparency(Image img){
-		return ResourcePackIO.toBufferedImage(img).getColorModel().hasAlpha();
+		return false;
 	}
 	
 	@Override

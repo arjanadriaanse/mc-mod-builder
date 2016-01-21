@@ -3,13 +3,18 @@ package twintro.minecraft.modbuilder.data;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 
+import net.minecraft.block.Block;
 import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.ItemRenderer;
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.init.Blocks;
+import net.minecraft.init.Items;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.registry.GameRegistry;
 import twintro.minecraft.modbuilder.data.resources.MaterialResource;
@@ -32,6 +37,18 @@ public class ResourceHelper {
 	 * {@link TabResource}.
 	 */
 	public static final Map<TabResource, CreativeTabs> tabs = new HashMap<TabResource, CreativeTabs>();
+
+	/**
+	 * Contains an unlocalized name for each
+	 * {@link Item} in vanilla minecraft.
+	 */
+	public static final Map<String, String> items = new HashMap<String, String>();
+
+	/**
+	 * Contains an unlocalized name for each
+	 * {@link Block} in vanilla minecraft.
+	 */
+	public static final Map<String, String> blocks = new HashMap<String, String>();
 
 	static {
 		materials.put(MaterialResource.air, Material.air);
