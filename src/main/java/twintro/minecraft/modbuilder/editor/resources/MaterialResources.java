@@ -10,6 +10,46 @@ import javax.swing.ImageIcon;
 import twintro.minecraft.modbuilder.editor.Editor;
 
 public class MaterialResources {
+	public static void main(String[] args){
+		int[] blockPointer = getSortPointer(vanillaBlocks);
+		String blocks = "";
+		String blockids = "";
+		for (int i : blockPointer){
+			blocks += '"' + vanillaBlocks[i] + '"' + ", ";
+			blockids += '"' + vanillaBlockIds[i] + '"' + ", ";
+		}
+		int[] itemPointer = getSortPointer(vanillaItems);
+		String items = "";
+		String itemids = "";
+		for (int i : itemPointer){
+			items += '"' + vanillaItems[i] + '"' + ", ";
+			itemids += '"' + vanillaItemIds[i] + '"' + ", ";
+		}
+		System.out.println(blocks);
+		System.out.println(blockids);
+		System.out.println(items);
+		System.out.println(itemids);
+	}
+	
+	private static int[] getSortPointer(String[] list){
+		int[] pointer = new int[list.length];
+		for (int i = 0; i < list.length; i++){
+			boolean placed = false;
+			for (int j = 0; j < i; j++){
+				if (list[pointer[j]].compareTo(list[i]) > 0){
+					for (int k = i; k > j; k--){
+						pointer[k] = pointer[k-1];
+					}
+					pointer[j] = i;
+					placed = true;
+					break;
+				}
+			}
+			if (!placed) pointer[i] = i;
+		}
+		return pointer;
+	}
+	
 	public static final String[] vanillaBlocks = new String[]{
 			"Stone", "Granite", "Polished Granite", "Diorite", "Polished Diorite", "Andesite", "Polished Andesite", "Dirt", "Coarse Dirt", "Podzol", "Cobblestone", "Oak Wood Planks", "Spruce Wood Planks", "Birch Wood Planks", "Jungle Wood Planks", "Acacia Wood Planks", "Dark Oak Wood Planks", "Oak Sapling", "Spruce Sapling", "Birch Sapling", "Jungle Sapling", "Acacia Sapling", "Dark Oak Sapling", "Bedrock", "Gravel", "Gold Ore", "Iron Ore", "Coal Ore", "Oak Wood", "Spruce Wood", "Birch Wood", "Jungle Wood", "Acacia Wood", "Dark Oak Wood", "Sponge", "Wet Sponge", "Glass", "Lapis Lazuli Ore", "Lapis Lazuli Block", "Dispenser", "Sandstone", "Chiseled Sandstone", "Smooth Sandstone", "Note Block", "Powered Rail", "Detector Rail", "Cobweb", "Wool", "Orange Wool", "Magenta Wool", "Light Blue Wool", "Yellow Wool", "Lime Wool", "Pink Wool", "Gray Wool", "Light Gray Wool", "Cyan Wool", "Purple Wool", "Blue Wool", "Brown Wool", "Green Wool", "Red Wool", "Black Wool", "Block of Gold", "Block of Iron", "Bricks", "TNT", "Bookshelf", "Moss Stone", "Obsidian", "Torch", "Monster Spawner", "Oak Wood Stairs", "Diamond Ore", "Block of Diamond", "Crafting Table", "Farmland", "Furnace", "Lit Furnace", "Ladder", "Rail", "Cobblestone Stairs", "Lever", "Stone Pressure Plate", "Wooden Pressure Plate", "Redstone Ore", "Redstone Torch", "Button", "Snow", "Ice", "Snow", "Clay", "Jukebox", "Oak Fence", "Spruce Fence", "Birch Fence", "Jungle Fence", "Dark Oak Fence", "Acacia Fence", "Pumpkin", "Netherrack", "Soul Sand", "Glowstone", "Jack o'Lantern", "Wooden Trapdoor", "Stone Monster Egg", "Cobblestone Monster Egg", "Stone Brick Monster Egg", "Mossy Stone Brick Monster Egg", "Cracked Stone Brick Monster Egg", "Chiseled Stone Brick Monster Egg", "Stone Bricks", "Mossy Stone Bricks", "Cracked Stone Bricks", "Chiseled Stone Bricks", "Mushroom", "Mushroom", "Iron Bars", "Glass Pane", "Melon", "Vines", "Oak Fence Gate", "Spruce Fence Gate", "Birch Fence Gate", "Jungle Fence Gate", "Dark Oak Fence Gate", "Acacia Fence Gate", "Brick Stairs", "Stone Brick Stairs", "Lily Pad", "Nether Brick", "Nether Brick Fence", "Nether Brick Stairs", "Enchantment Table", "End Portal", "End Stone", "Dragon Egg", "Redstone Lamp", "Sandstone Stairs", "Emerald Ore", "Ender Chest", "Block of Emerald", "Spruce Wood Stairs", "Birch Wood Stairs", "Jungle Wood Stairs", "Command Block", "Cobblestone Wall", "Mossy Cobblestone Wall", "Button", "Anvil", "Slightly Damaged Anvil", "Very Damaged Anvil", "Trapped Chest", "Weighted Pressure Plate (Light)", "Weighted Pressure Plate (Heavy)", "Block of Redstone", "Nether Quartz Ore", "Block of Quartz", "Chiseled Quartz Block", "Pillar Quartz Block", "Quartz Stairs", "Activator Rail", "Dropper", "White Stained Clay", "Orange Stained Clay", "Magenta Stained Clay", "Light Blue Stained Clay", "Yellow Stained Clay", "Lime Stained Clay", "Pink Stained Clay", "Gray Stained Clay", "Light Gray Stained Clay", "Cyan Stained Clay", "Purple Stained Clay", "Blue Stained Clay", "Brown Stained Clay", "Green Stained Clay", "Red Stained Clay", "Black Stained Clay", "Barrier", "Iron Trapdoor", "Hay Bale", "Carpet", "Orange Carpet", "Magenta Carpet", "Light Blue Carpet", "Yellow Carpet", "Lime Carpet", "Pink Carpet", "Gray Carpet", "Light Gray Carpet", "Cyan Carpet", "Purple Carpet", "Blue Carpet", "Brown Carpet", "Green Carpet", "Red Carpet", "Black Carpet", "Hardened Clay", "Block of Coal", "Packed Ice", "Acacia Wood Stairs", "Dark Oak Wood Stairs", "Slime Block", "Prismarine", "Prismarine Bricks", "Dark Prismarine", "Sea Lantern", "Red Sandstone", "Chiseled Red Sandstone", "Smooth Red Sandstone", "Red Sandstone Stairs", 
 	};
