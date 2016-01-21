@@ -197,14 +197,18 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addBlock(){
-		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();
-				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
-				affectedBlocksLabel.setText(affectedBlocksLabel.getText() + (String) obj);
+				addBlock(((String) obj).replace("#0", ""));
 			}
 		});
+	}
+	
+	protected void addBlock(String block){
+		if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+		affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
 	}
 	
 	protected void resetBlocks(){
@@ -220,7 +224,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void repairMaterialChoose(){
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_ONLY, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();

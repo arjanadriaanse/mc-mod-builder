@@ -35,8 +35,16 @@ import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 public class MaterialChooseWindow extends IconDialog {
 	public static final int ITEMS_ONLY = 0;
 	public static final int BLOCKS_ONLY = 1;
-	public static final int ITEMS_AND_BLOCKS = 2;
-	public static final int ITEMS_BLOCKS_NONE = 3;
+	public static final int ITEMS_BLOCKS = 2;
+	public static final int ITEMS_NONE = 3;
+	public static final int BLOCKS_NONE = 4;
+	public static final int ITEMS_BLOCKS_NONE = 5;
+	public static final int ITEMS_ONLY_METALESS = 6;
+	public static final int BLOCKS_ONLY_METALESS = 7;
+	public static final int ITEMS_BLOCKS_METALESS = 8;
+	public static final int ITEMS_NONE_METALESS = 9;
+	public static final int BLOCKS_NONE_METALESS = 10;
+	public static final int ITEMS_BLOCKS_NONE_METALESS = 11;
 
 	private static final String customItemsTooltip = "";//TODO
 	private static final String customBlocksTooltip = "";//TODO
@@ -47,9 +55,15 @@ public class MaterialChooseWindow extends IconDialog {
 	
 	private ObjectRunnable runnable;
 	private JPanel mainPanel;
+	private boolean meta;
 	
 	public MaterialChooseWindow(int type, ObjectRunnable runnable){
 		this.runnable = runnable;
+
+		boolean items = type % 3 != 1;
+		boolean blocks = type % 3 != 0;
+		boolean none = type / 3 % 2 == 1;
+		meta = type < 6;
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
@@ -58,7 +72,7 @@ public class MaterialChooseWindow extends IconDialog {
 		getContentPane().add(mainPanel, BorderLayout.NORTH);
 		mainPanel.setLayout(new GridLayout(0, 2, 5, 5));
 		
-		if (type != BLOCKS_ONLY){
+		if (items){
 			JButton customItemButton = new JButton("Custom item");
 			customItemButton.setToolTipText(customItemsTooltip);
 			mainPanel.add(customItemButton);
@@ -80,7 +94,7 @@ public class MaterialChooseWindow extends IconDialog {
 			});
 		}
 		
-		if (type != ITEMS_ONLY){
+		if (blocks){
 			JButton customBlockButton = new JButton("Custom block");
 			customBlockButton.setToolTipText(customBlocksTooltip);
 			mainPanel.add(customBlockButton);
@@ -112,7 +126,7 @@ public class MaterialChooseWindow extends IconDialog {
 			}
 		});
 		
-		if (type == ITEMS_BLOCKS_NONE){
+		if (none){
 			JButton noneButton = new JButton("None");
 			noneButton.setToolTipText(noneTooltip);
 			mainPanel.add(noneButton);
@@ -166,7 +180,10 @@ public class MaterialChooseWindow extends IconDialog {
 	}
 	
 	private void vanillaItem(){
-		new ListWindow(MaterialResources.vanillaItems, new ObjectRunnable(){
+		String[] list;
+		if (meta) list = MaterialResources.vanillaItems;
+		else list = MaterialResources.getVanillaItemsMetaless();
+		new ListWindow(list, new ObjectRunnable(){
 			@Override
 			public void run(Object obj){
 				choose((String) obj);
@@ -175,7 +192,10 @@ public class MaterialChooseWindow extends IconDialog {
 	}
 	
 	private void vanillaBlock(){
-		new ListWindow(MaterialResources.vanillaBlocks, new ObjectRunnable(){
+		String[] list;
+		if (meta) list = MaterialResources.vanillaBlocks;
+		else list = MaterialResources.getVanillaBlocksMetaless();
+		new ListWindow(list, new ObjectRunnable(){
 			@Override
 			public void run(Object obj){
 				choose((String) obj);

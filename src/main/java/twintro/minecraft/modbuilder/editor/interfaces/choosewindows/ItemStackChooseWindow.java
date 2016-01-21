@@ -270,10 +270,10 @@ public class ItemStackChooseWindow extends IconDialog {
 	}
 	
 	private void chooseContainer(){
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_NONE_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
-				containerLabel.setText((String) obj);
+				containerLabel.setText(((String) obj).replace("#0", ""));
 			}
 		});
 	}
@@ -283,6 +283,14 @@ public class ItemStackChooseWindow extends IconDialog {
 		if (material != null && material != ""){
 			ItemStackResource item = new ItemStackResource();
 			
+			if (material.split("#").length == 2){
+				try{
+					item.meta = Integer.parseInt(material.split("#")[1]);
+					material = material.split("#")[0];
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
 			if (MaterialResources.isItem(material))
 				item.item = material;
 			else

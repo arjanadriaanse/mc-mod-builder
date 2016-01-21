@@ -197,10 +197,13 @@ public class Editor {
 		else result = menu.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
-			if (file.exists() && file.listFiles().length == 0){
+			if (!file.exists()){
 				newMod = true;
 			}
-			else if (file.exists() && newMod){
+			else if (file.listFiles().length == 0){
+				newMod = true;
+			}
+			else if (newMod){
 				int selected = JOptionPane.showConfirmDialog(frame, "The file already exists. Do you want to try to open it?", 
 						"Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 				if (selected == JOptionPane.OK_OPTION)
