@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.GridLayout;
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
@@ -141,17 +144,17 @@ public class Editor {
 			}
 		});
 		
-		JMenuItem mntmHelp = new JMenuItem("Help");
+		JMenuItem mntmHelp = new JMenuItem("Guide");
 		mnHelp.add(mntmHelp);
 		mntmHelp.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				help();
+				guide();
 			}
 		});
-		
-		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
+
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',KeyEvent.CTRL_DOWN_MASK), "open");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',KeyEvent.CTRL_DOWN_MASK), "export");
 		menuBar.getActionMap().put("new", new AbstractAction(){
 			@Override
@@ -327,10 +330,18 @@ public class Editor {
 	}
 	
 	private static void about(){
-		//TODO
+		try {
+			Desktop.getDesktop().browse(new URI("http://modbuilder.org/about.html"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private static void help(){
-		//TODO
+	private static void guide(){
+		try {
+			Desktop.getDesktop().browse(new URI("http://modbuilder.org/tutorials.html"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }
