@@ -141,6 +141,15 @@ public class Editor {
 			}
 		});
 		
+		JMenuItem mntmHelp = new JMenuItem("Help");
+		mnHelp.add(mntmHelp);
+		mntmHelp.addActionListener(new ActionListener(){
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				help();
+			}
+		});
+		
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',KeyEvent.CTRL_DOWN_MASK), "open");
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',KeyEvent.CTRL_DOWN_MASK), "export");
@@ -185,7 +194,10 @@ public class Editor {
 		else result = menu.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
-			if (file.exists() && newMod){
+			if (file.exists() && file.listFiles().length == 0){
+				newMod = true;
+			}
+			else if (file.exists() && newMod){
 				int selected = JOptionPane.showConfirmDialog(frame, "The file already exists. Do you want to try to open it?", 
 						"Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 				if (selected == JOptionPane.OK_OPTION)
@@ -315,6 +327,10 @@ public class Editor {
 	}
 	
 	private static void about(){
+		//TODO
+	}
+	
+	private static void help(){
 		//TODO
 	}
 }
