@@ -10,6 +10,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+import java.util.AbstractMap.SimpleEntry;
+import java.util.HashMap;
 
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
@@ -25,8 +30,11 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
+import joptsimple.util.KeyValuePair;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EnchantmentPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
@@ -40,17 +48,23 @@ public class ItemStackChooseWindow extends IconDialog {
 	private JPanel materialPanel;
 	private JPanel containerPanel;
 	private JPanel containerSubPanel;
+	private JPanel enchantmentListPanel;
+	private JPanel enchantmentsTopPanel;
 	private JLabel labelMaterial;
 	private JLabel labelContainer;
 	private JLabel labelStackSize;
+	private JLabel labelEnchantment;
+	private JLabel labelAmplifier;
 	private JLabel materialLabel;
 	private JLabel containerLabel;
 	private JButton materialChooseButton;
 	private JButton containerChooseButton;
+	private JButton addEnchantmentButton;
 	private JButton saveButton;
 	private JButton cancelButton;
 	private JSpinner stackSizeSpinner;
 	private JCheckBox containerCheckBox;
+	private EnchantmentPanel[] enchantmentPanels;
 	
 	private boolean isProduct;
 	private ObjectRunnable runnable;
@@ -60,29 +74,42 @@ public class ItemStackChooseWindow extends IconDialog {
 	private static final String containerTooltip = "<html>The material of the container<br>"
 			+ "The container is the item or block that will be left behind after crafting</html>";
 	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
+	public static final String enchantmentTypeTooltip = ""; //TODO
+	public static final String amplifierTooltip = ""; //TODO
+	public static final String removeEnchantmentTooltip = ""; //TODO
+	private static final String addEnchantmentTooltip = ""; //TODO
+	
+	private final ObjectRunnable closeHandler = new ObjectRunnable(){
+		@Override
+		public void run(Object obj){
+			removeEnchantment((Integer) obj);
+		}
+	};
+	
+	private WindowListener windowListener = new WindowListener() {
+		@Override
+		public void windowActivated(WindowEvent arg0) {}
+		@Override
+		public void windowClosed(WindowEvent arg0) {}
+		@Override
+		public void windowClosing(WindowEvent arg0) {}
+		@Override
+		public void windowDeactivated(WindowEvent arg0) {}
+		@Override
+		public void windowDeiconified(WindowEvent arg0) {}
+		@Override
+		public void windowIconified(WindowEvent arg0) {}
+		@Override
+		public void windowOpened(WindowEvent arg0) {
+			setBounds(100, 100, 400, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
+					+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
+		}
+	};
 	
 	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable){
 		initialize(isProduct, runnable);
 
-		addWindowListener(new WindowListener() {
-			@Override
-			public void windowActivated(WindowEvent arg0) {}
-			@Override
-			public void windowClosed(WindowEvent arg0) {}
-			@Override
-			public void windowClosing(WindowEvent arg0) {}
-			@Override
-			public void windowDeactivated(WindowEvent arg0) {}
-			@Override
-			public void windowDeiconified(WindowEvent arg0) {}
-			@Override
-			public void windowIconified(WindowEvent arg0) {}
-			@Override
-			public void windowOpened(WindowEvent arg0) {
-				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
-						+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
-			}
-		});
+		addWindowListener(windowListener);
 		
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
@@ -102,26 +129,11 @@ public class ItemStackChooseWindow extends IconDialog {
 			containerCheckBox.setSelected(true);
 			useContainer();
 		}
+		if (isProduct && item.enchantments != null)
+			for (String key : item.enchantments.keySet())
+				addEnchantment(new EnchantmentPanel(closeHandler, new SimpleEntry(key, item.enchantments.get(key))));
 		
-		addWindowListener(new WindowListener() {
-			@Override
-			public void windowActivated(WindowEvent arg0) {}
-			@Override
-			public void windowClosed(WindowEvent arg0) {}
-			@Override
-			public void windowClosing(WindowEvent arg0) {}
-			@Override
-			public void windowDeactivated(WindowEvent arg0) {}
-			@Override
-			public void windowDeiconified(WindowEvent arg0) {}
-			@Override
-			public void windowIconified(WindowEvent arg0) {}
-			@Override
-			public void windowOpened(WindowEvent arg0) {
-				setBounds(100, 100, 300, (int) (mainPanel.getSize().getHeight() + buttonPanel.getSize().getHeight() 
-						+ getSize().getHeight() - getContentPane().getSize().getHeight()) + 15);
-			}
-		});
+		addWindowListener(windowListener);
 		
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setVisible(true);
@@ -226,6 +238,32 @@ public class ItemStackChooseWindow extends IconDialog {
 			useContainer();
 		}
 		
+		enchantmentListPanel = new JPanel();
+		enchantmentListPanel.setLayout(new GridLayout(0, 1, 0, 5));
+		enchantmentListPanel.add(new JLabel());
+		mainPanel.add(enchantmentListPanel, BorderLayout.SOUTH);
+		
+		enchantmentsTopPanel = new JPanel();
+		enchantmentsTopPanel.setLayout(new GridLayout(0, 3, 5, 0));
+		enchantmentListPanel.add(enchantmentsTopPanel);
+
+		labelEnchantment = new JLabel("Enchantment");
+		labelEnchantment.setToolTipText(enchantmentTypeTooltip);
+		enchantmentsTopPanel.add(labelEnchantment);
+		labelAmplifier = new JLabel("Amplifier");
+		labelAmplifier.setToolTipText(amplifierTooltip);
+		enchantmentsTopPanel.add(labelAmplifier);
+		addEnchantmentButton = new JButton("Add Enchantment");
+		addEnchantmentButton.setToolTipText(addEnchantmentTooltip);
+		enchantmentsTopPanel.add(addEnchantmentButton);
+		addEnchantmentButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addEnchantment();
+			}
+		});
+		
+		enchantmentPanels = new EnchantmentPanel[0];
+		
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
 		getContentPane().add(buttonPanel, BorderLayout.SOUTH);
@@ -301,6 +339,15 @@ public class ItemStackChooseWindow extends IconDialog {
 			else if (containerCheckBox.isSelected())
 				item.container = containerLabel.getText();
 			
+			Map<String, Integer> enchantments = new HashMap<String, Integer>();
+			for (EnchantmentPanel enchantment : enchantmentPanels){
+				if (enchantment.isProperEnchantment()){
+					SimpleEntry<String, Integer> entry = enchantment.getEnchantment();
+					enchantments.put(entry.getKey(), entry.getValue());
+				}
+			}
+			item.enchantments = enchantments;
+			
 			runnable.run(item);
 			dispose();
 		}
@@ -310,6 +357,45 @@ public class ItemStackChooseWindow extends IconDialog {
 			if (selected != JOptionPane.OK_OPTION)
 				dispose();
 		}
+	}
+	
+	private void addEnchantment(){
+		addEnchantment(new EnchantmentPanel(closeHandler));
+	}
+	
+	private void addEnchantment(EnchantmentPanel enchantment){
+		EnchantmentPanel[] newEnchantmentPanels = new EnchantmentPanel[enchantmentPanels.length + 1];
+		for (int i = 0; i < enchantmentPanels.length; i++)
+			newEnchantmentPanels[i] = enchantmentPanels[i];
+		newEnchantmentPanels[enchantmentPanels.length] = enchantment;
+		enchantment.setId(enchantmentPanels.length);
+		enchantmentPanels = newEnchantmentPanels;
+		
+		enchantmentListPanel.add(enchantment);
+		paintAll(getGraphics());
+		updateSize();
+	}
+	
+	private void removeEnchantment(int id){
+		enchantmentListPanel.remove(enchantmentPanels[id]);
+
+		EnchantmentPanel[] newEnchantmentPanels = new EnchantmentPanel[enchantmentPanels.length - 1];
+		for (int i = 0; i < id; i++)
+			newEnchantmentPanels[i] = enchantmentPanels[i];
+		for (int i = id + 1; i < enchantmentPanels.length; i++){
+			newEnchantmentPanels[i - 1] = enchantmentPanels[i];
+			enchantmentPanels[i].setId(i - 1);
+		}
+		enchantmentPanels = newEnchantmentPanels;
+
+		paintAll(getGraphics());
+		updateSize();
+	}
+	
+	private void updateSize(){
+		setVisible(true);
+		setBounds(this.getLocation().x, this.getLocation().y, (int) this.getSize().getWidth(), (int) (mainPanel.getSize().getHeight() + 
+				buttonPanel.getSize().getHeight() + this.getSize().getHeight() - this.getContentPane().getSize().getHeight()) + 15);
 	}
 	
 	private void cancel(){

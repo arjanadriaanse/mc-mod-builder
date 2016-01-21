@@ -103,7 +103,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		mainPanel.add(effectsListPanel, BorderLayout.SOUTH);
 		
 		effectsListTopPanel = new JPanel();
-		effectsListTopPanel.setLayout(new GridLayout(0, 4, 0, 5));
+		effectsListTopPanel.setLayout(new GridLayout(0, 4, 5, 0));
 		effectsListPanel.add(effectsListTopPanel);
 
 		labelEffect = label("Effect", effectTypeTooltip, effectsListTopPanel);
