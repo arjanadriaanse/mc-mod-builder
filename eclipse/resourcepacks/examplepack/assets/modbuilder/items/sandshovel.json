@@ -4,7 +4,7 @@
   "damage": 1,
   "durability": 2,
   "efficiency": 12.0,
-  "repair": { "block": "minecraft:sandstone","meta": 0},
+  "repairblock": "minecraft:sandstone#0",
   "blocks": [ "minecraft:sand", "modbuilder:notdirt", "minecraft:sandstone", "minecraft:red_sand", "minecraft:red_sandstone" ],
   "container": "minecraft:stick"
 }

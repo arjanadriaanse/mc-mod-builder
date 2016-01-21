@@ -54,10 +54,10 @@ public class BuilderStructGround implements BuilderStruct{
 				pos=pos.add(0,Y,0);
 				if (onlyonblocks!=null && onlyonblocks.size()>0)
 					if (onlyonblocks.contains(world.getBlockState(pos.add(0,-1,0))))
-						if (world.getBlockState(pos).getBlock()==Blocks.air)
+						if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 							world.setBlockState(pos,block);
 				else
-					if (world.getBlockState(pos).getBlock()==Blocks.air)
+					if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
 						world.setBlockState(pos,block);
 			}
 		}

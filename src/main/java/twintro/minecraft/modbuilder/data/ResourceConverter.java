@@ -153,12 +153,10 @@ public class ResourceConverter {
 			else repair=new ItemStack(Block.getBlockFromName(resource.repairblock.split("#")[0]));
 			material.setRepairItem(repair);
 		}
-		Set blocks = new LinkedHashSet();
-		if (resource.blocks != null) {
-			for (String key : resource.blocks)
-				blocks.add(Block.getBlockFromName(key));
+		if (resource.blocks == null) {
+			resource.blocks = new LinkedHashSet();
 		}
-		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
+		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, resource.blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
@@ -176,8 +174,8 @@ public class ResourceConverter {
 	
 	public static BuilderStructOre toStructure(OreStructureResource resource) {
 		BuilderStructOre structure = new BuilderStructOre(
-				Block.getBlockFromName(resource.block),
-				resource.replaceblock   !=null ? Block.getBlockFromName(resource.replaceblock) : null,
+				toBlockState(resource.block),
+				resource.replaceblock   !=null ? toBlockState(resource.replaceblock) : null,
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
 				resource.chancestospawn !=null ? resource.chancestospawn : 16,
