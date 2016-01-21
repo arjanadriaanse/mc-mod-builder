@@ -198,7 +198,7 @@ public class OreStructureEditor extends PropertiesEditor {
 	}
 
 	private void chooseReplacing() {
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_NONE, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();

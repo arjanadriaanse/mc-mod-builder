@@ -153,7 +153,7 @@ public class BlockElement extends InventoryElement {
 		catch (IOException e){
 			e.printStackTrace();
 		}
-		return null;
+		return new ImageIcon("src/main/resources/icon.png");
 	}
 	
 	private static BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){

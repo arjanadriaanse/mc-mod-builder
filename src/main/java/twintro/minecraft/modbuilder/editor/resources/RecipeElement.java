@@ -40,21 +40,28 @@ public class RecipeElement extends Element {
 	
 	@Override
 	public ImageIcon getImage() {
-		String outputName = recipe.output.item;
-		if (outputName == null) {
-			outputName = recipe.output.block;
-			if (outputName.startsWith("modbuilder:"))
+		if (recipe.output.item == null) {
+			String outputName = recipe.output.block;
+			if (outputName.startsWith("modbuilder:")){
 				outputName = outputName.substring(11);
-			try{
-				return BlockElement.getFromName(outputName).getImage();
-			} catch (Exception e){}
-		} else {
-			if (outputName.startsWith("modbuilder:"))
-				outputName = outputName.substring(11);
-			try{
-				return ItemElement.getFromName(outputName).getImage();
-			} catch (Exception e){}
+				try{
+					return BlockElement.getFromName(outputName).getImage();
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
 		}
-		return null;
+		else{
+			String outputName = recipe.output.item;
+			if (outputName.startsWith("modbuilder:")){
+				outputName = outputName.substring(11);
+				try{
+					return ItemElement.getFromName(outputName).getImage();
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
+		}
+		return new ImageIcon("src/main/resources/icon.png");
 	}
 }
