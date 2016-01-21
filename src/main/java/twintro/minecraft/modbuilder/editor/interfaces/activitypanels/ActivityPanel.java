@@ -16,6 +16,7 @@ import java.awt.image.BufferedImage;
 import java.util.AbstractSet;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -76,7 +77,7 @@ public abstract class ActivityPanel extends ListPanel {
 				return elements.size();
 			}
 			public Object getElementAt(int index) {
-				return ((String) elements.keySet().toArray()[index]).replaceAll("_", " ");
+				return get(elements.keySet(), index).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
@@ -84,6 +85,29 @@ public abstract class ActivityPanel extends ListPanel {
 				clickElement(e);
 			}
 		});
+	}
+	
+	private static String get(Set<String> set, int index){
+		int bonus = 0;
+		while (true){
+			String test = ((String) set.toArray()[0]);
+			Set<String> later = new HashSet<String>();
+			Set<String> earlier = new HashSet<String>();
+			for (String s : set){
+				int compare = test.compareTo(s);
+				if (compare < 0)
+					later.add(s);
+				else if (compare > 0)
+					earlier.add(s);
+			}
+			int pos = earlier.size() + bonus;
+			if (pos == index) return test;
+			else if (pos > index) set = earlier;
+			else{
+				set = later;
+				bonus += earlier.size() + 1;
+			}
+		}
 	}
 	
 	protected void addElement(String name, ImageIcon img){
