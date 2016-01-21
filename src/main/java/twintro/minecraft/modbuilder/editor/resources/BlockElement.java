@@ -1,10 +1,12 @@
 package twintro.minecraft.modbuilder.editor.resources;
 
 import java.awt.Graphics2D;
+import java.awt.Image;
 import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.AffineTransformOp;
 import java.awt.image.BufferedImage;
+import java.awt.image.PixelGrabber;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -95,6 +97,41 @@ public class BlockElement extends InventoryElement {
 		return output;
 	}
 	
+	public void setOpaqueAndCutout(){
+		block.cutout = false;
+		block.opaque = false;
+		for (String textureName : blockModel.textures.values()){
+			if (textureName.startsWith("modbuilder:") && hasTransparency(textureName)){
+				block.cutout = true;
+				block.opaque = true;
+				break;
+			}
+		}
+		if (blockModel.parent.equals("cross")){
+			block.opaque = true;
+		}
+	}
+	
+	private boolean hasTransparency(String textureName){
+		Image img = new ImageIcon(ResourcePackIO.getURL("assets/modbuilder/textures/" + textureName.substring(11) + ".png")).getImage();
+		if (img instanceof BufferedImage){
+			return ((BufferedImage) img).getColorModel().hasAlpha();
+		}
+		else{
+			PixelGrabber pg = new PixelGrabber(img, 0, 0, 1, 1, false);
+			try {
+				pg.grabPixels();
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+			return pg.getColorModel().hasAlpha();
+		}
+	}
+	
+	private boolean hasTransparency(Image img){
+		return ResourcePackIO.toBufferedImage(img).getColorModel().hasAlpha();
+	}
+	
 	@Override
 	public ImageIcon getImage() {
 		try{
@@ -122,7 +159,7 @@ public class BlockElement extends InventoryElement {
 		return null;
 	}
 	
-	private BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
+	private static BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
 		double a = Math.sqrt(2)/2;
 		double b = a/Math.sqrt(3);
         BufferedImage img1t = transformImage(img1, a, b,-a,  b, 2*b  ,   0);
@@ -143,13 +180,13 @@ public class BlockElement extends InventoryElement {
 		return bi;
 	}
 	
-	private BufferedImage transformImage(BufferedImage img, double m00, double m10, double m01, double m11, double m02, double m12){
+	private static BufferedImage transformImage(BufferedImage img, double m00, double m10, double m01, double m11, double m02, double m12){
         AffineTransform at = new AffineTransform(m00, m10, m01, m11, 64*m02, 64*m12);
         AffineTransformOp op = new AffineTransformOp(at, new RenderingHints(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BICUBIC));
         return op.filter(img, null);
 	}
 	
-	private BufferedImage scaleImage(BufferedImage img, int width, int height){
+	private static BufferedImage scaleImage(BufferedImage img, int width, int height){
 		BufferedImage bi = new BufferedImage(width,height, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D g = bi.createGraphics();
 		g.drawImage(img, 0, 0, width, height, null);

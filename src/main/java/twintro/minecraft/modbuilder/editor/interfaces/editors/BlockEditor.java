@@ -74,13 +74,15 @@ public class BlockEditor extends PropertiesEditor {
 	private JPanel dropsPanel;
 	private JPanel dropsSubPanel;
 	private JPanel dropsSubSubPanel;
-	private JPanel propertiesPanelA;
-	private JPanel propertiesPanelB;
-	private JPanel flammablePanel;
+	private JPanel propertiesPanel;
 	private JPanel replacablePanel;
 	private JPanel requiresToolPanel;
 	private JPanel solidPanel;
-	private JPanel opaquePanel;
+	private JPanel unbreakablePanel;
+	private JPanel flammablePanel;
+	private JPanel flammableSubPanel;
+	private JPanel flammabilityPanel;
+	private JPanel fireSpreadSpeedPanel;
 	private JLabel labelCreativeTab;
 	private JLabel labelModel;
 	private JLabel labelDrops;
@@ -92,12 +94,13 @@ public class BlockEditor extends PropertiesEditor {
 	private JLabel labelHarvestLevel;
 	private JLabel labelBurntime;
 	private JLabel labelHarvestType;
-	private JLabel labelMaterial;
 	private JLabel labelUnbreakable;
 	private JLabel labelMapColor;
 	private JLabel labelMobility;
 	private JLabel labelProperties;
-	private JLabel labelEmpty;
+	private JLabel labelFlammable;
+	private JLabel labelFlammability;
+	private JLabel labelFireSpreadSpeed;
 	private JLabel modelLabel;
 	private JLabel dropsLabel;
 	private JButton modelChooseButton;
@@ -110,18 +113,18 @@ public class BlockEditor extends PropertiesEditor {
 	private JSpinner resistanceSpinner;
 	private JSpinner harvestLevelSpinner;
 	private JSpinner burntimeSpinner;
+	private JSpinner flammabilitySpinner;
+	private JSpinner fireSpreadSpeedSpinner;
 	private JComboBox creativeTabComboBox;
 	private JComboBox harvestTypeComboBox;
-	private JComboBox materialComboBox;
 	private JComboBox mapColorComboBox;
 	private JComboBox mobilityCombobox;
 	private JCheckBox dropsCheckBox;
 	private JCheckBox unbreakableCheckBox;
-	private JCheckBox flammableCheckBox;
 	private JCheckBox replacableCheckBox;
 	private JCheckBox requiresToolCheckBox;
 	private JCheckBox solidCheckBox;
-	private JCheckBox opaqueCheckBox;
+	private JCheckBox flammableCheckBox;
 	
 	private BlockModelResource model;
 	private List<ItemStackResource> drops;
@@ -143,14 +146,14 @@ public class BlockEditor extends PropertiesEditor {
 								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
 	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
-	private static final String materialTooltip = "OUTDATED AND DOES NOT WORK ANYMORE MIKE CHANGE PLS"; //TODO this will change
 	private static final String mapColorTooltip = ""; //TODO
 	private static final String mobilityTooltip = ""; //TODO
-	private static final String flammableTooltip = ""; //TODO
 	private static final String replacableTooltip = ""; //TODO
 	private static final String requiresToolTooltip = ""; //TODO
 	private static final String solidTooltip = ""; //TODO
-	private static final String opaqueTooltip = ""; //TODO
+	private static final String flammableTooltip = ""; //TODO
+	private static final String flammabilityTooltip = ""; //TODO
+	private static final String fireSpreadSpeedTooltip = ""; //TODO
 
 	private final ObjectRunnable modelChooser = new ObjectRunnable(){
 		@Override
@@ -247,26 +250,40 @@ public class BlockEditor extends PropertiesEditor {
 		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
 		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		
-		labelUnbreakable = label("Unbreakable", unbreakableTooltip, labelPanel);
-		unbreakableCheckBox = checkbox("", unbreakableTooltip, interactionPanel);
-		unbreakableCheckBox.setHorizontalAlignment(SwingConstants.RIGHT);
+		labelFlammability = label("Flammability", flammabilityTooltip);
+		flammabilitySpinner = spinner(flammabilityTooltip);
+		flammabilityPanel = new JPanel();
+		flammabilityPanel.setLayout(new BorderLayout(5, 0));
+		flammabilityPanel.add(labelFlammability, BorderLayout.WEST);
+		flammabilityPanel.add(flammabilitySpinner, BorderLayout.CENTER);
+		flammabilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		
+		labelFireSpreadSpeed = label("Fire spread speed", fireSpreadSpeedTooltip);
+		fireSpreadSpeedSpinner = spinner(fireSpreadSpeedTooltip);
+		fireSpreadSpeedPanel = new JPanel();
+		fireSpreadSpeedPanel.setLayout(new BorderLayout(5, 0));
+		fireSpreadSpeedPanel.add(labelFireSpreadSpeed, BorderLayout.WEST);
+		fireSpreadSpeedPanel.add(fireSpreadSpeedSpinner, BorderLayout.CENTER);
+		fireSpreadSpeedSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		
+		labelFlammable = label("Flammable", flammableTooltip, labelPanel);
+		flammableCheckBox = checkbox("Use", flammableTooltip);
+		flammableSubPanel = new JPanel();
+		flammableSubPanel.setLayout(new GridLayout(0, 2, 5, 0));
+		flammableSubPanel.add(flammabilityPanel);
+		flammableSubPanel.add(fireSpreadSpeedPanel);
+		flammablePanel = panel(flammableSubPanel, flammableCheckBox, interactionPanel);
+		flammableCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				useFlammable();
+			}
+		});
+		useFlammable();
 		
 		labelHarvestType = label("Harvest type", harvestTypeTooltip, labelPanel);
 		harvestTypeComboBox = combobox(harvestTypeTooltip, interactionPanel);
 		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
-		
-		labelMaterial = label("Material", materialTooltip, labelPanel);
-		materialComboBox = combobox(materialTooltip, interactionPanel);
-		materialComboBox.setModel(new DefaultComboBoxModel(new String[] {"Material", "custom", "air", "grass", "ground", "wood", "rock", "iron", 
-				"anvil", "water", "lava", "leaves", "plants", "vine", "sponge", "cloth", "fire", "sand", "circuits", "carpet", "glass", 
-				"redstone_light", "tnt", "coral", "ice", "packed_ice", "snow", "crafted_snow", "cactus", "clay", "gourd", "dragon_egg", "portal", 
-				"cake", "web", "piston", "barrier"}));
-		materialComboBox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent arg0) {
-				customMaterial();
-			}
-		});
 		
 		labelMapColor =  label("Map color", mapColorTooltip, labelPanel);
 		mapColorComboBox = combobox(mapColorTooltip, interactionPanel);
@@ -280,39 +297,26 @@ public class BlockEditor extends PropertiesEditor {
 		
 		labelProperties = new JLabel("Properties");
 		labelPanel.add(labelProperties);
-
-		labelEmpty = new JLabel("");
-		labelPanel.add(labelEmpty);
 		
-		propertiesPanelA = new JPanel();
-		propertiesPanelA.setLayout(new GridLayout(0, 3, 0, 0));
-		interactionPanel.add(propertiesPanelA);
-		
-		flammableCheckBox = checkbox("Flammable", flammableTooltip);
-		flammablePanel = panel(flammableCheckBox);
-		propertiesPanelA.add(flammablePanel);
+		propertiesPanel = new JPanel();
+		propertiesPanel.setLayout(new GridLayout(0, 4, 0, 0));
+		interactionPanel.add(propertiesPanel);
 		
 		replacableCheckBox = checkbox("Replacable", replacableTooltip);
 		replacablePanel = panel(replacableCheckBox);
-		propertiesPanelA.add(replacablePanel);
+		propertiesPanel.add(replacablePanel);
 		
 		requiresToolCheckBox = checkbox("Requires tool", requiresToolTooltip);
 		requiresToolPanel = panel(requiresToolCheckBox);
-		propertiesPanelA.add(requiresToolPanel);
-		
-		propertiesPanelB = new JPanel();
-		propertiesPanelB.setLayout(new GridLayout(0, 3, 0, 0));
-		interactionPanel.add(propertiesPanelB);
+		propertiesPanel.add(requiresToolPanel);
 		
 		solidCheckBox = checkbox("Solid", solidTooltip);
 		solidPanel = panel(solidCheckBox);
-		propertiesPanelB.add(solidPanel);
+		propertiesPanel.add(solidPanel);
 		
-		opaqueCheckBox = checkbox("Opaque", opaqueTooltip);
-		opaquePanel = panel(opaqueCheckBox);
-		propertiesPanelB.add(opaquePanel);
-		
-		customMaterial();
+		unbreakableCheckBox = checkbox("Unbreakable", unbreakableTooltip);
+		unbreakablePanel = panel(unbreakableCheckBox);
+		propertiesPanel.add(unbreakablePanel);
 		
 		setSize(500);
 	}
@@ -333,27 +337,16 @@ public class BlockEditor extends PropertiesEditor {
 					addDrop(drop);
 			}
 		}
-		if (base.material != null)
-			materialComboBox.setSelectedItem(base.material.name());
-		else if (base.flammable != null || base.replaceable != null || base.requirestool != null || base.solid != null || base.opaque != null 
-				|| base.mapcolor != null || base.mobility != null){
-			materialComboBox.setSelectedItem("custom");
-			customMaterial();
-			if (base.mapcolor != null)
-				mapColorComboBox.setSelectedIndex(base.mapcolor);
-			if (base.mobility != null)
-				mobilityCombobox.setSelectedIndex(base.mobility);
-			if (base.flammable != null)
-				flammableCheckBox.setSelected(base.flammable);
-			if (base.replaceable != null)
-				replacableCheckBox.setSelected(base.replaceable);
-			if (base.requirestool != null)
-				requiresToolCheckBox.setSelected(base.requirestool);
-			if (base.solid != null)
-				solidCheckBox.setSelected(base.solid);
-			if (base.opaque != null)
-				opaqueCheckBox.setSelected(base.opaque);
-		}
+		if (base.mapcolor != null)
+			mapColorComboBox.setSelectedIndex(base.mapcolor);
+		if (base.mobility != null)
+			mobilityCombobox.setSelectedIndex(base.mobility);
+		if (base.replaceable != null)
+			replacableCheckBox.setSelected(base.replaceable);
+		if (base.requirestool != null)
+			requiresToolCheckBox.setSelected(base.requirestool);
+		if (base.solid != null)
+			solidCheckBox.setSelected(base.solid);
 		if (base.tab != null)
 			creativeTabComboBox.setSelectedItem(base.tab.name());
 		if (base.light != null)
@@ -374,6 +367,14 @@ public class BlockEditor extends PropertiesEditor {
 			harvestLevelSpinner.setValue(base.harvestlevel);
 		if (base.burntime != null)
 			burntimeSpinner.setValue(base.burntime);
+		if (base.flammability != null || base.firespreadspeed != null){
+			if (base.flammability != null)
+				flammabilitySpinner.setValue(base.flammability);
+			if (base.firespreadspeed != null)
+				fireSpreadSpeedSpinner.setValue(base.firespreadspeed);
+			flammableCheckBox.setSelected(true);
+			useFlammable();
+		}
 		setIconImage(block.getImage().getImage());
 		
 		changed = false;
@@ -381,7 +382,7 @@ public class BlockEditor extends PropertiesEditor {
 
 	@Override
 	public boolean save(){
-		if (model != null && materialComboBox.getSelectedIndex() != 0){
+		if (model != null){
 			BlockElement block = new BlockElement();
 			block.name = name;
 			block.blockModel = model;
@@ -399,17 +400,11 @@ public class BlockEditor extends PropertiesEditor {
 			block.blockstate = blockstate;
 			
 			BaseBlockResource base = new BlockResource();
-			if (materialComboBox.getSelectedItem() == "custom"){
-				base.mapcolor = mapColorComboBox.getSelectedIndex();
-				base.mobility = mobilityCombobox.getSelectedIndex();
-				base.flammable = flammableCheckBox.isSelected();
-				base.replaceable = replacableCheckBox.isSelected();
-				base.requirestool = requiresToolCheckBox.isSelected();
-				base.solid = solidCheckBox.isSelected();
-				base.opaque = opaqueCheckBox.isSelected();
-			}
-			else
-				base.material = MaterialResource.valueOf((String) materialComboBox.getSelectedItem());
+			base.mapcolor = mapColorComboBox.getSelectedIndex();
+			base.mobility = mobilityCombobox.getSelectedIndex();
+			base.replaceable = replacableCheckBox.isSelected();
+			base.requirestool = requiresToolCheckBox.isSelected();
+			base.solid = solidCheckBox.isSelected();
 			if (dropsCheckBox.isSelected())
 				base.drops = drops;
 			else
@@ -426,15 +421,18 @@ public class BlockEditor extends PropertiesEditor {
 				base.harvesttype = (String) harvestTypeComboBox.getSelectedItem();
 			base.harvestlevel = (Integer) harvestLevelSpinner.getValue();
 			base.burntime = (Integer) burntimeSpinner.getValue();
+			if (flammableCheckBox.isSelected()){
+				base.flammability = (Integer) flammabilitySpinner.getValue();
+				base.firespreadspeed = (Integer) fireSpreadSpeedSpinner.getValue();
+			}
 			block.block = base;
+			block.setOpaqueAndCutout();
 			
 			runnable.run(block);
 			dispose();
 		}
 		else{
-			String errorMessage = "You haven't given the block a model yet.";
-			if (model != null) errorMessage = "You haven't given the block a material yet.";
-			int selected = JOptionPane.showConfirmDialog(this, errorMessage, 
+			int selected = JOptionPane.showConfirmDialog(this, "You haven't given the block a model yet.", 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected == JOptionPane.OK_OPTION)
 				return false;
@@ -498,16 +496,13 @@ public class BlockEditor extends PropertiesEditor {
 		dropsLabel.setText("");
 	}
 	
-	private void customMaterial(){
-		boolean use = materialComboBox.getSelectedItem() == "custom";
-		labelMapColor.setVisible(use);
-		labelMobility.setVisible(use);
-		labelProperties.setVisible(use);
-		labelEmpty.setVisible(use);
-		mapColorComboBox.setVisible(use);
-		mobilityCombobox.setVisible(use);
-		propertiesPanelA.setVisible(use);
-		propertiesPanelB.setVisible(use);
+	private void useFlammable(){
+		boolean use = flammableCheckBox.isSelected();
+		labelFlammable.setEnabled(use);
+		labelFlammability.setEnabled(use);
+		labelFireSpreadSpeed.setEnabled(use);
+		flammabilitySpinner.setEnabled(use);
+		fireSpreadSpeedSpinner.setEnabled(use);
 	}
 }
 
