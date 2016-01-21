@@ -104,40 +104,6 @@ public class BuilderMod {
 
 		config = new Configuration(event.getSuggestedConfigurationFile());
 		syncConfig();
-		
-		/*String result = "";
-		for (Field f : Blocks.class.getFields()) {
-			if (f.getType() == Block.class && Modifier.isPublic(f.getModifiers()) && Modifier.isStatic(f.getModifiers())) {
-				List<String> s1= new LinkedList<String>();
-				List<String> s2= new LinkedList<String>();
-				for(int i=0;i<16;i++){
-					try{
-						Block block = (Block)f.get(null);
-						String t = new ItemStack(block,1,i).getDisplayName();
-						if (s1.contains(t))
-							break;
-						s1.add(t);
-						s2.add("minecraft:"+f.getName()+"#"+new Integer(i).toString());
-					}
-					catch (Exception e){
-						break;
-					}
-				}
-				try {
-					if (s1.size()==1){
-						result+=('"'+s1.get(0)+'"'+", ");
-					}
-					else {
-						for(int i=0;i<s1.size();i++)
-							result+=('"'+s1.get(i)+'"'+", ");
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		}
-		System.out.println(result);
-		*/
 	}
 
 	@EventHandler

@@ -1,9 +1,11 @@
 package twintro.minecraft.modbuilder.data;
 
+import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -15,8 +17,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * Base ground cover generation. This is used for generating things like flowers, tall grass and pumpkins.
  */
 public class BuilderStructGround implements BuilderStruct{
-	Block block;
-	Set<Block> onlyonblocks;
+	IBlockState block;
+	Set<IBlockState> onlyonblocks;
 	int dimension;
 	int amountperchunk;
 	
@@ -34,7 +36,7 @@ public class BuilderStructGround implements BuilderStruct{
 	 * 		-The amount of blocks the generator will try placing in a chunk.
 	 * 		A try will fail if block doesn't stand on a block in the onlyonblocks parameter, or if the block is already occupied by a non-solid block.
 	 */
-	public BuilderStructGround(Block block, Set<Block> onlyonblocks, int dimension, int amountperchunk) {
+	public BuilderStructGround(IBlockState block, Set<IBlockState> onlyonblocks, int dimension, int amountperchunk) {
 		this.block = block;
 		this.onlyonblocks = onlyonblocks;
 		this.dimension = dimension;
@@ -51,15 +53,14 @@ public class BuilderStructGround implements BuilderStruct{
 				int Y = world.getTopSolidOrLiquidBlock(pos).getY();
 				pos=pos.add(0,Y,0);
 				if (onlyonblocks!=null && onlyonblocks.size()>0)
-					if (onlyonblocks.contains(world.getBlockState(pos.add(0,-1,0)).getBlock()))
+					if (onlyonblocks.contains(world.getBlockState(pos.add(0,-1,0))))
 						if (world.getBlockState(pos).getBlock()==Blocks.air)
-							world.setBlockState(pos,block.getDefaultState());
+							world.setBlockState(pos,block);
 				else
 					if (world.getBlockState(pos).getBlock()==Blocks.air)
-						world.setBlockState(pos,block.getDefaultState());
+						world.setBlockState(pos,block);
 			}
 		}
 		return random;
 	}
-
 }
