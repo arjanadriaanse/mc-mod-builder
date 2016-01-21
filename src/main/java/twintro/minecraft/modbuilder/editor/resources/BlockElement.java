@@ -138,16 +138,13 @@ public class BlockElement extends InventoryElement {
 			}
 			else if (blockModel.parent.equals("block/cube_all")){
 				BufferedImage img = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("all").split(":")[1] + ".png")),64,64);
-				return new ImageIcon(scaleImage(get3DImage(img,img,img,img,img,img),64,64));
+				return new ImageIcon(scaleImage(get3DImage(img,img,img),64,64));
 			}
 			else if (blockModel.parent.equals("block/cube")){
 				BufferedImage img1 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("up").split(":")[1] + ".png")),64,64);
-				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("west").split(":")[1] + ".png")),64,64);
-				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("south").split(":")[1] + ".png")),64,64);
-				BufferedImage img4 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("east").split(":")[1] + ".png")),64,64);
-				BufferedImage img5 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("north").split(":")[1] + ".png")),64,64);
-				BufferedImage img6 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("down").split(":")[1] + ".png")),64,64);
-				return new ImageIcon(scaleImage(get3DImage(img1,img2,img3,img4,img5,img6),64,64));
+				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("south").split(":")[1] + ".png")),64,64);
+				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("east").split(":")[1] + ".png")),64,64);
+				return new ImageIcon(scaleImage(get3DImage(img1,img2,img3),64,64));
 			}
 		}
 		catch (IOException e){
@@ -156,24 +153,18 @@ public class BlockElement extends InventoryElement {
 		return new ImageIcon("src/main/resources/icon.png");
 	}
 	
-	private static BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3, BufferedImage img4, BufferedImage img5, BufferedImage img6){
+	private static BufferedImage get3DImage(BufferedImage img1, BufferedImage img2, BufferedImage img3){
 		double a = Math.sqrt(2)/2;
 		double b = a/Math.sqrt(3);
         BufferedImage img1t = transformImage(img1, a, b,-a,  b, 2*b  ,   0);
-        BufferedImage img2t = transformImage(img2,-a, b, 0,2*b, 2*b  ,   0);
-        BufferedImage img3t = transformImage(img3, a, b, 0,2*b, 2*b-a,   b);
-        BufferedImage img4t = transformImage(img4, a,-b, 0,2*b, 2*b  , 2*b);
-        BufferedImage img5t = transformImage(img5,-a,-b, 0,2*b, 2*b+a,   b);
-        BufferedImage img6t = transformImage(img6, a, b, a, -b, 2*b-a, 3*b);
+        BufferedImage img2t = transformImage(img2, a, b, 0,2*b, 2*b-a,   b);
+        BufferedImage img3t = transformImage(img3, a,-b, 0,2*b, 2*b  , 2*b);
         
         BufferedImage bi = new BufferedImage((int)(b*256),(int)(b*256),BufferedImage.TYPE_INT_ARGB);
         Graphics2D g = bi.createGraphics();
-	    g.drawImage(img2t, 0, 0, null);
-	    g.drawImage(img5t, 0, 0, null);
-	    g.drawImage(img6t, 0, 0, null);
 	    g.drawImage(img1t, 0, 0, null);
+	    g.drawImage(img2t, 0, 0, null);
 	    g.drawImage(img3t, 0, 0, null);
-	    g.drawImage(img4t, 0, 0, null);
 		return bi;
 	}
 	

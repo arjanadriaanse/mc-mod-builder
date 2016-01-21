@@ -42,6 +42,7 @@ public class BuilderItemTool extends ItemTool {
 	public boolean canHarvestBlock(Block block){
 		boolean b = super.canHarvestBlock(block);
 		for(String s: effectiveBlocks){
+			Block bl = Block.getBlockFromName(s);
 			if(Block.getBlockFromName(s).equals(block))
 				return true;
 		}

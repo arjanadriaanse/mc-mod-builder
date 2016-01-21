@@ -43,7 +43,7 @@ public class StructureElement extends Element {
 		if (block.startsWith("modbuilder:")){
 			block = block.substring(11);
 			try{
-				return ItemElement.getFromName(block).getImage();
+				return BlockElement.getFromName(block).getImage();
 			} catch (Exception e){
 				e.printStackTrace();
 			}
