@@ -31,7 +31,7 @@ public class ListWindow extends IconDialog {
 		this.runnable = runnable;
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
-		setBounds(100, 100, 530, 300);
+		setBounds(100, 100, 650, 300);
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
@@ -52,7 +52,7 @@ public class ListWindow extends IconDialog {
 		this(new ListPanel(), runnable);
 		((ListPanel)panel).elements = elements;
 		
-		list.setFixedCellWidth(128);
+		list.setFixedCellWidth(125);
 		list.setCellRenderer(new ImageListCellRenderer((ListPanel)panel));
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
@@ -78,7 +78,7 @@ public class ListWindow extends IconDialog {
 		this(new JPanel(), runnable);
 		values = elements;
 
-		list.setFixedCellWidth(128);
+		list.setFixedCellWidth(200);
 		list.setModel(new AbstractListModel() {
 			public int getSize() {
 				return values.length;

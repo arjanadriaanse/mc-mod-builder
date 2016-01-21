@@ -109,7 +109,9 @@ public class GroundStructureEditor extends PropertiesEditor {
 		
 		labelAmount = label("Amount per chunk", amountTooltip, labelPanel);
 		amountSpinner = spinner(amountTooltip, interactionPanel);
-		amountSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		amountSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
+		
+		setSize(400);
 	}
 	
 	public GroundStructureEditor(StructureElement structure, ObjectRunnable runnable, ObjectRunnable closeHandler){
@@ -137,8 +139,6 @@ public class GroundStructureEditor extends PropertiesEditor {
 			amountSpinner.setValue(ground.amountperchunk);
 		
 		changed = false;
-		
-		setSize(400);
 	}
 	
 	private void chooseMaterial() {

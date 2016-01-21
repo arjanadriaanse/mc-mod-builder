@@ -32,7 +32,6 @@ public class ToolItemEditor extends RegularItemEditor {
 	private JLabel labelDurability;
 	private JLabel labelEfficiency;
 	private JLabel labelDamage;
-	private JLabel labelHarvestLevel;
 	private JLabel labelEnchantibility;
 	private JLabel labelAffectedBlocks;
 	private JLabel labelRepairMaterial;
@@ -44,7 +43,6 @@ public class ToolItemEditor extends RegularItemEditor {
 	private JSpinner durabilitySpinner;
 	private JSpinner efficiencySpinner;
 	private JSpinner damageSpinner;
-	private JSpinner harvestLevelSpinner;
 	private JSpinner enchantibilitySpinner;
 	private JCheckBox repairMaterialCheckbox;
 
@@ -65,42 +63,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		setTitle("Edit Tool: " + this.name);
 		saveButton.setText("Save Tool");
 		
-		labelDurability = label("Durability", durabilityTooltip, labelPanel);
-		durabilitySpinner = spinner(durabilityTooltip, interactionPanel);
-		durabilitySpinner.setModel(new SpinnerNumberModel(new Integer(128), new Integer(1), null, new Integer(1)));
-		
-		labelEfficiency = label("Efficiency", efficiencyTooltip, labelPanel);
-		efficiencySpinner = spinner(efficiencyTooltip, interactionPanel);
-		efficiencySpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(2), null, new Float(2)));
-		
-		labelDamage = label("Damage", damageTooltip, labelPanel);
-		damageSpinner = spinner(damageTooltip, interactionPanel);
-		damageSpinner.setModel(new SpinnerNumberModel(new Float(2), new Float(1), null, new Float(1)));
-		
-		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip, labelPanel);
-		harvestLevelSpinner = spinner(harvestLevelTooltip, interactionPanel);
-		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		
-		labelEnchantibility = label("Enchantibility", enchantibilityTooltip, labelPanel);
-		enchantibilitySpinner = spinner(enchantibilityTooltip, interactionPanel);
-		enchantibilitySpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(1), null, new Integer(1)));
-		
-		labelAffectedBlocks = label("Affected Blocks", affectedBlocksTooltip, labelPanel);
-		affectedBlocksButton = button("Add Block", affectedBlocksTooltip);
-		affectedBlocksResetButton = button("Reset", affectedBlocksTooltip);
-		affectedBlocksLabel = tooltipLabel("", affectedBlocksTooltip);
-		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
-		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
-		affectedBlocksButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addBlock();
-			}
-		});
-		affectedBlocksResetButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				resetBlocks();
-			}
-		});
+		creativeTabsComboBox.setSelectedItem("tools");
 		
 		labelRepairMaterial = label("Repair Material", repairMaterialTooltip, labelPanel);
 		repairMaterialCheckbox = checkbox("Use", repairMaterialTooltip);
@@ -120,6 +83,22 @@ public class ToolItemEditor extends RegularItemEditor {
 			}
 		});
 		repairMaterialUse();
+		
+		labelDurability = label("Durability", durabilityTooltip, labelPanel);
+		durabilitySpinner = spinner(durabilityTooltip, interactionPanel);
+		durabilitySpinner.setModel(new SpinnerNumberModel(new Integer(250), new Integer(1), null, new Integer(1)));
+		
+		labelEfficiency = label("Efficiency", efficiencyTooltip, labelPanel);
+		efficiencySpinner = spinner(efficiencyTooltip, interactionPanel);
+		efficiencySpinner.setModel(new SpinnerNumberModel(new Float(6), new Float(0), null, new Float(1)));
+		
+		labelDamage = label("Damage", damageTooltip, labelPanel);
+		damageSpinner = spinner(damageTooltip, interactionPanel);
+		damageSpinner.setModel(new SpinnerNumberModel(new Float(5), new Float(0), null, new Float(1)));
+		
+		labelEnchantibility = label("Enchantibility", enchantibilityTooltip, labelPanel);
+		enchantibilitySpinner = spinner(enchantibilityTooltip, interactionPanel);
+		enchantibilitySpinner.setModel(new SpinnerNumberModel(new Integer(10), new Integer(0), null, new Integer(1)));
 		
 		setSize(400);
 	}
@@ -141,8 +120,6 @@ public class ToolItemEditor extends RegularItemEditor {
 			efficiencySpinner.setValue(resource.efficiency);
 		if (resource.damage != null)
 			damageSpinner.setValue(resource.damage);
-		if (resource.harvestlevel != null)
-			harvestLevelSpinner.setValue(resource.harvestlevel);
 		if (resource.enchantability != null)
 			enchantibilitySpinner.setValue(resource.enchantability);
 		if (resource.blocks != null){
@@ -164,13 +141,32 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	@Override
+	protected void addAffectedBlocks() {
+		labelAffectedBlocks = label("Affected Blocks", affectedBlocksTooltip, labelPanel);
+		affectedBlocksButton = button("Add Block", affectedBlocksTooltip);
+		affectedBlocksResetButton = button("Reset", affectedBlocksTooltip);
+		affectedBlocksLabel = tooltipLabel("", affectedBlocksTooltip);
+		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
+		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
+		affectedBlocksButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addBlock();
+			}
+		});
+		affectedBlocksResetButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				resetBlocks();
+			}
+		});
+	}
+	
+	@Override
 	public boolean save() {
 		if (textureLabel.getText().length() > 0){
 			ToolItemResource base = new ToolItemResource();
 			base.durability = (Integer) durabilitySpinner.getValue();
 			base.efficiency = (Float) efficiencySpinner.getValue();
 			base.damage = (Float) damageSpinner.getValue();
-			base.harvestlevel = (Integer) harvestLevelSpinner.getValue();
 			base.enchantability = (Integer) enchantibilitySpinner.getValue();
 			base.blocks = new HashSet<String>();
 			if (affectedBlocksLabel.getText().length() > 0)

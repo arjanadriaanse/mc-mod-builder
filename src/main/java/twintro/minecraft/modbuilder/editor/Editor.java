@@ -54,9 +54,9 @@ public class Editor {
 	private static JMenuItem mntmExport;
 	
 	private static ActivityPanel TexturePanel;
-	private static ActivityPanel RecipePanel;
-	private static ActivityPanel BlockPanel;
 	private static ActivityPanel ItemPanel;
+	private static ActivityPanel BlockPanel;
+	private static ActivityPanel RecipePanel;
 	private static ActivityPanel StructurePanel;
 	
 	public static MetaFile metaFile;
@@ -262,21 +262,21 @@ public class Editor {
 		TexturesButton.addActionListener(buttonListener);
 		buttonPanel.add(TexturesButton);
 		
-		JButton RecipesButton = new ActivityButton("Recipes");
-		RecipesButton.addActionListener(buttonListener);
-		buttonPanel.add(RecipesButton);
+		JButton ItemsButton = new ActivityButton("Items");
+		ItemsButton.addActionListener(buttonListener);
+		buttonPanel.add(ItemsButton);
 		
 		JButton BlocksButton = new ActivityButton("Blocks");
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
 		
+		JButton RecipesButton = new ActivityButton("Recipes");
+		RecipesButton.addActionListener(buttonListener);
+		buttonPanel.add(RecipesButton);
+		
 		JButton StructuresButton = new ActivityButton("Structures");
 		StructuresButton.addActionListener(buttonListener);
 		buttonPanel.add(StructuresButton);
-		
-		JButton ItemsButton = new ActivityButton("Items");
-		ItemsButton.addActionListener(buttonListener);
-		buttonPanel.add(ItemsButton);
 		
 		JPanel ActivityPanel = new JPanel();
 		splitPane.setRightComponent(ActivityPanel);
@@ -287,14 +287,14 @@ public class Editor {
 		TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe");
-		ActivityPanel.add(RecipePanel, "Recipes");
+		ItemPanel = new ItemsActivityPanel("Items", "New Item");
+		ActivityPanel.add(ItemPanel, "Items");
 		
 		BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		ItemPanel = new ItemsActivityPanel("Items", "New Item");
-		ActivityPanel.add(ItemPanel, "Items");
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe");
+		ActivityPanel.add(RecipePanel, "Recipes");
 		
 		StructurePanel = new StructureActivityPanel("Structures", "New Ore");
 		ActivityPanel.add(StructurePanel, "Structures");
