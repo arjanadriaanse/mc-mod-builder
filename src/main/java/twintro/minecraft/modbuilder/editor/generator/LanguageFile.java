@@ -57,6 +57,13 @@ public class LanguageFile extends File {
 	    return this;
 	}
 	
+	public static String toLine(String name, boolean isItem){
+		String prefix;
+		if (isItem) prefix = "item";
+		else prefix = "tile";
+		return prefix + ".modbuilder_" + name + ".name=" + name.replaceAll("_", " ");
+	}
+	
 	public void save(){
 		try {
 			FileOutputStream outStream = null;

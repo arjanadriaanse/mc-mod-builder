@@ -120,7 +120,7 @@ public class BlockModelChooseWindow extends IconDialog {
 				return listPanel.elements.size();
 			}
 			public Object getElementAt(int index) {
-				return listPanel.elements.keySet().toArray()[index];
+				return ((String) listPanel.elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addListSelectionListener(new ListSelectionListener() {

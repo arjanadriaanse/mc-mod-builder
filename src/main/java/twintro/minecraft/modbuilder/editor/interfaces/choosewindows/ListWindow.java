@@ -59,7 +59,7 @@ public class ListWindow extends IconDialog {
 				return ((ListPanel)panel).elements.size();
 			}
 			public Object getElementAt(int index) {
-				return ((ListPanel)panel).elements.keySet().toArray()[index];
+				return ((String) ((ListPanel)panel).elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {

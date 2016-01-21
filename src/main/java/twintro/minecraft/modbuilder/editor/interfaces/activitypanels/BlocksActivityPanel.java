@@ -25,6 +25,7 @@ import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
 import twintro.minecraft.modbuilder.data.resources.items.ItemType;
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.Editor;
+import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
@@ -49,6 +50,17 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 	protected void add() {
 		String name = nameDialog("Block");
 		if (name == null) return;
+		for (char c : new char[]{'"','#',':','_'}){
+			if (name.contains(c + "")){
+				int selected = JOptionPane.showConfirmDialog(this, "Your name cannot include the character '" + c + "'.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+				if (selected == JOptionPane.OK_OPTION)
+					add();
+				else
+					return;
+			}
+		}
+		name = name.replaceAll(" ", "_");
 		if (!Editor.getItemList().containsKey(name)){
 			BlockEditor editor = new BlockEditor(name, runnable, closeHandler);
 			openEditors.put(name, editor);
@@ -93,7 +105,7 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 			Editor.metaFile.resource.modbuilder.blocks.remove(value);
 			Editor.metaFile.save();
 			
-			Editor.langFile.list.remove("tile.modbuilder_" + value + ".name=" + value);
+			Editor.langFile.list.remove(LanguageFile.toLine(value, false));
 			Editor.langFile.save();
 		}
 	}
@@ -129,7 +141,7 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 		Editor.metaFile.resource.modbuilder.blocks.add(block.name);
 		Editor.metaFile.save();
 		
-		Editor.langFile.list.add("tile.modbuilder_" + block.name + ".name=" + block.name);
+		Editor.langFile.list.add(LanguageFile.toLine(block.name, false));
 		Editor.langFile.save();
 	}
 }

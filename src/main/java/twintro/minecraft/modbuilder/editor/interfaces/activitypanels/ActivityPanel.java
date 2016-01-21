@@ -76,7 +76,7 @@ public abstract class ActivityPanel extends ListPanel {
 				return elements.size();
 			}
 			public Object getElementAt(int index) {
-				return elements.keySet().toArray()[index];
+				return ((String) elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
