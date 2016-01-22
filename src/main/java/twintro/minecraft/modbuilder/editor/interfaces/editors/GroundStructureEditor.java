@@ -86,7 +86,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 			}
 		});
 		
-		labelCover = label("Blocks to cover", coverTooltip, labelPanel);
+		labelCover = label("Blocks To Cover", coverTooltip, labelPanel);
 		addCoverButton = button("Add", coverTooltip);
 		coverResetButton = button("Reset", coverTooltip);
 		coverLabel = tooltipLabel("", coverTooltip);
@@ -107,7 +107,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 		dimensionComboBox = combobox(dimensionTooltip, interactionPanel);
 		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
 		
-		labelAmount = label("Amount per chunk", amountTooltip, labelPanel);
+		labelAmount = label("Amount Per Chunk", amountTooltip, labelPanel);
 		amountSpinner = spinner(amountTooltip, interactionPanel);
 		amountSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(0), null, new Integer(1)));
 		
@@ -167,7 +167,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 	}
 	
 	private void addBlockToCover(String block){
-		if (coverLabel.getText().length() > 0) coverLabel.setText(coverLabel.getText() + ",");
+		if (coverLabel.getText().length() > 0) coverLabel.setText(coverLabel.getText() + ", ");
 		coverLabel.setText(coverLabel.getText() + block);
 	}
 	
@@ -185,7 +185,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 			GroundStructureResource base = new GroundStructureResource();
 			base.block = materialLabel.getText();
 			Set<String> blocks = new HashSet<String>();
-			for (String block : coverLabel.getText().split(",")) blocks.add(block);
+			for (String block : coverLabel.getText().split(", ")) blocks.add(block);
 			base.onlyonblocks = blocks;
 			switch (dimensionComboBox.getSelectedIndex()){
 			case 0:

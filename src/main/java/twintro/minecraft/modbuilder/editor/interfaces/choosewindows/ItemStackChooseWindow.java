@@ -190,7 +190,7 @@ public class ItemStackChooseWindow extends IconDialog {
 		materialPanel.add(materialLabel, BorderLayout.CENTER);
 		
 		if (this.isProduct){
-			labelStackSize = new JLabel("Stack size");
+			labelStackSize = new JLabel("Stack Size");
 			labelStackSize.setToolTipText(stackSizeTooltip);
 			labelPanel.add(labelStackSize);
 			

@@ -95,15 +95,15 @@ public class OreStructureEditor extends PropertiesEditor {
 		dimensionComboBox = combobox(dimensionTooltip, interactionPanel);
 		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
 		
-		labelMaxVeinSize = label("Max vein size", maxVeinSizeTooltip, labelPanel);
+		labelMaxVeinSize = label("Max Vein Size", maxVeinSizeTooltip, labelPanel);
 		maxVeinSizeSpinner = spinner(maxVeinSizeTooltip, interactionPanel);
 		maxVeinSizeSpinner.setModel(new SpinnerNumberModel(new Integer(8), new Integer(0), null, new Integer(1)));
 		
-		labelAmount = label("Veins per chunk", amountTooltip, labelPanel);
+		labelAmount = label("Veins Per Chunk", amountTooltip, labelPanel);
 		amountSpinner = spinner(amountTooltip, interactionPanel);
 		amountSpinner.setModel(new SpinnerNumberModel(new Integer(75), new Integer(0), null, new Integer(1)));
 		
-		labelRegion = new JLabel("Spawn region");
+		labelRegion = new JLabel("Spawn Region");
 		labelRegion.setToolTipText(regionTooltip);
 		labelPanel.add(labelRegion);
 		

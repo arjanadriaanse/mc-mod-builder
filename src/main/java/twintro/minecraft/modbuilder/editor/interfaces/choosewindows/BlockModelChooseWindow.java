@@ -142,8 +142,8 @@ public class BlockModelChooseWindow extends IconDialog {
 		topButtonPanel.setLayout(new FlowLayout());
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		modelbuttons[0] = new JRadioButton("full block model");
-		modelbuttons[1] = new JRadioButton("cross model");
+		modelbuttons[0] = new JRadioButton("Full Block Model");
+		modelbuttons[1] = new JRadioButton("Cross Model");
 		modelbuttons[0].setSelected(true);
 		modelbuttons[0].addActionListener(new ActionListener(){
 			@Override
@@ -167,7 +167,7 @@ public class BlockModelChooseWindow extends IconDialog {
 		botButtonPanel.setPreferredSize(new Dimension(350, 32));
 		botButtonPanel.setLayout(new FlowLayout());
 		
-		JButton buttonOK = new JButton("Use this model");
+		JButton buttonOK = new JButton("Use This Model");
 		buttonOK.setSelected(true);
 		buttonOK.addActionListener(new ActionListener(){
 			@Override

@@ -73,7 +73,7 @@ public class MaterialChooseWindow extends IconDialog {
 		mainPanel.setLayout(new GridLayout(0, 2, 5, 5));
 		
 		if (items){
-			JButton customItemButton = new JButton("Custom item");
+			JButton customItemButton = new JButton("Custom Item");
 			customItemButton.setToolTipText(customItemsTooltip);
 			mainPanel.add(customItemButton);
 			customItemButton.addActionListener(new ActionListener() {
@@ -83,7 +83,7 @@ public class MaterialChooseWindow extends IconDialog {
 				}
 			});
 			
-			JButton itemButton = new JButton("Vanilla item");
+			JButton itemButton = new JButton("Vanilla Item");
 			itemButton.setToolTipText(vanillaItemsTooltip);
 			mainPanel.add(itemButton);
 			itemButton.addActionListener(new ActionListener() {
@@ -95,7 +95,7 @@ public class MaterialChooseWindow extends IconDialog {
 		}
 		
 		if (blocks){
-			JButton customBlockButton = new JButton("Custom block");
+			JButton customBlockButton = new JButton("Custom Block");
 			customBlockButton.setToolTipText(customBlocksTooltip);
 			mainPanel.add(customBlockButton);
 			customBlockButton.addActionListener(new ActionListener() {
@@ -105,7 +105,7 @@ public class MaterialChooseWindow extends IconDialog {
 				}
 			});
 			
-			JButton blockButton = new JButton("Vanilla block");
+			JButton blockButton = new JButton("Vanilla Block");
 			blockButton.setToolTipText(vanillaBlocksTooltip);
 			mainPanel.add(blockButton);
 			blockButton.addActionListener(new ActionListener() {
@@ -204,7 +204,7 @@ public class MaterialChooseWindow extends IconDialog {
 	}
 	
 	private void other(){
-		String material = JOptionPane.showInputDialog("Material name:");
+		String material = JOptionPane.showInputDialog("Material Name:");
 		if (material != null){
 			choose(material);
 		}
