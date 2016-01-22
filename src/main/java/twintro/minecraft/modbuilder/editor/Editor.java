@@ -48,6 +48,8 @@ import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class Editor {
+	private static String directory = System.getProperty("user.home") + "/AppData/Roaming/.minecraft/resourcepacks";
+	
 	private static boolean interfaceOpened = false;
 	private static JFrame frame;
 	private static JPanel activityPanel;
@@ -73,6 +75,10 @@ public class Editor {
 	}
 	
 	public static void main(String[] args) {
+		if (args.length >= 1){
+			directory = args[0];
+		}
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -190,8 +196,7 @@ public class Editor {
 	private static void chooseFolder(boolean newMod){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
-				"/AppData/Roaming/.minecraft/resourcepacks"));
+		menu.setCurrentDirectory(new File(directory));
 		int result;
 		if (newMod) result = menu.showSaveDialog(frame);
 		else result = menu.showOpenDialog(frame);
