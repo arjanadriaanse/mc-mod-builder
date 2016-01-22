@@ -86,20 +86,14 @@ public class RegularItemEditor extends PropertiesEditor {
 			}
 		});
 		
-		if (!(this instanceof ToolItemEditor)){
-			labelMaxStackSize = label("Maximum stack size", maxStackSizeTooltip, labelPanel);
-			maxStackSizeSpinner = spinner(maxStackSizeTooltip, interactionPanel);
-			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
-		}
-		
-		labelCreativeTabs = label("Creative tabs", creativeTabsTooltip, labelPanel);
+		labelCreativeTabs = label("Creative Tabs", creativeTabsTooltip, labelPanel);
 		creativeTabsComboBox = combobox(creativeTabsTooltip);
 		creativeTabsResetButton = button("Reset", creativeTabsTooltip);
 		creativeTabsLabel = tooltipLabel("", creativeTabsTooltip);
 		creativeTabsSubPanel = panel(creativeTabsLabel, creativeTabsResetButton);
 		creativeTabsPanel = panel(creativeTabsSubPanel, creativeTabsComboBox, interactionPanel);
-		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "block", "decorations", "redstone", "transport", "misc", 
-				"food", "tools", "combat", "brewing", "materials", "inventory"}));
+		creativeTabsComboBox.setModel(new DefaultComboBoxModel(new String[] {"Add", "Block", "Decorations", "Redstone", "Transport", "Misc", 
+				"Food", "Tools", "Combat", "Brewing", "Materials"}));
 		creativeTabsComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
@@ -116,6 +110,20 @@ public class RegularItemEditor extends PropertiesEditor {
 				creativeTabsReset();
 			}
 		});
+		
+		addAffectedBlocks();
+		
+		labelBurnTime = label("Burn Time", burntimeTooltip, labelPanel);
+		burntimeCheckbox = checkbox("Use", burntimeTooltip);
+		burntimeSpinner = spinner(burntimeTooltip);
+		burntimePanel = panel(burntimeSpinner, burntimeCheckbox, interactionPanel);
+		burntimeCheckbox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				burntimeUse();
+			}
+		});
+		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		
 		labelContainer = label("Container", containerTooltip, labelPanel);
 		containerCheckbox = checkbox("Use", containerTooltip);
@@ -134,19 +142,14 @@ public class RegularItemEditor extends PropertiesEditor {
 				containerChoose();
 			}
 		});
-		containerUse();
 		
-		labelBurnTime = label("Burn time", burntimeTooltip, labelPanel);
-		burntimeCheckbox = checkbox("Use", burntimeTooltip);
-		burntimeSpinner = spinner(burntimeTooltip);
-		burntimePanel = panel(burntimeSpinner, burntimeCheckbox, interactionPanel);
-		burntimeCheckbox.addActionListener(new ActionListener() {
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				burntimeUse();
-			}
-		});
-		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		if (!(this instanceof ToolItemEditor)){
+			labelMaxStackSize = label("Maximum Stack Size", maxStackSizeTooltip, labelPanel);
+			maxStackSizeSpinner = spinner(maxStackSizeTooltip, interactionPanel);
+			maxStackSizeSpinner.setModel(new SpinnerNumberModel(64, 0, 64, 1));
+		}
+
+		containerUse();
 		burntimeUse();
 		
 		setSize(400);
@@ -179,6 +182,8 @@ public class RegularItemEditor extends PropertiesEditor {
 			for (TabResource s : item.item.tabs)
 				creativeTabsChoose(s.name());
 	}
+	
+	protected void addAffectedBlocks(){}
 
 	@Override
 	public boolean save() {
@@ -211,8 +216,8 @@ public class RegularItemEditor extends PropertiesEditor {
 
 		base.tabs = new HashSet<TabResource>();
 		if (creativeTabsLabel.getText().length() > 0)
-			for (String s : creativeTabsLabel.getText().split(","))
-				base.tabs.add(TabResource.valueOf(s));
+			for (String s : creativeTabsLabel.getText().split(", "))
+				base.tabs.add(TabResource.valueOf(s.toLowerCase()));
 		base.model = "modbuilder:" + name;
 		if (!(this instanceof ToolItemEditor))
 			base.stacksize = (Integer) maxStackSizeSpinner.getValue();
@@ -232,11 +237,11 @@ public class RegularItemEditor extends PropertiesEditor {
 	}
 
 	private void containerChoose() {
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_AND_BLOCKS, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_ONLY_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();
-				containerLabel.setText((String) obj);
+				containerLabel.setText(((String) obj).replace("#0", ""));
 			}
 		});
 	}
@@ -255,8 +260,8 @@ public class RegularItemEditor extends PropertiesEditor {
 
 	private void creativeTabsChoose(String tab) {
 		change();
-		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ",");
-		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab);
+		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ", ");
+		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab.substring(0,1).toUpperCase() + tab.substring(1));
 	}
 
 	private void textureChoose() {

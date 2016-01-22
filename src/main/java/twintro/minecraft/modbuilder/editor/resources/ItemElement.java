@@ -67,6 +67,6 @@ public class ItemElement extends InventoryElement {
 		if (texture != null){
 			return TextureResources.getImage(texture);
 		}
-		return null;
+		return new ImageIcon("src/main/resources/icon.png");
 	}
 }

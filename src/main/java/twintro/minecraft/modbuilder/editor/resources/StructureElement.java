@@ -40,11 +40,14 @@ public class StructureElement extends Element {
 	@Override
 	public ImageIcon getImage() {
 		String block = structure.block;
-		if (block.startsWith("modbuilder:"))
+		if (block.startsWith("modbuilder:")){
 			block = block.substring(11);
-		try{
-			return BlockElement.getFromName(block).getImage();
-		} catch (Exception e){}
-		return null;
+			try{
+				return BlockElement.getFromName(block).getImage();
+			} catch (Exception e){
+				e.printStackTrace();
+			}
+		}
+		return new ImageIcon("src/main/resources/icon.png");
 	}
 }

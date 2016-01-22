@@ -34,15 +34,15 @@ public class ToolItemResource extends BaseItemResource {
 	/**
 	 * How good enchants on the tool will be. A level 30 enchant on a tool with low enchantability will have more effects then a level 30 enchant on a tool with high enchantability.
 	 */
-	public Integer enchantability; //hoe goed het te enchanten is
+	public Integer enchantability;
 	/**
 	 * The name of the item used to repair the tool. If you want to use a block for repairing, use the "repairblock" variable instead.
 	 */
-	public String repairitem; //naam van het item dat nodig is om de tool te repareren
+	public String repairitem;
 	/**
 	 * The name of the block used to repair the tool. If you want to use an item for repairing, use the "repairitem" variable instead.
 	 */
-	public String repairblock; //naam van het block dat nodig is om de tool te repareren
+	public String repairblock;
 
 	public ToolItemResource() {
 		type = ItemType.tool;

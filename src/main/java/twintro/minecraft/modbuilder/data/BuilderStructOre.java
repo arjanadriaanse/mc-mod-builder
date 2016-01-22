@@ -5,6 +5,8 @@ import java.util.Random;
 import com.google.common.base.Predicate;
 
 import net.minecraft.block.Block;
+import net.minecraft.block.state.IBlockState;
+import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
@@ -16,8 +18,8 @@ import net.minecraftforge.fml.common.IWorldGenerator;
  * Base ore generation. This is used for generating all ores, but also for things like dirt or gravel pockets underground.
  */
 public class BuilderStructOre implements BuilderStruct{
-	Block block;
-	Block replaceblock;
+	IBlockState block;
+	IBlockState replaceblock;
 	int dimension;
 	int maxVeinSize;
 	int chancesToSpawn;
@@ -41,7 +43,7 @@ public class BuilderStructOre implements BuilderStruct{
 	 * 		The maximum Y-level the ore will be generated on.\\
 	 * 		Note that the Y-level range is for the center of the vein; it is possible that some blocks are outside the range.
 	 */
-	public BuilderStructOre(Block block, Block replaceblock, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
+	public BuilderStructOre(IBlockState block, IBlockState replaceblock, int dimension, int maxVeinSize, int chancesToSpawn, int minY, int maxY) {
 		this.block = block;
 		this.dimension = dimension;
 		this.maxVeinSize = maxVeinSize;
@@ -51,15 +53,15 @@ public class BuilderStructOre implements BuilderStruct{
 		if (replaceblock!=null)
 			switch (dimension) {
 				case -1: {
-					replaceblock=Blocks.netherrack;
+					replaceblock=Blocks.netherrack.getDefaultState();
 					break;
 				}
 				case 1: {
-					replaceblock=Blocks.end_stone;
+					replaceblock=Blocks.end_stone.getDefaultState();
 					break;
 				}
 				default: {
-					replaceblock=Blocks.stone;
+					replaceblock=Blocks.stone.getDefaultState();
 				}
 			}
 	}
@@ -68,12 +70,26 @@ public class BuilderStructOre implements BuilderStruct{
 	public Random generateComponent(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider){
 		if (dimension == world.getWorldType().getWorldTypeID()) {
 			int heightRange = maxY - minY;
-			WorldGenMinable wgm = new WorldGenMinable(block.getDefaultState(), maxVeinSize);
+			WorldGenMinable wgm = new WorldGenMinable(block, maxVeinSize, BlockHelper.forBlock(replaceblock.getBlock()));
 			for (int i = 0; i < chancesToSpawn; i++){
 				int randX = random.nextInt(16);
 				int randY = random.nextInt(heightRange) + minY;
 				int randZ = random.nextInt(16);
-				wgm.generate(world, random, new BlockPos(16*chunkX + randX, randY, 16*chunkZ + randZ));
+				BlockPos pos = new BlockPos(16*chunkX + randX, randY, 16*chunkZ + randZ);
+				if (maxVeinSize>3)
+					wgm.generate(world, random, pos);
+				else {
+					if (world.getBlockState(pos).equals(replaceblock))
+						world.setBlockState(pos, block);
+					for (i = 1; i < maxVeinSize; i++){
+						int x = random.nextInt(3)-1;
+						int y = random.nextInt(3)-1;
+						int z = random.nextInt(3)-1;
+						if (world.getBlockState(pos.add(x,y,z)).equals(replaceblock))
+							world.setBlockState(pos.add(x,y,z), block);
+						
+					}
+				}
 			}
 		}
 		return random;

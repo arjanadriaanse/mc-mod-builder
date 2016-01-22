@@ -46,6 +46,11 @@ import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResour
  * Contains methods for converting resource objects to Minecraft objects.
  */
 public class ResourceConverter {
+	private static IBlockState toBlockState(String block){
+		if (block.contains("#")) return Block.getBlockFromName(block.split("#")[0]).getStateFromMeta(Integer.parseInt(block.split("#")[1]));
+		else return Block.getBlockFromName(block).getDefaultState();
+	}
+	
 	public static Block toBlock(BaseBlockResource resource) {
 		if (resource instanceof BlockResource)
 			return toBlock((BlockResource) resource);
@@ -137,19 +142,21 @@ public class ResourceConverter {
 				resource.damage         != null ? resource.damage         : 0.5F,
 				resource.enchantability != null ? resource.enchantability : 10);
 		if (resource.repairitem != null) {
-				ItemStack repair = new ItemStack(Item.getByNameOrId(resource.repairitem));
-				material.setRepairItem(repair);
+			ItemStack repair;
+			if (resource.repairitem.contains("#")) repair=new ItemStack(Item.getByNameOrId(resource.repairitem.split("#")[0]),Integer.parseInt(resource.repairitem.split("#")[1]));
+			else repair=new ItemStack(Item.getByNameOrId(resource.repairitem.split("#")[0]));
+			material.setRepairItem(repair);
 		}
 		else if (resource.repairblock != null) {
-				ItemStack repair = new ItemStack(Block.getBlockFromName(resource.repairblock));
-				material.setRepairItem(repair);
+			ItemStack repair;
+			if (resource.repairblock.contains("#")) repair=new ItemStack(Block.getBlockFromName(resource.repairblock.split("#")[0]),Integer.parseInt(resource.repairblock.split("#")[1]));
+			else repair=new ItemStack(Block.getBlockFromName(resource.repairblock.split("#")[0]));
+			material.setRepairItem(repair);
 		}
-		Set blocks = new LinkedHashSet();
-		if (resource.blocks != null) {
-			for (String key : resource.blocks)
-				blocks.add(Block.getBlockFromName(key));
+		if (resource.blocks == null) {
+			resource.blocks = new LinkedHashSet();
 		}
-		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
+		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, resource.blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
@@ -167,8 +174,8 @@ public class ResourceConverter {
 	
 	public static BuilderStructOre toStructure(OreStructureResource resource) {
 		BuilderStructOre structure = new BuilderStructOre(
-				Block.getBlockFromName(resource.block),
-				resource.replaceblock   !=null ? Block.getBlockFromName(resource.replaceblock) : null,
+				toBlockState(resource.block),
+				resource.replaceblock   !=null ? toBlockState(resource.replaceblock) : null,
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.maxveinsize    !=null ? resource.maxveinsize    : 8,
 				resource.chancestospawn !=null ? resource.chancestospawn : 16,
@@ -181,10 +188,10 @@ public class ResourceConverter {
 		Set onlyonblocks = new LinkedHashSet();
 		if (resource.onlyonblocks != null && resource.onlyonblocks.size()>0) {
 			for (String key : resource.onlyonblocks)
-				onlyonblocks.add(Block.getBlockFromName(key));
+				onlyonblocks.add(toBlockState(key));
 		}
 		BuilderStructGround structure = new BuilderStructGround(
-				Block.getBlockFromName(resource.block), onlyonblocks,
+				toBlockState(resource.block), onlyonblocks,
 				resource.dimension      !=null ? resource.dimension      : 0,
 				resource.amountperchunk !=null ? resource.amountperchunk : 32);
 		return structure;

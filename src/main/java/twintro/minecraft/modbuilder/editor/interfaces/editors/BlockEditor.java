@@ -83,6 +83,10 @@ public class BlockEditor extends PropertiesEditor {
 	private JPanel flammableSubPanel;
 	private JPanel flammabilityPanel;
 	private JPanel fireSpreadSpeedPanel;
+	private JPanel harvestRestrictionsPanel;
+	private JPanel harvestRestrictionsSubPanel;
+	private JPanel harvestTypePanel;
+	private JPanel harvestLevelPanel;
 	private JLabel labelCreativeTab;
 	private JLabel labelModel;
 	private JLabel labelDrops;
@@ -91,8 +95,9 @@ public class BlockEditor extends PropertiesEditor {
 	private JLabel labelSlipperiness;
 	private JLabel labelHardness;
 	private JLabel labelResistance;
-	private JLabel labelHarvestLevel;
 	private JLabel labelBurntime;
+	private JLabel labelHarvestRestrictions;
+	private JLabel labelHarvestLevel;
 	private JLabel labelHarvestType;
 	private JLabel labelUnbreakable;
 	private JLabel labelMapColor;
@@ -111,7 +116,6 @@ public class BlockEditor extends PropertiesEditor {
 	private JSpinner slipperinessSpinner;
 	private JSpinner hardnessSpinner;
 	private JSpinner resistanceSpinner;
-	private JSpinner harvestLevelSpinner;
 	private JSpinner burntimeSpinner;
 	private JSpinner flammabilitySpinner;
 	private JSpinner fireSpreadSpeedSpinner;
@@ -119,12 +123,14 @@ public class BlockEditor extends PropertiesEditor {
 	private JComboBox harvestTypeComboBox;
 	private JComboBox mapColorComboBox;
 	private JComboBox mobilityCombobox;
+	private JComboBox harvestLevelComboBox;
 	private JCheckBox dropsCheckBox;
 	private JCheckBox unbreakableCheckBox;
 	private JCheckBox replacableCheckBox;
 	private JCheckBox requiresToolCheckBox;
 	private JCheckBox solidCheckBox;
 	private JCheckBox flammableCheckBox;
+	private JCheckBox harvestRestrictionsCheckBox;
 	
 	private BlockModelResource model;
 	private List<ItemStackResource> drops;
@@ -143,9 +149,10 @@ public class BlockEditor extends PropertiesEditor {
 	private static final String harvestLevelTooltip = "<html> How good the tool needs to be to harvest the block.<br>"+
 								"A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond</html>";
 	private static final String burntimeTooltip = "<html>Burn time is the amount of ticks the block will burn if used as a fuel.<br>" + 
-								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
+								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";//TODO 0=null
 	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
+	private static final String harvestRestrictionsTooltip = ""; //TODO
 	private static final String mapColorTooltip = ""; //TODO
 	private static final String mobilityTooltip = ""; //TODO
 	private static final String replacableTooltip = ""; //TODO
@@ -215,40 +222,6 @@ public class BlockEditor extends PropertiesEditor {
 			}
 		});
 		drops = new ArrayList<ItemStackResource>();
-		useDrops();
-		
-		labelCreativeTab = label("Creative tab", creativeTabTooltip, labelPanel);
-		creativeTabComboBox = combobox(creativeTabTooltip, interactionPanel);
-		creativeTabComboBox.setModel(new DefaultComboBoxModel(new String[] {"block", "decorations", "redstone", "transport", "misc", 
-				"food", "tools", "combat", "brewing", "materials", "inventory"}));
-		
-		labelLightness = label("Lightness", lightnessTooltip, labelPanel);
-		lightnessSpinner = spinner(lightnessTooltip, interactionPanel);
-		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
-		
-		labelOpacity = label("Opacity", opacityTooltip, labelPanel);
-		opacitySpinner = spinner(opacityTooltip, interactionPanel);
-		opacitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(255), new Integer(1)));
-		
-		labelSlipperiness = label("Slipperiness", slipperinessTooltip, labelPanel);
-		slipperinessSpinner = spinner(slipperinessTooltip, interactionPanel);
-		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
-		
-		labelHardness = label("Hardness", hardnessTooltip, labelPanel);
-		hardnessSpinner = spinner(hardnessTooltip, interactionPanel);
-		hardnessSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		
-		labelResistance = label("Resistance", resistanceTooltip, labelPanel);
-		resistanceSpinner = spinner(resistanceTooltip, interactionPanel);
-		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
-		
-		labelHarvestLevel = label("Harvest level", harvestLevelTooltip, labelPanel);
-		harvestLevelSpinner = spinner(harvestLevelTooltip, interactionPanel);
-		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
-		
-		labelBurntime = label("Burn time", burntimeTooltip, labelPanel);
-		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
-		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
 		
 		labelFlammability = label("Flammability", flammabilityTooltip);
 		flammabilitySpinner = spinner(flammabilityTooltip);
@@ -256,15 +229,15 @@ public class BlockEditor extends PropertiesEditor {
 		flammabilityPanel.setLayout(new BorderLayout(5, 0));
 		flammabilityPanel.add(labelFlammability, BorderLayout.WEST);
 		flammabilityPanel.add(flammabilitySpinner, BorderLayout.CENTER);
-		flammabilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		flammabilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(300), new Integer(1)));
 		
-		labelFireSpreadSpeed = label("Fire spread speed", fireSpreadSpeedTooltip);
+		labelFireSpreadSpeed = label("Fire Spread Speed", fireSpreadSpeedTooltip);
 		fireSpreadSpeedSpinner = spinner(fireSpreadSpeedTooltip);
 		fireSpreadSpeedPanel = new JPanel();
 		fireSpreadSpeedPanel.setLayout(new BorderLayout(5, 0));
 		fireSpreadSpeedPanel.add(labelFireSpreadSpeed, BorderLayout.WEST);
 		fireSpreadSpeedPanel.add(fireSpreadSpeedSpinner, BorderLayout.CENTER);
-		fireSpreadSpeedSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		fireSpreadSpeedSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(300), new Integer(1)));
 		
 		labelFlammable = label("Flammable", flammableTooltip, labelPanel);
 		flammableCheckBox = checkbox("Use", flammableTooltip);
@@ -279,21 +252,36 @@ public class BlockEditor extends PropertiesEditor {
 				useFlammable();
 			}
 		});
-		useFlammable();
+
+		labelHarvestType = label("Harvest Type", harvestTypeTooltip);
+		harvestTypeComboBox = combobox(harvestTypeTooltip);
+		harvestTypePanel = new JPanel();
+		harvestTypePanel.setLayout(new BorderLayout(5, 0));
+		harvestTypePanel.add(labelHarvestType, BorderLayout.WEST);
+		harvestTypePanel.add(harvestTypeComboBox, BorderLayout.CENTER);
+		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Pickaxe", "Shovel", "Axe"}));
 		
-		labelHarvestType = label("Harvest type", harvestTypeTooltip, labelPanel);
-		harvestTypeComboBox = combobox(harvestTypeTooltip, interactionPanel);
-		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"none", "pickaxe", "shovel", "axe"}));
+		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip);
+		harvestLevelComboBox = combobox(harvestLevelTooltip);
+		harvestLevelPanel = new JPanel();
+		harvestLevelPanel.setLayout(new BorderLayout(5, 0));
+		harvestLevelPanel.add(labelHarvestLevel, BorderLayout.WEST);
+		harvestLevelPanel.add(harvestLevelComboBox, BorderLayout.CENTER);
+		harvestLevelComboBox.setModel(new DefaultComboBoxModel(new String[] {"Wood", "Stone", "Iron", "Diamond"}));
 		
-		labelMapColor =  label("Map color", mapColorTooltip, labelPanel);
-		mapColorComboBox = combobox(mapColorTooltip, interactionPanel);
-		mapColorComboBox.setModel(new DefaultComboBoxModel(ColorListCellRenderer.mapColors));
-		mapColorComboBox.setRenderer(new ColorListCellRenderer());
-		
-		labelMobility = label("Mobility", mobilityTooltip, labelPanel);
-		mobilityCombobox = combobox(mobilityTooltip, interactionPanel);
-		mobilityCombobox.setModel(new DefaultComboBoxModel(new String[]{
-				"Normal piston push behaviour", "Break when pushed by piston", "Not pushable by pistons"}));
+		labelHarvestRestrictions = label("Harvest Restrictions", harvestRestrictionsTooltip, labelPanel);
+		harvestRestrictionsCheckBox = checkbox("Use", harvestRestrictionsTooltip);
+		harvestRestrictionsSubPanel = new JPanel();
+		harvestRestrictionsSubPanel.setLayout(new GridLayout(0, 2, 5, 0));
+		harvestRestrictionsSubPanel.add(harvestTypePanel);
+		harvestRestrictionsSubPanel.add(harvestLevelPanel);
+		harvestRestrictionsPanel = panel(harvestRestrictionsSubPanel, harvestRestrictionsCheckBox, interactionPanel);
+		harvestRestrictionsCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				useHarvestRestrictions();
+			}
+		});
 		
 		labelProperties = new JLabel("Properties");
 		labelPanel.add(labelProperties);
@@ -302,21 +290,72 @@ public class BlockEditor extends PropertiesEditor {
 		propertiesPanel.setLayout(new GridLayout(0, 4, 0, 0));
 		interactionPanel.add(propertiesPanel);
 		
-		replacableCheckBox = checkbox("Replacable", replacableTooltip);
-		replacablePanel = panel(replacableCheckBox);
-		propertiesPanel.add(replacablePanel);
-		
-		requiresToolCheckBox = checkbox("Requires tool", requiresToolTooltip);
-		requiresToolPanel = panel(requiresToolCheckBox);
-		propertiesPanel.add(requiresToolPanel);
-		
 		solidCheckBox = checkbox("Solid", solidTooltip);
+		solidCheckBox.setSelected(true);
 		solidPanel = panel(solidCheckBox);
 		propertiesPanel.add(solidPanel);
+		solidCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				useSolid();
+			}
+		});
 		
 		unbreakableCheckBox = checkbox("Unbreakable", unbreakableTooltip);
 		unbreakablePanel = panel(unbreakableCheckBox);
 		propertiesPanel.add(unbreakablePanel);
+		
+		requiresToolCheckBox = checkbox("Requires Tool", requiresToolTooltip);
+		requiresToolPanel = panel(requiresToolCheckBox);
+		propertiesPanel.add(requiresToolPanel);
+		
+		replacableCheckBox = checkbox("Replacable", replacableTooltip);
+		replacablePanel = panel(replacableCheckBox);
+		propertiesPanel.add(replacablePanel);
+		
+		labelMapColor =  label("Map Color", mapColorTooltip, labelPanel);
+		mapColorComboBox = combobox(mapColorTooltip, interactionPanel);
+		mapColorComboBox.setModel(new DefaultComboBoxModel(ColorListCellRenderer.mapColors));
+		mapColorComboBox.setRenderer(new ColorListCellRenderer());
+		
+		labelCreativeTab = label("Creative Tab", creativeTabTooltip, labelPanel);
+		creativeTabComboBox = combobox(creativeTabTooltip, interactionPanel);
+		creativeTabComboBox.setModel(new DefaultComboBoxModel(new String[] {"Block", "Decorations", "Redstone", "Transport", "Misc", 
+				"Food", "Tools", "Combat", "Brewing", "Materials", "Inventory"}));
+		
+		labelMobility = label("Mobility", mobilityTooltip, labelPanel);
+		mobilityCombobox = combobox(mobilityTooltip, interactionPanel);
+		mobilityCombobox.setModel(new DefaultComboBoxModel(new String[]{
+				"Normal piston push behaviour", "Break when pushed by piston", "Not pushable by pistons"}));
+		
+		labelSlipperiness = label("Slipperiness", slipperinessTooltip, labelPanel);
+		slipperinessSpinner = spinner(slipperinessTooltip, interactionPanel);
+		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
+		
+		labelBurntime = label("Burn time", burntimeTooltip, labelPanel);
+		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
+		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		
+		labelLightness = label("Lightness", lightnessTooltip, labelPanel);
+		lightnessSpinner = spinner(lightnessTooltip, interactionPanel);
+		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
+		
+		labelOpacity = label("Opacity", opacityTooltip, labelPanel);
+		opacitySpinner = spinner(opacityTooltip, interactionPanel);
+		opacitySpinner.setModel(new SpinnerNumberModel(new Integer(15), new Integer(0), new Integer(15), new Integer(1)));
+		
+		labelHardness = label("Hardness", hardnessTooltip, labelPanel);
+		hardnessSpinner = spinner(hardnessTooltip, interactionPanel);
+		hardnessSpinner.setModel(new SpinnerNumberModel(new Float(0.5F), new Float(0), null, new Float(0.1F)));
+		
+		labelResistance = label("Resistance", resistanceTooltip, labelPanel);
+		resistanceSpinner = spinner(resistanceTooltip, interactionPanel);
+		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(2.5F), new Float(0), null, new Float(1)));
+		
+		useDrops();
+		useFlammable();
+		useHarvestRestrictions();
+		useSolid();
 		
 		setSize(500);
 	}
@@ -347,8 +386,9 @@ public class BlockEditor extends PropertiesEditor {
 			requiresToolCheckBox.setSelected(base.requirestool);
 		if (base.solid != null)
 			solidCheckBox.setSelected(base.solid);
+		useSolid();
 		if (base.tab != null)
-			creativeTabComboBox.setSelectedItem(base.tab.name());
+			creativeTabComboBox.setSelectedItem(base.tab.name().substring(0,1).toUpperCase() + base.tab.name().substring(1));
 		if (base.light != null)
 			lightnessSpinner.setValue(base.light);
 		if (base.opacity != null)
@@ -361,10 +401,14 @@ public class BlockEditor extends PropertiesEditor {
 			resistanceSpinner.setValue(base.resistance);
 		if (base.unbreakable != null)
 			unbreakableCheckBox.setSelected(base.unbreakable);
-		if (base.harvesttype != null)
-			harvestTypeComboBox.setSelectedItem(base.harvesttype);
-		if (base.harvestlevel != null)
-			harvestLevelSpinner.setValue(base.harvestlevel);
+		if (base.harvesttype != null || base.harvestlevel != null){
+			if (base.harvesttype != null)
+				harvestTypeComboBox.setSelectedItem(base.harvesttype.substring(0,1).toUpperCase() + base.harvesttype.substring(1));
+			if (base.harvestlevel != null)
+				harvestLevelComboBox.setSelectedIndex(base.harvestlevel);
+			harvestRestrictionsCheckBox.setSelected(true);
+			useHarvestRestrictions();
+		}
 		if (base.burntime != null)
 			burntimeSpinner.setValue(base.burntime);
 		if (base.flammability != null || base.firespreadspeed != null){
@@ -410,17 +454,21 @@ public class BlockEditor extends PropertiesEditor {
 			else
 				base.drops = thisDrops;
 			base.model = "modbuilder:" + name;
-			base.tab = TabResource.valueOf((String) creativeTabComboBox.getSelectedItem());
+			base.tab = TabResource.valueOf(((String) creativeTabComboBox.getSelectedItem()).toLowerCase());
 			base.light = (Integer) lightnessSpinner.getValue();
-			base.opacity = (Integer) opacitySpinner.getValue();
-			base.slipperiness = (Float) slipperinessSpinner.getValue();
+			if (solidCheckBox.isSelected())
+				base.opacity = (Integer) opacitySpinner.getValue();
+			if (solidCheckBox.isSelected())
+				base.slipperiness = (Float) slipperinessSpinner.getValue();
 			base.hardness = (Float) hardnessSpinner.getValue();
 			base.resistance = (Float) resistanceSpinner.getValue();
 			base.unbreakable = unbreakableCheckBox.isSelected();
-			if (harvestTypeComboBox.getSelectedIndex() != 0) 
-				base.harvesttype = (String) harvestTypeComboBox.getSelectedItem();
-			base.harvestlevel = (Integer) harvestLevelSpinner.getValue();
-			base.burntime = (Integer) burntimeSpinner.getValue();
+			if (harvestRestrictionsCheckBox.isSelected()){
+				base.harvesttype = ((String) harvestTypeComboBox.getSelectedItem()).toLowerCase();
+				base.harvestlevel = (Integer) harvestLevelComboBox.getSelectedIndex();
+			}
+			if ((Integer) burntimeSpinner.getValue() > 0) 
+				base.burntime = (Integer) burntimeSpinner.getValue();
 			if (flammableCheckBox.isSelected()){
 				base.flammability = (Integer) flammabilitySpinner.getValue();
 				base.firespreadspeed = (Integer) fireSpreadSpeedSpinner.getValue();
@@ -450,8 +498,8 @@ public class BlockEditor extends PropertiesEditor {
 	private void setModel(BlockModelResource model) {
 		change();
 		this.model = model;
-		if (model.parent == "block/cross") modelLabel.setText("Cross model");
-		else modelLabel.setText("Block model");
+		if (model.parent == "block/cross") modelLabel.setText("Cross Model");
+		else modelLabel.setText("Block Model");
 		BlockElement block = new BlockElement();
 		block.blockModel = model;
 		setIconImage(block.getImage().getImage());
@@ -486,7 +534,7 @@ public class BlockEditor extends PropertiesEditor {
 		else
 			amount = item.amount + "-" + (item.amountincrease + item.amount);
 		
-		if (dropsLabel.getText().length() > 0) dropsLabel.setText(dropsLabel.getText() + ",");
+		if (dropsLabel.getText().length() > 0) dropsLabel.setText(dropsLabel.getText() + ", ");
 		dropsLabel.setText(dropsLabel.getText() + amount + " " + material);
 	}
 	
@@ -503,6 +551,23 @@ public class BlockEditor extends PropertiesEditor {
 		labelFireSpreadSpeed.setEnabled(use);
 		flammabilitySpinner.setEnabled(use);
 		fireSpreadSpeedSpinner.setEnabled(use);
+	}
+	
+	private void useHarvestRestrictions(){
+		boolean use = harvestRestrictionsCheckBox.isSelected();
+		labelHarvestRestrictions.setEnabled(use);
+		labelHarvestType.setEnabled(use);
+		labelHarvestLevel.setEnabled(use);
+		harvestTypeComboBox.setEnabled(use);
+		harvestLevelComboBox.setEnabled(use);
+	}
+	
+	private void useSolid(){
+		boolean use = solidCheckBox.isSelected();
+		labelOpacity.setEnabled(use);
+		labelSlipperiness.setEnabled(use);
+		slipperinessSpinner.setEnabled(use);
+		opacitySpinner.setEnabled(use);
 	}
 }
 

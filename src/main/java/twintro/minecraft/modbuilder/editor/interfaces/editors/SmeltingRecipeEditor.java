@@ -119,7 +119,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		xpSpinner = new JSpinner();
 		xpSpinner.setToolTipText(xpTooltip);
 		xpSpinner.addChangeListener(changeListener);
-		xpSpinner.setModel(new SpinnerNumberModel(new Float(0), null, null, new Float(0.1)));
+		xpSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(0.1)));
 		panel_3.add(xpSpinner, BorderLayout.CENTER);
 		
 		setVisible(true);

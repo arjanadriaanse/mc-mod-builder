@@ -200,7 +200,15 @@ public class DropChooseWindow extends IconDialog {
 		String material = materialLabel.getText();
 		if (material != null && material != ""){
 			ItemStackResource item = new ItemStackResource();
-			
+
+			if (material.split("#").length == 2){
+				try{
+					item.meta = Integer.parseInt(material.split("#")[1]);
+					material = material.split("#")[0];
+				} catch (Exception e){
+					e.printStackTrace();
+				}
+			}
 			if (MaterialResources.isItem(material))
 				item.item = material;
 			else

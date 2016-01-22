@@ -95,15 +95,15 @@ public class OreStructureEditor extends PropertiesEditor {
 		dimensionComboBox = combobox(dimensionTooltip, interactionPanel);
 		dimensionComboBox.setModel(new DefaultComboBoxModel(new String[] {"Overworld", "Nether", "End"}));
 		
-		labelMaxVeinSize = label("Max vein size", maxVeinSizeTooltip, labelPanel);
+		labelMaxVeinSize = label("Max Vein Size", maxVeinSizeTooltip, labelPanel);
 		maxVeinSizeSpinner = spinner(maxVeinSizeTooltip, interactionPanel);
-		maxVeinSizeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		maxVeinSizeSpinner.setModel(new SpinnerNumberModel(new Integer(8), new Integer(0), null, new Integer(1)));
 		
-		labelAmount = label("Veins per chunk", amountTooltip, labelPanel);
+		labelAmount = label("Veins Per Chunk", amountTooltip, labelPanel);
 		amountSpinner = spinner(amountTooltip, interactionPanel);
-		amountSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		amountSpinner.setModel(new SpinnerNumberModel(new Integer(75), new Integer(0), null, new Integer(1)));
 		
-		labelRegion = new JLabel("Spawn region");
+		labelRegion = new JLabel("Spawn Region");
 		labelRegion.setToolTipText(regionTooltip);
 		labelPanel.add(labelRegion);
 		
@@ -123,7 +123,7 @@ public class OreStructureEditor extends PropertiesEditor {
 			@Override
 			public void stateChanged(ChangeEvent e) {
 				maxYSpinner.setModel(new SpinnerNumberModel((Integer) maxYSpinner.getValue(), 
-						(Integer) minYSpinner.getValue(), null, new Integer(1)));
+						(Integer) minYSpinner.getValue(), new Integer(256), new Integer(1)));
 			}
 		});
 		minYSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(64), new Integer(1)));
@@ -144,7 +144,7 @@ public class OreStructureEditor extends PropertiesEditor {
 						new Integer(0), (Integer) maxYSpinner.getValue(), new Integer(1)));
 			}
 		});
-		maxYSpinner.setModel(new SpinnerNumberModel(new Integer(64), new Integer(0), null, new Integer(1)));
+		maxYSpinner.setModel(new SpinnerNumberModel(new Integer(64), new Integer(0), new Integer(256), new Integer(1)));
 		maxYPanel.add(maxYSpinner, BorderLayout.CENTER);
 		
 		setSize(400);
@@ -176,7 +176,7 @@ public class OreStructureEditor extends PropertiesEditor {
 			amountSpinner.setValue(ore.chancestospawn);
 		if (ore.minY != null && ore.maxY != null){
 			minYSpinner.setModel(new SpinnerNumberModel(ore.minY, new Integer(0), ore.maxY, new Integer(1)));
-			maxYSpinner.setModel(new SpinnerNumberModel(ore.maxY, ore.minY, null, new Integer(1)));
+			maxYSpinner.setModel(new SpinnerNumberModel(ore.maxY, ore.minY, new Integer(256), new Integer(1)));
 		}
 		
 		changed = false;
@@ -198,7 +198,7 @@ public class OreStructureEditor extends PropertiesEditor {
 	}
 
 	private void chooseReplacing() {
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_NONE, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();

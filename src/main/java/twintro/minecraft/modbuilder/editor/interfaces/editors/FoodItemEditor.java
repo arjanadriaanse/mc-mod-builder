@@ -69,16 +69,18 @@ public class FoodItemEditor extends RegularItemEditor {
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		
+		creativeTabsComboBox.setSelectedItem("Food");
+		
 		setTitle("Edit Food: " + this.name);
 		saveButton.setText("Save Food");
 		
 		labelHungerRefill = label("Hunger Refill", hungerRefillTooltip, labelPanel);
 		hungerRefillSpinner = spinner(hungerRefillTooltip, interactionPanel);
-		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
+		hungerRefillSpinner.setModel(new SpinnerNumberModel(new Integer(6), new Integer(0), new Integer(20), new Integer(1)));
 		
 		labelSaturation = label("Saturation", saturationTooltip, labelPanel);
 		saturationSpinner = spinner(saturationTooltip, interactionPanel);
-		saturationSpinner.setModel(new SpinnerNumberModel(new Float(0), new Float(0), null, new Float(1)));
+		saturationSpinner.setModel(new SpinnerNumberModel(new Float(6), new Float(0), null, new Float(1)));
 		
 		labelProperties = new JLabel("Properties");
 		labelPanel.add(labelProperties);
@@ -87,13 +89,13 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		interactionPanel.add(propertiesPanel);
 		
-		feedToWolvesCheckbox = checkbox("Feed to wolves", feedToWolvesTooltip);
-		feedToWolvesPanel = panel(feedToWolvesCheckbox);
-		propertiesPanel.add(feedToWolvesPanel);
-		
-		alwaysEdibleCheckbox = checkbox("Always edible", alwaysEdibleTooltip);
+		alwaysEdibleCheckbox = checkbox("Always Edible", alwaysEdibleTooltip);
 		alwaysEdiblePanel = panel(alwaysEdibleCheckbox);
 		propertiesPanel.add(alwaysEdiblePanel);
+		
+		feedToWolvesCheckbox = checkbox("Feed To Wolves", feedToWolvesTooltip);
+		feedToWolvesPanel = panel(feedToWolvesCheckbox);
+		propertiesPanel.add(feedToWolvesPanel);
 		
 		effectsListPanel = new JPanel();
 		effectsListPanel.setLayout(new GridLayout(0, 1, 0, 5));
@@ -101,7 +103,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		mainPanel.add(effectsListPanel, BorderLayout.SOUTH);
 		
 		effectsListTopPanel = new JPanel();
-		effectsListTopPanel.setLayout(new GridLayout(0, 4, 0, 5));
+		effectsListTopPanel.setLayout(new GridLayout(0, 4, 5, 0));
 		effectsListPanel.add(effectsListTopPanel);
 
 		labelEffect = label("Effect", effectTypeTooltip, effectsListTopPanel);
@@ -121,6 +123,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	
 	public FoodItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this(item.name, runnable, closeHandler);
+		creativeTabsLabel.setText("");
 		regularSetup(item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);

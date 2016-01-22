@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.editor;
 
 import java.awt.BorderLayout;
 import java.awt.CardLayout;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 import java.awt.FileDialog;
 import java.awt.GridLayout;
@@ -12,6 +13,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,15 +48,17 @@ import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class Editor {
+	private static String directory = System.getProperty("user.home") + "/AppData/Roaming/.minecraft/resourcepacks";
+	
 	private static boolean interfaceOpened = false;
 	private static JFrame frame;
 	private static JPanel activityPanel;
 	private static JMenuItem mntmExport;
 	
 	private static ActivityPanel TexturePanel;
-	private static ActivityPanel RecipePanel;
-	private static ActivityPanel BlockPanel;
 	private static ActivityPanel ItemPanel;
+	private static ActivityPanel BlockPanel;
+	private static ActivityPanel RecipePanel;
 	private static ActivityPanel StructurePanel;
 	
 	public static MetaFile metaFile;
@@ -70,6 +75,10 @@ public class Editor {
 	}
 	
 	public static void main(String[] args) {
+		if (args.length >= 1){
+			directory = args[0];
+		}
+		
 		try {
 			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
 		} catch (Exception e) {
@@ -141,17 +150,17 @@ public class Editor {
 			}
 		});
 		
-		JMenuItem mntmHelp = new JMenuItem("Help");
+		JMenuItem mntmHelp = new JMenuItem("Guide");
 		mnHelp.add(mntmHelp);
 		mntmHelp.addActionListener(new ActionListener(){
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				help();
+				guide();
 			}
 		});
-		
-		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
+
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',KeyEvent.CTRL_DOWN_MASK), "open");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
 		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',KeyEvent.CTRL_DOWN_MASK), "export");
 		menuBar.getActionMap().put("new", new AbstractAction(){
 			@Override
@@ -187,17 +196,19 @@ public class Editor {
 	private static void chooseFolder(boolean newMod){
 		JFileChooser menu = new JFileChooser();
 		menu.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
-		menu.setCurrentDirectory(new File(System.getProperty("user.home") + 
-				"/AppData/Roaming/.minecraft/resourcepacks"));
+		menu.setCurrentDirectory(new File(directory));
 		int result;
 		if (newMod) result = menu.showSaveDialog(frame);
 		else result = menu.showOpenDialog(frame);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
-			if (file.exists() && file.listFiles().length == 0){
+			if (!file.exists()){
 				newMod = true;
 			}
-			else if (file.exists() && newMod){
+			else if (file.listFiles().length == 0){
+				newMod = true;
+			}
+			else if (newMod){
 				int selected = JOptionPane.showConfirmDialog(frame, "The file already exists. Do you want to try to open it?", 
 						"Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE);
 				if (selected == JOptionPane.OK_OPTION)
@@ -256,21 +267,21 @@ public class Editor {
 		TexturesButton.addActionListener(buttonListener);
 		buttonPanel.add(TexturesButton);
 		
-		JButton RecipesButton = new ActivityButton("Recipes");
-		RecipesButton.addActionListener(buttonListener);
-		buttonPanel.add(RecipesButton);
+		JButton ItemsButton = new ActivityButton("Items");
+		ItemsButton.addActionListener(buttonListener);
+		buttonPanel.add(ItemsButton);
 		
 		JButton BlocksButton = new ActivityButton("Blocks");
 		BlocksButton.addActionListener(buttonListener);
 		buttonPanel.add(BlocksButton);
 		
+		JButton RecipesButton = new ActivityButton("Recipes");
+		RecipesButton.addActionListener(buttonListener);
+		buttonPanel.add(RecipesButton);
+		
 		JButton StructuresButton = new ActivityButton("Structures");
 		StructuresButton.addActionListener(buttonListener);
 		buttonPanel.add(StructuresButton);
-		
-		JButton ItemsButton = new ActivityButton("Items");
-		ItemsButton.addActionListener(buttonListener);
-		buttonPanel.add(ItemsButton);
 		
 		JPanel ActivityPanel = new JPanel();
 		splitPane.setRightComponent(ActivityPanel);
@@ -281,14 +292,14 @@ public class Editor {
 		TexturePanel = new TexturesActivityPanel("Textures", "New Texture");
 		ActivityPanel.add(TexturePanel, "Textures");
 		
-		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe");
-		ActivityPanel.add(RecipePanel, "Recipes");
+		ItemPanel = new ItemsActivityPanel("Items", "New Item");
+		ActivityPanel.add(ItemPanel, "Items");
 		
 		BlockPanel = new BlocksActivityPanel("Blocks", "New Block");
 		ActivityPanel.add(BlockPanel, "Blocks");
 		
-		ItemPanel = new ItemsActivityPanel("Items", "New Item");
-		ActivityPanel.add(ItemPanel, "Items");
+		RecipePanel = new RecipesActivityPanel("Recipes", "New Shapeless Recipe");
+		ActivityPanel.add(RecipePanel, "Recipes");
 		
 		StructurePanel = new StructureActivityPanel("Structures", "New Ore");
 		ActivityPanel.add(StructurePanel, "Structures");
@@ -327,10 +338,18 @@ public class Editor {
 	}
 	
 	private static void about(){
-		//TODO
+		try {
+			Desktop.getDesktop().browse(new URI("http://modbuilder.org/about.html"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
-	private static void help(){
-		//TODO
+	private static void guide(){
+		try {
+			Desktop.getDesktop().browse(new URI("http://modbuilder.org/tutorials.html"));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 }

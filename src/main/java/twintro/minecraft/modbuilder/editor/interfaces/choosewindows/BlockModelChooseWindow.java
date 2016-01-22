@@ -142,8 +142,8 @@ public class BlockModelChooseWindow extends IconDialog {
 		topButtonPanel.setLayout(new FlowLayout());
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
-		modelbuttons[0] = new JRadioButton("full block model");
-		modelbuttons[1] = new JRadioButton("cross model");
+		modelbuttons[0] = new JRadioButton("Full Block Model");
+		modelbuttons[1] = new JRadioButton("Cross Model");
 		modelbuttons[0].setSelected(true);
 		modelbuttons[0].addActionListener(new ActionListener(){
 			@Override
@@ -167,7 +167,7 @@ public class BlockModelChooseWindow extends IconDialog {
 		botButtonPanel.setPreferredSize(new Dimension(350, 32));
 		botButtonPanel.setLayout(new FlowLayout());
 		
-		JButton buttonOK = new JButton("Use this model");
+		JButton buttonOK = new JButton("Use This Model");
 		buttonOK.setSelected(true);
 		buttonOK.addActionListener(new ActionListener(){
 			@Override
@@ -227,17 +227,13 @@ public class BlockModelChooseWindow extends IconDialog {
 	        BufferedImage img5 = transformImage(textures1[5], w2*(ch+sh), w2*sv*(ch-sh), w2*(ch-sh),w2*sv*(-ch-sh), 2-w2*ch, 2+cv/2+w2*sv*sh);
 	        
 	        BufferedImage[] front = new BufferedImage[3];
-	        BufferedImage[] back = new BufferedImage[3];
-	        if (sv>=0) {front[0] = img0; back[0] = img5;}
-	        else {front[0] = img5; back[0] = img0;}
-	        if (ch>=sh ^ cv>=0) {front[1] = img1; back[1] = img3;}
-	        else {front[1] = img3; back[1] = img1;}
-	        if (-sh>=ch ^ cv>=0) {front[2] = img2; back[2] = img4;}
-	        else {front[2] = img4; back[2] = img2;}
+	        if (sv>=0) front[0] = img0;
+	        else front[0] = img5;
+	        if (ch>=sh ^ cv>=0) front[1] = img1;
+	        else front[1] = img3;
+	        if (-sh>=ch ^ cv>=0) front[2] = img2;
+	        else front[2] = img4;
 	        
-	        for(BufferedImage img : back) {
-		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
-	        }
 	        for(BufferedImage img : front) {
 		        g.drawImage(img, loc1[6].x-128, loc1[6].y-128, null);
 	        }
