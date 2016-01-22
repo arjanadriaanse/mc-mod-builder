@@ -307,7 +307,7 @@ public class BlockEditor extends PropertiesEditor {
 		
 		labelBurntime = label("Burn time", burntimeTooltip, labelPanel);
 		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
-		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(200)));
 		
 		labelLightness = label("Lightness", lightnessTooltip, labelPanel);
 		lightnessSpinner = spinner(lightnessTooltip, interactionPanel);
