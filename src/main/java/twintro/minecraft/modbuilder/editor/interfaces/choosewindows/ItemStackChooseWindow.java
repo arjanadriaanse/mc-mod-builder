@@ -37,6 +37,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EnchantmentPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -55,8 +56,8 @@ public class ItemStackChooseWindow extends IconDialog {
 	private JLabel labelStackSize;
 	private JLabel labelEnchantment;
 	private JLabel labelAmplifier;
-	private JLabel materialLabel;
-	private JLabel containerLabel;
+	private MaterialLabel materialLabel;
+	private MaterialLabel containerLabel;
 	private JButton materialChooseButton;
 	private JButton containerChooseButton;
 	private JButton addEnchantmentButton;
@@ -118,10 +119,7 @@ public class ItemStackChooseWindow extends IconDialog {
 	public ItemStackChooseWindow(boolean isProduct, ObjectRunnable runnable, ItemStackResource item){
 		initialize(isProduct, runnable);
 		
-		if (item.item != null)
-			chooseMaterial(item.item);
-		else if (item.block != null)
-			chooseMaterial(item.block);
+		chooseMaterial(MaterialResources.getMaterialName(item));
 		if (isProduct && item.amount != null)
 			stackSizeSpinner.setValue(item.amount);
 		if (!isProduct && item.container != null){
@@ -186,7 +184,7 @@ public class ItemStackChooseWindow extends IconDialog {
 		});
 		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		materialLabel = new TooltipLabel("", materialTooltip);
+		materialLabel = new MaterialLabel("", materialTooltip);
 		materialPanel.add(materialLabel, BorderLayout.CENTER);
 		
 		if (this.isProduct){
@@ -258,7 +256,7 @@ public class ItemStackChooseWindow extends IconDialog {
 			});
 			containerSubPanel.add(containerChooseButton, BorderLayout.EAST);
 			
-			containerLabel = new TooltipLabel("", containerTooltip);
+			containerLabel = new MaterialLabel("", containerTooltip);
 			containerSubPanel.add(containerLabel, BorderLayout.CENTER);
 			
 			useContainer();
@@ -312,13 +310,13 @@ public class ItemStackChooseWindow extends IconDialog {
 		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_NONE_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
-				containerLabel.setText(((String) obj).replace("#0", ""));
+				containerLabel.setText((String) obj);
 			}
 		});
 	}
 	
 	private void save(){
-		String material = materialLabel.getText();
+		String material = materialLabel.getMaterial();
 		if (material != null && material != ""){
 			ItemStackResource item = new ItemStackResource();
 			
@@ -337,7 +335,7 @@ public class ItemStackChooseWindow extends IconDialog {
 			if (isProduct)
 				item.amount = (Integer) stackSizeSpinner.getValue();
 			else if (containerCheckBox.isSelected())
-				item.container = containerLabel.getText();
+				item.container = containerLabel.getMaterial();
 			
 			if (isProduct){
 				Map<String, Integer> enchantments = new HashMap<String, Integer>();

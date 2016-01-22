@@ -68,24 +68,8 @@ public class ItemStackButton extends JButton {
 	
 	public void chooseItem(ItemStackResource item){
 		this.item = item;
-		if (item.block != null && !item.block.isEmpty()){
-			if (item.amount != null && item.amount > 1)
-				setText(item.amount + " " + item.block);
-			else 
-				setText(item.block);
-			setImage(MaterialResources.getImage(item.block));
-		}
-		else if (item.item != null && !item.item.isEmpty()){
-			if (item.amount != null && item.amount > 1)
-				setText(item.amount + " " + item.item);
-			else 
-				setText(item.item);
-			setImage(MaterialResources.getImage(item.item));
-		}
-		else{
-			setText("");
-			setImage(null);
-		}
+		setText();
+		setImage(MaterialResources.getImage(item));
 		main.change();
 	}
 	
@@ -96,16 +80,19 @@ public class ItemStackButton extends JButton {
 			new ItemStackChooseWindow(isProduct, runnable, item);
 	}
 	
-	@Override
-	public void setText(String text) {
-		if (text != null && text != ""){
-			if (item.container != null && item.container != "") 
-				setToolTipText("<html>" + text + "<br>Container: " + item.container + "</html>");
-			else 
-				setToolTipText(text);
+	public void setText() {
+		String material = MaterialResources.simplifyItemStackName(MaterialResources.getDisplayName(item));
+		if (material != null && material != ""){
+			if (item.container != null && item.container != ""){
+				String container = MaterialResources.simplifyItemStackName(item.container);
+				setToolTipText("<html>" + material + "<br>Container: " + container + "</html>");
+			}
+			else{
+				setToolTipText(material);
+			}
 		}
 		else setToolTipText(null);
-		super.setText(MaterialResources.simplifyItemStackName(text));
+		setText(material);
 	}
 	
 	private void setImage(ImageIcon icon){

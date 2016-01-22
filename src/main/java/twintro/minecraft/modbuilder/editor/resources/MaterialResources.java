@@ -7,6 +7,7 @@ import java.util.Set;
 
 import javax.swing.ImageIcon;
 
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 
 public class MaterialResources {
@@ -72,6 +73,25 @@ public class MaterialResources {
 		return null;
 	}
 	
+	public static String getDisplayName(ItemStackResource item){
+		if (item.amount != null && item.amount > 1)
+			return item.amount + " " + getMaterialName(item);
+		else 
+			return getMaterialName(item);
+	}
+	
+	public static String getMaterialName(ItemStackResource item){
+		if (item.block != null && !item.block.isEmpty()){
+			if (item.meta == null) return item.block;
+			else return item.block + "#" + item.meta;
+		}
+		else if (item.item != null && !item.item.isEmpty()){
+			if (item.meta == null) return item.item;
+			else return item.item + "#" + item.meta;
+		}
+		return "";
+	}
+	
 	public static String simplifyItemStackName(String material){
 		material = material.replace("modbuilder:", "");
 		String prefix = "";
@@ -80,12 +100,21 @@ public class MaterialResources {
 			material = material.split(" ")[1];
 		}
 		for (int i = 0; i < vanillaBlockIds.length; i++)
-			if (vanillaBlockIds[i].equals(material))
+			if (vanillaBlockIds[i].equals(material) || vanillaBlockIds[i].equals(material + "#0"))
 				return prefix + vanillaBlocks[i];
 		for (int i = 0; i < vanillaItemIds.length; i++)
-			if (vanillaItemIds[i].equals(material))
+			if (vanillaItemIds[i].equals(material) || vanillaItemIds[i].equals(material + "#0"))
 				return prefix + vanillaItems[i];
 		return prefix + material;
+	}
+	
+	public static ImageIcon getImage(ItemStackResource item){
+		if (item.block != null && !item.block.isEmpty())
+			return getImage(item.block);
+		else if (item.item != null && !item.item.isEmpty())
+			return getImage(item.item);
+		else
+			return new ImageIcon("src/main/resources/icon.png");
 	}
 	
 	public static ImageIcon getImage(String material){
@@ -104,9 +133,9 @@ public class MaterialResources {
 			}
 		}
 		else if (material.startsWith("minecraft:")){
-			return null;
+			return new ImageIcon("src/main/resources/icon.png");
 		}
-		return null;
+		return new ImageIcon("src/main/resources/icon.png");
 	}
 	
 	public static boolean isItem(String material){

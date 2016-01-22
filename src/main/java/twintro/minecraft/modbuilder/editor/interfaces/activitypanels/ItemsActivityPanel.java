@@ -49,52 +49,44 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 	@Override
 	protected void add() {
 		String name = nameDialog("Item");
-		if (name == null) return;
-		if (!Editor.getBlockList().containsKey(name)){
-			RegularItemEditor editor = new RegularItemEditor(name, runnable, closeHandler);
-			openEditors.put(name, editor);
-		}
-		else{
-			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
-					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-			if (selected == JOptionPane.OK_OPTION)
-				add();
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			if (!Editor.getBlockList().containsKey(name)){
+				RegularItemEditor editor = new RegularItemEditor(name, runnable, closeHandler);
+				openEditors.put(name, editor);
+			}
+			else{
+				JOptionPane.showConfirmDialog(this, "The name is already in use.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	
 	private void addFood(){
 		String name = nameDialog("Item");
-		if (name == null) return;
-		if (!Editor.getBlockList().containsKey(name)){
-			FoodItemEditor editor = new FoodItemEditor(name, runnable, closeHandler);
-			openEditors.put(name, editor);
-		}
-		else{
-			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
-					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-			if (selected == JOptionPane.OK_OPTION)
-				addFood();
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			if (!Editor.getBlockList().containsKey(name)){
+				FoodItemEditor editor = new FoodItemEditor(name, runnable, closeHandler);
+				openEditors.put(name, editor);
+			}
 		}
 	}
 	
 	private void addTool(){
 		String name = nameDialog("Item");
-		if (name == null) return;
-		if (!Editor.getBlockList().containsKey(name)){
-			RegularItemEditor editor = new ToolItemEditor(name, runnable, closeHandler);
-			openEditors.put(name, editor);
-		}
-		else{
-			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another block.", 
-					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-			if (selected == JOptionPane.OK_OPTION)
-				addTool();
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			if (!Editor.getBlockList().containsKey(name)){
+				RegularItemEditor editor = new ToolItemEditor(name, runnable, closeHandler);
+				openEditors.put(name, editor);
+			}
 		}
 	}
 	
 	@Override
 	protected void edit() {
-		String value = (String) list.getSelectedValue();
+		String value = ((String) list.getSelectedValue()).replaceAll(" ", "_");
 		try {
 			if (!openEditors.containsKey(value)){
 				ItemElement item = ItemElement.getFromName(value);

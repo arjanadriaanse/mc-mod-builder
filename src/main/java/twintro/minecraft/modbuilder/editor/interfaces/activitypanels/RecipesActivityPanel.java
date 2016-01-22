@@ -24,6 +24,7 @@ import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapedRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapelessRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.SmeltingRecipeEditor;
@@ -47,28 +48,34 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	@Override
 	protected void add() {
 		String name = nameDialog("Recipe");
-		if (name == null) return;
-		ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, runnable, closeHandler);
-		openEditors.put(name, editor);
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			ShapelessRecipeEditor editor = new ShapelessRecipeEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
 	}
 	
 	private void addSmelting(){
 		String name = nameDialog("Recipe");
-		if (name == null) return;
-		SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, runnable, closeHandler);
-		openEditors.put(name, editor);
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			SmeltingRecipeEditor editor = new SmeltingRecipeEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
 	}
 	
 	private void addShaped(){
 		String name = nameDialog("Recipe");
-		if (name == null) return;
-		ShapedRecipeEditor editor = new ShapedRecipeEditor(name, runnable, closeHandler);
-		openEditors.put(name, editor);
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			ShapedRecipeEditor editor = new ShapedRecipeEditor(name, runnable, closeHandler);
+			openEditors.put(name, editor);
+		}
 	}
 	
 	@Override
 	protected void edit() {
-		String value = (String) list.getSelectedValue();
+		String value = ((String) list.getSelectedValue()).replaceAll(" ", "_");
 		try {
 			if (!openEditors.containsKey(value)){
 				RecipeElement recipe = RecipeElement.getFromName(value);

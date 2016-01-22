@@ -49,33 +49,22 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 	@Override
 	protected void add() {
 		String name = nameDialog("Block");
-		if (name == null) return;
-		for (char c : new char[]{'"','#',':','_'}){
-			if (name.contains(c + "")){
-				int selected = JOptionPane.showConfirmDialog(this, "Your name cannot include the character '" + c + "'.", 
-						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-				if (selected == JOptionPane.OK_OPTION)
-					add();
-				else
-					return;
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			if (!Editor.getItemList().containsKey(name)){
+				BlockEditor editor = new BlockEditor(name, runnable, closeHandler);
+				openEditors.put(name, editor);
 			}
-		}
-		name = name.replaceAll(" ", "_");
-		if (!Editor.getItemList().containsKey(name)){
-			BlockEditor editor = new BlockEditor(name, runnable, closeHandler);
-			openEditors.put(name, editor);
-		}
-		else{
-			int selected = JOptionPane.showConfirmDialog(this, "The name is already in use by another item.", 
-					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
-			if (selected == JOptionPane.OK_OPTION)
-				add();
+			else{
+				JOptionPane.showConfirmDialog(this, "The name is already in use.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			}
 		}
 	}
 	
 	@Override
 	protected void edit() {
-		String value = (String) list.getSelectedValue();
+		String value = ((String) list.getSelectedValue()).replaceAll(" ", "_");
 		try {
 			if (!openEditors.containsKey(value)){
 				BlockElement block = BlockElement.getFromName(value);

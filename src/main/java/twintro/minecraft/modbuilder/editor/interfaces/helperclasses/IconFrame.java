@@ -11,6 +11,11 @@ public class IconFrame extends JFrame {
 		setIconImage(new ImageIcon("src/main/resources/icon.png").getImage());
 	}
 	
+	@Override
+	public void setTitle(String title) {
+		super.setTitle(title.replaceAll("_", " "));
+	}
+	
 	protected void setIcon(String material){
 		if (material.startsWith("modbuilder:")){
 			material = material.substring(11);

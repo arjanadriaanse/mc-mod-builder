@@ -22,6 +22,7 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivi
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
@@ -50,9 +51,9 @@ public class RegularItemEditor extends PropertiesEditor {
 	protected JLabel labelCreativeTabs;
 	protected JLabel labelContainer;
 	protected JLabel labelBurnTime;
-	protected JLabel textureLabel;
 	protected JLabel creativeTabsLabel;
-	protected JLabel containerLabel;
+	protected MaterialLabel textureLabel;
+	protected MaterialLabel containerLabel;
 	protected JButton textureChooseButton;
 	protected JButton creativeTabsResetButton;
 	protected JButton containerChooseButton;
@@ -78,7 +79,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		
 		labelTexture = label("Texture", textureTooltip, labelPanel);
 		textureChooseButton = button("Choose", textureTooltip);
-		textureLabel = tooltipLabel("", textureTooltip);
+		textureLabel = materialLabel("", textureTooltip);
 		texturePanel = panel(textureLabel, textureChooseButton, interactionPanel);
 		textureChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -128,7 +129,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		labelContainer = label("Container", containerTooltip, labelPanel);
 		containerCheckbox = checkbox("Use", containerTooltip);
 		containerChooseButton = button("Choose", containerTooltip);
-		containerLabel = tooltipLabel("", containerTooltip);
+		containerLabel = materialLabel("", containerTooltip);
 		containerSubPanel = panel(containerLabel, containerChooseButton);
 		containerPanel = panel(containerSubPanel, containerCheckbox, interactionPanel);
 		containerCheckbox.addActionListener(new ActionListener() {
@@ -187,7 +188,7 @@ public class RegularItemEditor extends PropertiesEditor {
 
 	@Override
 	public boolean save() {
-		if (textureLabel.getText().length() > 0){
+		if (textureLabel.getMaterial().length() > 0){
 			ItemResource base = new ItemResource();
 			
 			ItemElement item = writeItem(base);
@@ -210,7 +211,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		ItemModelResource model = new ItemModelResource();
 		model.parent = "builtin/generated";
 		model.textures = new HashMap<String, String>();
-		model.textures.put("layer0", textureLabel.getText());
+		model.textures.put("layer0", textureLabel.getMaterial());
 		model.display = Display.regular();
 		item.itemModel = model;
 
@@ -221,8 +222,8 @@ public class RegularItemEditor extends PropertiesEditor {
 		base.model = "modbuilder:" + name;
 		if (!(this instanceof ToolItemEditor))
 			base.stacksize = (Integer) maxStackSizeSpinner.getValue();
-		if (containerLabel.getText().length() > 0 && containerCheckbox.isSelected()) 
-			base.container = containerLabel.getText();
+		if (containerLabel.getMaterial().length() > 0 && containerCheckbox.isSelected()) 
+			base.container = containerLabel.getMaterial();
 		if (burntimeCheckbox.isSelected())
 			base.burntime = (Integer) burntimeSpinner.getValue();
 		item.item = base;
@@ -259,6 +260,8 @@ public class RegularItemEditor extends PropertiesEditor {
 	}
 
 	private void creativeTabsChoose(String tab) {
+		for (String test : creativeTabsLabel.getText().split(", "))
+			if (tab.equals(test)) return;
 		change();
 		if (creativeTabsLabel.getText().length() > 0) creativeTabsLabel.setText(creativeTabsLabel.getText() + ", ");
 		creativeTabsLabel.setText(creativeTabsLabel.getText() + tab.substring(0,1).toUpperCase() + tab.substring(1));

@@ -215,6 +215,7 @@ public class MaterialChooseWindow extends IconDialog {
 	}
 	
 	private void choose(String value){
+		if (!meta) value = value.replaceAll("#0", "");
 		runnable.run(value);
 		dispose();
 	}

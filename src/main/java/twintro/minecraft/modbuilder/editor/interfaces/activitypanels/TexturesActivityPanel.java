@@ -16,6 +16,7 @@ import javax.swing.JPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.OldTextureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.TextureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
@@ -41,8 +42,10 @@ public class TexturesActivityPanel extends ActivityPanel {
 	@Override
 	protected void add() {
 		String name = nameDialog("Texture");
-		if (name == null) return;
-		editor.open(name, ResourcePackIO.toBufferedImage(new ImageIcon().getImage(), 16, 16));
+		if (isValidName(name)){
+			name = name.replaceAll(" ", "_");
+			editor.open(name, ResourcePackIO.toBufferedImage(new ImageIcon().getImage(), 16, 16));
+		}
 	}
 	
 	private void importImage(){
@@ -51,7 +54,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	@Override
 	protected void edit() {
-		String value = (String) list.getSelectedValue();
+		String value = ((String) list.getSelectedValue()).replaceAll(" ", "_");
 		editor.open(value, ResourcePackIO.toBufferedImage(ResourcePackIO.resizeImage(elements.get(value), 16, 16).getImage()));
 	}
 	

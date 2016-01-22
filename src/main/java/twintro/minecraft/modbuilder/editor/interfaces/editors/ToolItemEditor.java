@@ -21,6 +21,7 @@ import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -36,7 +37,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	private JLabel labelAffectedBlocks;
 	private JLabel labelRepairMaterial;
 	private JLabel affectedBlocksLabel;
-	private JLabel repairMaterialLabel;
+	private MaterialLabel repairMaterialLabel;
 	private JButton affectedBlocksButton;
 	private JButton affectedBlocksResetButton;
 	private JButton repairMaterialChooseButton;
@@ -66,7 +67,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		labelRepairMaterial = label("Repair Material", repairMaterialTooltip, labelPanel);
 		repairMaterialCheckbox = checkbox("Use", repairMaterialTooltip);
 		repairMaterialChooseButton = button("Choose", repairMaterialTooltip);
-		repairMaterialLabel = tooltipLabel("", repairMaterialTooltip);
+		repairMaterialLabel = materialLabel("", repairMaterialTooltip);
 		repairMaterialSubPanel = panel(repairMaterialLabel, repairMaterialChooseButton);
 		repairMaterialPanel = panel(repairMaterialSubPanel, repairMaterialCheckbox, interactionPanel);
 		repairMaterialCheckbox.addActionListener(new ActionListener() {
@@ -172,10 +173,10 @@ public class ToolItemEditor extends RegularItemEditor {
 				for (String s : affectedBlocksLabel.getText().split(", "))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
-				if (MaterialResources.isItem(repairMaterialLabel.getText()))
-					base.repairitem = repairMaterialLabel.getText();
+				if (MaterialResources.isItem(repairMaterialLabel.getMaterial()))
+					base.repairitem = repairMaterialLabel.getMaterial();
 				else
-					base.repairblock = repairMaterialLabel.getText();
+					base.repairblock = repairMaterialLabel.getMaterial();
 			}
 			
 			ItemElement item = writeItem(base);

@@ -65,7 +65,7 @@ public class ListWindow extends IconDialog {
 		list.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e){
 				if (e.getClickCount() == 2){
-					String value = (String) ((JList) e.getSource()).getSelectedValue();
+					String value = ((String) ((JList) e.getSource()).getSelectedValue()).replaceAll(" ", "_");
 					choose("modbuilder:" + value);
 				}
 			}

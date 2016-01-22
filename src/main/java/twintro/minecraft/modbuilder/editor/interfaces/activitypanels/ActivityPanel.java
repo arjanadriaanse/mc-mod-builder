@@ -111,7 +111,7 @@ public abstract class ActivityPanel extends ListPanel {
 	}
 	
 	protected void addElement(String name, ImageIcon img){
-		elements.put(name, ResourcePackIO.resizeImage(img, 64, 64));
+		elements.put(name.replaceAll("_", " "), ResourcePackIO.resizeImage(img, 64, 64));
 		list.updateUI();
 	}
 	
@@ -181,6 +181,26 @@ public abstract class ActivityPanel extends ListPanel {
 			}
 		}
 		return null;
+	}
+	
+	protected boolean isValidName(String name){
+		if (name == null) return false;
+		for (char c : new char[]{'"','#',':','_'}){
+			if (name.contains(c + "")){
+				JOptionPane.showConfirmDialog(this, "Your name cannot include the character '" + c + "'.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+				return false;
+			}
+		}
+		name = name.replaceAll(" ", "_");
+		if (!elements.containsKey(name)){
+			return true;
+		}
+		else{
+			JOptionPane.showConfirmDialog(this, "The name is already in use.", 
+					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+			return false;
+		}
 	}
 	
 	protected abstract void add();
