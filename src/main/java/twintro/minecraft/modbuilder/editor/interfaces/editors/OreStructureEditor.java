@@ -198,11 +198,11 @@ public class OreStructureEditor extends PropertiesEditor {
 	}
 
 	private void chooseReplacing() {
-		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_NONE, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.BLOCKS_NONE_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();
-				replacingLabel.setText((String) obj);
+				replacingLabel.setText(((String) obj).replace("#0", ""));
 			}
 		});
 	}

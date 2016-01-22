@@ -105,7 +105,7 @@ public class MaterialResources {
 		for (int i = 0; i < vanillaItemIds.length; i++)
 			if (vanillaItemIds[i].equals(material) || vanillaItemIds[i].equals(material + "#0"))
 				return prefix + vanillaItems[i];
-		return prefix + material;
+		return prefix + material.replaceAll("_", " ");
 	}
 	
 	public static ImageIcon getImage(ItemStackResource item){
@@ -121,7 +121,7 @@ public class MaterialResources {
 		if (material.startsWith("modbuilder:")){
 			material = material.substring(11);
 			try{
-				if (Editor.getItemList().containsKey(material)){
+				if (Editor.getItemList().containsKey(material.replaceAll("_", " "))){
 					return ItemElement.getFromName(material).getImage();
 				}
 				else{
@@ -143,7 +143,7 @@ public class MaterialResources {
 			if (vanillaItemIds[i].equals(material))
 				return true;
 		if (material.startsWith("modbuilder:"))
-			return Editor.getItemList().containsKey(material.substring(11));
+			return Editor.getItemList().containsKey(material.substring(11).replaceAll("_", " "));
 		return false;
 	}
 }

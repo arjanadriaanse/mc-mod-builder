@@ -13,7 +13,7 @@ public class IconDialog extends JDialog {
 	
 	protected void setIcon(String material){
 		if (material.startsWith("modbuilder:")){
-			material = material.substring(11);
+			material = material.substring(11).replaceAll("_", " ");
 			if (Editor.getBlockList().containsKey(material))
 				setIconImage(Editor.getBlockList().get(material).getImage());
 			else if (Editor.getItemList().containsKey(material))
