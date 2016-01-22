@@ -163,25 +163,6 @@ public class BuilderMod {
 		builder.registerTypeAdapter(BaseRecipe.class, deserializer);
 		Gson gson = builder.create();
 
-		for (String path : data.items) {
-			try {
-				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
-				IResource resource = manager.getResource(location);
-				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
-						BaseItemResource.class);
-				Item item = ResourceConverter.toItem(itemResource);
-				item.setUnlocalizedName(BuilderMod.MODID+"_"+path);
-				if (!registeredItems.contains(path)) {
-					GameRegistry.registerItem(item, path);
-					registeredItems.add(path);
-					itemModels.put(item, itemResource.model);
-					if (itemResource.burntime != null)
-						fuels.put(new ItemStack(item), itemResource.burntime);
-				}
-			} catch (IOException e) {
-				// ignore
-			}
-		}
 		for (String path : data.blocks) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":blocks/" + path + ".json");
@@ -194,8 +175,29 @@ public class BuilderMod {
 					GameRegistry.registerBlock(block, path);
 					registeredBlocks.add(path);
 					blockModels.put(block, blockResource.model);
+					ResourceConverter.blocks.put("modbuilder:"+path, block);
 					if (blockResource.burntime != null)
 						fuels.put(new ItemStack(block), blockResource.burntime);
+				}
+			} catch (IOException e) {
+				// ignore
+			}
+		}
+		for (String path : data.items) {
+			try {
+				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
+				IResource resource = manager.getResource(location);
+				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
+						BaseItemResource.class);
+				Item item = ResourceConverter.toItem(itemResource);
+				item.setUnlocalizedName(BuilderMod.MODID+"_"+path);
+				if (!registeredItems.contains(path)) {
+					GameRegistry.registerItem(item, path);
+					registeredItems.add(path);
+					itemModels.put(item, itemResource.model);
+					ResourceConverter.items.put("modbuilder:"+path, item);
+					if (itemResource.burntime != null)
+						fuels.put(new ItemStack(item), itemResource.burntime);
 				}
 			} catch (IOException e) {
 				// ignore

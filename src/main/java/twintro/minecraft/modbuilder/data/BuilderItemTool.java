@@ -16,7 +16,6 @@ import net.minecraft.world.World;
  */
 public class BuilderItemTool extends ItemTool {
 	CreativeTabs[] tabs;
-	Set<String> effectiveBlocks;
 
 	/**
 	 * 
@@ -27,25 +26,13 @@ public class BuilderItemTool extends ItemTool {
 	 * @param effectiveBlocks
 	 * 		-Set of all Block objects this tool is effective on.
 	 */
-	public BuilderItemTool(float attackDamage, ToolMaterial material, Set<String> effectiveBlocks, CreativeTabs[] tabs) {
-		super(attackDamage, material, new LinkedHashSet());
+	public BuilderItemTool(float attackDamage, ToolMaterial material, Set effectiveBlocks, CreativeTabs[] tabs) {
+		super(attackDamage, material, effectiveBlocks);
 		this.tabs = tabs;
-		this.effectiveBlocks = effectiveBlocks;
 	}
 	
 	@Override
 	public CreativeTabs[] getCreativeTabs() {
 		return tabs != null ? tabs : super.getCreativeTabs();
-	}
-	
-	@Override
-	public boolean canHarvestBlock(Block block){
-		boolean b = super.canHarvestBlock(block);
-		for(String s: effectiveBlocks){
-			Block bl = Block.getBlockFromName(s);
-			if(Block.getBlockFromName(s).equals(block))
-				return true;
-		}
-		return false;
 	}
 }

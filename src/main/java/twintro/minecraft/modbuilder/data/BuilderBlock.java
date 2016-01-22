@@ -48,8 +48,8 @@ public class BuilderBlock extends Block {
 				amount +=RANDOM.nextInt(1+items.get(i).amountincrease)+fortune;
 			Integer meta=items.get(i).meta;
 			String s = items.get(i).item;
-			Item item = Item.getByNameOrId(items.get(i).item);
-			rtn.add(new ItemStack(item,amount !=null ? amount : 1+fortune,meta!=null ? meta : getMetaFromState(state)));
+			Item item = ResourceConverter.getItemFromName(items.get(i).item);
+			rtn.add(new ItemStack(item,amount !=null ? amount : 1+fortune,meta!=null ? meta : 0));
 		}
 		return rtn;
 	}

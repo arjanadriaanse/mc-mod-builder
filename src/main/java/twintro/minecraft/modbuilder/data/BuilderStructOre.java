@@ -50,7 +50,7 @@ public class BuilderStructOre implements BuilderStruct{
 		this.chancesToSpawn = chancesToSpawn;
 		this.minY = minY;
 		this.maxY = maxY;
-		if (replaceblock!=null)
+		if (replaceblock==null)
 			switch (dimension) {
 				case -1: {
 					replaceblock=Blocks.netherrack.getDefaultState();
@@ -64,6 +64,7 @@ public class BuilderStructOre implements BuilderStruct{
 					replaceblock=Blocks.stone.getDefaultState();
 				}
 			}
+		this.replaceblock = replaceblock;
 	}
 	
 	@Override
@@ -81,7 +82,7 @@ public class BuilderStructOre implements BuilderStruct{
 				else {
 					if (world.getBlockState(pos).equals(replaceblock))
 						world.setBlockState(pos, block);
-					for (i = 1; i < maxVeinSize; i++){
+					for (int j = 1; j < maxVeinSize; j++){
 						int x = random.nextInt(3)-1;
 						int y = random.nextInt(3)-1;
 						int z = random.nextInt(3)-1;

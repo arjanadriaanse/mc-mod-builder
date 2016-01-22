@@ -1,8 +1,10 @@
 package twintro.minecraft.modbuilder.data;
 
+import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -46,9 +48,25 @@ import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResour
  * Contains methods for converting resource objects to Minecraft objects.
  */
 public class ResourceConverter {
+	public static Map<String,Block> blocks = new HashMap<String,Block>();
+	public static Map<String,Item> items = new HashMap<String,Item>();
+	
+	public static Block getBlockFromName(String block){
+		if (block.startsWith("minecraft:")) return Block.getBlockFromName(block);
+		if (block.startsWith("modbuilder:") && blocks.containsKey(block)) return blocks.get(block);
+		return null;
+	}
+	
+	public static Item getItemFromName(String item){
+		if (item.startsWith("minecraft:")) return Item.getByNameOrId(item);
+		if (item.startsWith("modbuilder:") && items.containsKey(item)) return items.get(item);
+		if (item.startsWith("modbuilder:") && blocks.containsKey(item)) return Item.getItemFromBlock(blocks.get(item));
+		return null;
+	}
+	
 	private static IBlockState toBlockState(String block){
-		if (block.contains("#")) return Block.getBlockFromName(block.split("#")[0]).getStateFromMeta(Integer.parseInt(block.split("#")[1]));
-		else return Block.getBlockFromName(block).getDefaultState();
+		if (block.contains("#")) return getBlockFromName(block.split("#")[0]).getStateFromMeta(Integer.parseInt(block.split("#")[1]));
+		else return getBlockFromName(block).getDefaultState();
 	}
 	
 	public static Block toBlock(BaseBlockResource resource) {
@@ -66,7 +84,7 @@ public class ResourceConverter {
 			Blocks.fire.setFireInfo(block,
 						resource.flammability != null ? resource.flammability : 0,
 						resource.firespreadspeed != null ? resource.firespreadspeed : 0);
-		if (resource.tab != null)
+		if (resource.tab != null) 
 			block.setCreativeTab(ResourceHelper.tabs.get(resource.tab));
 		if (resource.light != null)
 			block.setLightLevel(((float)resource.light)/15);
@@ -149,14 +167,16 @@ public class ResourceConverter {
 		}
 		else if (resource.repairblock != null) {
 			ItemStack repair;
-			if (resource.repairblock.contains("#")) repair=new ItemStack(Block.getBlockFromName(resource.repairblock.split("#")[0]),Integer.parseInt(resource.repairblock.split("#")[1]));
-			else repair=new ItemStack(Block.getBlockFromName(resource.repairblock.split("#")[0]));
+			if (resource.repairblock.contains("#")) repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]),Integer.parseInt(resource.repairblock.split("#")[1]));
+			else repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]));
 			material.setRepairItem(repair);
 		}
-		if (resource.blocks == null) {
-			resource.blocks = new LinkedHashSet();
+		Set effectiveBlocks = new LinkedHashSet();
+		if (resource.blocks != null) {
+			for(String block:resource.blocks)
+				effectiveBlocks.add(getBlockFromName(block));
 		}
-		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, resource.blocks, resource.tabs != null ? getTabs(resource.tabs) : null);
+		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, effectiveBlocks, resource.tabs != null ? getTabs(resource.tabs) : null);
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
@@ -206,7 +226,7 @@ public class ResourceConverter {
 		}
 		Block block = null;
 		if (resource.block != null)
-			block = Block.getBlockFromName(resource.block);
+			block = getBlockFromName(resource.block);
 
 		ItemStack stack = item != null ?
 				new ItemStack(item, resource.amount != null ? resource.amount: 1) :

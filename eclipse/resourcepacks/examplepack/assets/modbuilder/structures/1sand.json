@@ -1,6 +1,6 @@
 {
    "type": "ground",
-   "block": "minecraft:sand",
+   "block": "modbuilder:notdirt",
    "onlyonblocks": ["minecraft:grass"],
    "amountperchunk": 32
 }
