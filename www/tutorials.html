@@ -7,7 +7,8 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/png" href="img/icon.png">
+	
 
     <title>Modbuilder tutorials</title>
 
@@ -29,13 +30,7 @@
     <nav class="navbar navbar-inverse navbar-fixed-top">
       <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="#">Minecraft Modbuilder</a>
+			<img alt="Minecraft Mod Builder" src="img/modbuilder.png" class="pull-left" style="max-width:300px"></img>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
           <ul class="nav navbar-nav">
@@ -51,20 +46,90 @@
       </div>
     </nav>
 
+    
     <div class="container">
 
-      <div class="starter-template">
-        <h1>Error</h1>
-        <p class="lead">NotImplementedYetException</p>
+      <div class="blog-header">
+        <h1 class="blog-title">Mod builder guide</h1>
+        <p class="lead blog-description">Guide towards installing and using the Mod builder</p>
+		<hr></hr>
       </div>
-      
-      <hr>
+
+      <div class="row">
+
+        <div class="col-sm-8 blog-main">
+
+          <div class="blog-post">
+			<h2>Installing</h2>
+			<p>To make the mod files, only the minecraft Mod Maker editor is needed, which can be downloaded from <a target="_blank" href="downloads.html">here</a></p>
+			<p>To play the mods, the minecraft game with Forge is necessary</p>
+			<h3>Setting up forge</h3>
+			<p>To install the minecraft Builder Mod, first, installing <a target="_blank" href="https://minecraft.net/">minecraft</a> is necessary. Ontop of that, <a target="_blank" href="http://files.minecraftforge.net/">forge modloader</a> is needed to be installed in minecraft</p>
+			<p>For a tutorial on installing forge, click <a target="_blank" href="http://www.minecraftforge.net/wiki/Installation/Universal">here</a></p>
+			<h3>Installing modbuilder</h3>
+			<p>Install the <a href="downloads.html" target="_blank">builder mod</a> via the normal forge mod installation procedure, as seen <a target="_blank" href="http://www.minecraftmods.com/how-to-install-mods-for-minecraft-forge/">here</a></p>
+			<hr></hr>
+			<h2>Launch</h2>
+			<h3>Opening the editor</h3>
+			<p>To open the editor, you execute the editor executable. This brings up a mostly empty window. Then, you need to press 'File' and then 'New' in the upper left corner. After having done this, a file dialog will be opened. Here type the name of your mod 'My Mod' for example, and press 'save'</p>
+			<img src="img/scrSht1.png" alt="New file" height="250px" width="300px"></img>&emsp;<img src="img/scrShot2.png" alt="Save directory" height="250px" width="400px"></img>
+			<hr></hr>
+			<h3>Opening existing mod files</h3>
+			<p>When opening an existing mod file, press 'file' then 'open'. Then you simply click on the directory name, and then click open</p>
+			<img src="img/scrShot3.png" height="250px" width="300px"></img>&emsp;<img src="img/scrShot4.png" height="250px" width="400px"></img>
+			<hr></hr>
+			<h2>Making the minecraft mod</h2>
+			<h3>Textures</h3></a>
+			<p>To make a texture, there are two options, either you can make them yourself in the texture editor, or you can import an image to function as a texture. Keep in mind the textures have a resolution of 16x16 in the editor, so importing larger images may produce unwanted results. We reccomend sticking to 16x16 textures.</p>	
+            <hr></hr>
+			<h3>Items</h3>
+			<hr></hr>
+			<h3>Blocks</h3>
+			<p>first of all, you select the blocks tab</p>
+			<hr></hr>
+			<h3>Recipes</h3>
+			<p>There is three types of recipes,
+			after clicking the button to access the recipe panel,
+			there are three buttons in the top right corner. Shapeless recipes, when made, do not depend on the shape that they are made, similarly, a shaped recipe is required to be made in the specific shape you make them.
+			Finally, smelting recipes are put in furnaces, add a fuel to smelt it and then the output is made.
+			</p>
+			<p>
+			After deciding what type of recipe you want to make, you can click on the corresponding button.
+			You have to put in the intended name for the item, you can start editing it. 
+			</p>
+			<img src="img/scrShot5.png" height="250px" width="300px"></img> &emsp;<img src="img/scrShot6.png" height="250px" width="300px">
+            <p>When editing a recipe, simply click on one of the 'item slots' which are represented as buttons, to open a menu for selecting the item or block you want to use in crafting.</p>
+			<p>Note that when making a shapeless recipe, the shape of the recipe does not matter at all, just the items that are used as input.</p>
+			<img src="img/scrShot7.png" height="150px" width="300px"></img>&emsp;<img src="img/scrShot8.png" height="250px" width="300px"><br>
+			<img src="img/scrShot9.png" height="250px" width="300px"></img>&emsp;<img src="img/scrShot11.png" height="200px" width="300px">
+			<hr></hr>
+			<h3>Structures</h3>
+			<p>When making structures, there are two choices in our editor, there is ground cover, which generates blocks over the default world top layer, which is useful for things like grass.</p>
+			<p>The other option is Ore generation, this inserts ore veins in specified layers in the ground for mining</p>
+			<img src="img/scrShot10.png" height="150px" width="180px"></img>&emsp;<img src="img/scrShot12.png" height="150px" width="200px">&emsp;<img src="img/scrShot13.png" height="150px" width="200px">		
+			<!--
+			<ul>
+              <li>dsa</li>
+             </ul>
+            <ol>					Useful page thingies
+              <li>asd</li>
+            </ol>
+            <p>rekje</p> --> 
+          </div><!-- /.blog-post -->
+
+        </div><!-- /.blog-main -->
+
+    
+
+      </div><!-- /.row -->
+
+    </div><!-- /.container -->  
+
+	<hr>
       <footer>
         <p>Twintro <a rel="license" href="http://creativecommons.org/licenses/by-sa/4.0/"><img alt="Creative Commons-Licentie" style="border-width:0" src="https://i.creativecommons.org/l/by-sa/4.0/80x15.png" /></a></p>
       </footer>
       
-
-    </div><!-- /.container -->
 
 
     <!-- Bootstrap core JavaScript
