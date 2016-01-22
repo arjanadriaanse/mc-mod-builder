@@ -2,7 +2,6 @@ package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.Color;
 import java.awt.Graphics;
-import java.awt.Image;
 import java.awt.Panel;
 import java.awt.Point;
 import java.awt.event.ActionEvent;
@@ -12,12 +11,10 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.Stack;
 
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.event.MouseInputListener;
 
 public class BitmapEditorPanel extends Panel implements MouseInputListener, KeyListener {

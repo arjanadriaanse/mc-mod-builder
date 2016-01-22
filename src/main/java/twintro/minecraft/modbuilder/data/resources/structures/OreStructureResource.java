@@ -1,7 +1,5 @@
 package twintro.minecraft.modbuilder.data.resources.structures;
 
-import net.minecraft.block.Block;
-
 /**
  * The ore structure type.
  */

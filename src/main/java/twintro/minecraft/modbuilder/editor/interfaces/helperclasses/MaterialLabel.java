@@ -1,7 +1,5 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
-import javax.swing.JLabel;
-
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class MaterialLabel extends TooltipLabel {

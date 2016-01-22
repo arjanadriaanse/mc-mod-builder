@@ -14,8 +14,6 @@ import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.PropertiesEditor;
 
 public class EnchantmentPanel extends JPanel {
 	private JComboBox enchantmentComboBox;
@@ -46,6 +44,7 @@ public class EnchantmentPanel extends JPanel {
 		removeButton.setToolTipText(ItemStackChooseWindow.removeEnchantmentTooltip);
 		add(removeButton);
 		removeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}
@@ -66,7 +65,7 @@ public class EnchantmentPanel extends JPanel {
 	
 	public SimpleEntry<String, Integer> getEnchantment(){
 		return new SimpleEntry(((String) enchantmentComboBox.getSelectedItem()).toLowerCase().replaceAll(" ", "_"), 
-				(Integer) amplifierSpinner.getValue());
+				amplifierSpinner.getValue());
 	}
 	
 	public void setId(int id){

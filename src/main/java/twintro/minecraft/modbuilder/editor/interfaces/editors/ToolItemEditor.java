@@ -1,6 +1,5 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
-import java.awt.BorderLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashSet;
@@ -13,12 +12,7 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import com.sun.media.sound.FFT;
-
-import twintro.minecraft.modbuilder.data.resources.TabResource;
-import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.items.ToolItemResource;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
@@ -79,6 +73,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			}
 		});
 		repairMaterialChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				repairMaterialChoose();
 			}
@@ -151,11 +146,13 @@ public class ToolItemEditor extends RegularItemEditor {
 		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
 		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
 		affectedBlocksButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addBlock();
 			}
 		});
 		affectedBlocksResetButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetBlocks();
 			}

@@ -1,37 +1,32 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Set;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.SwingConstants;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
 import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
-import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
-
-import java.awt.GridLayout;
-import java.awt.Font;
-import javax.swing.JSpinner;
-import javax.swing.SpinnerNumberModel;
 
 public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 	private ItemStackButton inputSmeltingButton;
@@ -49,7 +44,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		this.runnable = runnable;
 		this.closeHandler = closeHandler;
 		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowClosingVerifierListener());
 		this.setTitle("Edit Recipe: " + this.name);
 		
@@ -65,6 +60,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		
 		JButton saveButton = new JButton("Save Recipe");
 		saveButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				save();
 			}
@@ -73,6 +69,7 @@ public class SmeltingRecipeEditor extends WindowClosingVerifierUser {
 		
 		JButton cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancel();
 			}

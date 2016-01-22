@@ -3,44 +3,20 @@ package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
 
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
-import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
-import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
-import twintro.minecraft.modbuilder.data.resources.items.ItemType;
-import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.data.resources.structures.StructureType;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.OreStructureEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapedRecipeEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapelessRecipeEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.ToolItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
-import twintro.minecraft.modbuilder.editor.resources.BlockElement;
-import twintro.minecraft.modbuilder.editor.resources.ItemElement;
-import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
 
 public class StructureActivityPanel extends ObjectActivityPanel {
@@ -130,6 +106,7 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
 		JButton groundButton = new ActivityButton("New Ground Cover");
 		groundButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addGroundCover();
 			}

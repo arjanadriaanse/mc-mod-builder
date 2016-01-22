@@ -1,32 +1,17 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
-import java.awt.Container;
 import java.awt.Insets;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Set;
 
-import javax.swing.Icon;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.SwingConstants;
 
-import sun.awt.WindowClosingListener;
-import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.resources.BlockElement;
-import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ItemStackButton extends JButton {

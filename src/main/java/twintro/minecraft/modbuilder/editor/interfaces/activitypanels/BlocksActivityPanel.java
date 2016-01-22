@@ -1,37 +1,17 @@
 package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.Set;
 
-import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonIOException;
-import com.google.gson.JsonSyntaxException;
-
-import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
-import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockType;
-import twintro.minecraft.modbuilder.data.resources.items.ItemType;
-import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
-import twintro.minecraft.modbuilder.editor.resources.ItemElement;
-import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class BlocksActivityPanel extends ObjectActivityPanel {
 	private final ObjectRunnable runnable = new ObjectRunnable() {

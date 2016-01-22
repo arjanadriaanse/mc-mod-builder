@@ -2,9 +2,6 @@ package twintro.minecraft.modbuilder.data.resources.items;
 
 import java.util.Set;
 
-import net.minecraft.block.Block;
-import net.minecraft.item.Item;
-
 /**
  * The extended item properties for tool items.
  */

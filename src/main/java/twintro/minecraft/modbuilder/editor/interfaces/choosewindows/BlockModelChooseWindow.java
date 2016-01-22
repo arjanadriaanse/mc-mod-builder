@@ -1,11 +1,9 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.Point;
 import java.awt.Rectangle;
@@ -21,35 +19,27 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
 
 import javax.imageio.ImageIO;
 import javax.swing.AbstractListModel;
 import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JPopupMenu;
 import javax.swing.JRadioButton;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
 import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
 public class BlockModelChooseWindow extends IconDialog {
@@ -97,7 +87,7 @@ public class BlockModelChooseWindow extends IconDialog {
 	private void initialize(){
 		setModal(true);
 		setBounds(100, 100, 500, 400);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Choose Block Model:");
 		
 		listPanel = new ListPanel();
@@ -116,14 +106,17 @@ public class BlockModelChooseWindow extends IconDialog {
 		list.setFixedCellWidth(128);
 		list.setCellRenderer(new ImageListCellRenderer(listPanel));
 		list.setModel(new AbstractListModel() {
+			@Override
 			public int getSize() {
 				return listPanel.elements.size();
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return ((String) listPanel.elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addListSelectionListener(new ListSelectionListener() {
+			@Override
 			public void valueChanged(ListSelectionEvent e){
 				String value = (String) ((JList) e.getSource()).getSelectedValue();
 				chooseTexture(value);

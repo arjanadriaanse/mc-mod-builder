@@ -1,28 +1,19 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
-import java.awt.Window;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.Map;
 
 import javax.swing.AbstractListModel;
-import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
-import javax.swing.JMenuItem;
-import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 
 public class TextureChooseWindow extends IconDialog {
@@ -34,7 +25,7 @@ public class TextureChooseWindow extends IconDialog {
 
 		setModal(true);
 		setBounds(100, 100, 530, 400);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Choose Texture");
 		
 		listPanel = new ListPanel();
@@ -53,14 +44,17 @@ public class TextureChooseWindow extends IconDialog {
 		list.setFixedCellWidth(128);
 		list.setCellRenderer(new ImageListCellRenderer(listPanel));
 		list.setModel(new AbstractListModel() {
+			@Override
 			public int getSize() {
 				return listPanel.elements.size();
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return ((String) listPanel.elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e){
 				if (e.getClickCount() == 2){
 					String value = (String) ((JList) e.getSource()).getSelectedValue();

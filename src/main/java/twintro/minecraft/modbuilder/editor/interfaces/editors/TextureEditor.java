@@ -3,13 +3,11 @@ package twintro.minecraft.modbuilder.editor.interfaces.editors;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -18,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.BitmapEditorPanel;
 import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
@@ -51,7 +48,7 @@ public class TextureEditor extends JFrame {
 					saved = false;
 				}
 				else if (e.getSource() == colorButton) {
-					Color color = colorChooser.showDialog(colorButton, "Choose pencil color", editorPanel.getForeground());
+					Color color = JColorChooser.showDialog(colorButton, "Choose pencil color", editorPanel.getForeground());
 					if (color != null) {
 						editorPanel.setForeground(color);
 						colorButton.setBackground(color);
