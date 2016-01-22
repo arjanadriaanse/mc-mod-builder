@@ -63,7 +63,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		setTitle("Edit Tool: " + this.name);
 		saveButton.setText("Save Tool");
 		
-		creativeTabsComboBox.setSelectedItem("tools");
+		creativeTabsComboBox.setSelectedItem("Tools");
 		
 		labelRepairMaterial = label("Repair Material", repairMaterialTooltip, labelPanel);
 		repairMaterialCheckbox = checkbox("Use", repairMaterialTooltip);
@@ -105,6 +105,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	public ToolItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this(item.name, runnable, closeHandler);
+		creativeTabsLabel.setText("");
 		regularSetup(item);
 		toolSetup(item);
 
@@ -124,7 +125,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			enchantibilitySpinner.setValue(resource.enchantability);
 		if (resource.blocks != null){
 			for (String block : resource.blocks){
-				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ", ");
 				affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
 			}
 		}
@@ -170,7 +171,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			base.enchantability = (Integer) enchantibilitySpinner.getValue();
 			base.blocks = new HashSet<String>();
 			if (affectedBlocksLabel.getText().length() > 0)
-				for (String s : affectedBlocksLabel.getText().split(","))
+				for (String s : affectedBlocksLabel.getText().split(", "))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
 				if (MaterialResources.isItem(repairMaterialLabel.getText()))
@@ -203,7 +204,7 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addBlock(String block){
-		if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ",");
+		if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ", ");
 		affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
 	}
 	

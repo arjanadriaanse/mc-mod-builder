@@ -69,7 +69,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
 		
-		creativeTabsComboBox.setSelectedItem("food");
+		creativeTabsComboBox.setSelectedItem("Food");
 		
 		setTitle("Edit Food: " + this.name);
 		saveButton.setText("Save Food");
@@ -89,11 +89,11 @@ public class FoodItemEditor extends RegularItemEditor {
 		propertiesPanel.setLayout(new GridLayout(0, 2, 0, 0));
 		interactionPanel.add(propertiesPanel);
 		
-		alwaysEdibleCheckbox = checkbox("Always edible", alwaysEdibleTooltip);
+		alwaysEdibleCheckbox = checkbox("Always Edible", alwaysEdibleTooltip);
 		alwaysEdiblePanel = panel(alwaysEdibleCheckbox);
 		propertiesPanel.add(alwaysEdiblePanel);
 		
-		feedToWolvesCheckbox = checkbox("Feed to wolves", feedToWolvesTooltip);
+		feedToWolvesCheckbox = checkbox("Feed To Wolves", feedToWolvesTooltip);
 		feedToWolvesPanel = panel(feedToWolvesCheckbox);
 		propertiesPanel.add(feedToWolvesPanel);
 		
@@ -123,6 +123,7 @@ public class FoodItemEditor extends RegularItemEditor {
 	
 	public FoodItemEditor(ItemElement item, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		this(item.name, runnable, closeHandler);
+		creativeTabsLabel.setText("");
 		regularSetup(item);
 		if (item.item.stacksize != null)
 			maxStackSizeSpinner.setValue(item.item.stacksize);
