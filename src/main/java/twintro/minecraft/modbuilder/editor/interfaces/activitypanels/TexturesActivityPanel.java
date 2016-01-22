@@ -23,8 +23,8 @@ import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButt
 import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
 public class TexturesActivityPanel extends ActivityPanel {
-	//OldTextureEditor editor;
-	TextureEditor editor;
+	OldTextureEditor editor;
+	//TextureEditor editor;
 	
 	private final ObjectRunnable runnable = new ObjectRunnable() {
 		@Override
@@ -35,8 +35,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
-		//editor = new OldTextureEditor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
-		editor = new TextureEditor();
+		editor = new OldTextureEditor(runnable);
+		//editor = new TextureEditor();
 	}
 
 	@Override
