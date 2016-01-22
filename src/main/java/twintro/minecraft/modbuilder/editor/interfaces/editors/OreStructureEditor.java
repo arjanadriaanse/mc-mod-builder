@@ -28,6 +28,7 @@ import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResour
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
@@ -47,8 +48,8 @@ public class OreStructureEditor extends PropertiesEditor {
 	private JLabel labelRegion;
 	private JLabel labelMinY;
 	private JLabel labelMaxY;
-	private JLabel materialLabel;
-	private JLabel replacingLabel;
+	private MaterialLabel materialLabel;
+	private MaterialLabel replacingLabel;
 	private JButton materialChooseButton;
 	private JButton replacingChooseButton;
 	private JSpinner maxVeinSizeSpinner;
@@ -73,7 +74,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		
 		labelMaterial = label("Material", materialTooltip, labelPanel);
 		materialChooseButton = button("Choose", materialTooltip);
-		materialLabel = tooltipLabel("", materialTooltip);
+		materialLabel = materialLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -83,7 +84,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		
 		labelReplacing = label("Replacing", replacingTooltip, labelPanel);
 		replacingChooseButton = button("Choose", replacingTooltip);
-		replacingLabel = tooltipLabel("", replacingTooltip);
+		replacingLabel = materialLabel("", replacingTooltip);
 		replacingPanel = panel(replacingLabel, replacingChooseButton, interactionPanel);
 		replacingChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -209,13 +210,13 @@ public class OreStructureEditor extends PropertiesEditor {
 
 	@Override
 	public boolean save() {
-		if (materialLabel.getText().length() > 0){
+		if (materialLabel.getMaterial().length() > 0){
 			StructureElement structure = new StructureElement();
 			structure.name = name;
 			
 			OreStructureResource base = new OreStructureResource();
-			base.block = materialLabel.getText();
-			base.replaceblock = replacingLabel.getText();
+			base.block = materialLabel.getMaterial();
+			base.replaceblock = replacingLabel.getMaterial();
 			switch (dimensionComboBox.getSelectedIndex()){
 			case 0:
 				base.dimension = 0;

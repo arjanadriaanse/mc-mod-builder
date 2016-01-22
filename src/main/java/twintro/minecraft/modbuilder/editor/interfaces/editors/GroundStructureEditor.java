@@ -35,9 +35,11 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureAc
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
+import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
 
 import javax.swing.JToggleButton;
@@ -55,13 +57,15 @@ public class GroundStructureEditor extends PropertiesEditor {
 	private JLabel labelCover;
 	private JLabel labelDimension;
 	private JLabel labelAmount;
-	private JLabel materialLabel;
 	private JLabel coverLabel;
+	private MaterialLabel materialLabel;
 	private JButton materialChooseButton;
 	private JButton addCoverButton;
 	private JButton coverResetButton;
 	private JSpinner amountSpinner;
 	private JComboBox dimensionComboBox;
+	
+	private String coverString;
 
 	private static final String materialTooltip = "The block that will be generated in the world";
 	private static final String coverTooltip = "<html>The block where the ground cover needs to stand on.<br>" + 
@@ -78,7 +82,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 		
 		labelMaterial = label("Material", materialTooltip, labelPanel);
 		materialChooseButton = button("Choose", materialTooltip);
-		materialLabel = tooltipLabel("", materialTooltip);
+		materialLabel = materialLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -90,6 +94,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 		addCoverButton = button("Add", coverTooltip);
 		coverResetButton = button("Reset", coverTooltip);
 		coverLabel = tooltipLabel("", coverTooltip);
+		coverString = "";
 		coverSubPanel = panel(coverLabel, coverResetButton);
 		coverPanel = panel(coverSubPanel, addCoverButton, interactionPanel);
 		addCoverButton.addActionListener(new ActionListener() {
@@ -167,25 +172,28 @@ public class GroundStructureEditor extends PropertiesEditor {
 	}
 	
 	private void addBlockToCover(String block){
+		if (coverString.length() > 0) coverString += ", ";
+		coverString += block;
 		if (coverLabel.getText().length() > 0) coverLabel.setText(coverLabel.getText() + ", ");
-		coverLabel.setText(coverLabel.getText() + block);
+		coverLabel.setText(coverLabel.getText() + MaterialResources.simplifyItemStackName(block));
 	}
 	
 	private void resetBlocksToCover(){
 		change();
 		coverLabel.setText("");
+		coverString = "";
 	}
 
 	@Override
 	public boolean save() {
-		if (materialLabel.getText().length() > 0){
+		if (materialLabel.getMaterial().length() > 0){
 			StructureElement structure = new StructureElement();
 			structure.name = name;
 			
 			GroundStructureResource base = new GroundStructureResource();
-			base.block = materialLabel.getText();
+			base.block = materialLabel.getMaterial();
 			Set<String> blocks = new HashSet<String>();
-			for (String block : coverLabel.getText().split(", ")) blocks.add(block);
+			for (String block : coverString.split(", ")) blocks.add(block);
 			base.onlyonblocks = blocks;
 			switch (dimensionComboBox.getSelectedIndex()){
 			case 0:

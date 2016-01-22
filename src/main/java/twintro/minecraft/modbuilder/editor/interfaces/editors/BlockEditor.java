@@ -132,6 +132,8 @@ public class BlockEditor extends PropertiesEditor {
 	private JCheckBox flammableCheckBox;
 	private JCheckBox harvestRestrictionsCheckBox;
 	
+	private String dropsString;
+	
 	private BlockModelResource model;
 	private List<ItemStackResource> drops;
 	private ItemStackResource thisDrop;
@@ -203,6 +205,7 @@ public class BlockEditor extends PropertiesEditor {
 		addDropButton = button("Add", dropsTooltip);
 		resetDropsButton = button("Reset", dropsTooltip);
 		dropsLabel = tooltipLabel("", dropsTooltip);
+		dropsString = "";
 		dropsSubSubPanel = panel(dropsLabel, resetDropsButton);
 		dropsSubPanel = panel(dropsSubSubPanel, addDropButton);
 		dropsPanel = panel(dropsSubPanel, dropsCheckBox, interactionPanel);
@@ -534,14 +537,18 @@ public class BlockEditor extends PropertiesEditor {
 		else
 			amount = item.amount + "-" + (item.amountincrease + item.amount);
 		
+		String stackString = amount + " " + material;
+		if (dropsString.length() > 0) dropsString += ", ";
+		dropsString += stackString;
 		if (dropsLabel.getText().length() > 0) dropsLabel.setText(dropsLabel.getText() + ", ");
-		dropsLabel.setText(dropsLabel.getText() + amount + " " + material);
+		dropsLabel.setText(dropsLabel.getText() + MaterialResources.simplifyItemStackName(stackString));
 	}
 	
 	private void resetDrops(){
 		change();
 		drops.clear();
 		dropsLabel.setText("");
+		dropsString = "";
 	}
 	
 	private void useFlammable(){

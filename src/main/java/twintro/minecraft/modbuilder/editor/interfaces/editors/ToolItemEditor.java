@@ -46,6 +46,8 @@ public class ToolItemEditor extends RegularItemEditor {
 	private JSpinner damageSpinner;
 	private JSpinner enchantibilitySpinner;
 	private JCheckBox repairMaterialCheckbox;
+	
+	private String affectedBlocksString;
 
 	private static final String durabilityTooltip = "The amount of blocks that the tool can mine until the tool breaks";
 	private static final String efficiencyTooltip = "<html>The speed at which the tool mines<br>"
@@ -124,8 +126,7 @@ public class ToolItemEditor extends RegularItemEditor {
 			enchantibilitySpinner.setValue(resource.enchantability);
 		if (resource.blocks != null){
 			for (String block : resource.blocks){
-				if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ", ");
-				affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
+				addBlock(block);
 			}
 		}
 		if (resource.repairblock != null){
@@ -146,6 +147,7 @@ public class ToolItemEditor extends RegularItemEditor {
 		affectedBlocksButton = button("Add Block", affectedBlocksTooltip);
 		affectedBlocksResetButton = button("Reset", affectedBlocksTooltip);
 		affectedBlocksLabel = tooltipLabel("", affectedBlocksTooltip);
+		affectedBlocksString = "";
 		affectedBlocksSubPanel = panel(affectedBlocksLabel, affectedBlocksResetButton);
 		affectedBlocksPanel = panel(affectedBlocksSubPanel, affectedBlocksButton, interactionPanel);
 		affectedBlocksButton.addActionListener(new ActionListener() {
@@ -169,8 +171,8 @@ public class ToolItemEditor extends RegularItemEditor {
 			base.damage = (Float) damageSpinner.getValue();
 			base.enchantability = (Integer) enchantibilitySpinner.getValue();
 			base.blocks = new HashSet<String>();
-			if (affectedBlocksLabel.getText().length() > 0)
-				for (String s : affectedBlocksLabel.getText().split(", "))
+			if (affectedBlocksString.length() > 0)
+				for (String s : affectedBlocksString.split(", "))
 					base.blocks.add(s);
 			if (repairMaterialCheckbox.isSelected()){
 				if (MaterialResources.isItem(repairMaterialLabel.getMaterial()))
@@ -203,13 +205,16 @@ public class ToolItemEditor extends RegularItemEditor {
 	}
 	
 	protected void addBlock(String block){
+		if (affectedBlocksString.length() > 0) affectedBlocksString += ", ";
+		affectedBlocksString += block;
 		if (affectedBlocksLabel.getText().length() > 0) affectedBlocksLabel.setText(affectedBlocksLabel.getText() + ", ");
-		affectedBlocksLabel.setText(affectedBlocksLabel.getText() + block);
+		affectedBlocksLabel.setText(affectedBlocksLabel.getText() + MaterialResources.simplifyItemStackName(block));
 	}
 	
 	protected void resetBlocks(){
 		change();
 		affectedBlocksLabel.setText("");
+		affectedBlocksString = "";
 	}
 	
 	protected void repairMaterialUse(){
