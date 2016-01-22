@@ -1,12 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
-import net.minecraft.block.Block;
 import net.minecraft.block.material.MapColor;
 import net.minecraft.block.material.Material;
-import net.minecraft.init.Blocks;
-import net.minecraft.util.BlockPos;
-import net.minecraft.util.EnumFacing;
-import net.minecraft.world.IBlockAccess;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 
 /**

@@ -1,53 +1,25 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
-import javax.swing.JFrame;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+import javax.swing.JSpinner;
+import javax.swing.SpinnerNumberModel;
 
-import twintro.minecraft.modbuilder.data.resources.MaterialResource;
-import twintro.minecraft.modbuilder.data.resources.TabResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
-import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
-import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource;
-import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
-import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Variant;
-import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.data.resources.structures.GroundStructureResource;
-import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
-import twintro.minecraft.modbuilder.data.resources.structures.StructureType;
-import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
-import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
-
-import javax.swing.JToggleButton;
-import javax.swing.SpinnerNumberModel;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JSpinner;
-import javax.swing.SwingConstants;
 
 public class GroundStructureEditor extends PropertiesEditor {
 	private JPanel materialPanel;
@@ -85,6 +57,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 		materialLabel = materialLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				chooseMaterial();
 			}
@@ -98,11 +71,13 @@ public class GroundStructureEditor extends PropertiesEditor {
 		coverSubPanel = panel(coverLabel, coverResetButton);
 		coverPanel = panel(coverSubPanel, addCoverButton, interactionPanel);
 		addCoverButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addBlockToCover();
 			}
 		});
 		coverResetButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetBlocksToCover();
 			}

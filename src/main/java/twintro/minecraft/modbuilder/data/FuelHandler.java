@@ -1,10 +1,7 @@
 package twintro.minecraft.modbuilder.data;
 
-import java.util.HashMap;
 import java.util.Map;
-import java.util.Map.Entry;
 
-import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 

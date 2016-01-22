@@ -2,34 +2,19 @@ package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
-import java.awt.Window;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.Map;
-import java.util.Set;
 
-import javax.swing.AbstractListModel;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
-import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class MaterialChooseWindow extends IconDialog {
@@ -65,7 +50,7 @@ public class MaterialChooseWindow extends IconDialog {
 		boolean none = type / 3 % 2 == 1;
 		meta = type < 6;
 		
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
 		mainPanel = new JPanel();

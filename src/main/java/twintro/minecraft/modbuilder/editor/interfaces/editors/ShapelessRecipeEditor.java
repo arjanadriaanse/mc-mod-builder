@@ -1,47 +1,32 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
+import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowEvent;
+import java.awt.event.WindowListener;
+import java.util.ArrayList;
+import java.util.List;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.WindowConstants;
 import javax.swing.border.EmptyBorder;
 
-import scala.swing.event.WindowClosed;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
 import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
-import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ItemStackButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
-
-import java.awt.GridLayout;
-import java.awt.Window;
-
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
-import java.awt.Font;
-
-import javax.swing.JFrame;
 
 public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 	protected JLabel lblCreateTheShaped;
@@ -56,7 +41,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		this.runnable = runnable;
 		this.closeHandler = closeHandler;
 		
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		this.addWindowListener(new WindowClosingVerifierListener());
 		setBounds(100, 100, 506, 412);
 		
@@ -103,6 +88,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		JButton btnSaveItem = new JButton("Save Recipe");
 		panel_2.add(btnSaveItem);
 		btnSaveItem.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				save();
 			}
@@ -111,6 +97,7 @@ public class ShapelessRecipeEditor extends WindowClosingVerifierUser {
 		JButton btnCancel = new JButton("Cancel");
 		panel_2.add(btnCancel);
 		btnCancel.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent arg0) {
 				cancel();
 			}

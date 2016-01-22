@@ -1,12 +1,5 @@
 package example.main;
 
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
-import java.io.IOException;
-
 import example.blocks.MyBlocks;
 import example.config.ConfigHandler;
 import example.items.MyItems;

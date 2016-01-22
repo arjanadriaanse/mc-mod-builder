@@ -2,8 +2,6 @@ package twintro.minecraft.modbuilder.data.resources.structures;
 
 import java.util.Set;
 
-import net.minecraft.block.Block;
-
 /**
  * The ground cover structure type.
  */

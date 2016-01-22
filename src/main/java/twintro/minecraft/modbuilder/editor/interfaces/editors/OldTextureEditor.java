@@ -4,11 +4,9 @@ import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
-import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.LayoutManager;
 import java.awt.Rectangle;
-import java.awt.SystemColor;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -16,13 +14,10 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionAdapter;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
-import java.awt.image.ImageObserver;
-import java.beans.Visibility;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -30,16 +25,10 @@ import javax.swing.JButton;
 import javax.swing.JColorChooser;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
-import javax.swing.JInternalFrame;
-import javax.swing.JMenu;
-import javax.swing.JMenuBar;
-import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.resources.TextureObject;
@@ -258,7 +247,7 @@ public class OldTextureEditor extends IconFrame {
 	}
 	
 	public void chooseColor() {
-		Color new_color = colorchooser.showDialog(panel, "Choose pencil color", color);
+		Color new_color = JColorChooser.showDialog(panel, "Choose pencil color", color);
 		if (new_color!=null) {
 			if (new_color == color2)
 				color2 = color;

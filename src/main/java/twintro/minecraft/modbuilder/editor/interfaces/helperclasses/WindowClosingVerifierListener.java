@@ -1,6 +1,5 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
-import java.awt.Component;
 import java.awt.Window;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;

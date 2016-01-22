@@ -2,9 +2,6 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Random;
 
-import com.google.common.base.Predicate;
-
-import net.minecraft.block.Block;
 import net.minecraft.block.state.IBlockState;
 import net.minecraft.block.state.pattern.BlockHelper;
 import net.minecraft.init.Blocks;
@@ -12,7 +9,6 @@ import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
-import net.minecraftforge.fml.common.IWorldGenerator;
 
 /**
  * Base ore generation. This is used for generating all ores, but also for things like dirt or gravel pockets underground.

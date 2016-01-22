@@ -4,14 +4,11 @@ import java.util.Random;
 
 import example.blocks.MyBlocks;
 import net.minecraft.block.Block;
-import net.minecraft.block.state.pattern.BlockHelper;
-import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraft.world.gen.feature.WorldGenMinable;
 import net.minecraftforge.fml.common.IWorldGenerator;
-import net.minecraftforge.fml.common.registry.GameRegistry;
 
 public class OreGeneration implements IWorldGenerator {
 	@Override

@@ -1,7 +1,6 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -17,8 +16,6 @@ import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
 import twintro.minecraft.modbuilder.data.resources.items.FoodItemResource;
-import twintro.minecraft.modbuilder.data.resources.models.BlockModelResource;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
@@ -111,6 +108,7 @@ public class FoodItemEditor extends RegularItemEditor {
 		labelAmplifier = label("Amplifier", effectTypeTooltip, effectsListTopPanel);
 		addEffectButton = button("Add Effect", addEffectTooltip, effectsListTopPanel);
 		addEffectButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addEffect();
 			}
