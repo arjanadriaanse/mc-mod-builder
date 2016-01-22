@@ -46,12 +46,12 @@ public class MaterialChooseWindow extends IconDialog {
 	public static final int BLOCKS_NONE_METALESS = 10;
 	public static final int ITEMS_BLOCKS_NONE_METALESS = 11;
 
-	private static final String customItemsTooltip = "";//TODO
-	private static final String customBlocksTooltip = "";//TODO
-	private static final String vanillaItemsTooltip = "";//TODO
-	private static final String vanillaBlocksTooltip = "";//TODO
-	private static final String otherTooltip = "";//TODO
-	private static final String noneTooltip = "";//TODO
+	private static final String customItemsTooltip = "Items made by you.";
+	private static final String customBlocksTooltip = "Blocks made by you.";
+	private static final String vanillaItemsTooltip = "Items that are in unmodded minecraft.";
+	private static final String vanillaBlocksTooltip = "Blocks that are in unmodded minecraft.";
+	private static final String otherTooltip = "Type in your item/block. Use the id.";
+	private static final String noneTooltip = "Empty";
 	
 	private ObjectRunnable runnable;
 	private JPanel mainPanel;

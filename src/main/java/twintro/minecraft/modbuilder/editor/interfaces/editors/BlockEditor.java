@@ -140,7 +140,7 @@ public class BlockEditor extends PropertiesEditor {
 	private List<ItemStackResource> thisDrops;
 
 	private static final String modelTooltip = "The model determines what the block looks like in game";
-	private static final String dropsTooltip = ""; //TODO
+	private static final String dropsTooltip = "The items and blocks that the block will drop when the user breaks it";
 	private static final String creativeTabTooltip = "The creative tab the block will be in";
 	private static final String lightnessTooltip = "The amount of light the block emits";
 	private static final String opacityTooltip = "<html>The number indicating how much the light level will decrease when passing through this block.<br>" + 
@@ -151,18 +151,19 @@ public class BlockEditor extends PropertiesEditor {
 	private static final String harvestLevelTooltip = "<html> How good the tool needs to be to harvest the block.<br>"+
 								"A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond</html>";
 	private static final String burntimeTooltip = "<html>Burn time is the amount of ticks the block will burn if used as a fuel.<br>" + 
-								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";//TODO 0=null
+								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt.<br>"
+								+ "Use a burntime of 0 if you don't want the block to be used as fuel.</html>";
 	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
-	private static final String harvestRestrictionsTooltip = ""; //TODO
-	private static final String mapColorTooltip = ""; //TODO
-	private static final String mobilityTooltip = ""; //TODO
-	private static final String replacableTooltip = ""; //TODO
-	private static final String requiresToolTooltip = ""; //TODO
-	private static final String solidTooltip = ""; //TODO
-	private static final String flammableTooltip = ""; //TODO
-	private static final String flammabilityTooltip = ""; //TODO
-	private static final String fireSpreadSpeedTooltip = ""; //TODO
+	private static final String harvestRestrictionsTooltip = "Restrictions as to which tools are effective on the block.";
+	private static final String mapColorTooltip = "The color that the block will appear as on a map.";
+	private static final String mobilityTooltip = "The way the block interacts with pistons";
+	private static final String replacableTooltip = "Weather or not the block gets replaced when you place a block on it.";
+	private static final String requiresToolTooltip = "Weather or not the block requires to be broken with a tool to drop it's drops.";
+	private static final String solidTooltip = "If a block is not solid, you can walk through the block.";
+	private static final String flammableTooltip = "Weather or not the block can be lit on fire with a flint and steel.";
+	private static final String flammabilityTooltip = "The amount of ticks it will take for the block to be burnt when set on fire. Twenty ticks is one second.";
+	private static final String fireSpreadSpeedTooltip = "The amount of ticks until the fire tries to spread to another block.";
 
 	private final ObjectRunnable modelChooser = new ObjectRunnable(){
 		@Override
