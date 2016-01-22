@@ -17,6 +17,7 @@ import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemTool;
 import net.minecraftforge.common.util.EnumHelper;
+import twintro.minecraft.modbuilder.BuilderMod;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
@@ -33,20 +34,17 @@ import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResour
  * Contains methods for converting resource objects to Minecraft objects.
  */
 public class ResourceConverter {
-	public static Map<String,Block> blocks = new HashMap<String,Block>();
-	public static Map<String,Item> items = new HashMap<String,Item>();
 	
 	public static Block getBlockFromName(String block){
-		if (block.startsWith("minecraft:")) return Block.getBlockFromName(block);
-		if (block.startsWith("modbuilder:") && blocks.containsKey(block)) return blocks.get(block);
-		return null;
+		if (block.startsWith("modbuilder:") && BuilderMod.customBlocks.containsKey(block.substring(11))) return BuilderMod.customBlocks.get(block.substring(11));
+		Block b = Block.getBlockFromName(block);
+		return Block.getBlockFromName(block);
 	}
 	
 	public static Item getItemFromName(String item){
-		if (item.startsWith("minecraft:")) return Item.getByNameOrId(item);
-		if (item.startsWith("modbuilder:") && items.containsKey(item)) return items.get(item);
-		if (item.startsWith("modbuilder:") && blocks.containsKey(item)) return Item.getItemFromBlock(blocks.get(item));
-		return null;
+		if (item.startsWith("modbuilder:") && BuilderMod.customItems.containsKey(item)) return BuilderMod.customItems.get(item.substring(11));
+		if (item.startsWith("modbuilder:") && BuilderMod.customBlocks.containsKey(item.substring(11))) return Item.getItemFromBlock(BuilderMod.customBlocks.get(item.substring(11)));
+		return Item.getByNameOrId(item);
 	}
 	
 	private static IBlockState toBlockState(String block){
@@ -54,17 +52,24 @@ public class ResourceConverter {
 		else return getBlockFromName(block).getDefaultState();
 	}
 	
-	public static Block toBlock(BaseBlockResource resource) {
+	public static Block toEmptyBlock(BaseBlockResource resource) {
 		if (resource instanceof BlockResource)
-			return toBlock((BlockResource) resource);
+			return toEmptyBlock((BlockResource) resource);
 		return null;
 	}
-
-	public static BuilderBlock toBlock(BlockResource resource) {
-		BuilderBlock block = new BuilderBlock(new BuilderBlockMaterial(resource), resource.drops,
+	public static Block toBlock(Block block, BaseBlockResource resource) {
+		if (resource instanceof BlockResource)
+			return toBlock((BuilderBlock) block, (BlockResource) resource);
+		return block;
+	}
+	
+	public static BuilderBlock toEmptyBlock(BlockResource resource) {
+		return new BuilderBlock(new BuilderBlockMaterial(resource), resource.drops,
 				resource.solid!=null ? resource.solid : true,
 				resource.opaque!=null ? resource.opaque : false,
 				resource.cutout!=null ? resource.cutout : false);
+	}
+	public static BuilderBlock toBlock(BuilderBlock block, BlockResource resource) {
 		if (resource.flammability != null || resource.firespreadspeed != null)
 			Blocks.fire.setFireInfo(block,
 						resource.flammability != null ? resource.flammability : 0,
@@ -90,82 +95,99 @@ public class ResourceConverter {
 			block.setHarvestLevel(resource.harvesttype, resource.harvestlevel);
 		return block;
 	}
-
-	public static Item toItem(BaseItemResource resource) {
+	
+	public static Item toEmptyItem(BaseItemResource resource) {
 		if (resource instanceof ItemResource)
-			return toItem((ItemResource) resource);
+			return toEmptyItem((ItemResource) resource);
 		else if (resource instanceof ToolItemResource)
-			return toItem((ToolItemResource) resource);
+			return toEmptyItem((ToolItemResource) resource);
 		else if (resource instanceof FoodItemResource)
-			return toItem((FoodItemResource) resource);
+			return toEmptyItem((FoodItemResource) resource);
+
+		return null;
+	}
+	public static Item toItem(Item item, BaseItemResource resource) {
+		if (resource instanceof ItemResource)
+			return toItem((BuilderItem) item, (ItemResource) resource);
+		else if (resource instanceof ToolItemResource)
+			return toItem((BuilderItemTool) item, (ToolItemResource) resource);
+		else if (resource instanceof FoodItemResource)
+			return toItem((BuilderItemFood) item, (FoodItemResource) resource);
 
 		return null;
 	}
 
-	public static Item toItem(ItemResource resource) {
+	public static Item toEmptyItem(ItemResource resource) {
 		BuilderItem item = new BuilderItem(resource.tabs != null ? getTabs(resource.tabs) : null);
+		return item;
+	}
+	public static Item toItem(BuilderItem item, ItemResource resource) {
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
-			item.setContainerItem(Item.getByNameOrId(resource.container));
+			item.setContainerItem(getItemFromName(resource.container));
 		return item;
 	}
 
-	public static ItemFood toItem(final FoodItemResource resource) {
+	public static ItemFood toEmptyItem(final FoodItemResource resource) {
 		BuilderItemFood item;
 		if (resource.saturation == null)
 			item = new BuilderItemFood(
 					resource.amount,
 					resource.wolf != null ? resource.wolf : false,
 					resource.effects,
-					resource.tabs != null ? getTabs(resource.tabs) : null,
-					resource.container != null ? new ItemStack(Item.getByNameOrId(resource.container)) : null);
+					resource.tabs != null ? getTabs(resource.tabs) : null);
 		else
 			item = new BuilderItemFood(
 					resource.amount, resource.saturation,
 					resource.wolf != null ? resource.wolf : false,
 					resource.effects,
-					resource.tabs != null ? getTabs(resource.tabs) : null,
-					resource.container != null ? new ItemStack(Item.getByNameOrId(resource.container)) : null);
+					resource.tabs != null ? getTabs(resource.tabs) : null);
+		return item;
+	}
+	public static ItemFood toItem(BuilderItemFood item, final FoodItemResource resource) {
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
-			item.setContainerItem(Item.getByNameOrId(resource.container));
+			item.setContainerItem(getItemFromName(resource.container));
 		if (resource.alwaysedible != null)
 			if (resource.alwaysedible)
 				item.setAlwaysEdible();
 		return item;
 	}
 
-	public static ItemTool toItem(ToolItemResource resource) {
+	public static ItemTool toEmptyItem(ToolItemResource resource) {
 		ToolMaterial material = EnumHelper.addToolMaterial("",
 				resource.harvestlevel   != null ? resource.harvestlevel   : 2,
 				resource.durability     != null ? resource.durability     : 250,
 				resource.efficiency     != null ? resource.efficiency     : 6.0F,
 				resource.damage         != null ? resource.damage         : 0.5F,
 				resource.enchantability != null ? resource.enchantability : 10);
-		if (resource.repairitem != null) {
-			ItemStack repair;
-			if (resource.repairitem.contains("#")) repair=new ItemStack(Item.getByNameOrId(resource.repairitem.split("#")[0]),Integer.parseInt(resource.repairitem.split("#")[1]));
-			else repair=new ItemStack(Item.getByNameOrId(resource.repairitem.split("#")[0]));
-			material.setRepairItem(repair);
-		}
-		else if (resource.repairblock != null) {
-			ItemStack repair;
-			if (resource.repairblock.contains("#")) repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]),Integer.parseInt(resource.repairblock.split("#")[1]));
-			else repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]));
-			material.setRepairItem(repair);
-		}
 		Set effectiveBlocks = new LinkedHashSet();
 		if (resource.blocks != null) {
 			for(String block:resource.blocks)
 				effectiveBlocks.add(getBlockFromName(block));
 		}
 		BuilderItemTool item = new BuilderItemTool(material.getDamageVsEntity(), material, effectiveBlocks, resource.tabs != null ? getTabs(resource.tabs) : null);
+		return item;
+	}
+	public static ItemTool toItem(BuilderItemTool item, ToolItemResource resource) {
+		if (resource.repairitem != null) {
+			ItemStack repair;
+			if (resource.repairitem.contains("#")) repair=new ItemStack(getItemFromName(resource.repairitem.split("#")[0]),Integer.parseInt(resource.repairitem.split("#")[1]));
+			else repair=new ItemStack(getItemFromName(resource.repairitem.split("#")[0]));
+			item.getToolMaterial().setRepairItem(repair);
+		}
+		else if (resource.repairblock != null) {
+			ItemStack repair;
+			if (resource.repairblock.contains("#")) repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]),Integer.parseInt(resource.repairblock.split("#")[1]));
+			else repair=new ItemStack(getBlockFromName(resource.repairblock.split("#")[0]));
+			item.getToolMaterial().setRepairItem(repair);
+		}
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
-			item.setContainerItem(Item.getByNameOrId(resource.container));
+			item.setContainerItem(getItemFromName(resource.container));
 		return item;
 	}
 	
@@ -205,9 +227,9 @@ public class ResourceConverter {
 	public static ItemStack toItemStack(ItemStackResource resource) {
 		Item item = null;
 		if (resource.item != null) {
-			item = Item.getByNameOrId(resource.item);
+			item = getItemFromName(resource.item);
 			if (resource.container != null)
-				item.setContainerItem(resource.container == "" ? null : Item.getByNameOrId(resource.container));
+				item.setContainerItem(resource.container == "" ? null : getItemFromName(resource.container));
 		}
 		Block block = null;
 		if (resource.block != null)
@@ -231,3 +253,4 @@ public class ResourceConverter {
 		return tabs;
 	}
 }
+
