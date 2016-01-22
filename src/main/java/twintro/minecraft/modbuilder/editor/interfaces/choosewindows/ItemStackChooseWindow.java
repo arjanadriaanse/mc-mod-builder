@@ -198,6 +198,32 @@ public class ItemStackChooseWindow extends IconDialog {
 			stackSizeSpinner.setToolTipText(stackSizeTooltip);
 			stackSizeSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), new Integer(64), new Integer(1)));
 			interactionPanel.add(stackSizeSpinner);
+			
+			enchantmentListPanel = new JPanel();
+			enchantmentListPanel.setLayout(new GridLayout(0, 1, 0, 5));
+			enchantmentListPanel.add(new JLabel());
+			mainPanel.add(enchantmentListPanel, BorderLayout.SOUTH);
+			
+			enchantmentsTopPanel = new JPanel();
+			enchantmentsTopPanel.setLayout(new GridLayout(0, 3, 5, 0));
+			enchantmentListPanel.add(enchantmentsTopPanel);
+
+			labelEnchantment = new JLabel("Enchantment");
+			labelEnchantment.setToolTipText(enchantmentTypeTooltip);
+			enchantmentsTopPanel.add(labelEnchantment);
+			labelAmplifier = new JLabel("Amplifier");
+			labelAmplifier.setToolTipText(amplifierTooltip);
+			enchantmentsTopPanel.add(labelAmplifier);
+			addEnchantmentButton = new JButton("Add Enchantment");
+			addEnchantmentButton.setToolTipText(addEnchantmentTooltip);
+			enchantmentsTopPanel.add(addEnchantmentButton);
+			addEnchantmentButton.addActionListener(new ActionListener() {
+				public void actionPerformed(ActionEvent e) {
+					addEnchantment();
+				}
+			});
+			
+			enchantmentPanels = new EnchantmentPanel[0];
 		}
 		else{
 			labelContainer = new JLabel("Container");
@@ -237,32 +263,6 @@ public class ItemStackChooseWindow extends IconDialog {
 			
 			useContainer();
 		}
-		
-		enchantmentListPanel = new JPanel();
-		enchantmentListPanel.setLayout(new GridLayout(0, 1, 0, 5));
-		enchantmentListPanel.add(new JLabel());
-		mainPanel.add(enchantmentListPanel, BorderLayout.SOUTH);
-		
-		enchantmentsTopPanel = new JPanel();
-		enchantmentsTopPanel.setLayout(new GridLayout(0, 3, 5, 0));
-		enchantmentListPanel.add(enchantmentsTopPanel);
-
-		labelEnchantment = new JLabel("Enchantment");
-		labelEnchantment.setToolTipText(enchantmentTypeTooltip);
-		enchantmentsTopPanel.add(labelEnchantment);
-		labelAmplifier = new JLabel("Amplifier");
-		labelAmplifier.setToolTipText(amplifierTooltip);
-		enchantmentsTopPanel.add(labelAmplifier);
-		addEnchantmentButton = new JButton("Add Enchantment");
-		addEnchantmentButton.setToolTipText(addEnchantmentTooltip);
-		enchantmentsTopPanel.add(addEnchantmentButton);
-		addEnchantmentButton.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				addEnchantment();
-			}
-		});
-		
-		enchantmentPanels = new EnchantmentPanel[0];
 		
 		buttonPanel = new JPanel();
 		buttonPanel.setLayout(new FlowLayout());
@@ -339,14 +339,16 @@ public class ItemStackChooseWindow extends IconDialog {
 			else if (containerCheckBox.isSelected())
 				item.container = containerLabel.getText();
 			
-			Map<String, Integer> enchantments = new HashMap<String, Integer>();
-			for (EnchantmentPanel enchantment : enchantmentPanels){
-				if (enchantment.isProperEnchantment()){
-					SimpleEntry<String, Integer> entry = enchantment.getEnchantment();
-					enchantments.put(entry.getKey(), entry.getValue());
+			if (isProduct){
+				Map<String, Integer> enchantments = new HashMap<String, Integer>();
+				for (EnchantmentPanel enchantment : enchantmentPanels){
+					if (enchantment.isProperEnchantment()){
+						SimpleEntry<String, Integer> entry = enchantment.getEnchantment();
+						enchantments.put(entry.getKey(), entry.getValue());
+					}
 				}
+				item.enchantments = enchantments;
 			}
-			item.enchantments = enchantments;
 			
 			runnable.run(item);
 			dispose();
