@@ -1,9 +1,12 @@
 package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.Color;
+import java.awt.Graphics;
 import java.awt.Image;
 import java.awt.Panel;
 import java.awt.Point;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
@@ -19,6 +22,7 @@ import javax.swing.event.MouseInputListener;
 
 public class BitmapEditorPanel extends Panel implements MouseInputListener, KeyListener {
 	private BufferedImage bitmap;
+	private Set<ActionListener> actionListeners = new HashSet<ActionListener>();
 	
 	public BufferedImage getBitmap() {
 		return bitmap;
@@ -101,6 +105,7 @@ public class BitmapEditorPanel extends Panel implements MouseInputListener, KeyL
 	public void mouseReleased(MouseEvent e) {
 		mouseMoved(e);
 		this.actions = null;
+		actionPerformed();
 	}
 
 	@Override
@@ -127,35 +132,51 @@ public class BitmapEditorPanel extends Panel implements MouseInputListener, KeyL
 	public void keyPressed(KeyEvent e) {
 		if (e.isControlDown()) {
 			if (e.getKeyCode() == KeyEvent.VK_Z) {
-				if (!undoStack.isEmpty()) {
-					Set<Action> actions = redoStack.push(undoStack.pop());
-					for (Action action : actions)
-						action.undo(this.bitmap);
-					
-					this.repaint();
+				if (canUndo()) {
+					undo();
 				}
 			}
 			else if (e.getKeyCode() == KeyEvent.VK_Y) {
-				if (!redoStack.isEmpty()) {
-					Set<Action> actions = undoStack.push(redoStack.pop());
-					for (Action action : actions)
-						action.redo(this.bitmap);
-					
-					this.repaint();
+				if (canRedo()) {
+					redo();
 				}
 			}
 		}
 	}
+	
+	public void redo() {
+		Set<Action> actions = undoStack.push(redoStack.pop());
+		for (Action action : actions)
+			action.redo(this.bitmap);
+		
+		this.repaint();
+		actionPerformed();
+	}
+	
+	public void undo() {
+		Set<Action> actions = redoStack.push(undoStack.pop());
+		for (Action action : actions)
+			action.undo(this.bitmap);
+		
+		this.repaint();
+		actionPerformed();
+	}
+	
+	public boolean canRedo() {
+		return !redoStack.isEmpty();
+	}
+	
+	public boolean canUndo() {
+		return !undoStack.isEmpty();
+	}
 
 	@Override
 	public void keyReleased(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void keyTyped(KeyEvent e) {
-		// TODO Auto-generated method stub
 
 	}
 	
@@ -194,5 +215,29 @@ public class BitmapEditorPanel extends Panel implements MouseInputListener, KeyL
 		panel.addKeyListener(panel);
 		panel.setFocusable(true);
 		panel.requestFocus();
+	}
+
+	public void clear() {
+		Graphics graphics = bitmap.getGraphics();
+		graphics.setColor(getForeground());
+		graphics.fillRect(0, 0, bitmap.getWidth(), bitmap.getHeight());
+		graphics.dispose();
+		
+		this.repaint();
+		actionPerformed();
+	}
+	
+	public void addActionListener(ActionListener l) {
+		actionListeners.add(l);
+	}
+	
+	public void removeActionListener(ActionListener l) {
+		actionListeners.remove(l);
+	}
+	
+	private void actionPerformed() {
+		for (ActionListener l : actionListeners) {
+			l.actionPerformed(new ActionEvent(this, ActionEvent.ACTION_PERFORMED, null));
+		}
 	}
 }

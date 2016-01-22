@@ -16,11 +16,13 @@ import javax.swing.JPanel;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.interfaces.editors.OldTextureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.TextureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
 public class TexturesActivityPanel extends ActivityPanel {
+	//OldTextureEditor editor;
 	TextureEditor editor;
 	
 	private final ObjectRunnable runnable = new ObjectRunnable() {
@@ -32,7 +34,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	public TexturesActivityPanel(String header, String button) {
 		super(header, button);
-		editor = new TextureEditor(runnable);
+		//editor = new OldTextureEditor(new BufferedImage(16, 16, BufferedImage.TYPE_INT_ARGB));
+		editor = new TextureEditor();
 	}
 
 	@Override
