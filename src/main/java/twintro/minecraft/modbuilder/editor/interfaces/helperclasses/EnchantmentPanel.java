@@ -12,8 +12,6 @@ import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
-import javafx.animation.KeyValue;
-import joptsimple.util.KeyValuePair;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ItemStackChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.FoodItemEditor;
