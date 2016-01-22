@@ -4,19 +4,15 @@ import java.awt.BorderLayout;
 import java.awt.CardLayout;
 import java.awt.Desktop;
 import java.awt.EventQueue;
-import java.awt.FileDialog;
 import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.SystemColor;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 import java.io.File;
-import java.io.IOException;
 import java.net.URI;
-import java.net.URISyntaxException;
 import java.util.Map;
-import java.util.Set;
 
 import javax.swing.AbstractAction;
 import javax.swing.ImageIcon;
@@ -31,7 +27,6 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSplitPane;
 import javax.swing.KeyStroke;
-import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 
 import twintro.minecraft.modbuilder.editor.generator.LanguageFile;
@@ -45,7 +40,6 @@ import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureAc
 import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.TexturesActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
-import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class Editor {
 	private static String directory = System.getProperty("user.home") + "/AppData/Roaming/.minecraft/resourcepacks";
@@ -159,9 +153,9 @@ public class Editor {
 			}
 		});
 
-		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',KeyEvent.CTRL_DOWN_MASK), "open");
-		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',KeyEvent.CTRL_DOWN_MASK), "new");
-		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',KeyEvent.CTRL_DOWN_MASK), "export");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('O',InputEvent.CTRL_DOWN_MASK), "open");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('N',InputEvent.CTRL_DOWN_MASK), "new");
+		menuBar.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('E',InputEvent.CTRL_DOWN_MASK), "export");
 		menuBar.getActionMap().put("new", new AbstractAction(){
 			@Override
 			public void actionPerformed(ActionEvent ae){
@@ -258,6 +252,7 @@ public class Editor {
 		buttonPanel.setLayout(new GridLayout(0, 1, 0, 0));
 		
 		ActionListener buttonListener = new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				changePanel(((JButton)e.getSource()).getText());
 			}

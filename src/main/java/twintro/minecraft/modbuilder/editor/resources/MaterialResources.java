@@ -1,10 +1,5 @@
 package twintro.minecraft.modbuilder.editor.resources;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-
 import javax.swing.ImageIcon;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;

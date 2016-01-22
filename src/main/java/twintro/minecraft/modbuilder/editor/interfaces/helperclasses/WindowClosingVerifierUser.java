@@ -2,11 +2,11 @@ package twintro.minecraft.modbuilder.editor.interfaces.helperclasses;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.InputEvent;
 import java.awt.event.KeyEvent;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComponent;
-import javax.swing.JFrame;
 import javax.swing.KeyStroke;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -15,7 +15,7 @@ public abstract class WindowClosingVerifierUser extends IconFrame {
 	protected boolean changed = true;
 	public WindowClosingVerifierUser(){
 		JComponent keyListener = new JComponent(){};
-		keyListener.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('S',KeyEvent.CTRL_DOWN_MASK), "save");
+		keyListener.getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW).put(KeyStroke.getKeyStroke('S',InputEvent.CTRL_DOWN_MASK), "save");
 		keyListener.getActionMap().put("save", new AbstractAction(){
 			@Override
 			public void actionPerformed(ActionEvent ae){

@@ -1,14 +1,19 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.ItemEvent;
+import java.awt.event.ItemListener;
+import java.util.HashMap;
+import java.util.HashSet;
+
+import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JComboBox;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
-import java.awt.GridLayout;
+import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
 
@@ -18,26 +23,11 @@ import twintro.minecraft.modbuilder.data.resources.items.ItemResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.ItemsActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.TextureChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.ItemElement;
-
-import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.awt.event.ActionEvent;
 
 public class RegularItemEditor extends PropertiesEditor {
 	protected JPanel texturePanel;
@@ -82,6 +72,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		textureLabel = materialLabel("", textureTooltip);
 		texturePanel = panel(textureLabel, textureChooseButton, interactionPanel);
 		textureChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				textureChoose();
 			}
@@ -98,7 +89,7 @@ public class RegularItemEditor extends PropertiesEditor {
 		creativeTabsComboBox.addItemListener(new ItemListener() {
 			@Override
 			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == e.SELECTED){
+				if (e.getStateChange() == ItemEvent.SELECTED){
 					if (e.getItem() != "Add"){
 						creativeTabsChoose((String) e.getItem());
 						((JComboBox) e.getSource()).setSelectedIndex(0);
@@ -107,6 +98,7 @@ public class RegularItemEditor extends PropertiesEditor {
 			}
 		});
 		creativeTabsResetButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				creativeTabsReset();
 			}
@@ -139,6 +131,7 @@ public class RegularItemEditor extends PropertiesEditor {
 			}
 		});
 		containerChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				containerChoose();
 			}

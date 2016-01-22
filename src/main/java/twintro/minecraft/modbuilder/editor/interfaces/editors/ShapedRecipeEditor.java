@@ -1,41 +1,17 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-
-import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
-import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
-import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
-import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.RecipesActivityPanel;
-import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
-
-import java.awt.GridLayout;
-import java.awt.Window;
-
-import javax.swing.JButton;
-import java.awt.FlowLayout;
-import javax.swing.BoxLayout;
-import javax.swing.SwingConstants;
-import java.awt.Component;
-import java.awt.event.ActionListener;
-import java.awt.image.ReplicateScaleFilter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
-import java.awt.event.ActionEvent;
-import javax.swing.JLabel;
+
 import javax.swing.JOptionPane;
 
-import java.awt.Font;
+import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
+import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
+import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
+import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
+import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 	public ShapedRecipeEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
@@ -49,7 +25,7 @@ public class ShapedRecipeEditor extends ShapelessRecipeEditor {
 		ShapedRecipe shpdRcpy = (ShapedRecipe)recipe.recipe;
 		
 		for(int i = 0; i < 9;i++){
-			Character indexChar = (Character)shpdRcpy.shape.get((Integer)i/3).charAt(i%3);
+			Character indexChar = shpdRcpy.shape.get(i/3).charAt(i%3);
 			if (indexChar != ' ' && indexChar != null)
 				buttons[i].chooseItem(shpdRcpy.input.get(indexChar));
 		}

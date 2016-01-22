@@ -18,6 +18,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
+import javax.swing.WindowConstants;
 
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
@@ -42,7 +43,7 @@ public abstract class PropertiesEditor extends WindowClosingVerifierUser {
 		this.runnable = runnable;
 		this.closeHandler = closeHandler;
 
-		setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
 		addWindowListener(new WindowClosingVerifierListener());
 		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 		
@@ -64,6 +65,7 @@ public abstract class PropertiesEditor extends WindowClosingVerifierUser {
 		
 		saveButton = new JButton();
 		saveButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				save();
 			}
@@ -72,6 +74,7 @@ public abstract class PropertiesEditor extends WindowClosingVerifierUser {
 		
 		cancelButton = new JButton("Cancel");
 		cancelButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				cancel();
 			}

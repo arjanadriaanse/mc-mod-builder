@@ -9,8 +9,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import twintro.minecraft.modbuilder.data.resources.ResourceDeserializer;
-import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
-import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.BaseRecipe;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 

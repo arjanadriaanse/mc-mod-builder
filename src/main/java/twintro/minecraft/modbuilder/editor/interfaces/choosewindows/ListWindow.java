@@ -1,22 +1,21 @@
 package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.Map;
 
 import javax.swing.AbstractListModel;
 import javax.swing.ImageIcon;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JList;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.ScrollPaneConstants;
+import javax.swing.WindowConstants;
 
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -32,7 +31,7 @@ public class ListWindow extends IconDialog {
 
 		setModalityType(ModalityType.APPLICATION_MODAL);
 		setBounds(100, 100, 650, 300);
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		setTitle("Choose Material");
 		
 		this.panel.setLayout(new BorderLayout(0, 0));
@@ -55,14 +54,17 @@ public class ListWindow extends IconDialog {
 		list.setFixedCellWidth(125);
 		list.setCellRenderer(new ImageListCellRenderer((ListPanel)panel));
 		list.setModel(new AbstractListModel() {
+			@Override
 			public int getSize() {
 				return ((ListPanel)panel).elements.size();
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return ((String) ((ListPanel)panel).elements.keySet().toArray()[index]).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e){
 				if (e.getClickCount() == 2){
 					String value = ((String) ((JList) e.getSource()).getSelectedValue()).replaceAll(" ", "_");
@@ -80,14 +82,17 @@ public class ListWindow extends IconDialog {
 
 		list.setFixedCellWidth(200);
 		list.setModel(new AbstractListModel() {
+			@Override
 			public int getSize() {
 				return values.length;
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return values[index];
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e){
 				if (e.getClickCount() == 2){
 					String value = (String) ((JList) e.getSource()).getSelectedValue();

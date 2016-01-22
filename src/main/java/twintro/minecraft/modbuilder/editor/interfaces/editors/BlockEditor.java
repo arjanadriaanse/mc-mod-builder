@@ -1,54 +1,23 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Container;
-import java.awt.Dimension;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
-import java.awt.Graphics2D;
 import java.awt.GridLayout;
-import java.awt.Image;
-import java.awt.Point;
-import java.awt.RenderingHints;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
-import java.awt.image.AffineTransformOp;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 
-import javax.imageio.ImageIO;
-import javax.swing.AbstractButton;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.JRadioButton;
 import javax.swing.JSpinner;
-import javax.swing.JTextField;
 import javax.swing.SpinnerNumberModel;
-import javax.swing.SwingConstants;
-import javax.swing.SwingUtilities;
-import javax.swing.border.EmptyBorder;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 
-import twintro.minecraft.modbuilder.data.resources.MaterialResource;
 import twintro.minecraft.modbuilder.data.resources.TabResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BaseBlockResource;
 import twintro.minecraft.modbuilder.data.resources.blocks.BlockResource;
@@ -58,14 +27,10 @@ import twintro.minecraft.modbuilder.data.resources.models.BlockstateResource.Var
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource;
 import twintro.minecraft.modbuilder.data.resources.models.ItemModelResource.Display;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.BlocksActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.BlockModelChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.DropChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ColorListCellRenderer;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.BlockElement;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -196,6 +161,7 @@ public class BlockEditor extends PropertiesEditor {
 		modelLabel = label("No Model", modelTooltip);
 		modelPanel = panel(modelLabel, modelChooseButton, interactionPanel);
 		modelChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				chooseModel();
 			}
@@ -211,16 +177,19 @@ public class BlockEditor extends PropertiesEditor {
 		dropsSubPanel = panel(dropsSubSubPanel, addDropButton);
 		dropsPanel = panel(dropsSubPanel, dropsCheckBox, interactionPanel);
 		dropsCheckBox.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				useDrops();
 			}
 		});
 		addDropButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addDrop();
 			}
 		});
 		resetDropsButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				resetDrops();
 			}
@@ -469,7 +438,7 @@ public class BlockEditor extends PropertiesEditor {
 			base.unbreakable = unbreakableCheckBox.isSelected();
 			if (harvestRestrictionsCheckBox.isSelected()){
 				base.harvesttype = ((String) harvestTypeComboBox.getSelectedItem()).toLowerCase();
-				base.harvestlevel = (Integer) harvestLevelComboBox.getSelectedIndex();
+				base.harvestlevel = harvestLevelComboBox.getSelectedIndex();
 			}
 			if ((Integer) burntimeSpinner.getValue() > 0) 
 				base.burntime = (Integer) burntimeSpinner.getValue();

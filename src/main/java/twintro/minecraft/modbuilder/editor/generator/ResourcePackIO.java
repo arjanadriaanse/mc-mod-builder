@@ -19,8 +19,6 @@ import javax.swing.ImageIcon;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import twintro.minecraft.modbuilder.editor.Editor;
-
 public class ResourcePackIO {
 	private static String resourcePackFolderDir;
 	

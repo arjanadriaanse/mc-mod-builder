@@ -2,7 +2,6 @@ package example.worldgen;
 
 import java.util.Random;
 
-import example.blocks.MyBlocks;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
 import net.minecraftforge.fml.common.IWorldGenerator;

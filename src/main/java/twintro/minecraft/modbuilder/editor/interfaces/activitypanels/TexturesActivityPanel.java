@@ -1,11 +1,7 @@
 package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
-import java.awt.BorderLayout;
-import java.awt.Image;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.MouseEvent;
-import java.awt.image.BufferedImage;
 import java.io.File;
 
 import javax.swing.ImageIcon;
@@ -13,12 +9,9 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.GroundStructureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.OldTextureEditor;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.TextureEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.resources.TextureObject;
 
@@ -89,6 +82,7 @@ public class TexturesActivityPanel extends ActivityPanel {
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
 		JButton importButton = new ActivityButton("Import Image");
 		importButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				importImage();
 			}

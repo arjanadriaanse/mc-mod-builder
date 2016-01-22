@@ -2,12 +2,8 @@ package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.image.BufferedImage;
 import java.io.File;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.Map;
-import java.util.Set;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,21 +11,14 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 
-import twintro.minecraft.modbuilder.data.resources.items.ItemType;
-import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.data.resources.recipes.RecipeType;
-import twintro.minecraft.modbuilder.data.resources.recipes.ShapedRecipe;
-import twintro.minecraft.modbuilder.data.resources.recipes.ShapelessRecipe;
-import twintro.minecraft.modbuilder.data.resources.recipes.SmeltingRecipe;
 import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.RegularItemEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapedRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.ShapelessRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.editors.SmeltingRecipeEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
-import twintro.minecraft.modbuilder.editor.resources.ItemElement;
 import twintro.minecraft.modbuilder.editor.resources.RecipeElement;
 
 public class RecipesActivityPanel extends ObjectActivityPanel {
@@ -143,6 +132,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	protected void createButtonPanel(JPanel buttonPanel, String button) {
 		JButton ShapedButton = new ActivityButton("New Shaped Recipe");
 		ShapedButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addShaped();
 			}
@@ -153,6 +143,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 		
 		JButton shapedButton = new ActivityButton("New Smelting Recipe");
 		shapedButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				addSmelting();
 			}

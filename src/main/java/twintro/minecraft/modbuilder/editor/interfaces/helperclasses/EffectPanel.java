@@ -41,6 +41,7 @@ public class EffectPanel extends JPanel {
 		
 		removeButton = main.button("Remove", FoodItemEditor.removeEffectTooltip, this);
 		removeButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 			}

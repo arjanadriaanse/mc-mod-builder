@@ -1,6 +1,5 @@
 package twintro.minecraft.modbuilder.data.resources.items;
 
-import java.util.List;
 import java.util.Set;
 
 /**

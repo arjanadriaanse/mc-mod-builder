@@ -1,38 +1,26 @@
 package twintro.minecraft.modbuilder.editor.interfaces.editors;
 
 import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.WindowEvent;
-import java.awt.event.WindowListener;
-import java.util.HashSet;
-import java.util.Set;
 
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
-import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
-import javax.swing.border.EmptyBorder;
+import javax.swing.SpinnerNumberModel;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
-import twintro.minecraft.modbuilder.data.resources.structures.GroundStructureResource;
 import twintro.minecraft.modbuilder.data.resources.structures.OreStructureResource;
-import twintro.minecraft.modbuilder.editor.interfaces.activitypanels.StructureActivityPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.MaterialChooseWindow;
 import twintro.minecraft.modbuilder.editor.interfaces.choosewindows.ObjectRunnable;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierListener;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.WindowClosingVerifierUser;
 import twintro.minecraft.modbuilder.editor.resources.StructureElement;
-import javax.swing.SpinnerNumberModel;
 
 public class OreStructureEditor extends PropertiesEditor {
 	private JPanel materialPanel;
@@ -77,6 +65,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		materialLabel = materialLabel("", materialTooltip);
 		materialPanel = panel(materialLabel, materialChooseButton, interactionPanel);
 		materialChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				chooseMaterial();
 			}
@@ -87,6 +76,7 @@ public class OreStructureEditor extends PropertiesEditor {
 		replacingLabel = materialLabel("", replacingTooltip);
 		replacingPanel = panel(replacingLabel, replacingChooseButton, interactionPanel);
 		replacingChooseButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				chooseReplacing();
 			}

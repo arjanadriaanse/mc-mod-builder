@@ -4,7 +4,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 
-import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JList;
 import javax.swing.ListCellRenderer;
@@ -56,6 +55,7 @@ public class ColorListCellRenderer extends JLabel implements ListCellRenderer {
 	@Override
 	public void setBackground(Color backgroundColor){}
 	
+	@Override
 	public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus){
 		setPreferredSize(new Dimension(50,20));
 		setText("");

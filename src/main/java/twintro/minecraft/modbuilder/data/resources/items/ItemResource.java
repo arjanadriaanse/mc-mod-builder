@@ -1,9 +1,5 @@
 package twintro.minecraft.modbuilder.data.resources.items;
 
-import java.util.Set;
-
-import twintro.minecraft.modbuilder.data.resources.TabResource;
-
 /**
  * The regular item type
  */

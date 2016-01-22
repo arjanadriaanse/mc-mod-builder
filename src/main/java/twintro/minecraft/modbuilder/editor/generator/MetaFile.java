@@ -1,19 +1,12 @@
 package twintro.minecraft.modbuilder.editor.generator;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.FileReader;
-import java.io.IOException;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import twintro.minecraft.modbuilder.data.resources.items.BaseItemResource;
 import twintro.minecraft.modbuilder.data.resources.meta.MetadataResource;
 import twintro.minecraft.modbuilder.data.resources.meta.ModbuilderResource;
 import twintro.minecraft.modbuilder.data.resources.meta.PackResource;

@@ -2,43 +2,31 @@ package twintro.minecraft.modbuilder.editor.interfaces.choosewindows;
 
 import java.awt.BorderLayout;
 import java.awt.FlowLayout;
-import java.awt.Frame;
 import java.awt.GridLayout;
-import java.awt.Window;
-import java.awt.Dialog.ModalityType;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 import java.util.AbstractMap.SimpleEntry;
 import java.util.HashMap;
+import java.util.Map;
 
 import javax.swing.BorderFactory;
-import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
-import javax.swing.JComboBox;
 import javax.swing.JComponent;
-import javax.swing.JDialog;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JSpinner;
 import javax.swing.SpinnerNumberModel;
+import javax.swing.WindowConstants;
 
-import joptsimple.util.KeyValuePair;
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
-import twintro.minecraft.modbuilder.editor.Editor;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EffectPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.EnchantmentPanel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconFrame;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
-import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
 public class ItemStackChooseWindow extends IconDialog {
@@ -142,7 +130,7 @@ public class ItemStackChooseWindow extends IconDialog {
 		this.runnable = runnable;
 		
 		((JComponent) getContentPane()).setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
-		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
 		if (isProduct)
 			setTitle("Choose Product");
 		else
@@ -216,6 +204,7 @@ public class ItemStackChooseWindow extends IconDialog {
 			addEnchantmentButton.setToolTipText(addEnchantmentTooltip);
 			enchantmentsTopPanel.add(addEnchantmentButton);
 			addEnchantmentButton.addActionListener(new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent e) {
 					addEnchantment();
 				}

@@ -1,24 +1,14 @@
 package twintro.minecraft.modbuilder.editor.interfaces.activitypanels;
 
 import java.awt.BorderLayout;
-import java.awt.Component;
 import java.awt.FlowLayout;
 import java.awt.Font;
-import java.awt.Graphics;
-import java.awt.Image;
-import java.awt.LayoutManager;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.event.MouseMotionAdapter;
-import java.awt.image.BufferedImage;
-import java.util.AbstractSet;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
 import javax.swing.AbstractListModel;
@@ -31,12 +21,9 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JPopupMenu;
 import javax.swing.JScrollPane;
-import javax.swing.ListModel;
 import javax.swing.ScrollPaneConstants;
 
-import twintro.minecraft.modbuilder.editor.Editor;
 import twintro.minecraft.modbuilder.editor.generator.ResourcePackIO;
-import twintro.minecraft.modbuilder.editor.interfaces.editors.BlockEditor;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ActivityButton;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ImageListCellRenderer;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.ListPanel;
@@ -73,14 +60,17 @@ public abstract class ActivityPanel extends ListPanel {
 		list.setFixedCellWidth(128);
 		list.setCellRenderer(new ImageListCellRenderer(this));
 		list.setModel(new AbstractListModel() {
+			@Override
 			public int getSize() {
 				return elements.size();
 			}
+			@Override
 			public Object getElementAt(int index) {
 				return get(elements.keySet(), index).replaceAll("_", " ");
 			}
 		});
 		list.addMouseListener(new MouseAdapter() {
+			@Override
 			public void mouseClicked(MouseEvent e){
 				clickElement(e);
 			}
@@ -123,6 +113,7 @@ public abstract class ActivityPanel extends ListPanel {
 	protected void createButtonPanel(JPanel buttonPanel, String button){
 		JButton addButton = new ActivityButton(button);
 		addButton.addActionListener(new ActionListener() {
+			@Override
 			public void actionPerformed(ActionEvent e) {
 				add();
 			}
@@ -134,7 +125,7 @@ public abstract class ActivityPanel extends ListPanel {
 		if (e.getClickCount() == 2){
 			edit();
 		}
-		if (e.getButton() == e.BUTTON3 && list.getSelectedIndex() != -1){
+		if (e.getButton() == MouseEvent.BUTTON3 && list.getSelectedIndex() != -1){
 			JPopupMenu menu = new JPopupMenu();
 			
 			JMenuItem deleteItem = new JMenuItem("Delete");
