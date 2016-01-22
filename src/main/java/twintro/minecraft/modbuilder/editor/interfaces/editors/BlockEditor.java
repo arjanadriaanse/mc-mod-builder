@@ -116,7 +116,6 @@ public class BlockEditor extends PropertiesEditor {
 	private JSpinner slipperinessSpinner;
 	private JSpinner hardnessSpinner;
 	private JSpinner resistanceSpinner;
-	private JSpinner harvestLevelSpinner;
 	private JSpinner burntimeSpinner;
 	private JSpinner flammabilitySpinner;
 	private JSpinner fireSpreadSpeedSpinner;
@@ -124,6 +123,7 @@ public class BlockEditor extends PropertiesEditor {
 	private JComboBox harvestTypeComboBox;
 	private JComboBox mapColorComboBox;
 	private JComboBox mobilityCombobox;
+	private JComboBox harvestLevelComboBox;
 	private JCheckBox dropsCheckBox;
 	private JCheckBox unbreakableCheckBox;
 	private JCheckBox replacableCheckBox;
@@ -262,12 +262,12 @@ public class BlockEditor extends PropertiesEditor {
 		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Pickaxe", "Shovel", "Axe"}));
 		
 		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip);
-		harvestLevelSpinner = spinner(harvestLevelTooltip);
+		harvestLevelComboBox = combobox(harvestLevelTooltip);
 		harvestLevelPanel = new JPanel();
 		harvestLevelPanel.setLayout(new BorderLayout(5, 0));
 		harvestLevelPanel.add(labelHarvestLevel, BorderLayout.WEST);
-		harvestLevelPanel.add(harvestLevelSpinner, BorderLayout.CENTER);
-		harvestLevelSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(3), new Integer(1)));
+		harvestLevelPanel.add(harvestLevelComboBox, BorderLayout.CENTER);
+		harvestLevelComboBox.setModel(new DefaultComboBoxModel(new String[] {"Wood", "Stone", "Iron", "Diamond"}));
 		
 		labelHarvestRestrictions = label("Harvest Restrictions", harvestRestrictionsTooltip, labelPanel);
 		harvestRestrictionsCheckBox = checkbox("Use", harvestRestrictionsTooltip);
@@ -405,7 +405,7 @@ public class BlockEditor extends PropertiesEditor {
 			if (base.harvesttype != null)
 				harvestTypeComboBox.setSelectedItem(base.harvesttype.substring(0,1).toUpperCase() + base.harvesttype.substring(1));
 			if (base.harvestlevel != null)
-				harvestLevelSpinner.setValue(base.harvestlevel);
+				harvestLevelComboBox.setSelectedIndex(base.harvestlevel);
 			harvestRestrictionsCheckBox.setSelected(true);
 			useHarvestRestrictions();
 		}
@@ -465,7 +465,7 @@ public class BlockEditor extends PropertiesEditor {
 			base.unbreakable = unbreakableCheckBox.isSelected();
 			if (harvestRestrictionsCheckBox.isSelected()){
 				base.harvesttype = ((String) harvestTypeComboBox.getSelectedItem()).toLowerCase();
-				base.harvestlevel = (Integer) harvestLevelSpinner.getValue();
+				base.harvestlevel = (Integer) harvestLevelComboBox.getSelectedIndex();
 			}
 			if ((Integer) burntimeSpinner.getValue() > 0) 
 				base.burntime = (Integer) burntimeSpinner.getValue();
@@ -559,7 +559,7 @@ public class BlockEditor extends PropertiesEditor {
 		labelHarvestType.setEnabled(use);
 		labelHarvestLevel.setEnabled(use);
 		harvestTypeComboBox.setEnabled(use);
-		harvestLevelSpinner.setEnabled(use);
+		harvestLevelComboBox.setEnabled(use);
 	}
 	
 	private void useSolid(){
