@@ -342,7 +342,7 @@ public class BlockModelChooseWindow extends IconDialog {
 	}
 	
 	public void chooseTexture(String texture){
-		selectedImageName = texture;
+		selectedImageName = texture.replaceAll(" ", "_");
 		selectedImage = listPanel.elements.get(texture);
 		listPanel.repaint();
 	}

@@ -47,8 +47,8 @@ public class TexturesActivityPanel extends ActivityPanel {
 	
 	@Override
 	protected void edit() {
-		String value = ((String) list.getSelectedValue()).replaceAll(" ", "_");
-		editor.open(value, ResourcePackIO.toBufferedImage(ResourcePackIO.resizeImage(elements.get(value), 16, 16).getImage()));
+		String value = ((String) list.getSelectedValue());
+		editor.open(value.replaceAll(" ", "_"), ResourcePackIO.toBufferedImage(ResourcePackIO.resizeImage(elements.get(value), 16, 16).getImage()));
 	}
 	
 	@Override

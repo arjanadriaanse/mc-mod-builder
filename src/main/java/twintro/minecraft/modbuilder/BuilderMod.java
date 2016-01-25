@@ -55,7 +55,15 @@ public class BuilderMod {
 	public static Configuration getConfig() {
 		return config;
 	}
-
+	
+	/**
+	 * Contains a name-block reference for every {@link Block} that will be registered.
+	 */
+	public static Map<String,Block> customBlocks = new HashMap<String,Block>();
+	/**
+	 * Contains a name-block reference for every {@link Item} that will be registered.
+	 */
+	public static Map<String,Item> customItems = new HashMap<String,Item>();
 	/**
 	 * Contains a model location for each registered {@link Item}.
 	 */
@@ -154,47 +162,62 @@ public class BuilderMod {
 		builder.registerTypeAdapter(BaseStructureResource.class, deserializer);
 		builder.registerTypeAdapter(BaseRecipe.class, deserializer);
 		Gson gson = builder.create();
-
+		
+		Map<String,BaseBlockResource> blockResources = new HashMap<String,BaseBlockResource>();
+		Map<String,BaseItemResource> itemResources = new HashMap<String,BaseItemResource>();
 		for (String path : data.blocks) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":blocks/" + path + ".json");
 				IResource resource = manager.getResource(location);
 				BaseBlockResource blockResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseBlockResource.class);
-				Block block = ResourceConverter.toBlock(blockResource);
+				Block block = ResourceConverter.toEmptyBlock(blockResource);
 				block.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredBlocks.contains(path)) {
-					GameRegistry.registerBlock(block, path);
 					registeredBlocks.add(path);
 					blockModels.put(block, blockResource.model);
-					ResourceConverter.blocks.put("modbuilder:"+path, block);
-					if (blockResource.burntime != null)
-						fuels.put(new ItemStack(block), blockResource.burntime);
+					customBlocks.put(path, block);
+					blockResources.put(path, blockResource);
 				}
 			} catch (IOException e) {
 				// ignore
 			}
 		}
+		
+		for (String path : blockResources.keySet()) {
+			BaseBlockResource resource = blockResources.get(path);
+			Block block = ResourceConverter.toBlock(customBlocks.get(path), resource);
+			GameRegistry.registerBlock(block, path);
+			if (resource.burntime != null)
+				fuels.put(new ItemStack(block), resource.burntime);
+		}
+		
 		for (String path : data.items) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
 				IResource resource = manager.getResource(location);
 				BaseItemResource itemResource = gson.fromJson(new InputStreamReader(resource.getInputStream()),
 						BaseItemResource.class);
-				Item item = ResourceConverter.toItem(itemResource);
+				Item item = ResourceConverter.toEmptyItem(itemResource);
 				item.setUnlocalizedName(BuilderMod.MODID+"_"+path);
 				if (!registeredItems.contains(path)) {
-					GameRegistry.registerItem(item, path);
 					registeredItems.add(path);
 					itemModels.put(item, itemResource.model);
-					ResourceConverter.items.put("modbuilder:"+path, item);
-					if (itemResource.burntime != null)
-						fuels.put(new ItemStack(item), itemResource.burntime);
+					customItems.put(path, item);
+					itemResources.put(path, itemResource);
 				}
 			} catch (IOException e) {
 				// ignore
 			}
 		}
+		for (String path : itemResources.keySet()) {
+			BaseItemResource resource = itemResources.get(path);
+			Item item = ResourceConverter.toItem(customItems.get(path), resource);
+			GameRegistry.registerItem(item, path);
+			if (resource.burntime != null)
+				fuels.put(new ItemStack(item), resource.burntime);
+		}
+		
 		for (String path : data.structures) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":structures/" + path + ".json");
@@ -211,9 +234,11 @@ public class BuilderMod {
 				// ignore
 			}
 		}
+		
 		for (String path : data.recipes) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":recipes/" + path + ".json");
+				String s = location.getResourcePath();
 				IResource resource = manager.getResource(location);
 				BaseRecipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), BaseRecipe.class);
 				RecipeRegistry.register(recipe);
