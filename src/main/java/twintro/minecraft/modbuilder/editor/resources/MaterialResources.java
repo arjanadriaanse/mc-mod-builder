@@ -135,7 +135,7 @@ public class MaterialResources {
 	
 	public static boolean isItem(String material){
 		for (int i = 0; i < vanillaItemIds.length; i++)
-			if (vanillaItemIds[i].equals(material))
+			if (vanillaItemIds[i].equals(material) || vanillaItemIds[i].equals(material + "#0"))
 				return true;
 		if (material.startsWith("modbuilder:"))
 			return Editor.getItemList().containsKey(material.substring(11).replaceAll("_", " "));

@@ -23,6 +23,7 @@ import javax.swing.event.ChangeListener;
 
 import twintro.minecraft.modbuilder.data.resources.recipes.ItemStackResource;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.IconDialog;
+import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.MaterialLabel;
 import twintro.minecraft.modbuilder.editor.interfaces.helperclasses.TooltipLabel;
 import twintro.minecraft.modbuilder.editor.resources.MaterialResources;
 
@@ -39,7 +40,7 @@ public class DropChooseWindow extends IconDialog {
 	private JLabel labelAmount;
 	private JLabel labelMinAmount;
 	private JLabel labelMaxAmount;
-	private JLabel materialLabel;
+	private MaterialLabel materialLabel;
 	private JButton materialChooseButton;
 	private JButton addButton;
 	private JButton cancelButton;
@@ -88,7 +89,7 @@ public class DropChooseWindow extends IconDialog {
 		});
 		materialPanel.add(materialChooseButton, BorderLayout.EAST);
 		
-		materialLabel = new TooltipLabel("", materialTooltip);
+		materialLabel = new MaterialLabel("", materialTooltip);
 		materialPanel.add(materialLabel, BorderLayout.CENTER);
 		
 		labelAmount = new JLabel("Amount");
@@ -195,7 +196,7 @@ public class DropChooseWindow extends IconDialog {
 	}
 	
 	private void add(){
-		String material = materialLabel.getText();
+		String material = materialLabel.getMaterial();
 		if (material != null && material != ""){
 			ItemStackResource item = new ItemStackResource();
 
