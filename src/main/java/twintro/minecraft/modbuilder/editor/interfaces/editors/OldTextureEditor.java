@@ -162,22 +162,32 @@ public class OldTextureEditor extends IconFrame {
 				newImage();
 			}
 		};
+		ActionListener action4 = new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent ae) {
+				fillImage();
+			}
+		};
 		
 		JButton button1 = new JButton("Save");
 		JButton button2 = new JButton("Load");
 		JButton button3 = new JButton("Clear");
+		JButton button4 = new JButton("Fill");
 		button1.setFocusable(false);
 		button2.setFocusable(false);
 		button3.setFocusable(false);
+		button4.setFocusable(false);
 		button1.addActionListener(action1);
 		button2.addActionListener(action2);
 		button3.addActionListener(action3);	
+		button4.addActionListener(action4);	
 		LayoutManager layout = new FlowLayout(FlowLayout.LEFT);
 		panel.setLayout(layout);
 		
 		panel.add(button1);
 		panel.add(button2);
 		panel.add(button3);
+		panel.add(button4);
 		panel.addMouseListener(mouse);
 		panel.addMouseMotionListener(mousemotion);
 		f.addWindowListener(window);
@@ -244,6 +254,13 @@ public class OldTextureEditor extends IconFrame {
 				}
 			}
 		}
+	}
+
+	public void fillImage(){
+		for(int x=0;x<image.getWidth();x++)
+			for(int y=0;y<image.getHeight();y++)
+				image.setRGB(x,y, color.getRGB());
+		panel.repaint();
 	}
 	
 	public void chooseColor() {
