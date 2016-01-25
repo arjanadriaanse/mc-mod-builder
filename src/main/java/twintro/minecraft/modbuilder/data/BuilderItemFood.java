@@ -30,11 +30,10 @@ public class BuilderItemFood extends ItemFood {
 	 * 		The third integer is the amplifier of the effect. In vanilla minecraft this ranges from 0 to 5, but in mods every value is usable.
 	 * 		This will not change some effects (e.g. blindness).
 	 */
-	public BuilderItemFood(int amount, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs, ItemStack item) {
+	public BuilderItemFood(int amount, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs) {
 		super(amount, isWolfFood);
 		this.effects = effects;
 		this.tabs = tabs;
-		this.item = item;
 	}
 
 	/**
@@ -53,11 +52,10 @@ public class BuilderItemFood extends ItemFood {
 	 * 		The third integer is the amplifier of the effect. In vanilla minecraft this ranges from 0 to 5, but in mods every value is usable.
 	 * 		This will not change some effects (e.g. blindness).
 	 */
-	public BuilderItemFood(int amount, float saturation, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs, ItemStack item) {
+	public BuilderItemFood(int amount, float saturation, boolean isWolfFood, Set<Integer[]> effects, CreativeTabs[] tabs) {
 		super(amount, saturation, isWolfFood);
 		this.effects = effects;
 		this.tabs = tabs;
-		this.item = item;
 	}
 	
 	@Override
@@ -66,7 +64,7 @@ public class BuilderItemFood extends ItemFood {
 	    if (effects!=null)
 		    for (Integer[] entry : effects)
 		        if (!world.isRemote && entry.length == 3)
-		            player.addPotionEffect(new PotionEffect(entry[0], entry[1], entry[2]));
+		            player.addPotionEffect(new PotionEffect(entry[0], entry[1], entry[2]-1));
 	    if(item!=null) {
 	    	if(!player.inventory.addItemStackToInventory(item)){
 	    		player.dropItem(item, false, false);

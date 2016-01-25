@@ -37,7 +37,7 @@ public class EffectPanel extends JPanel {
 		durationSpinner.setModel(new SpinnerNumberModel(new Integer(20), new Integer(0), null, new Integer(20)));
 		
 		amplifierSpinner = main.spinner(FoodItemEditor.effectAmplifierTooltip, this);
-		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		
 		removeButton = main.button("Remove", FoodItemEditor.removeEffectTooltip, this);
 		removeButton.addActionListener(new ActionListener() {

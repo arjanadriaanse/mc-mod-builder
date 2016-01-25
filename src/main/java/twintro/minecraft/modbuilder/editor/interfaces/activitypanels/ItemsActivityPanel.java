@@ -43,7 +43,7 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 				openEditors.put(name, editor);
 			}
 			else{
-				JOptionPane.showConfirmDialog(this, "The name is already in use.", 
+				JOptionPane.showConfirmDialog(this, "This name is already in use.", 
 						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			}
 		}

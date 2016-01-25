@@ -38,7 +38,7 @@ public class EnchantmentPanel extends JPanel {
 		amplifierSpinner = new JSpinner();
 		amplifierSpinner.setToolTipText(ItemStackChooseWindow.amplifierTooltip);
 		add(amplifierSpinner);
-		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		amplifierSpinner.setModel(new SpinnerNumberModel(new Integer(1), new Integer(1), null, new Integer(1)));
 		
 		removeButton = new JButton("Remove");
 		removeButton.setToolTipText(ItemStackChooseWindow.removeEnchantmentTooltip);

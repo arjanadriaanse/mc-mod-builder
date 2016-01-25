@@ -58,13 +58,14 @@ public class ItemStackChooseWindow extends IconDialog {
 	private boolean isProduct;
 	private ObjectRunnable runnable;
 
-	private static final String materialProductTooltip = "The material of the product";
-	private static final String materialIngredientTooltip = "The material of the ingredient";
-	private static final String containerTooltip = "<html>The material of the container<br>"
-			+ "The container is the item or block that will be left behind after crafting</html>";
-	private static final String stackSizeTooltip = "The amount of the item or block that will be crafted";
+	private static final String materialProductTooltip = "The block or item that will be created";
+	private static final String materialIngredientTooltip = "The block or item used in this recipe";
+	private static final String containerTooltip = "<html>Select a container item.<br>"
+			+ "This is the item that will be left behind after crafting.<br>"
+			+ "For example, if you craft a cake, the milk buckets in the recipe will leave an emtpy bucket behind</html>";
+	private static final String stackSizeTooltip = "The amount of blocks or items that will be crafted";
 	public static final String enchantmentTypeTooltip = "The type of enchantment.";
-	public static final String amplifierTooltip = "The amplifier of the enchantment. An amplifier of 0 means level 1.";
+	public static final String amplifierTooltip = "The amplifier of the enchantment.";
 	public static final String removeEnchantmentTooltip = "Remove this enchantment.";
 	private static final String addEnchantmentTooltip = "Add a new enchantment.";
 	

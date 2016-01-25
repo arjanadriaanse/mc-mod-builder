@@ -47,21 +47,20 @@ public class FoodItemEditor extends RegularItemEditor {
 		}
 	};
 
-	private static final String hungerRefillTooltip = "<html>The amount of hunger points that will be refilled when the user eats the food<br>"
+	private static final String hungerRefillTooltip = "<html>The amount of hunger points that will be restored when the user eats the food<br>"
 			+ "Two hunger points refill one chicken wing</html>";
 	private static final String saturationTooltip = "<html>The amount of saturation that the user gains by eating the food<br>"
 				+ "As long as the user has saturation, he will not lose any hunger<br>"
 				+ "The amount of saturation the user has drains over time, the speed at which this happens varies based on activity</html>";
-	private static final String feedToWolvesTooltip = "Determine whether or not the food can be fed to a wolf";
-	private static final String alwaysEdibleTooltip = "<html>Determine whether or not the food can be eaten, even with a full hunger bar<br>"
+	private static final String feedToWolvesTooltip = "Whether or not the food can be fed to a wolf";
+	private static final String alwaysEdibleTooltip = "<html>Whether or not the food can be eaten with a full hunger bar<br>"
 				+ "This may be useful, because the user will still gain saturation and potion effects</html>";
 	public static final String effectTypeTooltip = "The effect type";
 	public static final String effectDurationTooltip = "<html>The duration of the effect in ticks<br>"
 				+ "One second is equal to twenty ticks</html>";
-	public static final String effectAmplifierTooltip = "<html>The amplifier for the effect<br>"
-			+ "An amplifier of zero means level one, an amplifier of one means level two, this pattern continues</html>";
+	public static final String effectAmplifierTooltip = "The amplifier of the effect.";
 	public static final String removeEffectTooltip = "Remove this effect";
-	private static final String addEffectTooltip = "Add potion effects that will occur to the user when he eats the food";
+	private static final String addEffectTooltip = "Add a potion effect that will occur to the user when he eats the food";
 	
 	public FoodItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);

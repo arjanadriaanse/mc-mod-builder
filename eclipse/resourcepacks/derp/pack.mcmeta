@@ -1,0 +1,24 @@
+{
+  "pack": {
+    "pack_format": 1,
+    "description": "A ModBuilder Minecraft Mod"
+  },
+  "modbuilder": {
+    "blocks": [
+      "asd",
+      "Cropsy"
+    ],
+    "items": [
+      "White rubiks face",
+      "Blue rubiks face",
+      "Orange rubiks face",
+      "Yellow rubiks face",
+      "Red rubiks face",
+      "Green rubiks face"
+    ],
+    "recipes": [
+      "Rubiks Cube"
+    ],
+    "structures": []
+  }
+}

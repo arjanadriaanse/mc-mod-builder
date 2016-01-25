@@ -94,16 +94,16 @@ public class BlockElement extends InventoryElement {
 	
 	public void setOpaqueAndCutout(){
 		block.cutout = false;
-		block.opaque = false;
+		block.opaque = true;
 		for (String textureName : blockModel.textures.values()){
 			if (textureName.startsWith("modbuilder:") && hasTransparency(textureName)){
 				block.cutout = true;
-				block.opaque = true;
+				block.opaque = false;
 				break;
 			}
 		}
 		if (blockModel.parent.equals("cross") || !block.solid){
-			block.opaque = true;
+			block.opaque = false;
 		}
 	}
 	

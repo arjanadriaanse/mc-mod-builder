@@ -1,0 +1,28 @@
+{
+  "type": "regular",
+  "flammable": false,
+  "replaceable": false,
+  "requirestool": true,
+  "mobility": 0,
+  "solid": true,
+  "opaque": true,
+  "mapcolor": 12,
+  "model": "modbuilder:asd",
+  "tab": "block",
+  "drops": [
+    {
+      "block": "modbuilder:asd",
+      "amount": 0,
+      "amountincrease": 6,
+      "enchantments": {}
+    }
+  ],
+  "light": 15,
+  "opacity": 0,
+  "slipperiness": 2.0,
+  "hardness": 6.0,
+  "resistance": 3.0,
+  "unbreakable": false,
+  "harvestlevel": 2,
+  "burntime": 0
+}

@@ -1,0 +1,34 @@
+{
+  "input": [
+    {
+      "item": "modbuilder:Red rubiks face",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:White rubiks face",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:Blue rubiks face",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:Yellow rubiks face",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:Green rubiks face",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:Orange rubiks face",
+      "enchantments": {}
+    }
+  ],
+  "type": "shapeless",
+  "output": {
+    "block": "modbuilder:asd",
+    "amount": 1,
+    "enchantments": {}
+  }
+}
