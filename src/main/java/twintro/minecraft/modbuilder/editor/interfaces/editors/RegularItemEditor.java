@@ -161,7 +161,7 @@ public class RegularItemEditor extends PropertiesEditor {
 	protected void regularSetup(ItemElement item){
 		if (item.itemModel.textures.containsKey("layer0")) {
 			textureLabel.setText(item.itemModel.textures.get("layer0"));
-			setIconImage(Editor.getTextureList().get(item.itemModel.textures.get("layer0").split(":")[1]).getImage());
+			setIconImage(item.getImage().getImage());
 		}
 		if (item.item.container != null){
 			containerLabel.setText(item.item.container);
@@ -267,7 +267,7 @@ public class RegularItemEditor extends PropertiesEditor {
 			public void run(Object obj) {
 				change();
 				String texture = (String) obj;
-				textureLabel.setText(texture);
+				textureLabel.setText(texture.replaceAll(" ", "_"));
 				setIconImage(Editor.getTextureList().get(texture.split(":")[1]).getImage());
 			}
 		});
