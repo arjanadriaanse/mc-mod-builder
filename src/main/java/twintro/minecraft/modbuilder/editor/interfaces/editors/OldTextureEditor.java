@@ -6,6 +6,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.LayoutManager;
+import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.TexturePaint;
 import java.awt.event.ActionEvent;
@@ -37,7 +38,6 @@ public class OldTextureEditor extends IconFrame {
 	String name;
 	BufferedImage image;
 	ObjectRunnable runnable;
-	JFrame frame;
 	JPanel panel;
 	MouseAdapter mouse;
 	Integer mousebutton = MouseEvent.NOBUTTON;
@@ -48,19 +48,15 @@ public class OldTextureEditor extends IconFrame {
 	boolean mousepressed;
 	boolean saved = true;
 	JColorChooser colorchooser = new JColorChooser();
-	Color color = new Color(0,0,0);
-	Color color2 = new Color(0,0,0);
-	Color color3 = new Color(0,0,0);
-	Color color4 = new Color(0,0,0);
 	TexturePaint background = new TexturePaint(backgroundImage(),new Rectangle(0,0,16,16));
-	int imgsize = 256;
-	int c1size = 64;
-	int csize = 48;
-	int[] imgloc = {16,48};
-	int[] c1loc = {288,48};
-	int[] c2loc = {288,128};
-	int[] c3loc = {288,192};
-	int[] c4loc = {288,256};
+	Color[] colors = new Color[]{new Color(0,0,0),null,null,null};
+	int[] sizes = new int[]{64,48,48,48,256};
+	Point[] locs = new Point[]{
+			new Point(288,48),
+			new Point(288,128),
+			new Point(288,192),
+			new Point(288,256),
+			new Point(16,48)};
 	
 	public void updateGUI() {
 		
@@ -77,22 +73,22 @@ public class OldTextureEditor extends IconFrame {
 	
 	public OldTextureEditor(ObjectRunnable runnable){
 		this.runnable = runnable;
-		frame = buildFrame();
+		buildFrame();
 	}
 	
 	public void open(String name, BufferedImage img){
 		this.name = name;
 		this.image = img;
 		this.saved = true;
-		frame.setIconImage(image);
-		frame.setName("Edit texture: " + name);
-		frame.setVisible(true);
+		setIconImage(image);
+		setName("Edit texture: " + name);
+		setVisible(true);
+		panel.repaint();
 	}
 	
-	public JFrame buildFrame(){
-		JFrame f = new IconFrame();
-		f.setSize(384, 368);
-		f.setVisible(false);
+	public void buildFrame(){
+		setSize(384, 368);
+		setVisible(false);
 		panel = new JPanel() {
 			@Override
 			public void paintComponent(Graphics g) {
@@ -190,33 +186,28 @@ public class OldTextureEditor extends IconFrame {
 		panel.add(button4);
 		panel.addMouseListener(mouse);
 		panel.addMouseMotionListener(mousemotion);
-		f.addWindowListener(window);
-		f.addKeyListener(key);
-		f.add(panel);
-		return f;
+		addWindowListener(window);
+		addKeyListener(key);
+		add(panel);
 	}
 	
 	public void paintSelf(Graphics2D g) {
 		updateGUI();
 		g.setColor(new Color(255,255,255));
-		g.fillRect(0, 0, frame.getWidth(), frame.getHeight());
+		g.fillRect(0, 0, getWidth(), getHeight());
+		for (int i=0;i<4;i++){
+			if (colors[i]!=null) {
+				g.setColor(colors[i]);
+				g.fillRect((int) locs[i].getX(), (int) locs[i].getY(), sizes[i], sizes[i]);
+				g.setColor(new Color(0,0,0));
+				g.drawRect((int) locs[i].getX(), (int) locs[i].getY(), sizes[i], sizes[i]);
+			}
+		}
 		g.setPaint(background);
-		g.fillRect(imgloc[0], imgloc[1], imgsize, imgsize);
-		g.setColor(color);
-		g.fillRect(c1loc[0], c1loc[1], c1size, c1size);
-		g.setColor(color2);
-		g.fillRect(c2loc[0], c2loc[1], csize, csize);
-		g.setColor(color3);
-		g.fillRect(c3loc[0], c3loc[1], csize, csize);
-		g.setColor(color4);
-		g.fillRect(c4loc[0], c4loc[1], csize, csize);
-		g.drawImage(resizeImage(image, imgsize, imgsize), imgloc[0], imgloc[1], null);
+		g.fillRect((int) locs[4].getX(), (int) locs[4].getY(), sizes[4], sizes[4]);
+		g.drawImage(resizeImage(image, sizes[4], sizes[4]), (int) locs[4].getX(), (int) locs[4].getY(), null);
 		g.setColor(new Color(0,0,0));
-		g.drawRect(imgloc[0], imgloc[1], imgsize, imgsize);
-		g.drawRect(c1loc[0], c1loc[1], c1size, c1size);
-		g.drawRect(c2loc[0], c2loc[1], csize, csize);
-		g.drawRect(c3loc[0], c3loc[1], csize, csize);
-		g.drawRect(c4loc[0], c4loc[1], csize, csize);
+		g.drawRect((int) locs[4].getX(), (int) locs[4].getY(), sizes[4], sizes[4]);
 	}
 	
 	private static Image resizeImage(BufferedImage img, int width, int height){
@@ -230,7 +221,7 @@ public class OldTextureEditor extends IconFrame {
 	
 	public void saveImage() {
 		saved=true;
-		frame.setIconImage(image);
+		setIconImage(image);
 		
 		TextureObject texture = new TextureObject();
 		texture.name = name;
@@ -240,7 +231,7 @@ public class OldTextureEditor extends IconFrame {
 	
 	public void loadImage() {
 		JFileChooser menu = new JFileChooser();
-		int result = menu.showOpenDialog(frame);
+		int result = menu.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
 			if (file.exists()){
@@ -259,33 +250,26 @@ public class OldTextureEditor extends IconFrame {
 	public void fillImage(){
 		for(int x=0;x<image.getWidth();x++)
 			for(int y=0;y<image.getHeight();y++)
-				image.setRGB(x,y, color.getRGB());
+				image.setRGB(x,y, colors[0].getRGB());
 		panel.repaint();
 	}
 	
 	public void chooseColor() {
-		Color new_color = JColorChooser.showDialog(panel, "Choose pencil color", color);
+		Color new_color = JColorChooser.showDialog(panel, "Choose pencil color", colors[0]);
 		if (new_color!=null) {
-			if (new_color == color2)
-				color2 = color;
-			else if (color == color3)
-				color3 = color;
-			else if (color == color4)
-				color4 = color;
+			if (new_color == colors[1])
+				colors[1] = colors[0];
+			else if (new_color == colors[2])
+				colors[2] = colors[0];
+			else if (new_color == colors[3])
+				colors[3] = colors[0];
 			else {
-				color4 = color3;
-				color3 = color2;
-				color2 = color;
+				colors[3] = colors[2];
+				colors[2] = colors[1];
+				colors[1] = colors[0];
 			}
-			color = new_color;
+			colors[0] = new_color;
 		}
-		panel.repaint();
-	}
-	
-	public void clearColors() {
-		color2 = new Color(0,0,0);
-		color3 = new Color(0,0,0);
-		color4 = new Color(0,0,0);
 		panel.repaint();
 	}
 	
@@ -293,21 +277,14 @@ public class OldTextureEditor extends IconFrame {
 		int x = me.getX();
 		int y = me.getY();
 		if (me.getButton() == MouseEvent.BUTTON1) {
-			Color temp_color = color;
-			if (inRec(x,y,c1loc[0], c1loc[1], c1size, c1size))
+			Color temp_color = colors[0];
+			if (inRec(x,y,(int) locs[0].getX(), (int) locs[0].getY(), sizes[0], sizes[0]))
 				chooseColor();
-			if (inRec(x,y,c2loc[0], c2loc[1], csize, csize)) {
-				color = color2;
-				color2 = temp_color;
-			}
-			if (inRec(x,y,c3loc[0], c3loc[1], csize, csize)) {
-				color = color3;
-				color3 = temp_color;
-			}
-			if (inRec(x,y,c4loc[0], c4loc[1], csize, csize)) {
-				color = color4;
-				color4 = temp_color;
-			}
+			for (int i=1;i<4;i++)
+				if (inRec(x,y,(int) locs[i].getX(), (int) locs[i].getY(), sizes[i], sizes[i]) && colors[i]!=null){
+					colors[0] = colors[i];
+					colors[i] = temp_color;
+				}
 			panel.repaint();
 		}
 	}
@@ -318,7 +295,7 @@ public class OldTextureEditor extends IconFrame {
 				int x = (mouseevent.getX()-16)/16;
 				int y = (mouseevent.getY()-48)/16;
 				if (mousebutton == MouseEvent.BUTTON1)
-					image.setRGB(x, y, color.getRGB());
+					image.setRGB(x, y, colors[0].getRGB());
 				if (mousebutton == MouseEvent.BUTTON3)
 					image.setRGB(x, y, new Color(0,0,0,0).getRGB());
 				saved=false;
@@ -333,7 +310,7 @@ public class OldTextureEditor extends IconFrame {
 	
 	public void onClose(WindowEvent we) {
 		if (!saved) {
-			if (JOptionPane.showConfirmDialog(frame, 
+			if (JOptionPane.showConfirmDialog(this, 
                 "Do you want to save the texture?", "Save texture?", 
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE) == JOptionPane.YES_OPTION){
@@ -357,7 +334,7 @@ public class OldTextureEditor extends IconFrame {
 		}
 		if (key==KeyEvent.VK_ENTER) {
 			saveImage();
-			frame.setVisible(false);
+			setVisible(false);
 		}
 	}
 }
