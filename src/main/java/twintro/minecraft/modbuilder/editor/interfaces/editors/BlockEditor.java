@@ -115,7 +115,7 @@ public class BlockEditor extends PropertiesEditor {
 	private static final String harvestLevelTooltip = "How good the tool at least needs to be to harvest the block";
 	private static final String burntimeTooltip = "<html>The amount of ticks the block will burn if used as a fuel.<br>" + 
 								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
-	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
+	private static final String unbreakableTooltip = "Whether or not the block is unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
 	private static final String harvestRestrictionsTooltip = "Restriction to which unmodded minecraft tool is effective on the block.";
 	private static final String mapColorTooltip = "<html>The color that the block will be on a map.<br>"+
