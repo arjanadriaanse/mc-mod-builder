@@ -238,6 +238,7 @@ public class BuilderMod {
 		for (String path : data.recipes) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":recipes/" + path + ".json");
+				String s = location.getResourcePath();
 				IResource resource = manager.getResource(location);
 				BaseRecipe recipe = gson.fromJson(new InputStreamReader(resource.getInputStream()), BaseRecipe.class);
 				RecipeRegistry.register(recipe);
