@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "east": "modbuilder:rubikgr",
+    "south": "modbuilder:rubikr",
+    "north": "modbuilder:rubikor",
+    "west": "modbuilder:rubikb",
+    "particle": "modbuilder:rubiky",
+    "up": "modbuilder:rubiky",
+    "down": "modbuilder:rubikwhi"
+  }
+}

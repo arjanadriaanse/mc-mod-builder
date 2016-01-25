@@ -1,0 +1,8 @@
+{
+  "type": "regular",
+  "model": "modbuilder:White rubiks face",
+  "tabs": [
+    "decorations"
+  ],
+  "stacksize": 64
+}

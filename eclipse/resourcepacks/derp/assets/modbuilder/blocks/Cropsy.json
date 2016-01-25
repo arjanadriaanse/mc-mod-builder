@@ -1,0 +1,22 @@
+{
+  "type": "regular",
+  "material": "glass",
+  "model": "modbuilder:Cropsy",
+  "tab": "block",
+  "drops": [
+    {
+      "block": "modbuilder:Cropsy",
+      "amount": 2,
+      "amountincrease": 2,
+      "enchantments": {}
+    }
+  ],
+  "light": 0,
+  "opacity": 0,
+  "slipperiness": 0.6,
+  "hardness": 0.0,
+  "resistance": 0.0,
+  "unbreakable": false,
+  "harvestlevel": 0,
+  "burntime": 4
+}
