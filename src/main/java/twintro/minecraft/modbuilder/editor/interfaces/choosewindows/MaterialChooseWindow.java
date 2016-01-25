@@ -31,12 +31,14 @@ public class MaterialChooseWindow extends IconDialog {
 	public static final int BLOCKS_NONE_METALESS = 10;
 	public static final int ITEMS_BLOCKS_NONE_METALESS = 11;
 
-	private static final String customItemsTooltip = "Items made by you.";
-	private static final String customBlocksTooltip = "Blocks made by you.";
-	private static final String vanillaItemsTooltip = "Items that are in unmodded minecraft.";
-	private static final String vanillaBlocksTooltip = "Blocks that are in unmodded minecraft.";
-	private static final String otherTooltip = "Type in your item/block. Use the id.";
-	private static final String noneTooltip = "Empty";
+	private static final String customItemsTooltip = "Choose an item made by you.";
+	private static final String customBlocksTooltip = "Choose a block made by you.";
+	private static final String vanillaItemsTooltip = "Choose an item from unmodded minecraft.";
+	private static final String vanillaBlocksTooltip= "Choose a block from unmodded minecraft.";
+	private static final String otherTooltip = "<html>Type in the name of any block or item.<br>"
+			+ "You have to use its id, for example 'minecraft:stone' or 'minecraft:diamond_sword'.<br>"
+			+ "Items made by you use 'modbuilder:[name]' as id format, where [name] is the name of your block or item.</html>";
+	private static final String noneTooltip = "Use no block or item";
 	
 	private ObjectRunnable runnable;
 	private JPanel mainPanel;

@@ -43,14 +43,15 @@ public class ToolItemEditor extends RegularItemEditor {
 	
 	private String affectedBlocksString;
 
-	private static final String durabilityTooltip = "The amount of blocks that the tool can mine until the tool breaks";
+	private static final String durabilityTooltip = "The amount of blocks that the tool can mine until it breaks";
 	private static final String efficiencyTooltip = "<html>The speed at which the tool mines<br>"
-			+ "For example, wooden tools have efficiency 2, stone 4, iron 6 and diamond 8</html>";
+			+ "For example, wooden tools have efficiency 2, stone 4, iron 6 and diamond 8<br>"
+			+ "The actual breaking time is calculated using this value and the hardness of the block</html>";
 	private static final String damageTooltip = "<html>The amount of damage points the tool deals when used as a weapon<br>"
 			+ "One heart of health is two health points</html>";
 	private static final String enchantibilityTooltip = "How good enchantments on the tool will be";
 	private static final String affectedBlocksTooltip = "The blocks that are mined faster with the tool";
-	private static final String repairMaterialTooltip = "The material that is required to repair the tool in an anvil";
+	private static final String repairMaterialTooltip = "The block or item required to repair the tool in an anvil";
 
 	public ToolItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);

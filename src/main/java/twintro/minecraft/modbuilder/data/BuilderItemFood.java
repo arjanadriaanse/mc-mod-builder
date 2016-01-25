@@ -64,7 +64,7 @@ public class BuilderItemFood extends ItemFood {
 	    if (effects!=null)
 		    for (Integer[] entry : effects)
 		        if (!world.isRemote && entry.length == 3)
-		            player.addPotionEffect(new PotionEffect(entry[0], entry[1], entry[2]));
+		            player.addPotionEffect(new PotionEffect(entry[0], entry[1], entry[2]-1));
 	    if(item!=null) {
 	    	if(!player.inventory.addItemStackToInventory(item)){
 	    		player.dropItem(item, false, false);

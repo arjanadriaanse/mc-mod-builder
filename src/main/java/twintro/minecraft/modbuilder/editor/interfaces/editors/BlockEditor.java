@@ -44,14 +44,13 @@ public class BlockEditor extends PropertiesEditor {
 	private JPanel requiresToolPanel;
 	private JPanel solidPanel;
 	private JPanel unbreakablePanel;
+	private JPanel burntimePanel;
 	private JPanel flammablePanel;
 	private JPanel flammableSubPanel;
 	private JPanel flammabilityPanel;
 	private JPanel fireSpreadSpeedPanel;
 	private JPanel harvestRestrictionsPanel;
 	private JPanel harvestRestrictionsSubPanel;
-	private JPanel harvestTypePanel;
-	private JPanel harvestLevelPanel;
 	private JLabel labelCreativeTab;
 	private JLabel labelModel;
 	private JLabel labelDrops;
@@ -60,10 +59,8 @@ public class BlockEditor extends PropertiesEditor {
 	private JLabel labelSlipperiness;
 	private JLabel labelHardness;
 	private JLabel labelResistance;
-	private JLabel labelBurntime;
+	private JLabel labelBurnTime;
 	private JLabel labelHarvestRestrictions;
-	private JLabel labelHarvestLevel;
-	private JLabel labelHarvestType;
 	private JLabel labelUnbreakable;
 	private JLabel labelMapColor;
 	private JLabel labelMobility;
@@ -94,6 +91,7 @@ public class BlockEditor extends PropertiesEditor {
 	private JCheckBox replacableCheckBox;
 	private JCheckBox requiresToolCheckBox;
 	private JCheckBox solidCheckBox;
+	private JCheckBox burntimeCheckBox;
 	private JCheckBox flammableCheckBox;
 	private JCheckBox harvestRestrictionsCheckBox;
 	
@@ -104,30 +102,31 @@ public class BlockEditor extends PropertiesEditor {
 	private ItemStackResource thisDrop;
 	private List<ItemStackResource> thisDrops;
 
-	private static final String modelTooltip = "The model determines what the block looks like in game";
-	private static final String dropsTooltip = "The items and blocks that the block will drop when the user breaks it";
+	private static final String modelTooltip = "What the block looks like in game";
+	private static final String dropsTooltip = "The blocks and items that the block will drop when broken";
 	private static final String creativeTabTooltip = "The creative tab the block will be in";
 	private static final String lightnessTooltip = "The amount of light the block emits";
 	private static final String opacityTooltip = "<html>The number indicating how much the light level will decrease when passing through this block.<br>" + 
 								"For most blocks this is 15 (the maximum value), but for some blocks, like water or glass, it is less.</html>";
-	private static final String slipperinessTooltip = "How slippery the block is. For example, ice has a high slipperiness value";
-	private static final String hardnessTooltip = "How long it takes you to break the block";
+	private static final String slipperinessTooltip = "How slippery the block is. Ice for example has a high slipperiness value";
+	private static final String hardnessTooltip = "<hmtl>Indictor of how long it will take you to break the block.<br>"+
+								"The actual breaking time is calculated using this value and the mining speed of the tool used</html>";
 	private static final String resistanceTooltip = "How resistant the block is to explosions";
-	private static final String harvestLevelTooltip = "<html> How good the tool needs to be to harvest the block.<br>"+
-								"A harvestlevel of 0 means a wooden/golden tool is good enough, 1 means you need at least stone, 2 is iron and 3 is diamond</html>";
-	private static final String burntimeTooltip = "<html>Burn time is the amount of ticks the block will burn if used as a fuel.<br>" + 
-								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt.<br>"
-								+ "Use a burntime of 0 if you don't want the block to be used as fuel.</html>";
+	private static final String harvestLevelTooltip = "How good the tool at least needs to be to harvest the block";
+	private static final String burntimeTooltip = "<html>The amount of ticks the block will burn if used as a fuel.<br>" + 
+								"A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
 	private static final String unbreakableTooltip = "Set to true to make the block unbreakable in survival mode, like bedrock or barrier block";
 	private static final String harvestTypeTooltip = "Which type of tool is required to mine the block.";
-	private static final String harvestRestrictionsTooltip = "Restrictions as to which tools are effective on the block.";
-	private static final String mapColorTooltip = "The color that the block will appear as on a map.";
+	private static final String harvestRestrictionsTooltip = "Restriction to which unmodded minecraft tool is effective on the block.";
+	private static final String mapColorTooltip = "<html>The color that the block will be on a map.<br>"+
+								"If set to transparent, the map will choose the color of the block underneath your block.</html>";
 	private static final String mobilityTooltip = "The way the block interacts with pistons";
-	private static final String replacableTooltip = "Weather or not the block gets replaced when you place a block on it.";
-	private static final String requiresToolTooltip = "Weather or not the block requires to be broken with a tool to drop it's drops.";
-	private static final String solidTooltip = "If a block is not solid, you can walk through the block.";
-	private static final String flammableTooltip = "Weather or not the block can be lit on fire with a flint and steel.";
-	private static final String flammabilityTooltip = "The amount of ticks it will take for the block to be burnt when set on fire. Twenty ticks is one second.";
+	private static final String replacableTooltip = "<html>Whether or not the block gets replaced when you place a block on it.<br>"+
+								"Tall grass for example will be replaced when you place a block on it</html>";
+	private static final String requiresToolTooltip = "Whether or not the block will drop its drops when mined with the wrong tool.";
+	private static final String solidTooltip = "Whether or not the block is solid. If a block is not solid, you can walk through it.";
+	private static final String flammableTooltip = "Whether or not the block can be lit on fire.";
+	private static final String flammabilityTooltip = "The average amount of ticks the block will burn when set on fire. Twenty ticks is one second.";
 	private static final String fireSpreadSpeedTooltip = "The amount of ticks until the fire tries to spread to another block.";
 
 	private final ObjectRunnable modelChooser = new ObjectRunnable(){
@@ -196,6 +195,18 @@ public class BlockEditor extends PropertiesEditor {
 		});
 		drops = new ArrayList<ItemStackResource>();
 		
+		labelBurnTime = label("Burn Time", burntimeTooltip, labelPanel);
+		burntimeCheckBox = checkbox("Use", burntimeTooltip);
+		burntimeSpinner = spinner(burntimeTooltip);
+		burntimePanel = panel(burntimeSpinner, burntimeCheckBox, interactionPanel);
+		burntimeCheckBox.addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				useBurnTime();
+			}
+		});
+		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(200), new Integer(1), null, new Integer(200)));
+		
 		labelFlammability = label("Flammability", flammabilityTooltip);
 		flammabilitySpinner = spinner(flammabilityTooltip);
 		flammabilityPanel = new JPanel();
@@ -204,7 +215,7 @@ public class BlockEditor extends PropertiesEditor {
 		flammabilityPanel.add(flammabilitySpinner, BorderLayout.CENTER);
 		flammabilitySpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(300), new Integer(1)));
 		
-		labelFireSpreadSpeed = label("Fire Spread Speed", fireSpreadSpeedTooltip);
+		labelFireSpreadSpeed = label("Spread Speed", fireSpreadSpeedTooltip);
 		fireSpreadSpeedSpinner = spinner(fireSpreadSpeedTooltip);
 		fireSpreadSpeedPanel = new JPanel();
 		fireSpreadSpeedPanel.setLayout(new BorderLayout(5, 0));
@@ -225,29 +236,19 @@ public class BlockEditor extends PropertiesEditor {
 				useFlammable();
 			}
 		});
-
-		labelHarvestType = label("Harvest Type", harvestTypeTooltip);
-		harvestTypeComboBox = combobox(harvestTypeTooltip);
-		harvestTypePanel = new JPanel();
-		harvestTypePanel.setLayout(new BorderLayout(5, 0));
-		harvestTypePanel.add(labelHarvestType, BorderLayout.WEST);
-		harvestTypePanel.add(harvestTypeComboBox, BorderLayout.CENTER);
-		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Pickaxe", "Shovel", "Axe"}));
 		
-		labelHarvestLevel = label("Harvest Level", harvestLevelTooltip);
 		harvestLevelComboBox = combobox(harvestLevelTooltip);
-		harvestLevelPanel = new JPanel();
-		harvestLevelPanel.setLayout(new BorderLayout(5, 0));
-		harvestLevelPanel.add(labelHarvestLevel, BorderLayout.WEST);
-		harvestLevelPanel.add(harvestLevelComboBox, BorderLayout.CENTER);
-		harvestLevelComboBox.setModel(new DefaultComboBoxModel(new String[] {"Wood", "Stone", "Iron", "Diamond"}));
+		harvestLevelComboBox.setModel(new DefaultComboBoxModel(new String[] {"Wooden", "Stone", "Iron", "Diamond"}));
+		
+		harvestTypeComboBox = combobox(harvestTypeTooltip);
+		harvestTypeComboBox.setModel(new DefaultComboBoxModel(new String[] {"Pickaxe", "Shovel", "Axe"}));
 		
 		labelHarvestRestrictions = label("Harvest Restrictions", harvestRestrictionsTooltip, labelPanel);
 		harvestRestrictionsCheckBox = checkbox("Use", harvestRestrictionsTooltip);
 		harvestRestrictionsSubPanel = new JPanel();
 		harvestRestrictionsSubPanel.setLayout(new GridLayout(0, 2, 5, 0));
-		harvestRestrictionsSubPanel.add(harvestTypePanel);
-		harvestRestrictionsSubPanel.add(harvestLevelPanel);
+		harvestRestrictionsSubPanel.add(harvestLevelComboBox);
+		harvestRestrictionsSubPanel.add(harvestTypeComboBox);
 		harvestRestrictionsPanel = panel(harvestRestrictionsSubPanel, harvestRestrictionsCheckBox, interactionPanel);
 		harvestRestrictionsCheckBox.addActionListener(new ActionListener() {
 			@Override
@@ -305,10 +306,6 @@ public class BlockEditor extends PropertiesEditor {
 		slipperinessSpinner = spinner(slipperinessTooltip, interactionPanel);
 		slipperinessSpinner.setModel(new SpinnerNumberModel(new Float(0.6F), new Float(0), null, new Float(0.1F)));
 		
-		labelBurntime = label("Burn time", burntimeTooltip, labelPanel);
-		burntimeSpinner = spinner(burntimeTooltip, interactionPanel);
-		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(200)));
-		
 		labelLightness = label("Lightness", lightnessTooltip, labelPanel);
 		lightnessSpinner = spinner(lightnessTooltip, interactionPanel);
 		lightnessSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), new Integer(15), new Integer(1)));
@@ -326,6 +323,7 @@ public class BlockEditor extends PropertiesEditor {
 		resistanceSpinner.setModel(new SpinnerNumberModel(new Float(2.5F), new Float(0), null, new Float(1)));
 		
 		useDrops();
+		useBurnTime();
 		useFlammable();
 		useHarvestRestrictions();
 		useSolid();
@@ -382,8 +380,11 @@ public class BlockEditor extends PropertiesEditor {
 			harvestRestrictionsCheckBox.setSelected(true);
 			useHarvestRestrictions();
 		}
-		if (base.burntime != null)
+		if (base.burntime != null){
 			burntimeSpinner.setValue(base.burntime);
+			burntimeCheckBox.setSelected(true);
+			useBurnTime();
+		}
 		if (base.flammability != null || base.firespreadspeed != null){
 			if (base.flammability != null)
 				flammabilitySpinner.setValue(base.flammability);
@@ -440,7 +441,7 @@ public class BlockEditor extends PropertiesEditor {
 				base.harvesttype = ((String) harvestTypeComboBox.getSelectedItem()).toLowerCase();
 				base.harvestlevel = harvestLevelComboBox.getSelectedIndex();
 			}
-			if ((Integer) burntimeSpinner.getValue() > 0) 
+			if (burntimeCheckBox.isSelected())
 				base.burntime = (Integer) burntimeSpinner.getValue();
 			if (flammableCheckBox.isSelected()){
 				base.flammability = (Integer) flammabilitySpinner.getValue();
@@ -521,6 +522,12 @@ public class BlockEditor extends PropertiesEditor {
 		dropsString = "";
 	}
 	
+	private void useBurnTime(){
+		boolean use = burntimeCheckBox.isSelected();
+		labelBurnTime.setEnabled(use);
+		burntimeSpinner.setEnabled(use);
+	}
+	
 	private void useFlammable(){
 		boolean use = flammableCheckBox.isSelected();
 		labelFlammable.setEnabled(use);
@@ -533,8 +540,6 @@ public class BlockEditor extends PropertiesEditor {
 	private void useHarvestRestrictions(){
 		boolean use = harvestRestrictionsCheckBox.isSelected();
 		labelHarvestRestrictions.setEnabled(use);
-		labelHarvestType.setEnabled(use);
-		labelHarvestLevel.setEnabled(use);
 		harvestTypeComboBox.setEnabled(use);
 		harvestLevelComboBox.setEnabled(use);
 	}

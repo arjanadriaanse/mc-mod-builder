@@ -48,8 +48,8 @@ public class DropChooseWindow extends IconDialog {
 	
 	private ObjectRunnable runnable;
 
-	private static final String materialTooltip = "The material of the drop";
-	private static final String amountTooltip = "The amount of the item or block that will be dropped";
+	private static final String materialTooltip = "The block or item that will be dropped";
+	private static final String amountTooltip = "The amount of blocks or items that will be dropped";
 	
 	public DropChooseWindow(ObjectRunnable runnable){
 		this.runnable = runnable;

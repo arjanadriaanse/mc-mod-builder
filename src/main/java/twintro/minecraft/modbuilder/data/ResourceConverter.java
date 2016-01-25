@@ -241,7 +241,7 @@ public class ResourceConverter {
 		if (resource.meta != null)
 			stack.setItemDamage(resource.meta);
 		for (Entry<String, Integer> enchant : resource.enchantments.entrySet())
-			stack.addEnchantment(Enchantment.getEnchantmentByLocation(enchant.getKey()), enchant.getValue());
+			stack.addEnchantment(Enchantment.getEnchantmentByLocation(enchant.getKey()), enchant.getValue()-1);
 		return stack;
 	}
 

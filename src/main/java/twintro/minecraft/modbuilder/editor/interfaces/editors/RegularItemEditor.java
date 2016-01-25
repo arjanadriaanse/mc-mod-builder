@@ -53,13 +53,14 @@ public class RegularItemEditor extends PropertiesEditor {
 	protected JCheckBox containerCheckbox;
 	protected JCheckBox burntimeCheckbox;
 
-	private static final String textureTooltip = "The texture of the item";
+	private static final String textureTooltip = "What the item looks like in game";
 	private static final String maxStackSizeTooltip = "The maximum amount of items in one stack";
-	private static final String creativeTabsTooltip = "The tabs in the creative menu where the item can be found";
+	private static final String creativeTabsTooltip = "The creative tabs the item will be in";
 	private static final String containerTooltip = "<html>The item that will be left behind when you use this item in a crafing recipe<br>"
 				+ "For example, when you craft a cake, you use milk buckets in the crafting recipe "
 				+ "and when you grab the cake, you will get empty buckets back</html>";
-	private static final String burntimeTooltip = "The amount of items that will get cooked when you use this item as a fuel source in a furnace";
+	private static final String burntimeTooltip = "<html>The amount of ticks the block will burn if used as a fuel.<br>" 
+				+ "A second is 20 ticks, and one item takes 10 seconds (or 200 ticks) to cook or smelt</html>";
 	
 	public RegularItemEditor(String name, ObjectRunnable runnable, ObjectRunnable closeHandler) {
 		super(name, runnable, closeHandler);
@@ -116,7 +117,7 @@ public class RegularItemEditor extends PropertiesEditor {
 				burntimeUse();
 			}
 		});
-		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(0), new Integer(0), null, new Integer(1)));
+		burntimeSpinner.setModel(new SpinnerNumberModel(new Integer(200), new Integer(1), null, new Integer(200)));
 		
 		labelContainer = label("Container", containerTooltip, labelPanel);
 		containerCheckbox = checkbox("Use", containerTooltip);
