@@ -20,7 +20,9 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JColorChooser;
@@ -234,15 +236,21 @@ public class OldTextureEditor extends IconFrame {
 		int result = menu.showOpenDialog(this);
 		if (result == JFileChooser.APPROVE_OPTION){
 			File file = menu.getSelectedFile();
-			if (file.exists()){
-				if (file.getAbsolutePath().endsWith(".png")){
-					ImageIcon icon = ResourcePackIO.resizeImage(new ImageIcon(file.getAbsolutePath()), 16, 16);
-					BufferedImage img = ResourcePackIO.toBufferedImage(icon.getImage());
-					String name = file.getName().substring(0, file.getName().length() - 4);
-					open(name, img);
-					panel.repaint();
-					saveImage();
+			try {
+				BufferedImage input = ImageIO.read(file);
+				if (input == null){
+					JOptionPane.showConfirmDialog(this, "The file is not an image.", 
+							"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
+					return;
 				}
+				BufferedImage img = ResourcePackIO.toBufferedImage(input, 16, 16);
+				String name = file.getName().substring(0, file.getName().length() - 4).replaceAll(" ", "_");
+				open(name, img);
+				panel.repaint();
+			} catch (IOException e) {
+				e.printStackTrace();
+				JOptionPane.showConfirmDialog(this, "The file cannot be opened.", 
+						"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			}
 		}
 	}
