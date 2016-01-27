@@ -65,11 +65,13 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
+			removeElement(value);
+			value = value.replaceAll(" ", "_");
+			
 			ResourcePackIO.deleteFile("assets/modbuilder/blocks/" + value + ".json");
 			ResourcePackIO.deleteFile("assets/modbuilder/blockstates/" + value + ".json");
 			ResourcePackIO.deleteFile("assets/modbuilder/models/block/" + value + ".json");
 			ResourcePackIO.deleteFile("assets/modbuilder/models/item/" + value + ".json");
-			removeElement(value);
 			
 			Editor.metaFile.resource.modbuilder.blocks.remove(value);
 			Editor.metaFile.save();
@@ -81,6 +83,7 @@ public class BlocksActivityPanel extends ObjectActivityPanel {
 	
 	@Override
 	public String updateList(){
+		elements.clear();
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/blocks/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){

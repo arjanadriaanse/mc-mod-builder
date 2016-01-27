@@ -78,13 +78,16 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
-			ResourcePackIO.deleteFile("assets/modbuilder/structures/" + value + ".json");
 			removeElement(value);
+			value = value.replaceAll(" ", "_");
+			
+			ResourcePackIO.deleteFile("assets/modbuilder/structures/" + value + ".json");
 		}
 	}
 	
 	@Override
 	public String updateList(){
+		elements.clear();
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/structures/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){

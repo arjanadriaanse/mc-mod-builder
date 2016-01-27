@@ -99,9 +99,11 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
+			removeElement(value);
+			value = value.replaceAll(" ", "_");
+			
 			ResourcePackIO.deleteFile("assets/modbuilder/models/item/" + value + ".json");
 			ResourcePackIO.deleteFile("assets/modbuilder/items/" + value + ".json");
-			removeElement(value);
 			
 			Editor.metaFile.resource.modbuilder.items.remove(value);
 			Editor.metaFile.save();
@@ -113,6 +115,7 @@ public class ItemsActivityPanel extends ObjectActivityPanel {
 	
 	@Override
 	public String updateList(){
+		elements.clear();
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/items/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){

@@ -99,8 +99,10 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 				+ "References to this object will not be updated, which might cause problems.", 
 				"Warning", JOptionPane.YES_NO_OPTION);
 		if (result == JOptionPane.YES_OPTION){
-			ResourcePackIO.deleteFile("assets/modbuilder/recipes/" + value + ".json");
 			removeElement(value);
+			value = value.replaceAll(" ", "_");
+			
+			ResourcePackIO.deleteFile("assets/modbuilder/recipes/" + value + ".json");
 			
 			Editor.metaFile.resource.modbuilder.recipes.remove(value);
 			Editor.metaFile.save();
@@ -109,6 +111,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 	
 	@Override
 	public String updateList(){
+		elements.clear();
 		File folder = new File(ResourcePackIO.getURL("assets/modbuilder/recipes/"));
 		if (folder.exists()){
 			for (File file : folder.listFiles()){
