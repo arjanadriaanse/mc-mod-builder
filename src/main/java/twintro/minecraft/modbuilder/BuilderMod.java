@@ -184,14 +184,6 @@ public class BuilderMod {
 			}
 		}
 		
-		for (String path : blockResources.keySet()) {
-			BaseBlockResource resource = blockResources.get(path);
-			Block block = ResourceConverter.toBlock(customBlocks.get(path), resource);
-			GameRegistry.registerBlock(block, path);
-			if (resource.burntime != null)
-				fuels.put(new ItemStack(block), resource.burntime);
-		}
-		
 		for (String path : data.items) {
 			try {
 				ResourceLocation location = new ResourceLocation(BuilderMod.MODID + ":items/" + path + ".json");
@@ -210,6 +202,15 @@ public class BuilderMod {
 				// ignore
 			}
 		}
+		
+		for (String path : blockResources.keySet()) {
+			BaseBlockResource resource = blockResources.get(path);
+			Block block = ResourceConverter.toBlock(customBlocks.get(path), resource);
+			GameRegistry.registerBlock(block, path);
+			if (resource.burntime != null)
+				fuels.put(new ItemStack(block), resource.burntime);
+		}
+		
 		for (String path : itemResources.keySet()) {
 			BaseItemResource resource = itemResources.get(path);
 			Item item = ResourceConverter.toItem(customItems.get(path), resource);
