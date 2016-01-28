@@ -1,6 +1,6 @@
 {
    "type":"shaped",
-   "output":{"item":"examplemod:peeledEgg","amount":10},
+   "output":{"item":"modbuilder:peeledEgg","amount":10},
    "shape":[" e ",
             "ese",
             " s "],

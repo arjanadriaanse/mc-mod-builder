@@ -1,6 +1,6 @@
 {
    "material": "rock",
-   "model": "examplemod:climber",
+   "model": "modbuilder:climber",
    "tab": "block",
    "light": 8,
    "slipperiness": 2,

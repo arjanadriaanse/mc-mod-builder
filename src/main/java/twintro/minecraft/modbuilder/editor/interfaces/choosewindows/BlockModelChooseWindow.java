@@ -360,12 +360,10 @@ public class BlockModelChooseWindow extends IconDialog {
 			else {
 				model.parent="block/cube";
 				model.textures=new HashMap<String,String>();
-				model.textures.put("up",    "modbuilder:"+textureNames1[0]);
-				model.textures.put("west",  "modbuilder:"+textureNames1[1]);
-				model.textures.put("south", "modbuilder:"+textureNames1[2]);
-				model.textures.put("east",  "modbuilder:"+textureNames1[3]);
-				model.textures.put("north", "modbuilder:"+textureNames1[4]);
-				model.textures.put("down",  "modbuilder:"+textureNames1[5]);
+				String[] name = new String[]{"up","south","east","north","west","down"};
+				for(int i=0;i<6;i++){
+					model.textures.put(name[i],"modbuilder:"+textureNames1[i]);
+				}
 				model.textures.put("particle",    "modbuilder:"+textureNames1[0]);
 			}
 		}
@@ -382,7 +380,7 @@ public class BlockModelChooseWindow extends IconDialog {
 	
 	public void load(BlockModelResource model){
 		if(model.parent.equals("block/cube")) {
-			String[] name = new String[]{"up","west","south","east","north","down"};
+			String[] name = new String[]{"up","south","east","north","west","down"};
 			for(int i=0;i<6;i++){
 				if (model.textures.get(name[i]).split(":")[0].equals("modbuilder")) {
 					String loc=ResourcePackIO.getURL("assets/modbuilder/textures/" + 

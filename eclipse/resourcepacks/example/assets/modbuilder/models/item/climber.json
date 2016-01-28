@@ -1,5 +1,5 @@
 {
-  "parent": "examplemod:block/climber",
+  "parent": "modbuilder:block/climber",
   "display": {
     "thirdperson": {
       "rotation": [ 10, -45, 170 ],

@@ -1,7 +1,0 @@
-{
-  "output": { "item": "minecraft:clay" },
-  "input": [
-    { "item": "examplemod:climber" },
-    { "item": "minecraft:cobblestone"}
-  ]
-}
