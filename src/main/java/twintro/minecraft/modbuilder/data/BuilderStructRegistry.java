@@ -17,11 +17,7 @@ public class BuilderStructRegistry implements IWorldGenerator {
 	@Override
     public void generate(Random random, int chunkX, int chunkZ, World world, IChunkProvider chunkGenerator, IChunkProvider chunkProvider) {   
 		for (BuilderStruct struct: structs) {
-			int a=random.nextInt();
-			int b=random.nextInt();
 			random = struct.generateComponent(random, chunkX, chunkZ, world, chunkGenerator, chunkProvider);
-			int c=random.nextInt();
-			int d=random.nextInt();
 		}
 	}
 }

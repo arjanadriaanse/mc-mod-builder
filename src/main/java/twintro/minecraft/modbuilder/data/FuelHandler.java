@@ -2,6 +2,7 @@ package twintro.minecraft.modbuilder.data;
 
 import java.util.Map;
 
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemStack;
 import net.minecraftforge.fml.common.IFuelHandler;
 
@@ -12,16 +13,16 @@ import net.minecraftforge.fml.common.IFuelHandler;
  * For reference, 20 ticks is 1 second, and 10 seconds (or 200 ticks) is the amount of time it takes to cook/smelt 1 item.
  */
 public class FuelHandler implements IFuelHandler{
-	private Map<ItemStack, Integer> fuels;
+	private Map<Item, Integer> fuels;
 	
-	public FuelHandler(Map<ItemStack, Integer> fuels) {
+	public FuelHandler(Map<Item, Integer> fuels) {
 		this.fuels = fuels;
 	}
 	
 	@Override
 	public int getBurnTime(ItemStack fuel) {
-		if (this.fuels.containsKey(fuel))
-			return this.fuels.get(fuel);
+		if (this.fuels.containsKey(fuel.getItem()))
+			return this.fuels.get(fuel.getItem());
 		else
 			return 0;
 	}

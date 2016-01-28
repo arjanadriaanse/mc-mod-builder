@@ -4,6 +4,7 @@ import java.util.Random;
 import java.util.Set;
 
 import net.minecraft.block.state.IBlockState;
+import net.minecraft.init.Blocks;
 import net.minecraft.util.BlockPos;
 import net.minecraft.world.World;
 import net.minecraft.world.chunk.IChunkProvider;
@@ -47,12 +48,13 @@ public class BuilderStructGround implements BuilderStruct{
 				BlockPos pos = new BlockPos(chunkX*16+randX,0,chunkZ*16+randZ);
 				int Y = world.getTopSolidOrLiquidBlock(pos).getY();
 				pos=pos.add(0,Y,0);
-				if (onlyonblocks!=null && onlyonblocks.size()>0)
+				if (onlyonblocks!=null && onlyonblocks.size()>0) {
 					if (onlyonblocks.contains(world.getBlockState(pos.add(0,-1,0))))
-						if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+						if (world.getBlockState(pos).getBlock()==Blocks.air)
 							world.setBlockState(pos,block);
+				}
 				else
-					if (world.getBlockState(pos).getBlock().isReplaceable(world, pos))
+					if (world.getBlockState(pos).getBlock()==Blocks.air)
 						world.setBlockState(pos,block);
 			}
 		}

@@ -25,6 +25,7 @@ import net.minecraft.util.ResourceLocation;
 import net.minecraftforge.common.config.Configuration;
 import net.minecraftforge.fml.client.event.ConfigChangedEvent;
 import net.minecraftforge.fml.common.FMLCommonHandler;
+import net.minecraftforge.fml.common.IFuelHandler;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.common.Mod.EventHandler;
 import net.minecraftforge.fml.common.event.FMLInitializationEvent;
@@ -96,7 +97,7 @@ public class BuilderMod {
 	/**
 	 * Contains all items that need to be registered as a fuel {@link ItemStack}.
 	 */
-	private Map<ItemStack, Integer> fuels = new HashMap<ItemStack, Integer>();
+	private Map<Item, Integer> fuels = new HashMap<Item, Integer>();
 	
 	@EventHandler
 	public void preInit(FMLPreInitializationEvent event) {
@@ -144,6 +145,9 @@ public class BuilderMod {
 				// ignore 
 			}
 		}
+		GameRegistry.registerWorldGenerator(registry, 0);
+		IFuelHandler f = new FuelHandler(fuels);
+		GameRegistry.registerFuelHandler(f);
 	}
 
 	/**
@@ -208,7 +212,7 @@ public class BuilderMod {
 			Block block = ResourceConverter.toBlock(customBlocks.get(path), resource);
 			GameRegistry.registerBlock(block, path);
 			if (resource.burntime != null)
-				fuels.put(new ItemStack(block), resource.burntime);
+				fuels.put(Item.getItemFromBlock(block), resource.burntime);
 		}
 		
 		for (String path : itemResources.keySet()) {
@@ -216,7 +220,7 @@ public class BuilderMod {
 			Item item = ResourceConverter.toItem(customItems.get(path), resource);
 			GameRegistry.registerItem(item, path);
 			if (resource.burntime != null)
-				fuels.put(new ItemStack(item), resource.burntime);
+				fuels.put(item, resource.burntime);
 		}
 		
 		for (String path : data.structures) {
@@ -230,7 +234,6 @@ public class BuilderMod {
 					registeredStructures.add(path);
 					registry.structs.add(structure);
 				}
-				GameRegistry.registerWorldGenerator(registry, 0);
 			} catch (IOException e) {
 				// ignore
 			}
@@ -247,7 +250,6 @@ public class BuilderMod {
 				// ignore
 			}
 		}
-		GameRegistry.registerFuelHandler(new FuelHandler(fuels));
 	}
 
 	private void syncConfig() {

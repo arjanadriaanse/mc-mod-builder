@@ -168,7 +168,7 @@ public class GroundStructureEditor extends PropertiesEditor {
 			GroundStructureResource base = new GroundStructureResource();
 			base.block = materialLabel.getMaterial();
 			Set<String> blocks = new HashSet<String>();
-			for (String block : coverString.split(", ")) blocks.add(block);
+			if (coverString != "") for (String block : coverString.split(", ")) blocks.add(block);
 			base.onlyonblocks = blocks;
 			switch (dimensionComboBox.getSelectedIndex()){
 			case 0:

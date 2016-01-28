@@ -206,7 +206,7 @@ public class OreStructureEditor extends PropertiesEditor {
 			
 			OreStructureResource base = new OreStructureResource();
 			base.block = materialLabel.getMaterial();
-			base.replaceblock = replacingLabel.getMaterial();
+			if (replacingLabel.getMaterial()!="") base.replaceblock = replacingLabel.getMaterial();
 			switch (dimensionComboBox.getSelectedIndex()){
 			case 0:
 				base.dimension = 0;
