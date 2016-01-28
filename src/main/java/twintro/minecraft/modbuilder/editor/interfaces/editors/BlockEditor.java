@@ -328,7 +328,7 @@ public class BlockEditor extends PropertiesEditor {
 		useHarvestRestrictions();
 		useSolid();
 		
-		setSize(500);
+		setSize(600);
 	}
 	
 	public BlockEditor(BlockElement block, ObjectRunnable runnable, ObjectRunnable closeHandler){
@@ -339,7 +339,7 @@ public class BlockEditor extends PropertiesEditor {
 		if (block.blockModel != null)
 			setModel(block.blockModel);
 		if (base.drops != null){
-			if (!(base.drops.size() == 1 && base.drops.get(0).block.equals(thisDrop.block) 
+			if (!(base.drops.size() == 1 && base.drops.get(0).block != null && base.drops.get(0).block.equals(thisDrop.block) 
 					&& base.drops.get(0).amount == thisDrop.amount && base.drops.get(0).amountincrease == thisDrop.amountincrease)){
 				dropsCheckBox.setSelected(true);
 				useDrops();
