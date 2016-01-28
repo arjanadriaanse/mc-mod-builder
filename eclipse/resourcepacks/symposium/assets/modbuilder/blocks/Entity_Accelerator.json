@@ -1,7 +1,7 @@
 {
   "type": "regular",
   "replaceable": false,
-  "requirestool": false,
+  "requirestool": true,
   "mobility": 0,
   "solid": true,
   "opaque": true,

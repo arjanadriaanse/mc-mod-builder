@@ -1,5 +1,5 @@
 {
-  "blocks": [],
+  "blocks": ["modbuilder:Entity_Accelerator"],
   "damage": 7.0,
   "durability": 25,
   "efficiency": 6.0,
