@@ -104,7 +104,9 @@ public class MaterialResources {
 	}
 	
 	public static ImageIcon getImage(ItemStackResource item){
-		if (item.block != null && !item.block.isEmpty())
+		if (item == null)
+			return null;
+		else if (item.block != null && !item.block.isEmpty())
 			return getImage(item.block);
 		else if (item.item != null && !item.item.isEmpty())
 			return getImage(item.item);

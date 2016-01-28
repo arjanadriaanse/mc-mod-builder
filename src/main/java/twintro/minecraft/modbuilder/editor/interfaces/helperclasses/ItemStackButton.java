@@ -66,7 +66,8 @@ public class ItemStackButton extends JButton {
 	}
 	
 	public void setText() {
-		String material = MaterialResources.simplifyItemStackName(MaterialResources.getDisplayName(item));
+		String material = null;
+		if (item != null) material = MaterialResources.simplifyItemStackName(MaterialResources.getDisplayName(item));
 		if (material != null && material != ""){
 			if (item.container != null && item.container != ""){
 				String container = MaterialResources.simplifyItemStackName(item.container);

@@ -342,10 +342,13 @@ public class ItemStackChooseWindow extends IconDialog {
 			dispose();
 		}
 		else{
+			runnable.run(null);
+			dispose();
+			/*
 			int selected = JOptionPane.showConfirmDialog(this, "You haven't chosen a material yet.", 
 					"Error", JOptionPane.DEFAULT_OPTION, JOptionPane.ERROR_MESSAGE);
 			if (selected != JOptionPane.OK_OPTION)
-				dispose();
+				dispose();*/
 		}
 	}
 	
