@@ -163,7 +163,7 @@ public class ResourceConverter {
 				resource.efficiency     != null ? resource.efficiency     : 6.0F,
 				resource.damage         != null ? resource.damage         : 0.5F,
 				resource.enchantability != null ? resource.enchantability : 10);
-		Set effectiveBlocks = new LinkedHashSet();
+		Set<Block> effectiveBlocks = new LinkedHashSet<Block>();
 		if (resource.blocks != null) {
 			for(String block:resource.blocks)
 				effectiveBlocks.add(getBlockFromName(block));
