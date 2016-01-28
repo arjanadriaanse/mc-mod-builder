@@ -151,7 +151,9 @@ public abstract class ActivityPanel extends ListPanel {
 	}
 	
 	protected String nameDialog(String kind){
-		String name = JOptionPane.showInputDialog(kind + " name:");
+		String name = JOptionPane.showInputDialog("<html><h3>" + kind + " name:</h3>"
+				+ "<h5>Important: When two " + kind.toLowerCase() + "s in different mods have the same name,<br>"
+						+ "one of them will not work. Try to avoid this.</h5></html>");
 		if (name != null){
 			if (name.replaceAll(" ", "").length() > 0){
 				if (!elements.containsKey(name)){
