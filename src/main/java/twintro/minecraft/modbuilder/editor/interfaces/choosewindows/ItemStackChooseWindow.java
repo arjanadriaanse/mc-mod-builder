@@ -297,7 +297,7 @@ public class ItemStackChooseWindow extends IconDialog {
 	}
 	
 	private void chooseContainer(){
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_NONE_METALESS, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_NONE_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				containerLabel.setText((String) obj);

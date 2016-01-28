@@ -232,7 +232,7 @@ public class RegularItemEditor extends PropertiesEditor {
 	}
 
 	private void containerChoose() {
-		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_ONLY_METALESS, new ObjectRunnable() {
+		new MaterialChooseWindow(MaterialChooseWindow.ITEMS_BLOCKS_METALESS, new ObjectRunnable() {
 			@Override
 			public void run(Object obj) {
 				change();
