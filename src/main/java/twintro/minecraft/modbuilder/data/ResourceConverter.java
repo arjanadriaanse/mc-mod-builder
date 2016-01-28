@@ -149,7 +149,7 @@ public class ResourceConverter {
 		if (resource.stacksize != null)
 			item.setMaxStackSize(resource.stacksize);
 		if (resource.container != null)
-			item.setContainerItem(getItemFromName(resource.container));
+			item.setContainerItem(ResourceConverter.getItemFromName(resource.container));
 		if (resource.alwaysedible != null)
 			if (resource.alwaysedible)
 				item.setAlwaysEdible();
@@ -231,13 +231,12 @@ public class ResourceConverter {
 			if (resource.container != null)
 				item.setContainerItem(resource.container == "" ? null : getItemFromName(resource.container));
 		}
-		Block block = null;
-		if (resource.block != null)
-			block = getBlockFromName(resource.block);
-
-		ItemStack stack = item != null ?
-				new ItemStack(item, resource.amount != null ? resource.amount: 1) :
-				new ItemStack(block, resource.amount != null ? resource.amount: 1);
+		if (resource.block != null) {
+			item = Item.getItemFromBlock(getBlockFromName(resource.block));
+			if (resource.container != null)
+				item.setContainerItem(resource.container == "" ? null : getItemFromName(resource.container));
+		}
+		ItemStack stack = new ItemStack(item, resource.amount != null ? resource.amount: 1);
 		if (resource.meta != null)
 			stack.setItemDamage(resource.meta);
 		for (Entry<String, Integer> enchant : resource.enchantments.entrySet())

@@ -135,8 +135,8 @@ public class BlockElement extends InventoryElement {
 			}
 			else if (blockModel.parent.equals("block/cube")){
 				BufferedImage img1 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("up").split(":")[1] + ".png")),64,64);
-				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("south").split(":")[1] + ".png")),64,64);
-				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("east").split(":")[1] + ".png")),64,64);
+				BufferedImage img2 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("east").split(":")[1] + ".png")),64,64);
+				BufferedImage img3 = scaleImage(ImageIO.read(new File(loc+blockModel.textures.get("north").split(":")[1] + ".png")),64,64);
 				return new ImageIcon(scaleImage(get3DImage(img1,img2,img3),64,64));
 			}
 		}

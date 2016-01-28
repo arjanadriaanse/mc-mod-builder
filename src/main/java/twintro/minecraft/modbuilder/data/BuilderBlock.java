@@ -46,8 +46,9 @@ public class BuilderBlock extends Block {
 			if (amount!=null && items.get(i).amountincrease!=null)
 				amount +=RANDOM.nextInt(1+items.get(i).amountincrease)+fortune;
 			Integer meta=items.get(i).meta;
-			String s = items.get(i).item;
-			Item item = ResourceConverter.getItemFromName(items.get(i).item);
+			String itemname = items.get(i).item;
+			if (itemname==null) itemname=items.get(i).block;
+			Item item = ResourceConverter.getItemFromName(itemname);
 			rtn.add(new ItemStack(item,amount !=null ? amount : 1+fortune,meta!=null ? meta : 0));
 		}
 		return rtn;

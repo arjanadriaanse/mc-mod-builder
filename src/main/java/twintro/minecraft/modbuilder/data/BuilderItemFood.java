@@ -4,6 +4,7 @@ import java.util.Set;
 
 import net.minecraft.creativetab.CreativeTabs;
 import net.minecraft.entity.player.EntityPlayer;
+import net.minecraft.item.Item;
 import net.minecraft.item.ItemFood;
 import net.minecraft.item.ItemStack;
 import net.minecraft.potion.PotionEffect;
@@ -75,5 +76,11 @@ public class BuilderItemFood extends ItemFood {
 	@Override
 	public CreativeTabs[] getCreativeTabs() {
 		return tabs != null ? tabs : super.getCreativeTabs();
+	}
+	
+	@Override
+	public Item setContainerItem(Item item){
+		this.item = new ItemStack(item);
+		return super.setContainerItem(item);
 	}
 }

@@ -3,6 +3,6 @@
   "model": "modbuilder:seedstew",
   "amount": 8,
   "stacksize": 1,
-  "container": "minecraft:bowl",
+  "container": "minecraft:dirt",
   "effects": [ [ 8, 600, 5 ] ]
 }

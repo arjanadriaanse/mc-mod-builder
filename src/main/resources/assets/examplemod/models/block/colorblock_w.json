@@ -1,6 +1,0 @@
-{
-    "parent": "examplemod:block/colorblock",
-    "textures": {
-        "color": "examplemod:blocks/colorblock_w"
-    }
-}

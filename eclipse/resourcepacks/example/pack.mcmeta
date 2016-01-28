@@ -6,7 +6,7 @@
    "modbuilder":{
       "blocks":["block"],
       "items":["regular","food","tool","cookedEgg","peeledEgg"],
-      "recipes":["shapeless_1","shapeless_2","shapeless_3","shaped_1","shaped_2","shaped_3","smelting_1"],
+      "recipes":["shapeless_1","shaped_1","shapeless_3","smelting_1"],
       "structures":[]
    }
 }
