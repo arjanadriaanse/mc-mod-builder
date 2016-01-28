@@ -1,0 +1,13 @@
+{
+  "blocks": [],
+  "damage": 7.0,
+  "durability": 25,
+  "efficiency": 6.0,
+  "enchantability": 10,
+  "type": "tool",
+  "model": "modbuilder:Anger_Hammer",
+  "tabs": [
+    "combat"
+  ],
+  "stacksize": 1
+}

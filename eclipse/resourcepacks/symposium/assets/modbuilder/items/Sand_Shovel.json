@@ -1,0 +1,18 @@
+{
+  "blocks": [
+    "minecraft:sand",
+    "minecraft:sandstone_stairs",
+    "minecraft:sandstone"
+  ],
+  "damage": 2.0,
+  "durability": 75,
+  "efficiency": 10.0,
+  "enchantability": 10,
+  "repairblock": "minecraft:sandstone#0",
+  "type": "tool",
+  "model": "modbuilder:Sand_Shovel",
+  "tabs": [
+    "tools"
+  ],
+  "stacksize": 1
+}

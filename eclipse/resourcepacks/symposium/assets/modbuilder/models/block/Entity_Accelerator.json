@@ -1,0 +1,12 @@
+{
+  "parent": "block/cube",
+  "textures": {
+    "east": "modbuilder:Entity_Accelarator_Side",
+    "south": "modbuilder:Entity_Accelarator_Side",
+    "north": "modbuilder:Entity_Accelarator_Side",
+    "west": "modbuilder:Entity_Accelarator_Side",
+    "particle": "modbuilder:Entity_Accelarator_Top_And_Bottom",
+    "up": "modbuilder:Entity_Accelarator_Top_And_Bottom",
+    "down": "modbuilder:Entity_Accelarator_Top_And_Bottom"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "onlyonblocks": [
+    "minecraft:sand#0"
+  ],
+  "amountperchunk": 2,
+  "type": "ground",
+  "block": "modbuilder:Smiley_Flower",
+  "dimension": 0
+}

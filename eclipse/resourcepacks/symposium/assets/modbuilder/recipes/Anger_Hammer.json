@@ -1,0 +1,45 @@
+{
+  "shape": [
+    "abc",
+    "def",
+    " g "
+  ],
+  "input": {
+    "a": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "b": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "c": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "d": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "e": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "f": {
+      "item": "modbuilder:Hardened_Frownie",
+      "enchantments": {}
+    },
+    "g": {
+      "item": "minecraft:stick",
+      "enchantments": {}
+    }
+  },
+  "type": "shaped",
+  "output": {
+    "item": "modbuilder:Anger_Hammer",
+    "amount": 1,
+    "enchantments": {
+      "fire_aspect": 1
+    }
+  }
+}

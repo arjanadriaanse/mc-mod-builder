@@ -1,0 +1,28 @@
+{
+  "type": "regular",
+  "replaceable": false,
+  "requirestool": true,
+  "mobility": 0,
+  "solid": true,
+  "opaque": true,
+  "cutout": false,
+  "mapcolor": 3,
+  "model": "modbuilder:Frownie_Ore",
+  "tab": "block",
+  "drops": [
+    {
+      "item": "modbuilder:Frownie",
+      "amount": 1,
+      "amountincrease": 2,
+      "enchantments": {}
+    }
+  ],
+  "light": 0,
+  "opacity": 15,
+  "slipperiness": 0.6,
+  "hardness": 1.0,
+  "resistance": 5.0,
+  "unbreakable": false,
+  "harvesttype": "pickaxe",
+  "harvestlevel": 3
+}

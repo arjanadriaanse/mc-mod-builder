@@ -1,0 +1,20 @@
+{
+  "blocks": [
+    "minecraft:sand",
+    "minecraft:stone_slab2",
+    "minecraft:red_sandstone_stairs",
+    "minecraft:sandstone_stairs",
+    "minecraft:red_sandstone",
+    "minecraft:sandstone"
+  ],
+  "damage": 2.0,
+  "durability": 3,
+  "efficiency": 20.0,
+  "enchantability": 10,
+  "type": "tool",
+  "model": "modbuilder:Glass_Shovel",
+  "tabs": [
+    "tools"
+  ],
+  "stacksize": 1
+}

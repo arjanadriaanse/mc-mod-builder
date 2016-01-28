@@ -1,0 +1,24 @@
+{
+  "shape": [
+    " a ",
+    " b ",
+    " b "
+  ],
+  "input": {
+    "a": {
+      "block": "minecraft:sandstone",
+      "meta": 0,
+      "enchantments": {}
+    },
+    "b": {
+      "item": "minecraft:stick",
+      "enchantments": {}
+    }
+  },
+  "type": "shaped",
+  "output": {
+    "item": "modbuilder:Sand_Shovel",
+    "amount": 1,
+    "enchantments": {}
+  }
+}

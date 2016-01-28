@@ -1,0 +1,10 @@
+{
+  "replaceblock": "",
+  "maxveinsize": 4,
+  "chancestospawn": 32,
+  "minY": 32,
+  "maxY": 64,
+  "type": "ore",
+  "block": "modbuilder:Frownie_Ore",
+  "dimension": 0
+}

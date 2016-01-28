@@ -1,0 +1,35 @@
+{
+  "shape": [
+    " a ",
+    "bcd",
+    " e "
+  ],
+  "input": {
+    "a": {
+      "item": "modbuilder:Smiley_Powder",
+      "enchantments": {}
+    },
+    "b": {
+      "item": "modbuilder:Smiley_Powder",
+      "enchantments": {}
+    },
+    "c": {
+      "block": "minecraft:ice",
+      "enchantments": {}
+    },
+    "d": {
+      "item": "modbuilder:Smiley_Powder",
+      "enchantments": {}
+    },
+    "e": {
+      "item": "modbuilder:Smiley_Powder",
+      "enchantments": {}
+    }
+  },
+  "type": "shaped",
+  "output": {
+    "block": "modbuilder:Entity_Accelerator",
+    "amount": 1,
+    "enchantments": {}
+  }
+}

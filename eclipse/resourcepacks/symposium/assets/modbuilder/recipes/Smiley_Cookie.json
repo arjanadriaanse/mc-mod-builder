@@ -1,0 +1,18 @@
+{
+  "input": [
+    {
+      "item": "minecraft:cookie",
+      "enchantments": {}
+    },
+    {
+      "item": "modbuilder:Smiley_Powder",
+      "enchantments": {}
+    }
+  ],
+  "type": "shapeless",
+  "output": {
+    "item": "modbuilder:Smiley_Cookie",
+    "amount": 1,
+    "enchantments": {}
+  }
+}

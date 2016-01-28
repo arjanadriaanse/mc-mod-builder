@@ -1,0 +1,8 @@
+{
+  "type": "regular",
+  "model": "modbuilder:Smiley_Powder",
+  "tabs": [
+    "materials"
+  ],
+  "stacksize": 64
+}

@@ -1,0 +1,14 @@
+{
+  "input": [
+    {
+      "block": "modbuilder:Smiley_Flower",
+      "enchantments": {}
+    }
+  ],
+  "type": "shapeless",
+  "output": {
+    "item": "modbuilder:Smiley_Leaf",
+    "amount": 4,
+    "enchantments": {}
+  }
+}

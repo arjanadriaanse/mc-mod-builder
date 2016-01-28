@@ -1,0 +1,38 @@
+{
+  "pack": {
+    "pack_format": 1,
+    "description": "A ModBuilder Minecraft Mod"
+  },
+  "modbuilder": {
+    "blocks": [
+      "Smiley_Flower",
+      "Frownie_Ore",
+      "Entity_Accelerator"
+    ],
+    "items": [
+      "Smiley_Leaf",
+      "Smiley_Powder",
+      "Smiley_Cookie",
+      "Frownie",
+      "Hardened_Frownie",
+      "Anger_Hammer",
+      "Sand_Shovel",
+      "Glass_Shovel"
+    ],
+    "recipes": [
+      "Smiley_Leafs",
+      "Smiley_Powder",
+      "Smiley_Cookie",
+      "Hardened_Frownie",
+      "Anger_Hammer",
+      "Hardened_Frownie_2",
+      "Glass_Shovel",
+      "Sand_Shovel",
+      "Entity_Accelerator"
+    ],
+    "structures": [
+      "Smiley_Flower",
+      "Frownie_Ore"
+    ]
+  }
+}

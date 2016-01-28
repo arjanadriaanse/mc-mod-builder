@@ -123,7 +123,7 @@ public class StructureActivityPanel extends ObjectActivityPanel {
 		ResourcePackIO.createFile(structure.structure, "assets/modbuilder/structures/" + structure.name + ".json");
 		addElement(structure.name, structure.getImage());
 		
-		Editor.metaFile.resource.modbuilder.recipes.add(structure.name);
+		Editor.metaFile.resource.modbuilder.structures.add(structure.name);
 		Editor.metaFile.save();
 	}
 }

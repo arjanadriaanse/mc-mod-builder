@@ -1,0 +1,9 @@
+{
+  "type": "regular",
+  "model": "modbuilder:Smiley_Leaf",
+  "tabs": [
+    "materials"
+  ],
+  "stacksize": 64,
+  "burntime": 100
+}

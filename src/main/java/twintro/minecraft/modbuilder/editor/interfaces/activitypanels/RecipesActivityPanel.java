@@ -158,7 +158,7 @@ public class RecipesActivityPanel extends ObjectActivityPanel {
 		ResourcePackIO.createFile(recipe.recipe, "assets/modbuilder/recipes/" + recipe.name + ".json");
 		addElement(recipe.name, recipe.getImage());
 		
-		Editor.metaFile.resource.modbuilder.structures.add(recipe.name);
+		Editor.metaFile.resource.modbuilder.recipes.add(recipe.name);
 		Editor.metaFile.save();
 	}
 }

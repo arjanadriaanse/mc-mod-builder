@@ -1,0 +1,39 @@
+{
+  "amount": 1,
+  "saturation": 4.0,
+  "wolf": false,
+  "alwaysedible": true,
+  "effects": [
+    [
+      1,
+      60,
+      3
+    ],
+    [
+      3,
+      60,
+      3
+    ],
+    [
+      7,
+      60,
+      3
+    ],
+    [
+      10,
+      60,
+      3
+    ],
+    [
+      9,
+      60,
+      3
+    ]
+  ],
+  "type": "food",
+  "model": "modbuilder:Smiley_Cookie",
+  "tabs": [
+    "food"
+  ],
+  "stacksize": 64
+}

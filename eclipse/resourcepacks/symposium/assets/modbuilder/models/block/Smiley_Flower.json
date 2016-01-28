@@ -1,0 +1,7 @@
+{
+  "parent": "block/cross",
+  "textures": {
+    "cross": "modbuilder:Smiley_Flower",
+    "particle": "modbuilder:Smiley_Flower"
+  }
+}

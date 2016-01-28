@@ -1,0 +1,8 @@
+{
+  "type": "regular",
+  "model": "modbuilder:Frownie",
+  "tabs": [
+    "materials"
+  ],
+  "stacksize": 64
+}

@@ -1,0 +1,52 @@
+{
+  "shape": [
+    "abc",
+    "def",
+    "ghi"
+  ],
+  "input": {
+    "a": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "b": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "c": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "d": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "e": {
+      "container": "minecraft:mossy_cobblestone",
+      "block": "minecraft:cobblestone",
+      "enchantments": {}
+    },
+    "f": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "g": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "h": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    },
+    "i": {
+      "item": "modbuilder:Smiley_Leaf",
+      "enchantments": {}
+    }
+  },
+  "type": "shaped",
+  "output": {
+    "item": "modbuilder:Smiley_Powder",
+    "amount": 1,
+    "enchantments": {}
+  }
+}

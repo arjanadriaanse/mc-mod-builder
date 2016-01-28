@@ -1,0 +1,13 @@
+{
+  "input": {
+    "item": "modbuilder:Frownie",
+    "enchantments": {}
+  },
+  "xp": 0.3,
+  "type": "smelting",
+  "output": {
+    "item": "modbuilder:Hardened_Frownie",
+    "amount": 1,
+    "enchantments": {}
+  }
+}

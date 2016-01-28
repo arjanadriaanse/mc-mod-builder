@@ -1,0 +1,13 @@
+{
+  "input": {
+    "item": "modbuilder:Sand_Shovel",
+    "enchantments": {}
+  },
+  "xp": 0.1,
+  "type": "smelting",
+  "output": {
+    "item": "modbuilder:Glass_Shovel",
+    "amount": 1,
+    "enchantments": {}
+  }
+}
