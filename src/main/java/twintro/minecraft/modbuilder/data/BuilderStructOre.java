@@ -79,11 +79,12 @@ public class BuilderStructOre implements BuilderStruct{
 					if (world.getBlockState(pos).equals(replaceblock))
 						world.setBlockState(pos, block);
 					for (int j = 1; j < maxVeinSize; j++){
-						int x = random.nextInt(3)-1;
-						int y = random.nextInt(3)-1;
-						int z = random.nextInt(3)-1;
-						if (world.getBlockState(pos.add(x,y,z)).equals(replaceblock))
-							world.setBlockState(pos.add(x,y,z), block);
+						int X = Math.min(Math.max(randX + random.nextInt(3)-1, 0),15);
+						int Y = randY + random.nextInt(3)-1;
+						int Z = Math.min(Math.max(randZ + random.nextInt(3)-1, 0),15);
+						BlockPos newpos = new BlockPos(16*chunkX + X, Y, 16*chunkZ + Z);
+						if (world.getBlockState(newpos).equals(replaceblock))
+							world.setBlockState(newpos, block);
 						
 					}
 				}
